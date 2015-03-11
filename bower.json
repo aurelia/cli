@@ -1,0 +1,20 @@
+{
+  "name": "aurelia-cli",
+  "version": "0.1.0",
+  "description": "The command line tooling for Aurelia, used for creating projects, scaffolding, bundling and more.",
+  "keywords": [
+    "aurelia",
+    "cli",
+    "bundle",
+    "scaffold"
+  ],
+  "homepage": "http://aurelia.io",
+  "license": "MIT",
+  "authors": [
+    "Rob Eisenberg <rob@bluespire.com> (http://robeisenberg.com/)"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aurelia/cli"
+  }
+}
