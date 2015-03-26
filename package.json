@@ -12,11 +12,23 @@
   "bugs": {
     "url": "https://github.com/aurelia/cli/issues"
   },
+  "bin": {
+    "aurelia": "./bin/aurelia.js"
+  },
   "license": "MIT",
   "author": "Rob Eisenberg <rob@bluespire.com> (http://robeisenberg.com/)",
   "main": "dist/commonjs/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/aurelia/cli"
+  },
+  "dependencies": {
+    "commander": "^2.7.1",
+    "glob": "^5.0.3",
+    "interpret": "^0.5.2",
+    "jspm": "git://github.com/jspm/jspm-cli#0.15.0-beta",
+    "liftoff": "^2.0.2",
+    "minimist": "^1.1.1",
+    "whacko": "^0.17.4"
   }
 }
