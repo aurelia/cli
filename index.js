@@ -5,6 +5,10 @@ function Aurelia(env) {
   this.env = env;
 }
 
+Aurelia.prototype.config = function(config) {
+  this.config = config;
+}
+
 Aurelia.prototype.bundle = function(config) {
   this.bundleConfig = config;
 }
@@ -20,6 +24,13 @@ Aurelia.prototype.run = function(argv) {
     .description('bundles js modules and templates')
     .action(function(options) {
       bundler.bundleJS(self.bundleConfig.js);
+    });
+
+  program
+    .command('tb')
+    .description('experimental template bundler')
+    .action(function(options) {
+      bundler.bundleTemplate(self.bundleConfig.template, self.config);
     });
 
   program
