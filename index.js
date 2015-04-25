@@ -2,6 +2,7 @@ var program = require('commander');
 var bundler = require('./lib/bundler');
 var pjson = require('./package.json');
 var chalk = require('chalk');
+var installer = require('./lib/installer');
 
 function Aurelia(env) {
   this.env = env;
@@ -9,11 +10,11 @@ function Aurelia(env) {
 
 Aurelia.prototype.config = function(config) {
   this.config = config;
-}
+};
 
 Aurelia.prototype.bundle = function(config) {
   this.bundleConfig = config;
-}
+};
 
 Aurelia.prototype.run = function(argv) {
   var self = this;
@@ -94,10 +95,10 @@ Aurelia.prototype.run = function(argv) {
     .command('new')
     .description('create a new Aurelia project')
     .action(function(options) {
-      console.log('set a new aurelia project');
+      installer.installTemplate('skeleton-navigation');
     });
 
   program.parse(argv);
-}
+};
 
 module.exports = Aurelia;

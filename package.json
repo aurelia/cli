@@ -25,6 +25,8 @@
   "dependencies": {
     "chalk": "^1.0.0",
     "commander": "^2.7.1",
+    "github": "^0.2.4",
+    "github-download": "^0.3.0",
     "glob": "^5.0.3",
     "interpret": "^0.5.2",
     "jspm": "^0.15.1",
