@@ -1,7 +1,8 @@
 #!/usr/bin/env node
+
 const Liftoff = require('liftoff');
 const argv = require('minimist')(process.argv.slice(2));
-
+const interface = require('../lib/interface');
 const AureliaCLI = new Liftoff({
   name: 'aurelia-cli',
   configName: 'Aureliafile',
@@ -55,9 +56,13 @@ function invoke(env) {
     console.log('No Aureliafile found.');
   }
 
-  var Aurelia = require(env.modulePath);
-  var aurelia = new Aurelia(env);
-  require(env.configPath)(aurelia);
+  // env.modulePath will export the existing instance.
+  var _aurelia = require(env.modulePath);
+  // Pass the existing instance into the env.configPath
+  // Eventually we should avoid this logic, and allow the user to simply require('aurelia-cli')
+  // and simply use the api without having to pass the instance in at this point.
+  require(env.configPath)(_aurelia);
 
-  aurelia.run(process.argv);
+  // Pass the instance into our cli interface so that we can use it when specific commands are executed.
+  interface(_aurelia);
 }

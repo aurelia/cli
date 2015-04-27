@@ -23,9 +23,11 @@
     "url": "https://github.com/aurelia/cli"
   },
   "dependencies": {
+    "bluebird": "^2.9.24",
     "chalk": "^1.0.0",
     "commander": "^2.7.1",
     "glob": "^5.0.3",
+    "inquirer": "^0.8.2",
     "interpret": "^0.5.2",
     "jspm": "^0.15.1",
     "liftoff": "^2.0.2",
