@@ -16,4 +16,9 @@ Aurelia.prototype.bundle = function(config) {
   this.bundleConfig = config;
 };
 
-module.exports = Aurelia;
+module.exports = (function(){
+  if (!_instance) {
+    _instance = new Aurelia();
+  }
+  return _instance;
+})();
