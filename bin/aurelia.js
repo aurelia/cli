@@ -19,6 +19,11 @@ const AureliaCLI = new Liftoff({
   console.log('Respawned to PID:', child.pid);
 });
 
+
+var cli = require('../lib/cli');
+
+cli.init(argv);
+
 AureliaCLI.launch({
   cwd: argv.cwd,
   configPath: argv.aureliafile,
@@ -28,36 +33,12 @@ AureliaCLI.launch({
 }, invoke);
 
 function invoke(env) {
-  if (argv.verbose) {
-    console.log('LIFTOFF SETTINGS:', this);
-    console.log('CLI OPTIONS:', argv);
-    console.log('CWD:', env.cwd);
-    console.log('LOCAL MODULES PRELOADED:', env.require);
-    console.log('SEARCHING FOR:', env.configNameRegex);
-    console.log('FOUND CONFIG AT:', env.configPath);
-    console.log('CONFIG BASE DIR:', env.configBase);
-    console.log('YOUR LOCAL MODULE IS LOCATED:', env.modulePath);
-    console.log('LOCAL PACKAGE.JSON:', env.modulePackage);
-    console.log('CLI PACKAGE.JSON', require('../package'));
-  }
 
-  if (process.cwd() !== env.cwd) {
-    process.chdir(env.cwd);
-    console.log('Working directory changed to', env.cwd);
-  }
+    cli.configure(env)
 
-  if (!env.modulePath) {
-    console.log('Local aurelia-cli not found in:', env.cwd);
-    process.exit(1);
-  }
+    var Aurelia = require(env.modulePath);
+    var aurelia = new Aurelia(env);
+    require(env.configPath)(aurelia);
 
-  if (!env.configPath) {
-    console.log('No Aureliafile found.');
-  }
-
-  var Aurelia = require(env.modulePath);
-  var aurelia = new Aurelia(env);
-  require(env.configPath)(aurelia);
-
-  aurelia.run(process.argv);
+    cli.ready(aurelia);
 }
