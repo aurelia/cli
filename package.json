@@ -29,10 +29,13 @@
     "github": "^0.2.4",
     "glob": "^5.0.3",
     "interpret": "^0.5.2",
-    "jasmine-node": "^2.0.0",
     "jspm": "^0.15.1",
     "liftoff": "^2.0.2",
     "minimist": "^1.1.1",
     "whacko": "^0.17.4"
+  },
+  "devDependencies": {
+    "jasmine-node": "^2.0.0",
+    "injectr": "^0.5.1"
   }
 }

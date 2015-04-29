@@ -16,4 +16,24 @@ describe('installer unit tests', function() {
       done();
     }, 2000);
   });
+
+  it('should execute callback after installing jspm dependencies', function() {
+    var injectr = require('injectr');
+
+    sut = injectr('../lib/installer.js', {
+      jspm: {
+        install: function(opt) {
+          return {
+            then: function(cb) {
+              cb();
+            }
+          }
+        }
+      }
+    });
+
+    sut.runJSPMInstall(function() {
+      expect(true).toBe(true);
+    });
+  });
 });
