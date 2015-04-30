@@ -4,8 +4,8 @@ var isArg, exists = require('fs').existsSync;
 // This service is assuming that the command file is a function..
 module.exports = function Command(cmd) {
     cmd = (__dirname + '/' + cmd + '.js');
-    // Checking for whether the files exists at this point should be only for development
-    // Otherwise, we know the files exists, so this just become an extra function call
+    // Checking for whether the files exists at this point, should only be for development
+    // Otherwise, we know the files exists, so this just becomes an extra function call
     // Once fully deployed, we shouldn't be checking whether the command file exists.
     isArg = exists(cmd);
 
@@ -16,7 +16,7 @@ module.exports = function Command(cmd) {
     if ( !isArg ) {
         console.log('[%s] Command %s does not exist!', 'Error'.red, cmd.red);
         // return;
-        process.ext(1);
+        process.exit(1);
     }
 
     //return a function for program.action() to call, and pass the arguments through.
