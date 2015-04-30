@@ -26,7 +26,7 @@ function createFile(){
     return stream.src(cli.root('Aureliafile.js'))
         .pipe(stream.dest(process.cwd()))
         .on('error', function(err){
-            logger.err('Issue creating %s', 'AureliaFile'.green)
+            logger.err('Issue creating %s', 'AureliaFile'.green);
             console.log(err);
         })
         .on('end', function(){
@@ -40,7 +40,7 @@ function prompt() {
         name: 'overwrite',
         message: 'Aureliafile already exists!'.red+' Would you like to overwrite?',
         default: false
-    }]
+    }];
     return ask(prompts);
 }
 
