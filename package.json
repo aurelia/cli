@@ -35,5 +35,9 @@
     "liftoff": "^2.0.2",
     "minimist": "^1.1.1",
     "whacko": "^0.17.4"
+  },
+  "devDependencies": {
+    "jasmine-node": "^2.0.0",
+    "injectr": "^0.5.1"
   }
 }
