@@ -1,8 +1,10 @@
-var program = require('commander');
-var bundler = require('./lib/bundler');
-var pjson = require('./package.json');
-var chalk = require('chalk');
-var installer = require('./lib/installer');
+var program = require('commander')
+  , bundler = require('./lib/bundler')
+  , pjson = require('./package.json')
+  , chalk = require('chalk')
+  , installer = require('./lib/installer');
+
+var _instance;
 
 function Aurelia(env) {
   this.env = env;
