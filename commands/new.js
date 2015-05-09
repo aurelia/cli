@@ -5,7 +5,7 @@ var installer = cli.import('lib/installer');
 //
 // Executable command for creating and downloading new Aurelia projects.
 function New(options){
-    installer.installTemplate('skeleton-navigation');
+  installer.installTemplate('skeleton-navigation');
 }
 
 module.exports = New;
