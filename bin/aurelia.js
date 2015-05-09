@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 const Liftoff = require('liftoff');
-const argv = require('minimist')(process.argv.slice(2));
+const argv    = require('minimist')(process.argv.slice(2));
 
 const AureliaCLI = new Liftoff({
   name: 'aurelia-cli',

@@ -1,4 +1,4 @@
-var cli = process.AURELIA;
+var cli       = process.AURELIA;
 var installer = cli.import('lib/installer');
 
 // New

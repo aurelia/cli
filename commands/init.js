@@ -1,8 +1,9 @@
-var cli = process.AURELIA;
+var cli    = process.AURELIA;
 var stream = require('vinyl-fs');
 var exists = require('fs').existsSync;
 var logger = cli.import('lib/logger');
-var ask = cli.import('lib/ask');
+var ask    = cli.import('lib/ask');
+
 // INIT
 //
 // Executable Command that will initialize the directory, and add an AureliaFile if !exists
@@ -19,7 +20,7 @@ function Init() {
 
     })
     : createFile();
-};
+}
 
 function createFile() {
   return stream.src(cli.root('Aureliafile.js'))

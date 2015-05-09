@@ -1,4 +1,4 @@
-var cli = process.AURELIA;
+var cli     = process.AURELIA;
 var logger  = cli.import('lib/logger');
 var bundler = cli.import('lib/bundler');
 
