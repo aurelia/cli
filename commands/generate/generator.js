@@ -25,17 +25,15 @@ function getCompiledTemplate(template) {
 }
 
 function createView(name, template) {
-  return new Promise(function(resolve, reject) {
-    var compiled = getCompiledTemplate(templateTypes.view + '.' + template + '.html');
+  var compiled = getCompiledTemplate(templateTypes.view + '.' + template + '.html');
 
-    logger.log(chalk.bgMagenta('vvvvvv [Here is what we created for you] vvvvvv'));
-    var resultingFile = compiled({
-      pageName: utils.ucFirst(name)
-    });
-    console.log(resultingFile);
-
-    promptForCreation(name + '.html', resultingFile, resolve, reject);
+  logger.log(chalk.bgMagenta('vvvvvv [Here is what we created for you] vvvvvv'));
+  var resultingFile = compiled({
+    pageName: utils.ucFirst(name)
   });
+  console.log(resultingFile);
+
+  return promptForCreation(name + '.html', resultingFile);
 }
 
 
@@ -52,7 +50,15 @@ function createViewModel(name, template, inject) {
     });
     console.log(resultingFile);
 
-    promptForCreation(name + '.js', resultingFile, resolve, reject);
+    promptForCreation(name + '.js', resultingFile)
+      .then(writeFile)
+      .then(function(result){
+        logger.ok(result);
+      })
+      .catch(function(err){
+        logger.err('Issue generating!');
+        logger.err(err);
+      })
   });
 }
 
@@ -64,7 +70,11 @@ function promptForCreation(fileName, fileContents, resolve, reject) {
     default: false
   }];
 
-  ask(prompts).then(function (response) {
+  return ask(prompts)
+}
+
+function writeFile(response) {
+  return new Promise(function(resolve, reject){
     if (response.create === true) {
       fs.writeFile('src/' + fileName, fileContents, function (err) {
         if (err !== undefined && err !== null) {
