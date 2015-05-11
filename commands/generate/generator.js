@@ -1,5 +1,5 @@
 var fs = require('fs')
-  , utils = require('./utils')
+  , utils = require('./../../lib/utils')
   , handlebars = require('handlebars')
   , Promise = require('bluebird')
   , chalk = require('chalk');
