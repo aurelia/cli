@@ -1,5 +1,5 @@
-var cli = process.AURELIA;
-var logger  = cli.import('lib/logger');
+var cli     = process.AURELIA
+  , logger  = cli.import('lib/logger');
 
 // Generate
 //
