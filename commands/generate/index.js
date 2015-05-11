@@ -10,7 +10,7 @@ function Generate(cmd, options) {
     return;
   }
 
-  var generator = cli.import('lib/generator');
+  var generator = cli.import('./commands/generate/generator');
 
   if(cmd.toLowerCase() === generator.templateType.vm) {
     var template = options.template || 'default',

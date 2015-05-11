@@ -16,7 +16,7 @@ var cli    = process.AURELIA,
 function getCompiledTemplate(template) {
   var templateContent;
   try {
-    templateContent = fs.readFileSync(__dirname + '/generate/templates/' + template, { encoding: 'utf-8'});
+    templateContent = fs.readFileSync(__dirname + '/templates/' + template, { encoding: 'utf-8'});
   } catch(ex) {
     throw 'the entered template does not exist';
   }
