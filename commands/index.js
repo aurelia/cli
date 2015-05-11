@@ -3,7 +3,7 @@ var isArg, exists = require('fs').existsSync;
 // Command is a service for routing commands to specific files.
 // This service is assuming that the command file is a function..
 module.exports = function Command(cmd) {
-  cmd = (__dirname + '/' + cmd + '.js');
+  cmd = (__dirname + '/' + cmd);
   // Checking for whether the files exists at this point, should only be for development
   // Otherwise, we know the files exists, so this just becomes an extra function call
   // Once fully deployed, we shouldn't be checking whether the command file exists.
