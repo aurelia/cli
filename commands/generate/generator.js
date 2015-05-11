@@ -1,17 +1,17 @@
 var fs = require('fs')
-  , utils = require('./../../lib/utils')
   , handlebars = require('handlebars')
   , Promise = require('bluebird')
   , chalk = require('chalk');
+
+var cli    = process.AURELIA
+  , ask    = cli.import('lib/ask')
+  , logger = cli.import('lib/logger')
+  , utils  = cli.import('lib/utils');
 
 // Register handlebars helpers
 handlebars.registerHelper('toCamelCase', function(str) {
   return utils.toCamelCase(str);
 });
-
-var cli    = process.AURELIA,
-    ask    = cli.import('lib/ask'),
-    logger = cli.import('lib/logger');
 
 function getCompiledTemplate(template) {
   var templateContent;
