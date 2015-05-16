@@ -1,21 +1,45 @@
-var api        = require('jspm/api');
-var whacko     = require('whacko');
-var glob       = require('glob');
-var fs         = require('fs');
-var url        = require('url');
-var path       = require('path');
+var api = require('jspm/api');
+var whacko = require('whacko');
+var glob = require('glob');
+var fs = require('fs');
+var url = require('url');
+var path = require('path');
 
 var pluginName = 'view';
-var loader     = api.Builder().loader;
+var loader = api.Builder().loader;
 
-function bundleJS(configs) {
-  configs.forEach(function(cfg) {
-    api.bundle(cfg.moduleExpression, cfg.fileName, cfg.options);
-  });
+function bundleJS(moduleExpression, outfile, options) {
+  api.bundle(moduleExpression, outfile, options);
+}
+
+function bundle(config) {
+
+  var jsConfig = config.js;
+  var templateConfig = config.template;
+
+  Object.keys(jsConfig)
+    .forEach(function(key) {
+      var cfg = jsConfig[key];
+      var outfile = key + '.js';
+      var moduleExpr = cfg.modules.join(' + ');
+      var opt = cfg.options;
+
+      bundleJS(moduleExpr, outfile, opt);
+    });
+
+  Object.keys(templateConfig)
+    .forEach(function(key) {
+      var cfg = templateConfig[key];
+      var outfile = key + '.html';
+      var pattern = cfg.pattern;
+      var options = cfg.options;
+
+      bundleTemplate(pattern, outfile, options)
+    });
 }
 
 
-function bundleTemplate(pattern, outfile) {
+function bundleTemplate(pattern, outfile, options) {
   var templates = [];
 
   glob
@@ -38,7 +62,7 @@ function bundleTemplate(pattern, outfile) {
 
 function getTemplateId(file) {
   var baseURL = loader.baseURL.replace(/\\/g, '/') + '/';
-  var address = baseURL +  file;
+  var address = baseURL + file;
   return getModuleName(address, baseURL);
 }
 
@@ -57,7 +81,7 @@ function getModuleName(address, baseURL) {
   var curMatchlength;
   for (var p in loader.paths) {
 
-    var curPath = decodeURI(url.resolve(encodeURI(baseURL),paths[p].replace(/\\/g, '/')));
+    var curPath = decodeURI(url.resolve(encodeURI(baseURL), paths[p].replace(/\\/g, '/')));
 
     var wIndex = curPath.indexOf('*');
     if (wIndex === -1) {
@@ -90,5 +114,6 @@ function getModuleName(address, baseURL) {
 
 module.exports = {
   bundleJS: bundleJS,
-  bundleTemplate: bundleTemplate
+  bundleTemplate: bundleTemplate,
+  bundle: bundle
 };
