@@ -1,28 +1,30 @@
 module.exports = function(aurelia) {
-  aurelia.config({
-    "paths": {
-      "*": "dist/*.js",
-      "github:*": "jspm_packages/github/*.js",
-      "npm:*": "jspm_packages/npm/*.js",
-      "aurelia-skeleton-navigation/*": "lib/*.js"
-    },
-    "baseURL": 'file:C:/Users/Shuhel/Workspace/aurelia/skeleton-navigation/'
-  });
-
   aurelia.bundle({
-    js: [{
-      moduleExpression: 'aurelia-skeleton-navigation/*',
-      fileName: 'nav-app-build.js',
-      options: {
-        inject: true
+    js: {
+      app: {
+        modules: [
+          'aurelia-skeleton-navigation/*',
+        ],
+        options: {
+          inject: true
+        }
+      },
+      'aurelia-bundle': {
+        modules: [
+          'aurelia-bootstrapper',
+          'aurelia-router',
+          'aurelia-http-client'
+        ],
+        options: {
+          inject: false
+        }
       }
-    }, {
-      moduleExpression: 'aurelia-bootstrapper',
-      fileName: 'aurelia-framework-build.js',
-      options: {
-        inject: true
+    },
+    template: {
+      app: {
+        pattern: 'dist/*.html',
+        inject: true,
       }
-    }],
-    template: 'dist/*.html'
+    }
   });
-}
+};

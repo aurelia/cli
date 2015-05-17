@@ -30,7 +30,11 @@ module.exports = function(aurelia) {
       options: {
         inject: true
       }
-    }]
+    }],
+    template : {
+      pattern : 'dist/*',
+      outfile : 'bundle.html'
+    }
   });
 }
 ```
@@ -42,4 +46,10 @@ With `Aureliafile.js` file placed in the root of project containing the above co
 ```shell
 aurelia bundle
 ```
+
+To bundle the templates use:
+
+```shell
+aurela tb
+``
 

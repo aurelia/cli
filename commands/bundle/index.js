@@ -1,6 +1,6 @@
 var cli     = process.AURELIA;
 var logger  = cli.import('lib/logger');
-var bundler = cli.import('lib/bundler');
+var bundler = cli.import('commands/bundle/bundler');
 
 // Bundle
 //
@@ -9,7 +9,7 @@ function Bundle(options) {
   var aurelia = require(cli.env.modulePath);
   logger.log('Creating the bundle...');
   logger.log('-----------------------------------');
-  bundler.bundleJS(aurelia.bundleConfig.js);
+  bundler.bundle(aurelia.bundleConfig);
 }
 
 module.exports = Bundle;
