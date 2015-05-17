@@ -30,6 +30,7 @@
     "fs-utils": "^0.6.0",
     "github": "^0.2.4",
     "glob": "^5.0.3",
+    "gulp-beautify": "^1.1.2",
     "inquirer": "^0.8.2",
     "interpret": "^0.5.2",
     "jspm": "^0.15.1",
@@ -37,6 +38,7 @@
     "lodash": "^3.8.0",
     "minimist": "^1.1.1",
     "npm": "^2.9.1",
+    "prettyjson": "^1.1.0",
     "vinyl-fs": "^1.0.0",
     "whacko": "^0.17.4"
   },

@@ -9,6 +9,7 @@ var ask    = cli.import('lib/ask');
 // Executable Command that will initialize the directory, and add an AureliaFile if !exists
 //
 function Init() {
+
   logger.ok('initializing');
   var Aureliafile = process.cwd() + '/Aureliafile.js';
   exists(Aureliafile)
