@@ -4,6 +4,7 @@ var to5 = require('gulp-babel');
 var paths = require('../paths');
 var compilerOptions = require('../babel-options');
 var assign = Object.assign || require('object.assign');
+var plumber = require('gulp-plumber');
 
 gulp.task('build-es6', function () {
   return gulp.src(paths.source)

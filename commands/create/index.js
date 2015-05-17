@@ -10,6 +10,7 @@ var cli       = process.AURELIA
    ,ask       = cli.import('lib/ask')
    ,spawn     = cli.import('lib/spawn-promise')
    ,mkdirp    = cli.import('lib/promise-mkdirp')
+   ,api       = cli.api
    ;
 
 // CREATE
@@ -24,8 +25,7 @@ function Create(){
   opts.level  = this.parent.level || false;
 
   configure(opts)
-    .then(cloneTemplate)
-    .then(copyEnvironment)
+    .then(api.create)
     .then(function(){
       logger.ok('Project environment created');
     })
@@ -34,33 +34,4 @@ function Create(){
       logger.err(err);
     });
 }
-
-function cloneTemplate(config){
-  var options = {
-    command: 'git',
-    args   : ['clone', 'http://github.com/aurelia/skeleton-navigation', config.name]
-  };
-
-  return spawn(options).then(
-
-    function(){
-      logger.ok('Template Downloaded!');
-      return config;
-    }
-  );
-}
-
-function copyEnvironment(config) {
-  var dirs = [
-     config.paths.templates
-    ,config.paths.plugins
-  ];
-  return mkdirp(dirs)
-    .then(function(){
-      logger.ok('project created at %s', config.paths.root.blue);
-      return config;
-    });
-}
-
-
 module.exports = Create;

@@ -2,7 +2,8 @@ var program = require('commander')
   , bundler = require('./lib/bundler')
   , pjson = require('./package.json')
   , chalk = require('chalk')
-  , installer = require('./lib/installer');
+  , installer = require('./lib/installer')
+  ;
 
 var _instance;
 

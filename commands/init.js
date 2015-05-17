@@ -3,36 +3,22 @@ var stream = require('vinyl-fs');
 var exists = require('fs').existsSync;
 var logger = cli.import('lib/logger');
 var ask    = cli.import('lib/ask');
-
+var api    = cli.api;
 // INIT
 //
 // Executable Command that will initialize the directory, and add an AureliaFile if !exists
 //
 function Init() {
-
   logger.ok('initializing');
-  var Aureliafile = process.cwd() + '/Aureliafile.js';
-  exists(Aureliafile)
+  exists(cli.env.configPath)
     ? prompt()
     .then(function(answers) {
       answers.overwrite
-        ? createFile()
+        ? api.init()
         : logger.ok('Aureliafile was not overwritten!');
 
     })
-    : createFile();
-}
-
-function createFile() {
-  return stream.src(cli.root('Aureliafile.js'))
-    .pipe(stream.dest(process.cwd()))
-    .on('error', function(err) {
-      logger.err('Issue creating %s', 'AureliaFile'.green);
-      console.log(err);
-    })
-    .on('end', function() {
-      logger.ok('%s created', 'AureliaFile'.green);
-    });
+    : api.init();
 }
 
 function prompt() {
