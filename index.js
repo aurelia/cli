@@ -11,16 +11,14 @@ function Aurelia(env) {
 }
 
 Aurelia.prototype.config = function(config) {
-  this.config = config;
+  this._config = config;
 };
 
 Aurelia.prototype.bundle = function(config) {
   this.bundleConfig = config;
 };
 
-module.exports = (function(){
   if (!_instance) {
     _instance = new Aurelia();
   }
-  return _instance;
-})();
+module.exports = _instance;
