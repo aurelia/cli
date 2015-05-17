@@ -13,8 +13,8 @@ function Generate(cmd, options) {
   var generator = cli.import('./commands/generate/generator');
 
   if(cmd.toLowerCase() === generator.templateType.vm) {
-    var template = options.template || 'default',
-      inject   = options.inject;
+    var template = options.template || 'default'
+      , inject   = options.inject;
 
     generator.createViewModel(options.name, template, inject).then( function(response) {
       logger.log(response);

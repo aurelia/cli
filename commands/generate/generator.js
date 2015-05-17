@@ -13,6 +13,12 @@ handlebars.registerHelper('toCamelCase', function(str) {
   return utils.toCamelCase(str);
 });
 
+handlebars.registerHelper('join', function(items, separator, options) {
+  return items.map(function(item) {
+    return options.fn(item);
+  }).join(separator);
+});
+
 function getCompiledTemplate(template) {
   var templateContent;
   try {
@@ -25,38 +31,48 @@ function getCompiledTemplate(template) {
 }
 
 function createView(name, template) {
-  return new Promise(function(resolve, reject) {
-    var compiled = getCompiledTemplate(templateTypes.view + '.' + template + '.html');
+  var compiled = getCompiledTemplate(templateTypes.view + '.' + template + '.html');
 
-    logger.log(chalk.bgMagenta('vvvvvv [Here is what we created for you] vvvvvv'));
-    var resultingFile = compiled({
-      pageName: utils.ucFirst(name)
-    });
-    console.log(resultingFile);
-
-    promptForCreation(name + '.html', resultingFile, resolve, reject);
+  logger.log(chalk.bgMagenta('vvvvvv [Here is what we created for you] vvvvvv'));
+  var resultingFile = compiled({
+    pageName: utils.ucFirst(name)
   });
+  console.log(resultingFile);
+
+  return promptForCreation(name + '.js')
+    .then(function(response) { return writeFile(response, name + '.html', resultingFile); })
+    .then(function(result){
+      logger.ok(result);
+    })
+    .catch(function(err){
+      logger.err('Issue generating!');
+      logger.err(err);
+    });
 }
-
-
 
 function createViewModel(name, template, inject) {
-  return new Promise(function(resolve, reject) {
-    var compiled = getCompiledTemplate(templateTypes.vm + '.' + template + '.js');
+  var compiled = getCompiledTemplate(templateTypes.vm + '.' + template + '.js');
 
-    logger.log(chalk.bgMagenta('vvvvvv [Here is what we created for you] vvvvvv'));
-    var resultingFile = compiled({
-      pageName: utils.ucFirst(name),
-      isInjectionUsed: inject !== undefined,
-      inject: inject
-    });
-    console.log(resultingFile);
-
-    promptForCreation(name + '.js', resultingFile, resolve, reject);
+  logger.log(chalk.bgMagenta('vvvvvv [Here is what we created for you] vvvvvv'));
+  var resultingFile = compiled({
+    pageName: utils.ucFirst(name),
+    isInjectionUsed: inject !== undefined && inject.length > 0,
+    inject: inject
   });
+  console.log(resultingFile);
+
+  return promptForCreation(name + '.js')
+    .then(function(response) { return writeFile(response, name + '.js', resultingFile); })
+    .then(function(result){
+      logger.ok(result);
+    })
+    .catch(function(err){
+      logger.err('Issue generating!');
+      logger.err(err);
+    });
 }
 
-function promptForCreation(fileName, fileContents, resolve, reject) {
+function promptForCreation(fileName) {
   var prompts = [{
     type: 'confirm',
     name: 'create',
@@ -64,7 +80,11 @@ function promptForCreation(fileName, fileContents, resolve, reject) {
     default: false
   }];
 
-  ask(prompts).then(function (response) {
+  return ask(prompts);
+}
+
+function writeFile(response, fileName, fileContents) {
+  return new Promise(function(resolve, reject){
     if (response.create === true) {
       fs.writeFile('src/' + fileName, fileContents, function (err) {
         if (err !== undefined && err !== null) {
