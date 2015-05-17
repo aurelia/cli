@@ -1,14 +1,18 @@
 {{#isInjectionUsed}}
-import {{{inject}}} from 'aurelia-framework';
+{{#each inject}}
+import {{{this}}} from 'aurelia-framework';
+{{/each}}
 {{/isInjectionUsed}}
 
 {{#isInjectionUsed}}
-@inject({{inject}})
+{{#each inject}}
+@inject({{this}})
+{{/each}}
 {{/isInjectionUsed}}
 export class {{pageName}} {
   hello = 'Welcome to Aurelia!';
 
-  constructor({{toCamelCase inject}}){
+  constructor({{#join inject ','}}{{toCamelCase this}}{{/join}}){
 
   }
 
