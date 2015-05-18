@@ -52,8 +52,7 @@ cli.initialize(function(program){
         );
     });
 
-  program.command('new')
-    .command('new <type>')
+  program.command('new <type>')
     .description('create a new Aurelia project')
     .action(cli.exec('new'))
     .on('--help', function () {
