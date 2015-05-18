@@ -90,10 +90,6 @@ cli.ready(function(program){
     .option('-l, --list', 'List paths and files included in bundle')
     .action(cli.exec('bundle'));
 
-  program.command('tb')
-    .description('experimental template bundler')
-    .action(cli.exec('tb'));
-
   program.command('generate <type>')
     .alias('g')
     .description('Generate new file type based on type specified')
@@ -116,6 +112,7 @@ cli.ready(function(program){
     .description('List all installed plugins')
     .option('-a, --add <name>', "Add plugin from Aurelia plugin repo")
     .option('-r, --remove <name>', "Disable plugin from project")
+    .option('-t, --template <name>', "Disable plugin from project")
     .option('-c, --clear', "Completely remove plugin and files")
     .action(cli.exec('plugin'))
     .on('--help', function () {

@@ -5,24 +5,48 @@ var whacko = require('whacko');
 var glob = require('glob');
 var fs = require('fs');
 var url = require('url');
-var pluginName = 'view';
+var path = require('path');
 
-function bundleJS(configs) {
-  configs.forEach(function (cfg) {
-    api.bundle(cfg.moduleExpression, cfg.fileName, cfg.options);
+var pluginName = 'view';
+var loader = api.Builder().loader;
+
+function bundleJS(moduleExpression, outfile, options) {
+  api.bundle(moduleExpression, outfile, options);
+}
+
+function bundle(config) {
+
+  var jsConfig = config.js;
+  var templateConfig = config.template;
+
+  Object.keys(jsConfig).forEach(function (key) {
+    var cfg = jsConfig[key];
+    var outfile = key + '.js';
+    var moduleExpr = cfg.modules.join(' + ');
+    var opt = cfg.options;
+
+    bundleJS(moduleExpr, outfile, opt);
+  });
+
+  Object.keys(templateConfig).forEach(function (key) {
+    var cfg = templateConfig[key];
+    var outfile = key + '.html';
+    var pattern = cfg.pattern;
+    var options = cfg.options;
+
+    bundleTemplate(pattern, outfile, options);
   });
 }
 
-function bundleTemplate(pattern, config) {
+function bundleTemplate(pattern, outfile, options) {
   var templates = [];
-  var outfile = 'build.html';
 
   glob.sync(pattern, {}).forEach(function (file) {
     var content = fs.readFileSync(file, {
       encoding: 'utf8'
     });
     var $ = whacko.load(content);
-    var tid = getTemplateId(file, config);
+    var tid = getTemplateId(file);
 
     $('template').attr('id', tid);
     var template = $.html('template');
@@ -32,11 +56,16 @@ function bundleTemplate(pattern, config) {
   fs.writeFileSync(outfile, templates.join('\n'));
 }
 
-function getTemplateId(file, config) {
-  return getModuleName(config.baseURL + file, config);
+function getTemplateId(file) {
+  var baseURL = loader.baseURL.replace(/\\/g, '/') + '/';
+  var address = baseURL + file;
+  return getModuleName(address, baseURL);
 }
 
-function getModuleName(address, config) {
+function getModuleName(address, baseURL) {
+
+  var paths = loader.paths;
+
   if (pluginName) {
     var extension = address.split('/').pop();
     extension = extension.substr(extension.lastIndexOf('.'));
@@ -46,9 +75,9 @@ function getModuleName(address, config) {
   var pathMatch,
       pathMatchLength = 0;
   var curMatchlength;
-  for (var p in config.paths) {
+  for (var p in loader.paths) {
 
-    var curPath = decodeURI(url.resolve(encodeURI(config.baseURL), config.paths[p].replace(/\\/g, '/')));
+    var curPath = decodeURI(url.resolve(encodeURI(baseURL), paths[p].replace(/\\/g, '/')));
 
     var wIndex = curPath.indexOf('*');
     if (wIndex === -1) {
@@ -79,5 +108,6 @@ function getModuleName(address, config) {
 
 module.exports = {
   bundleJS: bundleJS,
-  bundleTemplate: bundleTemplate
+  bundleTemplate: bundleTemplate,
+  bundle: bundle
 };
