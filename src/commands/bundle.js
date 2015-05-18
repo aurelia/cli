@@ -8,7 +8,7 @@ function Bundle(options) {
   var aurelia = require(cli.env.modulePath);
   logger.log('Creating the bundle...');
   logger.log('-----------------------------------');
-  cli.api.bundler.bundleJS(aurelia.bundleConfig.js);
+  cli.api.bundler.bundle(aurelia.bundleConfig);
 }
 
 module.exports = Bundle;
