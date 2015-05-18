@@ -38,6 +38,7 @@
     "liftoff": "^2.0.2",
     "lodash": "^3.8.0",
     "minimist": "^1.1.1",
+    "mkdirp": "^0.5.1",
     "npm": "^2.9.1",
     "prettyjson": "^1.1.0",
     "vinyl-fs": "^1.0.0",

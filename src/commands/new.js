@@ -7,7 +7,6 @@ var cli       = process.AURELIA
 // Executable command for creating and downloading new Aurelia projects.
 function New(cmd, options){
   var app = '';
-
   switch(cmd.toLowerCase()) {
     case 'navigation':
       app = 'skeleton-navigation';

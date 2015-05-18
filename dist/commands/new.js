@@ -5,7 +5,6 @@ var cli = process.AURELIA,
 
 function New(cmd, options) {
   var app = '';
-
   switch (cmd.toLowerCase()) {
     case 'navigation':
       app = 'skeleton-navigation';

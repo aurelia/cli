@@ -8,9 +8,13 @@ var ask = cli['import']('lib/ask');
 var api = cli.api;
 
 function Init() {
-  logger.ok('initializing');
-  var config = cli.env.isConfig ? cli.aurelia._config : false;
 
-  api.init(config);
+  var options = {};
+  options.env = cli.env.argv.env;
+
+  logger.ok('initializing');
+  var config = cli.env.isConfig ? cli.aurelia._config : { env: {} };
+
+  api.init(config, options);
 }
 module.exports = Init;

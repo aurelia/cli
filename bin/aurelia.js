@@ -72,6 +72,7 @@ cli.initialize(function(program){
     .action(cli.exec('create'))
 
   program.command('init')
+    .option('-e, --env', 'Initialize an aurelia project environment')
     .description('Initialize a new Aurelia Project')
     .action(cli.exec('init'));
 

@@ -9,11 +9,15 @@ var api    = cli.api;
 // Executable Command that will initialize the directory, and add an AureliaFile if !exists
 //
 function Init() {
+
+  var options = {};
+  options.env = cli.env.argv.env
+
   logger.ok('initializing');
   var config = cli.env.isConfig
     ? cli.aurelia._config
-    : false;
+    : {env:{}};
 
-  api.init(config);
+  api.init(config, options);
 }
 module.exports = Init;

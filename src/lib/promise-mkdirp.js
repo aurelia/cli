@@ -3,28 +3,25 @@ var fs      = require('fs')
    ,Promise = require('bluebird')
    ,map     = require('lodash/collection/map')
    ,cli     = process.AURELIA
+   ,mkdirp  = require('mkdirp')
    ;
 
 
 var logger = cli.import('lib/logger');
-var mkdirs = cli.import('lib/utils').makeDirectories;
 
-function mkdirp(dirs, initialDirs){
+function mkdir(dirs, initialDirs){
   if (Array.isArray(dirs)) {
     return Promise.all(
       map(dirs, function(dir) {
-        return mkdirp(dir, dirs);
+        return mkdir(dir);
       })
     ).then(function(){
         return {message:'Finished creating directories'}
     })
   }
   return new Promise(function(resolve, reject){
-    mkdirs(dirs, function(err) {
-      err
-        ? reject({message: 'Issue creating directories!', Error: err})
-        : resolve({message:'Finished creating directories'});
-    });
+    mkdirp(dirs)
+    resolve({message:'Finished creating directories'});
   });
 }
-module.exports = mkdirp;
+module.exports = mkdir;

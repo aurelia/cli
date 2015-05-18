@@ -13,6 +13,7 @@ defaults.config = {
     "npm:*": "jspm_packages/npm/*.js",
     "aurelia-skeleton-navigation/*": "lib/*.js"
   },
+  "env":{},
   "baseURL": '/Users/Shuhel/Workspace/aurelia/skeleton-navigation/'
 }
 defaults.bundle = {
@@ -48,7 +49,9 @@ var Config = (function(){
       return process.cwd() + '/' + this.configName;
     },
     get config(){
-      return cli.aurelia.configuration;
+      return cli.isAureliaFile
+        ? cli.aurelia.configuration
+        : defaults
     },
     set config(value){
       this._config = extend(this._config, value);
@@ -58,12 +61,13 @@ var Config = (function(){
   }
 
   _Config.prototype.init = function(config) {
-    if (config) {
+    if (cli.env.isConfig) {
       this._config = extend(this.config, config);
       logger.ok('Finished checking config file at [%s]', cli.env.configPath.cyan);
     } else {
       this._config = defaults;
-      this.write(defaults);
+      this._config = extend(this._config, config)
+      this.write(this._config);
     }
   }
 
