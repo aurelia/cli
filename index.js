@@ -1,25 +1,10 @@
-var program = require('commander')
-  , bundler = require('./lib/bundler')
-  , pjson = require('./package.json')
-  , chalk = require('chalk')
-  , installer = require('./lib/installer')
-  ;
+var API = require(__dirname + '/dist/api/index.js');
 
 var _instance;
 
-function Aurelia(env) {
-  this.env = env;
-}
-
-Aurelia.prototype.config = function(config) {
-  this._config = config;
-};
-
-Aurelia.prototype.bundle = function(config) {
-  this.bundleConfig = config;
-};
-
+module.exports = (function(){
   if (!_instance) {
-    _instance = new Aurelia();
+    _instance = new API();
   }
-module.exports = _instance;
+  return _instance;
+})();

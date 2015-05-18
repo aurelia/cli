@@ -1,28 +1,45 @@
-module.exports = function(aurelia) {
-  aurelia.config({
-    "paths": {
-      "*": "dist/*.js",
-      "github:*": "jspm_packages/github/*.js",
-      "npm:*": "jspm_packages/npm/*.js",
-      "aurelia-skeleton-navigation/*": "lib/*.js"
-    },
-    "baseURL": 'file:C:/Users/Shuhel/Workspace/aurelia/skeleton-navigation/'
-  });
+var path      = require('path')
+  , program = require('commander')
+  , chalk = require('chalk')
+  ;
 
-  aurelia.bundle({
-    js: [{
-      moduleExpression: 'aurelia-skeleton-navigation/*',
-      fileName: 'nav-app-build.js',
-      options: {
-        inject: true
-      }
-    }, {
-      moduleExpression: 'aurelia-bootstrapper',
-      fileName: 'aurelia-framework-build.js',
-      options: {
-        inject: true
-      }
-    }],
-    template: 'dist/*.html'
-  });
+var rootDir   = path.join.bind(path, __dirname);
+var cliDir    = rootDir.bind(rootDir, 'dist');
+
+
+var bundler   = require(cliDir('api/bundler'))
+  , installer = require(cliDir('api/installer'))
+  , pjson     = require(rootDir('package.json'))
+  ;
+
+
+var _instance;
+
+function Aurelia(env) {
+  this.env = env;
+  this._config = {};
+  this._bundle = {};
 }
+
+Aurelia.prototype = {
+  get configuration(){
+    return {config:this._config, bundle:this._bundle};
+  },
+  set configuration(value){
+    this._config = value.config;
+    this._bundle = value.bundle;
+  }
+}
+
+Aurelia.prototype.config = function(config) {
+  this._config = config;
+};
+
+Aurelia.prototype.bundle = function(bundleConfig) {
+  this._bundle = bundleConfig;
+};
+
+if (!_instance) {
+  _instance = new Aurelia();
+}
+module.exports = _instance;
