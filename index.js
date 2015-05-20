@@ -1,10 +1,23 @@
-var API = require(__dirname + '/dist/api/index.js');
+var path = require('path');
 
-var _instance;
+var libDir = path.join.bind(path, __dirname, 'dist', 'lib');
 
-module.exports = (function(){
-  if (!_instance) {
-    _instance = new API();
+var Api = function() {
+  this.logger = require(libDir('logger'));
+}
+
+Api.prototype = {
+  get bundler() {
+    return require(libDir('bundler'))
+  },
+  get installer() {
+    return require(libDir('installer'))
   }
-  return _instance;
+}
+
+module.exports = (function() {
+  if (!_api) {
+    _api = new Api();
+  }
+  return _api;
 })();
