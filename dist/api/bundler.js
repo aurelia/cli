@@ -54,6 +54,22 @@ function bundleTemplate(pattern, outfile, options) {
   });
 
   fs.writeFileSync(outfile, templates.join('\n'));
+
+  if (options.inject) {
+    injectLink(outfile);
+  }
+}
+
+function injectLink(outfile) {
+  var baseURL = loader.baseURL.replace(/^file:/, '') + path.sep;
+  var content = fs.readFileSync(baseURL + 'index.html', {
+    encoding: 'utf8'
+  });
+
+  var $ = whacko.load(content);
+
+  $('head').append('<link aurlia-view-bundle rel="import" href="./' + outfile + '">');
+  fs.writeFileSync('text_index.html', $.html());
 }
 
 function getTemplateId(file) {
