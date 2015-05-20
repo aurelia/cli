@@ -30,7 +30,7 @@ var logger = require('./logger');
  */
 function SpawnPromise(options) {
   if (Array.isArray(options)) {
-    return multiSpawn(options)
+    return multiSpawn(options);
   }
 
   if (!options) {
@@ -61,11 +61,11 @@ function SpawnPromise(options) {
       }
       process.stdout.write('' + data);
     });
-
-    child_process.on('close', function(code) {
-      // reject('' + code);
-      // process.stdout.write(''+code);
-    });
+    // Comment this line in if you are needing the code
+    // child_process.on('close', function(code) {
+    //   // reject('' + code);
+    //   // process.stdout.write(''+code);
+    // });
   });
 }
 
@@ -79,14 +79,14 @@ function multiSpawn(options) {
           dataArray += data;
           index++;
           if (options[index]) {
-            return next()
+            return next();
           } else {
             resolve(dataArray);
           }
-        })
+        });
     };
     next();
-  })
+  });
 }
 
 module.exports = SpawnPromise;

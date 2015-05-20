@@ -1,5 +1,8 @@
 #!/usr/bin/env node --harmony
-const argv     = require('minimist')(process.argv.slice(2));
+
+'use strict';
+
+var argv       = require('minimist')(process.argv.slice(2));
 var chalk      = require('chalk');
 var pjson      = require('../package.json');
 
@@ -22,14 +25,15 @@ var cli = new AureliaCLI({
 process.title = cli.processTitle;
 process.AURELIA = cli;
 
-var logger = cli.logger
+var logger = cli.logger;
 
 // EVENT init
 // This event will be emitted regardless of the users environment.
 // If the user is missing the config file
 // If the user is missing the locally installed Aurelia-cli
 // This function will always be invoked.
-cli.initialize(function(program){
+cli.initialize(function (program) {
+
   if (argv.verbose) {
     logger.log('LIFTOFF SETTINGS:', this.env);
     logger.log('CLI OPTIONS:', this.env.argv);
@@ -45,31 +49,31 @@ cli.initialize(function(program){
 
   program.version(pjson.version)
     .on('--help', function () {
-      console.log('\n'
-        + '    ' + chalk.bgMagenta(' ') + chalk.bgRed('  ') + chalk.bgMagenta(' ') + '\n'
-        + '  ' + chalk.bgRed.black(' aurelia ') + '\n'
-        + '    ' + chalk.bgMagenta(' ') + chalk.bgRed('  ') + chalk.bgMagenta(' ') + '\n'
-        );
+      console.log(['\n'
+        , '    ' + chalk.bgMagenta(' ') + chalk.bgRed('  ') + chalk.bgMagenta(' ') + '\n'
+        , '  ' + chalk.bgRed.black(' aurelia ') + '\n'
+        , '    ' + chalk.bgMagenta(' ') + chalk.bgRed('  ') + chalk.bgMagenta(' ') + '\n'
+        ]).join('');
     });
 
   program.command('new <type>')
     .description('create a new Aurelia project')
     .action(cli.exec('new'))
     .on('--help', function () {
-      log('  Examples:');
-      log('');
-      log('    // create a new skeleton navigation style app ');
-      log('    $ aurelia new navigation');
-      log('');
-      log('    // create a new aurelia plugin template ');
-      log('    $ aurelia new plugin');
-      log('');
+      logger.log('  Examples:');
+      logger.log('');
+      logger.log('    // create a new skeleton navigation style app ');
+      logger.log('    $ aurelia new navigation');
+      logger.log('');
+      logger.log('    // create a new aurelia plugin template ');
+      logger.log('    $ aurelia new plugin');
+      logger.log('');
     });
 
   program.command('create [name]')
     .option('--env', 'Create a new project environment')
     .option('-l, --level [value]', 'The complexity level of the environment')
-    .action(cli.exec('create'))
+    .action(cli.exec('create'));
 
   program.command('init')
     .option('-e, --env', 'Initialize an aurelia project environment')
@@ -80,7 +84,9 @@ cli.initialize(function(program){
 
 // EVENT ready
 // This event will only be emitted if the configFile exists and if the locally installed AureliaCLI is installed.
-cli.ready(function(program){
+cli.ready(function (program) {
+
+  var utils = cli.import('lib/utils');
 
   program.command('bundle')
     .alias('b')
@@ -95,7 +101,7 @@ cli.ready(function(program){
     .description('Generate new file type based on type specified')
     .option('-n, --name <name>', "Name of the file / class")
     .option('-v, --view', "Create a view for generated file type")
-    .option('-i, --inject <name>', "Name of dependency to inject")
+    .option('-i, --inject <list>', "Name of dependency to inject", utils.parseList)
     .option('--no-lifecycle', "Do not create lifecycle callbacks, if applicable")
     .option('-t, --template <name>', "Specify the name of the template to use as override")
     .action(cli.exec('generate'))

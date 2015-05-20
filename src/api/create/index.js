@@ -13,7 +13,7 @@ var cli       = process.AURELIA
 module.exports = function(config) {
   return copyEnvironment(config)
     .then(function(){
-      console.log(config.paths.project)
+      console.log(config.paths.project);
       process.chdir(config.paths.project);
       return cli.api.installer.installTemplate('skeleton-navigation');
     });

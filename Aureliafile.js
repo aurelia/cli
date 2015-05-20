@@ -29,7 +29,7 @@ Aurelia.prototype = {
     this._config = value.config;
     this._bundle = value.bundle;
   }
-}
+};
 
 Aurelia.prototype.config = function(config) {
   this._config = config;

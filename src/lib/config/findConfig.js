@@ -1,11 +1,11 @@
-var Promise = require('bluebird')
-var exists  = require('fs').existsSync
+var Promise = require('bluebird');
+var exists  = require('fs').existsSync;
 
 module.exports = function(options) {
   return new Promise(function(resolve, reject){
     var CWD = process.cwd().split('/');
 
-    var joinPath = function(){return CWD.join('/') + '/' + options.configName}
+    var joinPath = function(){return CWD.join('/') + '/' + options.configName;};
 
     while(!exists(joinPath()) && CWD.length) {
       CWD.pop();
@@ -23,4 +23,4 @@ module.exports = function(options) {
     }
     resolve(options);
   });
-}
+};

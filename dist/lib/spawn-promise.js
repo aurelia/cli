@@ -37,8 +37,6 @@ function SpawnPromise(options) {
       }
       process.stdout.write('' + data);
     });
-
-    child_process.on('close', function (code) {});
   });
 }
 

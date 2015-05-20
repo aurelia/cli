@@ -89,8 +89,8 @@ function runPrompt(){
         name: 'templatePath',
         message: 'Plugin Path?',
         default: config.paths.templates ? basename(config.paths.templates) : 'templates'
-    }]
-    return ask(prompts)
+    }];
+    return ask(prompts);
 }
 /**
  * createConfig     Resolves the answers from @runPrompt
@@ -108,10 +108,10 @@ function createConfig(answers){
     var configurations = {
         name : answers.name,
         level: answers.level,
-    }
-    cli.store.config.paths.project   = CWD + '/' + answers.projectPath,
-    cli.store.config.paths.plugins   = CWD + '/' + answers.pluginPath,
-    cli.store.config.paths.templates = CWD + '/' + answers.templatePath
+    };
+    cli.store.config.paths.project   = CWD + '/' + answers.projectPath;
+    cli.store.config.paths.plugins   = CWD + '/' + answers.pluginPath;
+    cli.store.config.paths.templates = CWD + '/' + answers.templatePath;
     cli.store.save(configurations);
     logger.ok('Finished creating Env');
     return cli.store.config;
@@ -124,20 +124,20 @@ function createConfig(answers){
  */
 function recursiveCheck(){
     var pathSplit = CWD.split('/');
-    var tempPath
+    var tempPath;
     while ( !exists(pathSplit.join('/') + configName) && pathSplit.length ) {
         pathSplit.pop();
     }
 
-    tempPath   = pathSplit.join('/')
+    tempPath   = pathSplit.join('/');
     isConfig   = exists(tempPath + configName);
     if (isConfig) {
         logger.log('[%s] [%s] [%s] ', 'Config'.blue, 'found'.green, tempPath.cyan);
 
-        return initConfig(tempPath)
+        return initConfig(tempPath);
     } else {
         logger.log('[%s] [%s] between [%s] and [%s]','Config'.blue, 'Not found'.red, '~/'.red, CWD.red);
-        return initConfig()
+        return initConfig();
     }
 }
 

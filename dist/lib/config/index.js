@@ -14,9 +14,7 @@ defaults.config = {
     'npm:*': 'jspm_packages/npm/*.js',
     'aurelia-skeleton-navigation/*': 'lib/*.js'
   },
-  'env': {},
-  'baseURL': '/Users/Shuhel/Workspace/aurelia/skeleton-navigation/'
-};
+  'env': {} };
 defaults.bundle = {
   js: [{
     moduleExpression: 'aurelia-skeleton-navigation/*',

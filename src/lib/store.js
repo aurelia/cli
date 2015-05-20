@@ -13,7 +13,7 @@ var Store = (function(){
 
   function _Store(configPath) {
     configPath = configPath || process.env.PWD;
-    this.configName = '.aurelia-config.json'
+    this.configName = '.aurelia-config.json';
     this.configPath = configPath +'/'+this.configName;
     this.configRoot = path.join.bind(path, process.cwd());
     this.defaultConfig = exists(this.configPath)
@@ -81,7 +81,7 @@ var Store = (function(){
       }
       return _instance;
     }
-  }
+  };
 
 })();
 

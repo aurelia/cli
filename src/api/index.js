@@ -1,9 +1,9 @@
 var fs = require('fs');
 var _f = require('fs-utils');
 var path = require('path');
-var cli = process.AURELIA
+var cli = process.AURELIA;
 var API = function() {
-}
+};
 
 fs.readdirSync(__dirname).forEach(function(file) {
 
@@ -16,7 +16,11 @@ fs.readdirSync(__dirname).forEach(function(file) {
 
     var mod = require(p);
 
-    API.prototype[name] = mod
+    Object.defineProperty(API.prototype, name, {
+      get: function() {
+        return mod;
+      }
+    });
   }
 });
 

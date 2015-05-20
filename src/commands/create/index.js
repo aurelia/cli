@@ -30,7 +30,7 @@ function Create(){
       logger.ok('Project environment created');
     })
     .catch(function(err){
-      logger.err('Issue Creating project environment')
+      logger.err('Issue Creating project environment');
       logger.err(err);
     });
 }

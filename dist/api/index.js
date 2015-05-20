@@ -17,7 +17,11 @@ fs.readdirSync(__dirname).forEach(function (file) {
 
     var mod = require(p);
 
-    API.prototype[name] = mod;
+    Object.defineProperty(API.prototype, name, {
+      get: function get() {
+        return mod;
+      }
+    });
   }
 });
 

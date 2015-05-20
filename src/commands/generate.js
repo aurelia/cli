@@ -11,7 +11,7 @@ function Generate(cmd, options) {
     return;
   }
 
-  var generator = cli.api.generator
+  var generator = cli.api.generator;
 
   if(cmd.toLowerCase() === generator.templateType.vm) {
     var template = options.template || 'default'

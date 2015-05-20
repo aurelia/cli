@@ -29,6 +29,6 @@ module.exports = function command(cmd) {
   //return a function for program.action() to call, and pass the arguments through.
   return function () {
     return require(cmd).apply(this, arguments);
-  }
+  };
 };
 

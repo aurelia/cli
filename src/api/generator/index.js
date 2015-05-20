@@ -90,9 +90,9 @@ function writeFile(response, fileName, fileContents) {
         if (err !== undefined && err !== null) {
           reject(err);
         } else {
-          resolve('File ' + fileName + ' successfully created')
+          resolve('File ' + fileName + ' successfully created');
         }
-      })
+      });
     } else {
       reject('Aborted by user');
     }

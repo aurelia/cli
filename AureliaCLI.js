@@ -11,8 +11,8 @@ var cliDir      = rootDir.bind(rootDir, 'dist');
 
 var pjson       = require(rootDir('package.json'));
 var logger      = require(cliDir('lib/logger'));
-var findConfig  = require(cliDir('lib/config/findConfig'))
-var EventEmitter = events.EventEmitter
+var findConfig  = require(cliDir('lib/config/findConfig'));
+var EventEmitter = events.EventEmitter;
 
 process.AURELIA = {};
 process.env.AURELIA = {};
@@ -25,14 +25,14 @@ var _Env = function(options) {
   this.cwd        = options.cwd;
   this.configName = options.configName;
   this.moduleName = options.name;
-  this.modulePath = options.cwd + '/node_modules/' + this.name
+  this.modulePath = options.cwd + '/node_modules/' + this.name;
   this.configPath = options.cwd + '/' + this.configName + '.js';
   this.isConfig   = false;
   this.isModule   = false;
-}
+};
 _Env.prototype = {
   get ENV() {
-    return process.env
+    return process.env;
   },
   get args(){
     return this.argv._;
@@ -92,9 +92,10 @@ AureliaCLI.prototype.on = function(evt) {
   return new Promise(function(resolve, reject){
     program.on(evt, function(e){
       resolve.bind(self)(e);
-    })
-  })
-}
+    });
+  });
+};
+
 AureliaCLI.prototype.launch = function() {
 
   var API      = require(cliDir('api'));
@@ -147,19 +148,19 @@ AureliaCLI.prototype.launch = function() {
   this.onReady(program);
 
   program.parse(process.argv);
-}
+};
 
 AureliaCLI.prototype.initialize = function(cb) {
   this.onInitialize = cb.bind(this);
-}
+};
 AureliaCLI.prototype.ready = function(cb) {
   this.onReady = cb.bind(this);
-}
+};
 
 AureliaCLI.prototype.import = function(dir) {
   return require(this.root(dir));
-}
+};
 
-AureliaCLI.prototype.exec = require(cliDir('commands'))
+AureliaCLI.prototype.exec = require(cliDir('commands'));
 
 module.exports = AureliaCLI;

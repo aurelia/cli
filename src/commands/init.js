@@ -11,7 +11,7 @@ var api    = cli.api;
 function Init() {
 
   var options = {};
-  options.env = cli.env.argv.env
+  options.env = cli.env.argv.env;
 
   logger.ok('initializing');
   var config = cli.env.isConfig

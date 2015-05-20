@@ -13,6 +13,6 @@ function Ask(prompts) {
       resolve(answers);
     });
   });
-};
+}
 
 module.exports = Ask;

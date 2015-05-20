@@ -31,6 +31,7 @@
     "github": "^0.2.4",
     "glob": "^5.0.3",
     "gulp-beautify": "^1.1.2",
+    "gulp-template": "^3.0.0",
     "handlebars": "^3.0.3",
     "inquirer": "^0.8.2",
     "interpret": "^0.5.2",

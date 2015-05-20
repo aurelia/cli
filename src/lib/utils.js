@@ -29,7 +29,7 @@ function makeDirectories(dirpath, cb) {
   if (parts.length) {
     parts.forEach(function(part, index){
       dir  = path.join(dir, part);
-      createDir(dir, index)
+      createDir(dir, index);
     });
 
   } else {

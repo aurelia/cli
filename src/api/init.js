@@ -14,11 +14,11 @@ module.exports = function(config, options) {
     return mkdirp(dirs)
       .then(function(){
         config.env = config.env || {};
-        config.env.plugins   = dirs[0]
-        config.env.templates = dirs[1]
+        config.env.plugins   = dirs[0];
+        config.env.templates = dirs[1];
         return cli.store.init({config:config});
       });
   } else {
     return Promise.resolve(cli.store.init(config));
   }
-}
+};

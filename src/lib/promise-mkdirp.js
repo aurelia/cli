@@ -16,11 +16,11 @@ function mkdir(dirs, initialDirs){
         return mkdir(dir);
       })
     ).then(function(){
-        return {message:'Finished creating directories'}
-    })
+        return {message:'Finished creating directories'};
+    });
   }
   return new Promise(function(resolve, reject){
-    mkdirp(dirs)
+    mkdirp(dirs);
     resolve({message:'Finished creating directories'});
   });
 }

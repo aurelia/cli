@@ -34,7 +34,7 @@ function bundle(config) {
       var pattern = cfg.pattern;
       var options = cfg.options;
 
-      bundleTemplate(pattern, outfile, options)
+      bundleTemplate(pattern, outfile, options);
     });
 }
 

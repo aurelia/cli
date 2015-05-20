@@ -81,7 +81,9 @@ function createConfig(answers) {
     var configurations = {
         name: answers.name,
         level: answers.level };
-    cli.store.config.paths.project = CWD + '/' + answers.projectPath, cli.store.config.paths.plugins = CWD + '/' + answers.pluginPath, cli.store.config.paths.templates = CWD + '/' + answers.templatePath;
+    cli.store.config.paths.project = CWD + '/' + answers.projectPath;
+    cli.store.config.paths.plugins = CWD + '/' + answers.pluginPath;
+    cli.store.config.paths.templates = CWD + '/' + answers.templatePath;
     cli.store.save(configurations);
     logger.ok('Finished creating Env');
     return cli.store.config;
