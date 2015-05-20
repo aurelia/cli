@@ -1,9 +1,13 @@
 'use strict';
 
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+exports.ask = ask;
 var Promise = require('bluebird');
 var inquirer = require('inquirer');
 
-function Ask(prompts) {
+function ask(prompts) {
   return new Promise(function (resolve, reject) {
     if (!prompts.length) {
       return reject('Please provide a collection of prompts to the ask() service!');
@@ -14,5 +18,3 @@ function Ask(prompts) {
     });
   });
 }
-
-module.exports = Ask;

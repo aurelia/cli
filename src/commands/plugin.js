@@ -1,5 +1,6 @@
+import * as logger from '../lib/logger';
+
 var cli     = process.AURELIA;
-var logger  = cli.import('lib/logger');
 
 // Plugin
 //

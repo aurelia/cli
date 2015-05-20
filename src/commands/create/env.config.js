@@ -21,7 +21,7 @@ var CWD        = process.env.PWD,
  * @param  {Object}  options  the command arguments object
  * @return {Promise} config   return a new promise that resolves the configfile options
  */
-function configure(options){
+export function configure(options){
     envOptions = options;
     isConfig = exists(CWD + configName);
 
@@ -140,5 +140,3 @@ function recursiveCheck(){
         return initConfig();
     }
 }
-
-module.exports = configure;

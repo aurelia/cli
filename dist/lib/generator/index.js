@@ -1,14 +1,23 @@
 'use strict';
 
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+
+var _logger = require('../logger');
+
+var logger = _interopRequireWildcard(_logger);
+
+var _utils = require('../utils');
+
+var utils = _interopRequireWildcard(_utils);
+
+var _ask = require('../ask');
+
 var fs = require('fs'),
     handlebars = require('handlebars'),
     Promise = require('bluebird'),
     chalk = require('chalk');
 
-var cli = process.AURELIA,
-    ask = cli['import']('lib/ask'),
-    utils = cli['import']('lib/utils'),
-    logger = cli.logger;
+var cli = process.AURELIA;
 
 handlebars.registerHelper('toCamelCase', function (str) {
   return utils.toCamelCase(str);
@@ -79,7 +88,7 @@ function promptForCreation(fileName) {
     'default': false
   }];
 
-  return ask(prompts);
+  return (0, _ask.ask)(prompts);
 }
 
 function writeFile(response, fileName, fileContents) {

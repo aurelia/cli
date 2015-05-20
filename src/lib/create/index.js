@@ -1,21 +1,16 @@
-var exists    = require('fs').existsSync
-   ,bluebird  = require('bluebird')
-   ,path      = require('path')
-   ;
+import * as logger from '../logger';
+import {mkdirp} from '../mkdirp-promise';
+import {installTemplate} from '../installer';
 
-var cli       = process.AURELIA
-   ,logger    = cli.import('lib/logger')
-   ,mkdirp    = cli.import('lib/promise-mkdirp')
-   ;
+var cli       = process.AURELIA;
 
+export function create(config) {
 
-module.exports = function(config) {
-  var installer = cli.import('lib/installer');
   return copyEnvironment(config)
     .then(function(){
       console.log(config.paths.project);
       process.chdir(config.paths.project);
-      return installer.installTemplate('skeleton-navigation');
+      return installTemplate('skeleton-navigation');
     });
 };
 

@@ -1,9 +1,8 @@
+import * as logger from '../logger';
 
-var exists = require('fs').existsSync;
 var extend = require('lodash/object/extend');
 
 var cli = process.AURELIA;
-var logger = cli.import('lib/logger');
 
 var defaults = {};
 defaults.config = {

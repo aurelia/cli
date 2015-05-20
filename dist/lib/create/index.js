@@ -1,25 +1,36 @@
 'use strict';
 
-var exists = require('fs').existsSync,
-    bluebird = require('bluebird'),
-    path = require('path');
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+exports.create = create;
 
-var cli = process.AURELIA,
-    logger = cli['import']('lib/logger'),
-    mkdirp = cli['import']('lib/promise-mkdirp');
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 
-module.exports = function (config) {
-  var installer = cli['import']('lib/installer');
+var _logger = require('../logger');
+
+var logger = _interopRequireWildcard(_logger);
+
+var _mkdirpPromise = require('../mkdirp-promise');
+
+var _installer = require('../installer');
+
+var cli = process.AURELIA;
+
+function create(config) {
+
   return copyEnvironment(config).then(function () {
     console.log(config.paths.project);
     process.chdir(config.paths.project);
-    return installer.installTemplate('skeleton-navigation');
+    return (0, _installer.installTemplate)('skeleton-navigation');
   });
-};
+}
+
+;
 
 function copyEnvironment(config) {
   var dirs = [config.paths.templates, config.paths.project, config.paths.plugins];
-  return mkdirp(dirs).then(function () {
+  return (0, _mkdirpPromise.mkdirp)(dirs).then(function () {
     logger.ok('project created at %s', config.paths.root.blue);
     return config;
   });

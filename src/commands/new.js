@@ -1,12 +1,11 @@
-var cli       = process.AURELIA
-  , logger = cli.import('lib/logger')
-  ;
+import * as logger from '../lib/logger';
+import {installTemplate} from '../lib/installer';
+var cli = process.AURELIA;
 
 // New
 //
 // Executable command for creating and downloading new Aurelia projects.
 function New(cmd, options){
-  var installer = cli.import('lib/installer');
   var app = '';
   switch(cmd.toLowerCase()) {
     case 'navigation':
@@ -22,7 +21,7 @@ function New(cmd, options){
     return;
   }
 
-  installer.installTemplate(app)
+  installTemplate(app)
     .then(function(response) {
       logger.log(response);
     })

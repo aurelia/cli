@@ -1,5 +1,9 @@
 'use strict';
 
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+exports.configure = configure;
 var Promise = require('bluebird'),
     basename = require('path').basename,
     exists = require('fs').existsSync;
@@ -107,5 +111,3 @@ function recursiveCheck() {
         return initConfig();
     }
 }
-
-module.exports = configure;

@@ -1,10 +1,14 @@
 'use strict';
 
-var exists = require('fs').existsSync;
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+
+var _logger = require('../logger');
+
+var logger = _interopRequireWildcard(_logger);
+
 var extend = require('lodash/object/extend');
 
 var cli = process.AURELIA;
-var logger = cli['import']('lib/logger');
 
 var defaults = {};
 defaults.config = {

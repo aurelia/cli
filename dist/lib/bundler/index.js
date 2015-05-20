@@ -1,11 +1,11 @@
 'use strict';
 
-var api = require('jspm/api');
-var whacko = require('whacko');
-var glob = require('glob');
-var fs = require('fs');
-var url = require('url');
-var path = require('path');
+var api = require('jspm/api'),
+    whacko = require('whacko'),
+    glob = require('glob'),
+    fs = require('fs'),
+    url = require('url'),
+    path = require('path');
 
 var pluginName = 'view';
 var loader = api.Builder().loader;

@@ -1,11 +1,12 @@
-var cli    = process.AURELIA;
-var mkdirp = cli.import('lib/promise-mkdirp');
+import {mkdirp} from '../mkdirp-promise';
+
 var Promise = require('bluebird');
 var join = require('path').join;
+var cli    = process.AURELIA;
 
 var aureliaDir = '.aurelia';
 
-module.exports = function(config, options) {
+export function init(config, options) {
   if (options.env) {
     var dirs   = [
       join(cli.env.cwd, aureliaDir, 'plugins'),

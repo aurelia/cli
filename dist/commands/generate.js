@@ -1,16 +1,22 @@
 'use strict';
 
-var cli = process.AURELIA,
-    logger = cli['import']('lib/logger');
-;
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+
+var _libLogger = require('../lib/logger');
+
+var logger = _interopRequireWildcard(_libLogger);
+
+var _libGenerator = require('../lib/generator');
+
+var generator = _interopRequireWildcard(_libGenerator);
+
+var cli = process.AURELIA;
 
 function Generate(cmd, options) {
   if (typeof options.name === 'function' || options.name === '') {
     logger.err('You must provide a name for the new element');
     return;
   }
-
-  var generator = cli['import']('lib/generator');
 
   if (cmd.toLowerCase() === generator.templateType.vm) {
     var template = options.template || 'default',

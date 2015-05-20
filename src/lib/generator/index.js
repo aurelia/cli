@@ -1,12 +1,14 @@
+import * as logger from '../logger';
+import * as utils from '../utils';
+import {ask} from '../ask';
+
 var fs = require('fs')
   , handlebars = require('handlebars')
   , Promise = require('bluebird')
-  , chalk = require('chalk');
+  , chalk = require('chalk')
+  ;
 
-var cli    = process.AURELIA
-  , ask    = cli.import('lib/ask')
-  , utils  = cli.import('lib/utils')
-  , logger = cli.logger;
+var cli    = process.AURELIA;
 
 // Register handlebars helpers
 handlebars.registerHelper('toCamelCase', function(str) {

@@ -1,6 +1,7 @@
-var cli     = process.AURELIA
-  , logger  = cli.import('lib/logger');
-  ;
+import * as logger from '../lib/logger';
+import * as generator from '../lib/generator';
+
+var cli     = process.AURELIA;
 
 // Generate
 //
@@ -10,8 +11,6 @@ function Generate(cmd, options) {
     logger.err('You must provide a name for the new element');
     return;
   }
-
-  var generator = cli.import('lib/generator');
 
   if(cmd.toLowerCase() === generator.templateType.vm) {
     var template = options.template || 'default'

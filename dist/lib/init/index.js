@@ -1,16 +1,22 @@
 'use strict';
 
-var cli = process.AURELIA;
-var mkdirp = cli['import']('lib/promise-mkdirp');
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+exports.init = init;
+
+var _mkdirpPromise = require('../mkdirp-promise');
+
 var Promise = require('bluebird');
 var join = require('path').join;
+var cli = process.AURELIA;
 
 var aureliaDir = '.aurelia';
 
-module.exports = function (config, options) {
+function init(config, options) {
   if (options.env) {
     var dirs = [join(cli.env.cwd, aureliaDir, 'plugins'), join(cli.env.cwd, aureliaDir, 'templates')];
-    return mkdirp(dirs).then(function () {
+    return (0, _mkdirpPromise.mkdirp)(dirs).then(function () {
       config.env = config.env || {};
       config.env.plugins = dirs[0];
       config.env.templates = dirs[1];
@@ -19,4 +25,6 @@ module.exports = function (config, options) {
   } else {
     return Promise.resolve(cli.store.init(config));
   }
-};
+}
+
+;
