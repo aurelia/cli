@@ -10,7 +10,6 @@ var cli       = process.AURELIA
    ,ask       = cli.import('lib/ask')
    ,spawn     = cli.import('lib/spawn-promise')
    ,mkdirp    = cli.import('lib/promise-mkdirp')
-   ,api       = cli.api
    ;
 
 // CREATE
@@ -19,13 +18,14 @@ var cli       = process.AURELIA
 //
 function Create(){
   var opts = {};
+  var creator = cli.import('lib/create');
   logger.log('[%s] [%s]','Create'.blue, 'Project Environment'.cyan);
   opts.name   = this.parent.args[0] ? this.parent.args[0] : null;
   opts.env    = this.parent.env   || false;
   opts.level  = this.parent.level || false;
 
   configure(opts)
-    .then(api.create)
+    .then(creator.create)
     .then(function(){
       logger.ok('Project environment created');
     })

@@ -98,10 +98,6 @@ AureliaCLI.prototype.on = function(evt) {
 
 AureliaCLI.prototype.launch = function() {
 
-  var API      = require(cliDir('api'));
-
-  this.api = new API();
-
   // Change the CWD if it does not match the PWD of the local configFile
   if (process.cwd() !== this.env.cwd) {
     process.chdir(this.env.cwd);

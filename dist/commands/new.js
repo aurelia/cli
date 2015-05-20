@@ -4,6 +4,7 @@ var cli = process.AURELIA,
     logger = cli['import']('lib/logger');
 
 function New(cmd, options) {
+  var installer = cli['import']('lib/installer');
   var app = '';
   switch (cmd.toLowerCase()) {
     case 'navigation':
@@ -19,7 +20,7 @@ function New(cmd, options) {
     return;
   }
 
-  cli.api.installer.installTemplate(app).then(function (response) {
+  installer.installTemplate(app).then(function (response) {
     logger.log(response);
   })['catch'](function (err) {
     logger.error(err);

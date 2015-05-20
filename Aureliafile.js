@@ -7,10 +7,7 @@ var rootDir   = path.join.bind(path, __dirname);
 var cliDir    = rootDir.bind(rootDir, 'dist');
 
 
-var bundler   = require(cliDir('api/bundler'))
-  , installer = require(cliDir('api/installer'))
-  , pjson     = require(rootDir('package.json'))
-  ;
+var pjson     = require(rootDir('package.json'));
 
 
 var _instance;

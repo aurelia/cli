@@ -6,6 +6,7 @@ var cli       = process.AURELIA
 //
 // Executable command for creating and downloading new Aurelia projects.
 function New(cmd, options){
+  var installer = cli.import('lib/installer');
   var app = '';
   switch(cmd.toLowerCase()) {
     case 'navigation':
@@ -21,7 +22,7 @@ function New(cmd, options){
     return;
   }
 
-  cli.api.installer.installTemplate(app)
+  installer.installTemplate(app)
     .then(function(response) {
       logger.log(response);
     })
