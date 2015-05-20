@@ -15,11 +15,9 @@ fs.readdirSync(__dirname).forEach(function (file) {
 
     var name = isExt ? file.split('.')[0] : file;
 
-    var mod = require(p);
-
     Object.defineProperty(API.prototype, name, {
       get: function get() {
-        return mod;
+        return require(p);
       }
     });
   }
