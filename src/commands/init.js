@@ -5,16 +5,16 @@ var cli    = process.AURELIA;
 // INIT
 //
 // Executable Command that will initialize the directory, and add an AureliaFile if !exists
-//
-function Init() {
-  var options = {};
-  options.env = cli.env.argv.env;
+export function action() {
+  var options = {
+    env: cli.argv.env
+  };
 
   logger.ok('initializing');
-  var config = cli.env.isConfig
+
+  var config = cli.env.configPath
     ? cli.aurelia._config
     : {env:{}};
 
-  init(config, options);
+  return init(config, options);
 }
-module.exports = Init;

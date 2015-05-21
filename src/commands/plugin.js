@@ -5,11 +5,9 @@ var cli     = process.AURELIA;
 // Plugin
 //
 // Executable Command for Listing all installed plugins
-function Plugin(cmd, options) {
-  logger.log('exec "%s" using %s mode', cmd, options.name());
+export function action(cmd, opts) {
+  logger.log('exec "%s" using %s mode', cmd, opts.name());
   logger.log('Not yet implemented...');
   logger.log('-----------------------------------');
   logger.log('  - Plugin management not yet implemented');
 }
-
-module.exports = Plugin;

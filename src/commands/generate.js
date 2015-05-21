@@ -6,7 +6,7 @@ var cli     = process.AURELIA;
 // Generate
 //
 // Executable Command for Generating new file type based on type specified
-function Generate(cmd, options) {
+export function action(cmd, options) {
   if(typeof options.name === 'function' || options.name === '') {
     logger.err('You must provide a name for the new element');
     return;
@@ -33,5 +33,3 @@ function Generate(cmd, options) {
     generator.createView(options.name, template);
   }
 }
-
-module.exports = Generate;

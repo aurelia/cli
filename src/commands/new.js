@@ -5,7 +5,7 @@ var cli = process.AURELIA;
 // New
 //
 // Executable command for creating and downloading new Aurelia projects.
-function New(cmd, options){
+export function action(cmd, options) {
   var app = '';
   switch(cmd.toLowerCase()) {
     case 'navigation':
@@ -21,13 +21,12 @@ function New(cmd, options){
     return;
   }
 
-  installTemplate(app)
+  return installTemplate(app)
     .then(function(response) {
       logger.log(response);
+      return response;
     })
     .catch(function(err) {
       logger.error(err);
     });
 }
-
-module.exports = New;

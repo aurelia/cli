@@ -7,24 +7,32 @@ exports.init = init;
 
 var _mkdirpPromise = require('../mkdirp-promise');
 
-var Promise = require('bluebird');
-var join = require('path').join;
-var cli = process.AURELIA;
+var _installer = require('../installer');
 
-var aureliaDir = '.aurelia';
+var Promise = require('bluebird'),
+    join = require('path').join,
+    cli = process.AURELIA,
+    aureliaDir = cli.cwd.bind(cli.cwd, '.aurelia');
 
 function init(config, options) {
-  if (options.env) {
-    var dirs = [join(cli.env.cwd, aureliaDir, 'plugins'), join(cli.env.cwd, aureliaDir, 'templates')];
+
+  if (!options.env) {
+    return Promise.resolve(cli.store.init({ config: config }));
+  }
+
+  var dirs = [aureliaDir('plugins'), aureliaDir('templates')];
+
+  return (0, _installer.installTemplate)('skeleton-navigation').then(function () {
     return (0, _mkdirpPromise.mkdirp)(dirs).then(function () {
+
       config.env = config.env || {};
       config.env.plugins = dirs[0];
       config.env.templates = dirs[1];
-      return cli.store.init({ config: config });
-    });
-  } else {
-    return Promise.resolve(cli.store.init(config));
-  }
-}
+      config.isInstalled = true;
 
-;
+      cli.store.init({ config: config });
+      cli.store.save({ config: config });
+      return;
+    });
+  });
+}

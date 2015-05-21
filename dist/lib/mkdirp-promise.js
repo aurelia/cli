@@ -5,7 +5,6 @@ Object.defineProperty(exports, '__esModule', {
 });
 exports.mkdirp = mkdirp;
 var fs = require('fs'),
-    path = require('path'),
     Promise = require('bluebird'),
     map = require('lodash/collection/map'),
     cli = process.AURELIA,

@@ -1,80 +1,74 @@
 import * as logger from '../logger';
+import {defaults} from './defaults';
 
-var extend = require('lodash/object/extend');
+var extend   = require('lodash/object/extend');
+var basename = require('path').basename;
+var cli;
 
-var cli = process.AURELIA;
 
-var defaults = {};
-defaults.config = {
-  "paths": {
-    "*": "dist/*.js",
-    "github:*": "jspm_packages/github/*.js",
-    "npm:*": "jspm_packages/npm/*.js",
-    "aurelia-skeleton-navigation/*": "lib/*.js"
-  },
-  "env":{},
-};
-defaults.bundle = {
-  js: [{
-    moduleExpression: 'aurelia-skeleton-navigation/*',
-    fileName: 'nav-app-build.js',
-    options: {
-      inject: true
-    }
-  }, {
-    moduleExpression: 'aurelia-bootstrapper',
-    fileName: 'aurelia-framework-build.js',
-    options: {
-      inject: true
-    }
-  }],
-  template: 'dist/*.html'
-};
+export class Config{
 
-var _instance;
-var Config = (function(){
-
-  var _Config = function() {
-    this.configName = 'Aureliafile.js';
-    this.template = __dirname + '/template/Aureliafile.js';
+  constructor(env){
+    cli = process.AURELIA;
+    this.configName = basename(cli.env.configName);
+    this.template = __dirname + `/template/${cli.env.configName}`;
     this._onready = [];
     this.isReady = false;
-    var self = this;
-  };
+  }
 
-  _Config.prototype = {
-    get configFile(){
-      return process.cwd() + '/' + this.configName;
-    },
-    get config(){
-      return cli.isAureliaFile
-        ? cli.aurelia.configuration
-        : defaults;
-    },
-    set config(value){
-      this._config = extend(this._config, value);
-      cli.aurelia.configuration = this._config;
-    },
+  // Return the correct path to the configFile
+  get configPath(){
+    return cli.env.configPath;
+  }
 
-  };
+  // Return the current store Object
+  get config(){
+    return cli.settings.isAureliaFile
+      ? cli.aurelia.configuration
+      : defaults;
+  }
 
-  _Config.prototype.init = function(config) {
-    if (cli.env.isConfig) {
+  // Extend the current config
+  set config(value){
+    this._config = extend(this._config, value);
+    cli.aurelia.configuration = this._config;
+  }
+
+  /**
+   * init
+   *
+   * > Initialize the config store, creating a new AureliaFile if one does not exist
+   *
+   * @param  {Object} config Updates to the _config
+   */
+  init(config) {
+    if (cli.env.configPath) {
       this._config = extend(this.config, config);
       logger.ok('Finished checking config file at [%s]', cli.env.configPath.cyan);
     } else {
-      this._config = defaults;
+
+      this._config = defaults();
       this._config = extend(this._config, config);
       this.write(this._config);
     }
-  };
+  }
 
-  _Config.prototype.write = function(data, cb) {
-    var self = this;
-    var vynl = require('vinyl-fs')
-       ,compile = require('gulp-template')
-       ,beautify = require('gulp-beautify')
-       ;
+  /**
+   * write
+   *
+   * > Write to the current configFile
+   *
+   * @param  {Object}   data  Updates to the _config
+   * @param  {Function}  cb   callback function when complete
+   * @return {Stream}         Return the vynl stream
+   */
+  write(data, cb) {
+
+    var self     = this
+      , vynl     = require('vinyl-fs')
+      , compile  = require('gulp-template')
+      , beautify = require('gulp-beautify')
+    ;
 
     for(var key in data) {
       data[key] = JSON.stringify(data[key]);
@@ -82,17 +76,28 @@ var Config = (function(){
     vynl.src(this.template)
         .pipe(compile(data))
         .pipe(beautify({indentSize: 2}))
-        .pipe(vynl.dest(process.cwd()))
+        .pipe(vynl.dest(cli.cwd()))
         .on('finish',function(){
           self._config = data;
-          logger.ok('Finished creating config file at [%s]', cli.env.configPath.cyan);
+          self.save();
+          logger.ok('Finished creating config file at [%s]', cli.cwd().cyan);
         })
         .on('error', function(){
-          logger.err('Issue creating config file at [%s]', cli.env.configPath.red);
+          logger.err('Issue creating config file at [%s]', cli.cwd().red);
         });
-  };
+  }
 
-  _Config.prototype.set = function(key, value, cb) {
+  /**
+   * set
+   *
+   * > Set properties on config to be saved.
+   *
+   * @param {String}   key   String || Object of new properties to add or Update config with
+   * @param {value}   value  Object or value to apply to the key
+   * @param {Function} cb    Callback to call when complete
+   */
+  set (key, value, cb) {
+
     return this.ready(function(){
 
       if (typeof key === 'object') {
@@ -107,35 +112,34 @@ var Config = (function(){
         cb(this.config);
       }
     });
-  };
+  }
 
-  _Config.prototype.save = function(data, cb) {
+  /**
+   * save
+   * @param  {Object}   data Data to extend _config with
+   * @param  {Function} cb   Callback to invoke when complete
+   */
+  save (data, cb) {
     return this.ready(function(){
       if (data) {
         this.config = data;
       }
       this.write(this.config);
     });
-  };
+  }
 
-  _Config.prototype.ready = function(cb) {
+  ready(cb) {
     if (this.isReady) {
       return cb.call(this);
     }
     this._onready.push(cb);
-  };
+  }
 
-  _Config.prototype.onReady = function() {
+  onReady () {
     this.isReady = true;
     this._onready.forEach(function(cb){
       cb.call(this);
     });
-  };
 
-  if (!_instance) {
-    _instance = new _Config();
   }
-  return _instance;
-})();
-
-module.exports = Config;
+}
