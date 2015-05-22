@@ -1,38 +1,50 @@
-#!/usr/bin/env node
-const Liftoff = require('liftoff');
-const argv    = require('minimist')(process.argv.slice(2));
+#!/usr/bin/env node --harmony
 
-const AureliaCLI = new Liftoff({
-  name: 'aurelia-cli',
-  configName: 'Aureliafile',
-  extensions: require('interpret').jsVariants,
+var // Dependencies
+    argv     = require('minimist')(process.argv.slice(2))
+  , variants = require('interpret').jsVariants
   // ^ automatically attempt to require module for any javascript variant
-  // supported by interpret.  e.g. coffee-script / livescript, etc
-  v8flags: ['--harmony'] // to support all flags: require('v8flags')
-  // ^ respawn node with any flag listed here
-});
+  , CLI     = require('../dist/cli')
+  , Liftoff = require('liftoff')
+;
 
-AureliaCLI
-  .on('require', function(name, module) {
-    console.log('Loading:', name);
-  })
-  .on('requireFail', function(name, err) {
-    console.log('Unable to load:', name, err);
-  })
-  .on('respawn', function(flags, child) {
-    console.log('Detected node flags:', flags);
-    console.log('Respawned to PID:', child.pid);
-  });
+var // Variables
+  aureliaCli = new Liftoff({
+      name       : 'aurelia-cli'
+    , configName : 'Aureliafile'
+    , extensions : variants
+    , v8flags    : ['--harmony'] // to support all flags: require('v8flags') && respawn node with any flag listed here
+  }),
 
-var cli = require('../lib/cli');
+  ENV = {
+      cwd: argv.cwd
+    , argv: argv
+    , configName: 'Aureliafile'
+    , AureliaCLI: aureliaCli
+    , configPath: argv.aureliafile
+    , require: argv.require
+    , completion: argv.completion
+    , verbose: argv.verbose
+  }
+;
 
-cli.configure({
-  argv: argv,
-  cwd: argv.cwd,
-  configPath: argv.aureliafile,
-  require: argv.require,
-  completion: argv.completion,
-  verbose: argv.verbose,
-  Lyftoff: AureliaCLI,
-  launchFile: 'lib/program.js'
-});
+
+CLI.create(argv,
+
+  function(aurelia) {
+
+    aurelia.launch(ENV)
+           .bind(aurelia)
+
+      .then(aurelia.configure)
+
+      .then(aurelia.initialize)
+
+      .then(aurelia.validation)
+
+      .then(aurelia.start)
+
+      .then(aurelia.stop);
+  }
+);
+

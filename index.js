@@ -1,21 +1,44 @@
-var program = require('commander')
-  , pjson = require('./package.json')
-  , chalk = require('chalk')
-  , installer = require('./lib/installer');
+var path = require('path');
+var libDir = path.join.bind(path, __dirname, 'dist', 'lib');
+var cwd = path.join.bind(path, process.cwd());
+var _api;
 
-var _instance;
-
-function Aurelia(env) {
-  this.env = env;
-}
-
-Aurelia.prototype.bundle = function(config) {
-  this.bundleConfig = config;
+var local = {
+    pkg: require(cwd('package.json'))
 };
 
-module.exports = (function(){
-  if (!_instance) {
-    _instance = new Aurelia();
+var Api = function() {
+  this.logger = require(libDir('logger'));
+
+};
+
+Api.prototype = {
+  get bundler() {
+    return require(libDir('bundler'));
+  },
+  get installer() {
+    return require(libDir('installer'));
+  },
+  get configuration() {
+    return {config: this._config, bundle: this._bundle};
+  },
+  set configuration(data) {
+    this._config = data.config;
+    this._bundle = data.bundle;
   }
-  return _instance;
+};
+
+Api.prototype.config = function(data) {
+  this._config = data;
+};
+
+Api.prototype.bundle = function(data) {
+  this._bundle = data;
+};
+
+module.exports = (function() {
+  if (!_api) {
+    _api = new Api();
+  }
+  return _api;
 })();
