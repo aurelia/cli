@@ -9,7 +9,7 @@ var // Dependencies
 ;
 
 var // Variables
-  AureliaCLI = new Liftoff({
+  aureliaCli = new Liftoff({
       name       : 'aurelia-cli'
     , configName : 'Aureliafile'
     , extensions : variants
@@ -20,7 +20,7 @@ var // Variables
       cwd: argv.cwd
     , argv: argv
     , configName: 'Aureliafile'
-    , AureliaCLI: AureliaCLI
+    , AureliaCLI: aureliaCli
     , configPath: argv.aureliafile
     , require: argv.require
     , completion: argv.completion
