@@ -1,7 +1,7 @@
 import * as logger from './lib/logger';
 import {Config} from './lib/config';
 
-var program = require('commander');
+var program = require('./lib/program');
 var Promise = require('bluebird');
 var path = require('path');
 
@@ -18,7 +18,6 @@ class AureliaCLI{
     this.initFile   = this.root('init');
     this.startFile  = this.root('start');
 
-    // EOD === out of date;
     this.settings = {
         isLocal       : false
       , isGlobal      : false
@@ -31,18 +30,37 @@ class AureliaCLI{
   }
 
   get config() {
-    return this.store.config;
+    return this.env.store.config;
   }
   set config(value) {
-    this.store.config = value;
+    this.env.store.config = value;
   }
 
   get cwd() {
-    if (!this.CWD) {
-      this.CWD = path.join.bind(path, this.env.cwd);
+    if (!this.env.CWD) {
+      this.env.CWD = path.join.bind(path, this.env.cwd);
     }
-    return this.CWD;
+    return this.env.CWD;
   }
+
+  isCmd(cmd){
+    return this.args[0] === cmd;
+  }
+
+  done(resolve) {
+    var self = this;
+    return function done(args) {
+      return resolve(self.env);
+    };
+  }
+
+  issue(reject) {
+    var self = this;
+    return function issue(args) {
+      return reject(self.env);
+    };
+  }
+
 
   quit() {
     this.store.save();
@@ -57,7 +75,10 @@ class AureliaCLI{
   }
 
   /*
-      Launch lyftOff CLI, and return a promise
+      Launch lyftOff CLI
+      @ENV   Environment passed from bin/aurelia
+
+      return a promise
    */
   launch(ENV) {
     return new Promise(function (resolve, reject) {
@@ -68,36 +89,35 @@ class AureliaCLI{
   }
 
   /**
-   * configure
-   *
-   * > Apply configurations to the cli
-   *
-   * @env {Object} The original event object
-   * @param   env
-   * @return  env
-   *
-   * @env    {Object} original env from liftOff
-   * @liftOff         The AureliaCLI/liftOff context
-   * @isLaunched {Boolean} has thie cli been launched
-   *
-   * @settings
-   *   @isLocal    Does a local  installation exist
-   *   @isGlobal   Does a global installation exist
-   *
-   * @store config store for reading and writing to the aireliafile
+      configure
+
+      > Apply configurations to the cli
+
+      @env {Object} The original ENV
+
+      @liftOff    {Object}  The AureliaCLI/liftOff context
+      @isLaunched {Boolean} has thie cli been launched
+
+      @settings
+        @isLocal  {Boolean} Does a local  installation exist
+        @isGlobal {Boolean} Does a global installation exist
+
+      @store {Object} config store for reading and writing to the Aureliafile
+
+      return original ENV
    */
   configure(env){
-    this.env        = env;
-    this.liftoff    = this;
-    this.isLaunched = true;
 
-    this.settings.isLocal  = !!env.modulePath;
-    this.settings.isGlobal = !this.settings.isLocal;
-
-    this.env.configName = env.configNameSearch[0];
-
-    this.store = new Config(env);
-
+    this.env = env;
+    env.argv        = this.argv;
+    env.args        = this.args;
+    env.lyftOff     = this;
+    env.isLaunched  = true;
+    env.isLocal     = !!env.modulePath;
+    env.isGlobal    = !env.isLocal;
+    env.configName  = env.configNameSearch[0];
+    env.store       = new Config(env);
+    env.isCmd       = this.isCmd;
     // Change the CWD if it does not match the PWD of the local configFile
     if (process.cwd() !== env.cwd) {
       process.chdir(env.cwd);
@@ -108,88 +128,100 @@ class AureliaCLI{
   }
 
   /**
-   * initialize
-   *
-   * > Run the init.js file to initialize any commands that **DO NOT** require the configFile
-   *
-   * @env {Object} The original event object
-   * @param   env
-   * @return  env
-   *
-   * @continue true toggle continue
+      initialize
+
+      > Run the init.js file to initialize any commands that **DO NOT** require the configFile
+
+      @env {Object} The original event object
+      @param   env
+      @return  env
+
+      @continue true toggle continue
    */
   initialize(env) {
+    var self = this;
+    return new Promise(function(resolve, reject){
 
-    require(this.initFile).init.call(this);
+      env.done  = self.done(resolve);
+      env.issue = self.issue(reject);
 
-    this.continue = true;
+      require(self.initFile).init.bind(self)(env);
 
-    return env;
+      env.continue = !program.isCmd(env._exec);
+
+      if (env.continue)
+        resolve(env);
+    });
   }
 
   /**
-   * validation
-   *
-   * > Validate the environment
-   *
-   * @isLocal  Check for local installation and toggle continue
-   * @isGlobal Check for the configFile or toggle continue
-   *
-   * @env {Object} The original event object
-   * @param   env
-   * @return  env
+      validation
+
+      > Validate the environment
+
+      @isLocal  Check for local installation and toggle continue
+      @isGlobal Check for the configFile or toggle continue
+
+      @env {Object} The original event object
+      @param   env
+      @return  env
    */
   validation(env) {
 
-    if (!env.modulePath) {
-      program.parse(process.argv);
-      logger.err('Local aurelia-cli not found in: %s', env.modulePath);
-      this.continue = false;
-      return env;
-    }
-    if (!env.configPath) {
-      program.parse(process.argv);
-      logger.err('No Aureliafile found at %s', env.configPath);
-      this.continue = false;
-      return env;
-    }
+    if (!env.continue)
+      if (!env.modulePath) {
+
+        program.parse(process.argv);
+        logger.err('Local aurelia-cli not found in: %s', env.modulePath);
+        env.continue = false;
+        return env;
+      }
+
+
+      if (!env.configPath) {
+        program.parse(process.argv);
+        logger.err('No Aureliafile found at %s', env.configPath);
+        env.continue = false;
+        return env;
+      }
 
     return env;
   }
 
   /**
-   * start
-   *
-   * > Run the start.js file to initialize any commands that **DO** require the configFile
-   *
-   * @continue   Return if continue has been set to true.
-   *             Continue will be set to true if no errors were found
-   *             and a command was not found in the `init.js`
-   *
-   * @env {Object} The original event object
-   * @param   env
-   * @return  env
-   *
-   * @aurelia      instance of the local installation
-   * @configFile   instance of the local configFile
-   * @aureliaFile  instance of the local configFile after instantiated
-   *
-   * @isAureliaFile  {Boolean}  if The aureliaFile has been run
-   *
-   * @continue     true toggle continue
+      start
+
+      > Run the start.js file to initialize any commands that **DO** require the configFile
+
+      @continue   Return if continue has been set to true.
+                  Continue will be set to true if no errors were found
+                  and a command was not found in the `init.js`
+
+      @env {Object} The original event object
+      @param   env
+      @return  env
+
+      @aurelia      instance of the local installation
+      @configFile   instance of the local configFile
+      @aureliaFile  instance of the local configFile after instantiated
+
+      @isAureliaFile  {Boolean}  if The aureliaFile has been run
+
+      @continue     true toggle continue
    */
   start(env) {
     var self = this;
-    if (!this.continue) return env;
-    this.aurelia         = this.settings.isLocal
+    if (!env.continue) return env;
+
+    env.aurelia = env.isLocal
       ? require(env.modulePath)
       : require(this.base('index'));
 
-    this.configFile      = require(env.configPath);
-    this.aureliaFile     = this.configFile(this.aurelia);
-    this.settings.isAureliaFile = true;
+    env.configFile       = require(env.configPath);
+    env.aureliaFile      = env.configFile(env.aurelia);
+    env.isAureliaFile    = true;
 
-    require(self.startFile).start.call(this);
+    require(env.startFile).start.bind(self)(env);
 
     program.parse(process.argv);
 
@@ -197,49 +229,49 @@ class AureliaCLI{
   }
 
   /**
-   * isExec
-   * @param  {String}  name command name
-   * @return {Boolean}      is the given command running
+      isExec
+      @param  {String}  name command name
+      @return {Boolean}      is the given command running
    */
   isExec(name) {
-    return this._exec === name;
+    return this.env._exec === name;
   }
 
   /**
-   * execute
-   *
-   * @param  {String}   name  Name of command to execute
-   * @return {Function}       Function to be called that will require the commandfile.
+      execute
+
+      @param  {String}   name  Name of command to execute
+      @return {Function}       Function to be called that will require the commandfile.
    */
   execute(name) {
     var self = this;
-    this._exec = name;
+    this.env._exec = name;
     return function(...args) {
       return require(self.cmdDir(name)).action.apply(this, args);
     };
   }
 
   /**
-   * import
-   *
-   * > [safe-import]
-   *
-   * @param  {Sting}     pathToModule Path name to import from __dirname
-   * @return {Instance}  Instance of the required module
+      import
+
+      > [safe-import]
+
+      @param  {Sting}     pathToModule Path name to import from __dirname
+      @return {Instance}  Instance of the required module
    */
   import(pathToModule) {
     return require(this.root(pathToModule));
   }
 }
 
-/**
- * create
- *
- * > Instantiate the AureliaCli and set process.AURELIA
- *
- * @param  {Object}   argv  Original argv Object from bin/aurelia.js
- * @param  {Function} cb    Callback function that runs the cli
- */
+  /**
+      create
+
+      > Instantiate the AureliaCli and set process.AURELIA
+
+      @param  {Object}   argv  Original argv Object from bin/aurelia.js
+      @param  {Function} cb    Callback function that runs the cli
+   */
 export function create(argv, cb) {
   process.AURELIA = new AureliaCLI(argv);
   return cb(process.AURELIA);

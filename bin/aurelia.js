@@ -45,6 +45,8 @@ CLI.create(argv,
       .then(aurelia.start)
 
       .then(aurelia.stop);
+
+      // .catch(aurelia.abort);
   }
 );
 

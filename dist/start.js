@@ -16,7 +16,7 @@ var _libUtils = require('./lib/utils');
 var utils = _interopRequireWildcard(_libUtils);
 
 var cli = process.AURELIA;
-var program = require('commander');
+var program = require('./lib/program');
 var Promise = require('bluebird');
 
 function start() {

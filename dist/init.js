@@ -13,30 +13,26 @@ var logger = _interopRequireWildcard(_libLogger);
 
 var _libUtils = require('./lib/utils');
 
-var program = require('commander');
+var program = require('./lib/program');
 var pjson = require('../package.json');
 var cli = process.AURELIA;
 var chalk = require('chalk');
 
-function init() {
+function init(env) {
 
-  if (this.argv.verbose) {
-    logger.log('LIFTOFF SETTINGS:', this.liftoff);
-    logger.log('CLI OPTIONS:', this.argv);
-    logger.log('CWD:', this.env.cwd);
+  if (env.argv.verbose) {
+    logger.log('LIFTOFF SETTINGS:', env.liftoff);
+    logger.log('CLI OPTIONS:', env.argv);
+    logger.log('CWD:', env.cwd);
 
-    logger.log('FOUND CONFIG AT:', this.env.configPath);
-    logger.log('CONFIG NAME:', this.env.configName);
-    logger.log('YOUR LOCAL MODULE IS LOCATED:', this.env.modulePath);
-    logger.log('LOCAL PACKAGE.JSON:', this.env.modulePath);
+    logger.log('FOUND CONFIG AT:', env.configPath);
+    logger.log('CONFIG NAME:', env.configName);
+    logger.log('YOUR LOCAL MODULE IS LOCATED:', env.modulePath);
+    logger.log('LOCAL PACKAGE.JSON:', env.modulePath);
     logger.log('CLI PACKAGE.JSON', require('../package'));
   }
 
-  program.version(pjson.version).on('--help', function () {
-    console.log('\n' + '    ' + chalk.bgMagenta(' ') + chalk.bgRed('  ') + chalk.bgMagenta(' ') + '\n' + '  ' + chalk.bgRed.black(' aurelia ') + '\n' + '    ' + chalk.bgMagenta(' ') + chalk.bgRed('  ') + chalk.bgMagenta(' ') + '\n');
-  });
-
-  program.command('new <type>').description('create a new Aurelia project').action(cli.execute('new')).on('--help', function () {
+  if (env.isCmd('new')) program.command('new [type]').description('create a new Aurelia project').action(cli.execute('new')).on('--help', function () {
     (0, _libUtils.example)('new', {
       navigation: {
         flags: 'navigation',
@@ -51,7 +47,7 @@ function init() {
     });
   });
 
-  program.command('init').option('-e, --env', 'Initialize an aurelia project environment').description('Initialize a new Aurelia Project and creates an Aureliafile').action(cli.execute('init')).on('--help', function () {
+  if (env.isCmd('init')) program.command('init').option('-e, --env', 'Initialize an aurelia project environment').description('Initialize a new Aurelia Project and creates an Aureliafile').action(cli.execute('init')).on('--help', function () {
     (0, _libUtils.example)('init', {
       env: {
         flags: '--env  -e',
@@ -60,4 +56,6 @@ function init() {
       }
     });
   });
+
+  program.parse(process.argv);
 }

@@ -13,27 +13,43 @@ var logger = _interopRequireWildcard(_libLogger);
 
 var _libInstaller = require('../lib/installer');
 
+var _lodash = require('lodash');
+
 var cli = process.AURELIA;
 
-function action(cmd, options) {
-  var app = '';
-  switch (cmd.toLowerCase()) {
-    case 'navigation':
-      app = 'skeleton-navigation';
-      break;
-    case 'plugin':
-      app = 'skeleton-plugin';
-      break;
-  }
+var init = cli['import']('commands/init').action;
 
-  if (app === '') {
+var templates = {
+  navigation: 'skeleton-navigation',
+  plugin: 'skeleton-plugin'
+};
+
+var prompts = [{
+  type: 'list',
+  name: 'template',
+  message: 'Template?',
+  choices: (0, _lodash.map)(templates, function (temp, key) {
+    return { name: key, value: temp };
+  })
+}];
+
+function action(cmd, options) {
+  return cmd ? run(cmd.toLowerCase()) : this.ask(prompts).then(run);
+}
+
+function run(answers) {
+  var app = answers.template;
+
+  if (!app) {
     logger.error('Unknown template, please type aurelia new --help to get information on available types');
     return;
   }
 
   return (0, _libInstaller.installTemplate)(app).then(function (response) {
     logger.log(response);
-    return response;
+    return init();
+  }).then(function () {
+    cli.done();
   })['catch'](function (err) {
     logger.error(err);
   });

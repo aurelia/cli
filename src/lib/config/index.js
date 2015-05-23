@@ -10,6 +10,7 @@ export class Config{
 
   constructor(env){
     cli = process.AURELIA;
+    this.env = env;
     this.configName = basename(cli.env.configName);
     this.template = __dirname + `/template/${cli.env.configName}`;
     this._onready = [];
@@ -23,15 +24,15 @@ export class Config{
 
   // Return the current store Object
   get config(){
-    return cli.settings.isAureliaFile
-      ? cli.aurelia.configuration
+    return cli.env.isAureliaFile
+      ? cli.env.aurelia.configuration
       : defaults;
   }
 
   // Extend the current config
   set config(value){
     this._config = extend(this._config, value);
-    cli.aurelia.configuration = this._config;
+    cli.env.aurelia.configuration = this._config;
   }
 
   /**

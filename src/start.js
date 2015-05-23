@@ -2,7 +2,7 @@ import * as logger from './lib/logger';
 import * as utils from './lib/utils';
 
 var cli = process.AURELIA;
-var program = require('commander');
+var program = require('./lib/program');
 var Promise = require('bluebird');
 
 export function start() {
