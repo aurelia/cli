@@ -89,4 +89,6 @@ function multiSpawn(options) {
   });
 }
 
-module.exports = SpawnPromise;
+module.exports = {
+  SpawnPromise: SpawnPromise
+};

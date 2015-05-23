@@ -127,4 +127,26 @@ export function start() {
       // logger.log();
     });
 
+  program.command('update')
+    .alias('u')
+    .description('Update aurealia')
+    .option('--nuclear', "Go nuclear")
+
+    .action(cli.execute('updater'))
+
+    .on('--help', function () {
+      utils.example('update', {
+        nuclear: {
+            flags: '--nuclear <name>'
+          , info : 'Blow it up'
+          , required: false
+        },
+      });
+
+      // logger.log('  Examples:');
+      // logger.log();
+      // logger.log('    $ aurelia plugin -a i18n');
+      // logger.log('    $ aurelia p -r i18n -c');
+      // logger.log();
+    });
 }
