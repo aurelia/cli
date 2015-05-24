@@ -3,10 +3,11 @@
 var Promise = require('bluebird');
 var spawn = require('child_process').spawn;
 var logger = require('./logger');
+var map = require('lodash/collection/map');
 
 function SpawnPromise(options) {
   if (Array.isArray(options)) {
-    return multiSpawn(options);
+    return Promise.join(map(options, SpawnPromise));
   }
 
   if (!options) {
@@ -37,25 +38,6 @@ function SpawnPromise(options) {
       }
       process.stdout.write('' + data);
     });
-  });
-}
-
-function multiSpawn(options) {
-  return new Promise(function (resolve, reject) {
-    var index = 0;
-    var dataArray = '';
-    var next = function next() {
-      SpawnPromise(options[index]).then(function (data) {
-        dataArray += data;
-        index++;
-        if (options[index]) {
-          return next();
-        } else {
-          resolve(dataArray);
-        }
-      });
-    };
-    next();
   });
 }
 
