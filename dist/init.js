@@ -13,7 +13,10 @@ var logger = _interopRequireWildcard(_libLogger);
 
 var _libUtils = require('./lib/utils');
 
+var _libExecCommand = require('./lib/exec-command');
+
 var program = require('./lib/program');
+
 var pjson = require('../package.json');
 var cli = process.AURELIA;
 var chalk = require('chalk');
@@ -32,30 +35,25 @@ function init(env) {
     logger.log('CLI PACKAGE.JSON', require('../package'));
   }
 
-  if (env.isCmd('new')) program.command('new [type]').description('create a new Aurelia project').action(cli.execute('new')).on('--help', function () {
-    (0, _libUtils.example)('new', {
-      navigation: {
-        flags: 'navigation',
-        info: 'create a new skeleton navigation style app',
-        required: true
-      },
-      plugin: {
-        flags: 'plugin',
-        info: 'create a new aurelia plugin template',
-        required: true
-      }
-    });
-  });
+  (0, _libExecCommand.command)('new', '[type]').description('create a new Aurelia project').prompt({
+    type: 'list',
+    name: 'template',
+    message: 'Template?',
+    when: function when() {
+      return !env.args[1];
+    },
+    onLoad: true,
+    choices: [{
+      name: 'navigation',
+      value: 'skeleton-navigation'
+    }, {
+      name: 'plugin',
+      value: 'skeleton-plugin'
+    }]
+  }).help('new').execute('new').then(function () {});
 
-  if (env.isCmd('init')) program.command('init').option('-e, --env', 'Initialize an aurelia project environment').description('Initialize a new Aurelia Project and creates an Aureliafile').action(cli.execute('init')).on('--help', function () {
-    (0, _libUtils.example)('init', {
-      env: {
-        flags: '--env  -e',
-        info: 'Create a new .aurelia project directory.',
-        required: false
-      }
-    });
-  });
+  (0, _libExecCommand.command)('init').option('-e, --env', 'Initialize an aurelia project environment').description('Initialize a new Aurelia Project and creates an Aureliafile').help('init').execute('init').then(function () {});
 
-  program.parse(process.argv);
+  env['continue'] = !env.cmd;
+  env.done(env);
 }

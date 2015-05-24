@@ -11,25 +11,11 @@ let templates = {
   , plugin     :'skeleton-plugin'
 };
 
-let prompts = [{
-    type: 'list'
-  , name: 'template'
-  , message: 'Template?'
-  , choices: map(templates, function(temp, key){return {name:key, value:temp};})
-}];
-
 // New
 //
 // Executable command for creating and downloading new Aurelia projects.
-export function action(cmd, options) {
-  return cmd
-    ? run(cmd.toLowerCase())
-    : this.ask(prompts).then(run);
-}
-
-function run(answers) {
-  var app = answers.template;
-
+export function action(argv, options, answers) {
+  var app = (argv.type && templates[argv.type]) || answers.template;
   if(!app) {
     logger.error('Unknown template, please type aurelia new --help to get information on available types');
     return;
@@ -38,7 +24,7 @@ function run(answers) {
   return installTemplate(app)
     .then(function(response) {
       logger.log(response);
-      return init();
+      return cli.store.init();
     })
     .then(function(){
       cli.done();
@@ -46,4 +32,19 @@ function run(answers) {
     .catch(function(err) {
       logger.error(err);
     });
+}
+
+export function prompt(ask) {
+  var self = this;
+  let prompts = [{
+      type: 'list'
+    , name: 'template'
+    , message: 'Template?'
+    , choices: map(templates, function(temp, key){return {name:key, value:temp};})
+    , when: function() {
+      return !self.argv.type;
+    }
+  }];
+
+  return ask(prompts);
 }

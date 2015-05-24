@@ -43,13 +43,12 @@ export class Config{
    * @param  {Object} config Updates to the _config
    */
   init(config) {
+    config = config || defaults();
     if (cli.env.configPath) {
       this._config = extend(this.config, config);
       logger.ok('Finished checking config file at [%s]', cli.env.configPath.cyan);
     } else {
-
-      this._config = defaults();
-      this._config = extend(this._config, config);
+      this._config = config;
       this.write(this._config);
     }
   }

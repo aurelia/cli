@@ -49,13 +49,12 @@ var Config = (function () {
   }, {
     key: 'init',
     value: function init(config) {
+      config = config || (0, _defaults.defaults)();
       if (cli.env.configPath) {
         this._config = extend(this.config, config);
         logger.ok('Finished checking config file at [%s]', cli.env.configPath.cyan);
       } else {
-
-        this._config = (0, _defaults.defaults)();
-        this._config = extend(this._config, config);
+        this._config = config;
         this.write(this._config);
       }
     }

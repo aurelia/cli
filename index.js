@@ -9,6 +9,8 @@ var local = {
 
 var Api = function() {
   this.logger = require(libDir('logger'));
+  this._config = {};
+  this._bundle = {};
 
 };
 

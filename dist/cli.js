@@ -18,7 +18,8 @@ var logger = _interopRequireWildcard(_libLogger);
 
 var _libConfig = require('./lib/config');
 
-var program = require('./lib/program');
+var _libExecCommand = require('./lib/exec-command');
+
 var Promise = require('bluebird');
 var path = require('path');
 
@@ -130,47 +131,43 @@ var AureliaCLI = (function () {
       env.configName = env.configNameSearch[0];
       env.store = new _libConfig.Config(env);
       env.isCmd = this.isCmd;
+      env.cmdDir = this.cmdDir;
+      env.isCommand = this.isCommand;
 
       if (process.cwd() !== env.cwd) {
         process.chdir(env.cwd);
         logger.log('Working directory changed to', env.cwd);
       }
 
-      return env;
-    }
-  }, {
-    key: 'initialize',
-    value: function initialize(env) {
-      var self = this;
-      return new Promise(function (resolve, reject) {
+      env.commander = (0, _libExecCommand.configure)(env.argv, env.cmdDir(), env);
 
-        env.done = self.done(resolve);
-        env.issue = self.issue(reject);
-
-        require(self.initFile).init.bind(self)(env);
-
-        env['continue'] = !program.isCmd(env._exec);
-
-        if (env['continue']) resolve(env);
+      Object.defineProperty(env, 'cmd', {
+        get: function get() {
+          return !!env.commander._commands[env.args[0]];
+        }
       });
+
+      return env;
     }
   }, {
     key: 'validation',
     value: function validation(env) {
 
-      if (!env['continue']) if (!env.modulePath) {
-
-        program.parse(process.argv);
+      if (!env.modulePath) {
         logger.err('Local aurelia-cli not found in: %s', env.modulePath);
-        env['continue'] = false;
-        return env;
+        env.isValid = false;
       }
 
       if (!env.configPath) {
-        program.parse(process.argv);
         logger.err('No Aureliafile found at %s', env.configPath);
-        env['continue'] = false;
-        return env;
+        env.isValid = false;
+      }
+
+      if (env.isValid) {
+        env.aurelia = require(env.modulePath);
+        env.configFile = require(env.configPath);
+        env.aureliaFile = env.configFile(env.aurelia);
+        env.isAureliaFile = true;
       }
 
       return env;
@@ -179,19 +176,31 @@ var AureliaCLI = (function () {
     key: 'start',
     value: function start(env) {
       var self = this;
-      if (!env['continue']) return env;
 
-      env.aurelia = env.isLocal ? require(env.modulePath) : require(this.base('index'));
+      return new Promise(function (resolve, reject) {
 
-      env.configFile = require(env.configPath);
-      env.aureliaFile = env.configFile(env.aurelia);
-      env.isAureliaFile = true;
+        env.done = self.done(resolve);
+        env.issue = self.issue(reject);
 
-      require(env.startFile).start.bind(self)(env);
+        function ready() {
+          env.commander.run();
+          resolve(env);
+        }
 
-      program.parse(process.argv);
+        require(self.startFile).start.bind(self)(env, ready);
+      });
+    }
+  }, {
+    key: 'isCommand',
+    value: function isCommand() {
+      for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        args[_key2] = arguments[_key2];
+      }
 
-      return env;
+      var isCmd = false;
+      for (var index in args) {
+        if (this.commander._commands[args[index]]) isCmd = true;
+      }return isCmd;
     }
   }, {
     key: 'isExec',
@@ -204,8 +213,8 @@ var AureliaCLI = (function () {
       var self = this;
       this.env._exec = name;
       return function () {
-        for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-          args[_key2] = arguments[_key2];
+        for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+          args[_key3] = arguments[_key3];
         }
 
         return require(self.cmdDir(name)).action.apply(this, args);

@@ -13,8 +13,8 @@ var logger = _interopRequireWildcard(_libLogger);
 
 var cli = process.AURELIA;
 
-function action(cmd, opts) {
-  logger.log('exec "%s" using %s mode', cmd, opts.name());
+function action(argv, options) {
+  logger.log('exec "%s" using %s mode', this.name, argv.plugin_name);
   logger.log('Not yet implemented...');
   logger.log('-----------------------------------');
   logger.log('  - Plugin management not yet implemented');

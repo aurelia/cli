@@ -1,42 +1,58 @@
-import * as logger from './lib/logger';
 import * as utils from './lib/utils';
+import * as logger from './lib/logger';
+import {example} from './lib/utils';
+import {command} from './lib/exec-command';
+import {program} from './lib/exec-command';
 
-var cli = process.AURELIA;
-var program = require('./lib/program');
+var cli     = process.AURELIA;
+
 var Promise = require('bluebird');
+var pjson   = require('../package.json');
+var chalk   = require('chalk');
 
-export function start() {
+export function start(env, ready) {
+
+  if (env.argv.verbose) {
+    logger.log('LIFTOFF SETTINGS:', env.liftoff);
+    logger.log('CLI OPTIONS:', env.argv);
+    logger.log('CWD:', env.cwd);
+    // log('LOCAL MODULES PRELOADED:', env.require);
+    // log('SEARCHING FOR:', env.configNameRegex);
+    logger.log('FOUND CONFIG AT:', env.configPath);
+    logger.log('CONFIG NAME:', env.configName);
+    logger.log('YOUR LOCAL MODULE IS LOCATED:', env.modulePath);
+    logger.log('LOCAL PACKAGE.JSON:', env.modulePath);
+    logger.log('CLI PACKAGE.JSON', require('../package'));
+  }
+
+  command('new', '[type]')
+    .exec('commands/new')
+    .description('create a new Aurelia project')
+    .prompt('prompt', true)
+    .action('action');
+
+  command('init')
+    .exec('commands/init')
+    .option('-e, --env', 'Initialize an aurelia project environment')
+    .description('Initialize a new Aurelia Project and creates an Aureliafile')
+    .action('action');
 
 
-  program.command('bundle')
+  if (!env.isCommand('init', 'new') && !env.argv.help && !env.isValid) {
+    return ready();
+  }
+
+  command('bundle')
+    .exec('commands/bundle')
     .alias('b')
     .description('Create a new bundle based on the configuration in Aureliafile.js')
     .option('-a --add <path>', "Add system.js path to files or file to bundle")
     .option('-r --remove <remove_path>', 'Remove file path or file from bundle')
     .option('-l, --list', 'List paths and files included in bundle')
-    .action(cli.execute('bundle'))
-    .on('--help', function () {
-      utils.example('generate', {
-        add: {
-            flags: '-a --add <path>'
-          , info : 'Add system.js path to files or file to bundle'
-          , required: true
-        },
-        remove: {
-            flags: '-r --remove <remove_path>'
-          , info : 'Remove file path or file from bundle'
-          , required: true
-        },
-        list: {
-            flags: '-l, --list'
-          , info : 'List paths and files included in bundle'
-          , required: true
-        },
-      });
-    });
+    .action('action');
 
-
-  program.command('generate <type>')
+  command('generate','<type>')
+    .exec('commands/generate')
     .alias('g')
     .description('Generate new file type based on type specified')
     .option('-n, --name <name>', "Name of the file / class")
@@ -44,87 +60,17 @@ export function start() {
     .option('-i, --inject <list>', "Name of dependency to inject", utils.parseList)
     .option('--no-lifecycle', "Do not create lifecycle callbacks, if applicable")
     .option('-t, --template <name>', "Specify the name of the template to use as override")
+    .action('action');
 
-    .action(cli.execute('generate'))
-
-    .on('--help', function () {
-      utils.example('generate', {
-        name: {
-            flags: '-n, --name <name>'
-          , info : 'Name of the file / class'
-          , required: true
-        },
-        view: {
-            flags: '-v, --view'
-          , info : 'Create a view for generated file type'
-          , required: false
-          , type : 'bool'
-        },
-        inject: {
-            flags: '-i, --inject <list>'
-          , info : 'Name of dependency to inject'
-          , required: true
-          , type : 'list'
-        },
-        lifecycle: {
-            flags: '--no-lifecycle'
-          , info : 'Do not create lifecycle callbacks, if applicable'
-          , required: false
-          , type : 'bool'
-        },
-        template: {
-            flags: '-t, --template <name>'
-          , info : 'Specify the name of the template to use as override'
-          , required: true
-        }
-      });
-
-      // logger.log('  Examples:');
-      // logger.log();
-      // logger.log('    $ aurelia g viewmodel');
-      // logger.log('    $ aurelia g viewmodel -v -n app.html -i bindable');
-      // logger.log();
-    });
-
-  program.command('plugin <plugin_name>')
+  command('plugin','<plugin_name>')
+    .exec('commands/plugin')
     .alias('p')
     .description('List all installed plugins')
     .option('-a, --add <name>', "Add plugin from Aurelia plugin repo")
     .option('-r, --remove <name>', "Disable plugin from project")
     .option('-t, --template <name>', "Disable plugin from project")
     .option('-c, --clear', "Completely remove plugin and files")
+    .action('action');
 
-    .action(cli.execute('plugin'))
-
-    .on('--help', function () {
-      utils.example('plugin', {
-        add: {
-            flags: '-a, --add <name>'
-          , info : 'Add plugin from Aurelia plugin repo'
-          , required: true
-        },
-        remove: {
-            flags: '-r, --remove <name>'
-          , info : 'Disable plugin from project'
-          , required: true
-        },
-        template: {
-            flags: '-t, --template <name>'
-          , info : 'Disable plugin from project'
-          , required: true
-        },
-        clear: {
-            flags: '-c, --clear'
-          , info : 'Completely remove plugin and files'
-          , required: false
-        },
-      });
-
-      // logger.log('  Examples:');
-      // logger.log();
-      // logger.log('    $ aurelia plugin -a i18n');
-      // logger.log('    $ aurelia p -r i18n -c');
-      // logger.log();
-    });
-
+  ready();
 }
