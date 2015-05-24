@@ -38,7 +38,7 @@ function defaults(config, bundle) {
   if (config) {
     extend(defaultConfig.config, config);
   }
-  if (config) {
+  if (bundle) {
     extend(defaultConfig.bundle, bundle);
   }
   return defaultConfig;

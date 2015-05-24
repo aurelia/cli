@@ -1,5 +1,6 @@
 import {mkdirp} from '../mkdirp-promise';
 import {installTemplate} from '../installer';
+
 var Promise    = require('bluebird')
   , join       = require('path').join
   , cli        = process.AURELIA
@@ -18,31 +19,25 @@ var Promise    = require('bluebird')
  */
 export function init(config, options) {
 
-  if (!options.env) {
+  if (!options.env)
     return Promise.resolve(cli.store.init({config:config}));
-  }
 
   var dirs   = [
     aureliaDir('plugins'),
     aureliaDir('templates')
   ];
 
-  return installTemplate('skeleton-navigation')
-    .then(function() {
-      return mkdirp(dirs)
-        .then(function(){
+  return mkdirp(dirs)
+    .then(function(){
 
-          config.env = config.env || {};
-          config.env.plugins   = dirs[0];
-          config.env.templates = dirs[1];
-          config.isInstalled = true;
+      config.env = config.env || {};
+      config.env.plugins   = dirs[0];
+      config.env.templates = dirs[1];
+      config.isInstalled = true;
 
-          cli.store.init({config:config});
-          cli.store.save({config:config});
-          return ;
+      cli.store.init({config:config});
+      cli.store.save({config:config});
+      return ;
 
-        });
     });
-
-
 }

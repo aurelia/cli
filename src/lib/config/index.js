@@ -10,6 +10,7 @@ export class Config{
 
   constructor(env){
     cli = process.AURELIA;
+    this.env = env;
     this.configName = basename(cli.env.configName);
     this.template = __dirname + `/template/${cli.env.configName}`;
     this._onready = [];
@@ -23,15 +24,15 @@ export class Config{
 
   // Return the current store Object
   get config(){
-    return cli.settings.isAureliaFile
-      ? cli.aurelia.configuration
+    return cli.env.isAureliaFile
+      ? cli.env.aurelia.configuration
       : defaults;
   }
 
   // Extend the current config
   set config(value){
     this._config = extend(this._config, value);
-    cli.aurelia.configuration = this._config;
+    cli.env.aurelia.configuration = this._config;
   }
 
   /**
@@ -42,13 +43,12 @@ export class Config{
    * @param  {Object} config Updates to the _config
    */
   init(config) {
+    config = config || defaults();
     if (cli.env.configPath) {
       this._config = extend(this.config, config);
       logger.ok('Finished checking config file at [%s]', cli.env.configPath.cyan);
     } else {
-
-      this._config = defaults();
-      this._config = extend(this._config, config);
+      this._config = config;
       this.write(this._config);
     }
   }

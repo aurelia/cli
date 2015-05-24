@@ -1,13 +1,13 @@
 #!/usr/bin/env node --harmony
 
 var // Dependencies
-    argv     = require('minimist')(process.argv.slice(2))
-  , variants = require('interpret').jsVariants
+    argv      = require('minimist')(process.argv.slice(2))
+  , variants  = require('interpret').jsVariants
   // ^ automatically attempt to require module for any javascript variant
-  , CLI     = require('../dist/cli')
-  , Liftoff = require('liftoff')
+  , CLI       = require('../dist/cli')
+  , Liftoff   = require('liftoff')
+  , configure = require('../dist/lib/exec-command').configure
 ;
-
 var // Variables
   aureliaCli = new Liftoff({
       name       : 'aurelia-cli'
@@ -38,13 +38,12 @@ CLI.create(argv,
 
       .then(aurelia.configure)
 
-      .then(aurelia.initialize)
-
       .then(aurelia.validation)
 
       .then(aurelia.start)
 
       .then(aurelia.stop);
+
   }
 );
 

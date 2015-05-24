@@ -25,6 +25,7 @@ var Config = (function () {
     _classCallCheck(this, Config);
 
     cli = process.AURELIA;
+    this.env = env;
     this.configName = basename(cli.env.configName);
     this.template = __dirname + ('/template/' + cli.env.configName);
     this._onready = [];
@@ -39,22 +40,21 @@ var Config = (function () {
   }, {
     key: 'config',
     get: function () {
-      return cli.settings.isAureliaFile ? cli.aurelia.configuration : _defaults.defaults;
+      return cli.env.isAureliaFile ? cli.env.aurelia.configuration : _defaults.defaults;
     },
     set: function (value) {
       this._config = extend(this._config, value);
-      cli.aurelia.configuration = this._config;
+      cli.env.aurelia.configuration = this._config;
     }
   }, {
     key: 'init',
     value: function init(config) {
+      config = config || (0, _defaults.defaults)();
       if (cli.env.configPath) {
         this._config = extend(this.config, config);
         logger.ok('Finished checking config file at [%s]', cli.env.configPath.cyan);
       } else {
-
-        this._config = (0, _defaults.defaults)();
-        this._config = extend(this._config, config);
+        this._config = config;
         this.write(this._config);
       }
     }
