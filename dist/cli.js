@@ -56,6 +56,11 @@ var AureliaCLI = (function () {
       this.env.store.config = value;
     }
   }, {
+    key: 'store',
+    get: function () {
+      return this.env.store;
+    }
+  }, {
     key: 'cwd',
     get: function () {
       if (!this.env.CWD) {

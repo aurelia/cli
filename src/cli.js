@@ -36,6 +36,10 @@ class AureliaCLI{
     this.env.store.config = value;
   }
 
+  get store() {
+    return this.env.store;
+  }
+
   get cwd() {
     if (!this.env.CWD) {
       this.env.CWD = path.join.bind(path, this.env.cwd);

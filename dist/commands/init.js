@@ -15,14 +15,16 @@ var _libInit = require('../lib/init');
 
 var cli = process.AURELIA;
 
-function action() {
+function action(cmd, options) {
+  console.log(cli.argv.env);
+  var config;
   var options = {
     env: cli.argv.env
   };
 
   logger.ok('initializing');
 
-  var config = cli.env.configPath ? cli.aurelia._config : { env: {} };
+  if (cli.env.configPath) config = cli.aurelia._config;else config = { env: {} };
 
   return (0, _libInit.init)(config, options);
 }
