@@ -1,7 +1,7 @@
 var Promise = require('bluebird');
 var spawn = require('child_process').spawn;
 var logger = require('./logger');
-
+var map    = require('lodash/collection/map');
 /**
  * PromiseSpawn                     Create Promise that returns a child_process output
  *                                  Log the child's output to the current process.
@@ -30,7 +30,7 @@ var logger = require('./logger');
  */
 function SpawnPromise(options) {
   if (Array.isArray(options)) {
-    return multiSpawn(options);
+    return Promise.join(map(options, SpawnPromise));
   }
 
   if (!options) {
@@ -66,26 +66,6 @@ function SpawnPromise(options) {
     //   // reject('' + code);
     //   // process.stdout.write(''+code);
     // });
-  });
-}
-
-function multiSpawn(options) {
-  return new Promise(function(resolve, reject) {
-    var index = 0;
-    var dataArray = '';
-    var next = function() {
-      SpawnPromise(options[index])
-        .then(function (data) {
-          dataArray += data;
-          index++;
-          if (options[index]) {
-            return next();
-          } else {
-            resolve(dataArray);
-          }
-        });
-    };
-    next();
   });
 }
 
