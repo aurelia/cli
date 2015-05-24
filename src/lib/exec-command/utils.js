@@ -19,7 +19,7 @@ export function kindof(thing) {
     get string() {
       return typeof thing === 'string';
     }
-  }
+  };
 }
 
 export function isArgRequired(arg){
@@ -35,7 +35,7 @@ export function parseRequiredArg(arg) {
 }
 
 export function parseOptionalArg(arg) {
-  console.log(arg.match(/\[([a-z]+)\]/))
+  console.log(arg.match(/\[([a-z]+)\]/));
   return arg.match(/\[([a-z]+)\]/)[1];
 }
 
@@ -47,4 +47,4 @@ export function parseArg(arg) {
   return {name:name, optional:_optional, required:_required};
 }
 
-export function noop(b){return b};
+export function noop(b){return b;}

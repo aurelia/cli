@@ -5,9 +5,6 @@ import {command} from './lib/exec-command';
 import {program} from './lib/exec-command';
 
 var cli     = process.AURELIA;
-
-var Promise = require('bluebird');
-var pjson   = require('../package.json');
 var chalk   = require('chalk');
 
 export function start(env, ready) {

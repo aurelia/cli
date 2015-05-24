@@ -75,5 +75,3 @@ function parseArg(arg) {
 function noop(b) {
   return b;
 }
-
-;

@@ -18,9 +18,6 @@ var logger = _interopRequireWildcard(_libLogger);
 var _libExecCommand = require('./lib/exec-command');
 
 var cli = process.AURELIA;
-
-var Promise = require('bluebird');
-var pjson = require('../package.json');
 var chalk = require('chalk');
 
 function start(env, ready) {
