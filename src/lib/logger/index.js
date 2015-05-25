@@ -1,4 +1,3 @@
-
 if (!String.prototype.magenta) {
   Object.defineProperties(String.prototype, {
     magenta: { get: function(){ return '\x1B[35m' + this.valueOf() + '\x1B[39m'; } },

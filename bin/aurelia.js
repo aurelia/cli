@@ -1,49 +1,72 @@
-#!/usr/bin/env node --harmony
+#!/usr/bin/env node
 
-var // Dependencies
-    argv      = require('minimist')(process.argv.slice(2))
-  , variants  = require('interpret').jsVariants
-  // ^ automatically attempt to require module for any javascript variant
-  , CLI       = require('../dist/cli')
-  , Liftoff   = require('liftoff')
-  , configure = require('../dist/lib/exec-command').configure
-;
-var // Variables
-  aureliaCli = new Liftoff({
-      name       : 'aurelia-cli'
-    , configName : 'Aureliafile'
-    , extensions : variants
-    , v8flags    : ['--harmony'] // to support all flags: require('v8flags') && respawn node with any flag listed here
-  }),
+var Liftoff = require('liftoff');
+var argv = require('minimist')(process.argv.slice(2));
+var logger = require('winston');
 
-  ENV = {
-      cwd: argv.cwd
-    , argv: argv
-    , configName: 'Aureliafile'
-    , AureliaCLI: aureliaCli
-    , configPath: argv.aureliafile
-    , require: argv.require
-    , completion: argv.completion
-    , verbose: argv.verbose
+process.env.INIT_CWD = process.cwd();
+var DEV_ENV = parseInt(process.env.AURELIA_CLI_DEV_ENV, 10);
+
+const cli = new Liftoff({
+  name: 'aurelia',
+  configName: 'Aureliafile'
+});
+
+
+var failed = false;
+process.once('exit', function(code) {
+  if (code === 0 && failed) {
+    process.exit(1);
   }
-;
+});
+
+var cliPackage = require('../package');
+var versionFlag = argv.v || argv.version;
+
+cli.on('require', function(name) {
+  logger.info('Requiring external module: `%s`', name);
+});
+
+if (DEV_ENV) {
+  require("babel/register");
+} 
+
+cli.launch({
+  cwd: argv.cwd,
+  configPath: argv.Aureliafile,
+  require: argv.require,
+  init_cwd: process.env.INIT_CWD,
+  isDevEnv : DEV_ENV
+}, handleCommands);
 
 
-CLI.create(argv,
+function handleCommands(env) {
+  var aurelia;
 
-  function(aurelia) {
-
-    aurelia.launch(ENV)
-           .bind(aurelia)
-
-      .then(aurelia.configure)
-
-      .then(aurelia.validation)
-
-      .then(aurelia.start)
-
-      .then(aurelia.stop);
-
+  if (process.cwd() !== env.cwd) {
+    process.chdir(env.cwd);
+    logger.info('Working directory changed to: `%s`', env.cwd);
   }
-);
 
+  if (!env.modulePath) {
+    logger.log('warn', 'Local aurelia installation not found!');
+    aurelia = require('../index');
+  } else {
+    aurelia = require(env.modulePath);
+  }
+
+  aurelia.init({
+    env : env
+  });
+
+  if (env.configPath) {
+    require(env.configPath);
+    logger.info('Using Aureliafile: %s', env.configPath);
+  } else {
+    logger.log('warn', 'Aureliafile not found');
+  }
+
+  process.nextTick(function() {
+    aurelia.run(process.argv);
+  });
+}

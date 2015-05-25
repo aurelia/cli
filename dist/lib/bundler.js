@@ -1,20 +1,47 @@
 'use strict';
 
-var api = require('jspm/api'),
-    whacko = require('whacko'),
-    glob = require('glob'),
-    fs = require('fs'),
-    url = require('url'),
-    path = require('path');
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+exports['default'] = bundle;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _jspmApi = require('jspm/api');
+
+var _jspmApi2 = _interopRequireDefault(_jspmApi);
+
+var _whacko = require('whacko');
+
+var _whacko2 = _interopRequireDefault(_whacko);
+
+var _glob = require('glob');
+
+var _glob2 = _interopRequireDefault(_glob);
+
+var _fs = require('fs');
+
+var _fs2 = _interopRequireDefault(_fs);
+
+var _url = require('url');
+
+var _url2 = _interopRequireDefault(_url);
+
+var _path = require('path');
+
+var _path2 = _interopRequireDefault(_path);
 
 var pluginName = 'view';
-var loader = api.Builder().loader;
 
 function bundleJS(moduleExpression, outfile, options) {
-  api.bundle(moduleExpression, outfile, options);
+  _jspmApi2['default'].bundle(moduleExpression, outfile, options);
 }
 
 function bundle(config) {
+
+  var loader = _jspmApi2['default'].Builder().loader;
+  var baseURL = loader.baseURL;
+  var paths = loader.paths;
 
   var jsConfig = config.js;
   var templateConfig = config.template;
@@ -34,53 +61,56 @@ function bundle(config) {
     var pattern = cfg.pattern;
     var options = cfg.options;
 
-    bundleTemplate(pattern, outfile, options);
+    bundleTemplate(pattern, outfile, options, baseURL, paths);
   });
 }
 
-function bundleTemplate(pattern, outfile, options) {
+function bundleTemplate(pattern, outfile, options, baseURL, paths) {
   var templates = [];
 
-  glob.sync(pattern, {}).forEach(function (file) {
-    var content = fs.readFileSync(file, {
+  _glob2['default'].sync(pattern, {}).forEach(function (file) {
+    var content = _fs2['default'].readFileSync(file, {
       encoding: 'utf8'
     });
-    var $ = whacko.load(content);
-    var tid = getTemplateId(file);
+    var $ = _whacko2['default'].load(content);
+    var tid = getTemplateId(file, baseURL, paths);
 
     $('template').attr('id', tid);
     var template = $.html('template');
     templates.push(template);
   });
 
-  fs.writeFileSync(outfile, templates.join('\n'));
+  _fs2['default'].writeFileSync(outfile, templates.join('\n'));
 
   if (options.inject) {
-    injectLink(outfile);
+    injectLink(outfile, baseURL);
   }
 }
 
-function injectLink(outfile) {
-  var baseURL = loader.baseURL.replace(/^file:/, '') + path.sep;
-  var content = fs.readFileSync(baseURL + 'index.html', {
+function injectLink(outfile, baseURL) {
+  var bu = baseURL.replace(/^file:/, '') + _path2['default'].sep;
+  var content = _fs2['default'].readFileSync(bu + 'index.html', {
     encoding: 'utf8'
   });
 
-  var $ = whacko.load(content);
+  var $ = _whacko2['default'].load(content);
 
   $('head').append('<link aurlia-view-bundle rel="import" href="./' + outfile + '">');
-  fs.writeFileSync('text_index.html', $.html());
 }
 
-function getTemplateId(file) {
-  var baseURL = loader.baseURL.replace(/\\/g, '/') + '/';
-  var address = baseURL + file;
-  return getModuleName(address, baseURL);
+function getTemplateId(file, baseURL, paths) {
+  var bu = baseURL.replace(/\\/g, '/') + '/';
+  var address = bu + file;
+
+  return getModuleName(address, bu, paths);
 }
 
-function getModuleName(address, baseURL) {
-
-  var paths = loader.paths;
+function getModuleName(address, baseURL, paths) {
+  var pathMatch,
+      curMatchLength,
+      curPath,
+      wIndex,
+      pathMatchLength = 0;
 
   if (pluginName) {
     var extension = address.split('/').pop();
@@ -88,14 +118,11 @@ function getModuleName(address, baseURL) {
     if (extension != address && extension != '.js') address = address.substr(0, address.length - extension.length) + '.js';
   }
 
-  var pathMatch,
-      pathMatchLength = 0;
-  var curMatchlength;
-  for (var p in loader.paths) {
+  for (var p in paths) {
 
-    var curPath = decodeURI(url.resolve(encodeURI(baseURL), paths[p].replace(/\\/g, '/')));
+    curPath = decodeURI(_url2['default'].resolve(encodeURI(baseURL), paths[p].replace(/\\/g, '/')));
+    wIndex = curPath.indexOf('*');
 
-    var wIndex = curPath.indexOf('*');
     if (wIndex === -1) {
       if (address === curPath) {
         curMatchLength = curPath.split('/').length;
@@ -121,9 +148,4 @@ function getModuleName(address, baseURL) {
 
   return pathMatch;
 }
-
-module.exports = {
-  bundleJS: bundleJS,
-  bundleTemplate: bundleTemplate,
-  bundle: bundle
-};
+module.exports = exports['default'];

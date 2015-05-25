@@ -1,19 +1,21 @@
-var api = require('jspm/api')
-  , whacko = require('whacko')
-  , glob = require('glob')
-  , fs = require('fs')
-  , url = require('url')
-  , path = require('path')
-  ;
+import api from 'jspm/api';
+import whacko from 'whacko';
+import glob from 'glob';
+import fs from 'fs';
+import url from 'url';
+import path from 'path';
 
 var pluginName = 'view';
-var loader = api.Builder().loader;
 
 function bundleJS(moduleExpression, outfile, options) {
   api.bundle(moduleExpression, outfile, options);
 }
 
-function bundle(config) {
+export default function bundle(config) {
+
+  var loader = api.Builder().loader;
+  var baseURL = loader.baseURL;
+  var paths = loader.paths;
 
   var jsConfig = config.js;
   var templateConfig = config.template;
@@ -35,12 +37,12 @@ function bundle(config) {
       var pattern = cfg.pattern;
       var options = cfg.options;
 
-      bundleTemplate(pattern, outfile, options);
+      bundleTemplate(pattern, outfile, options, baseURL, paths);
     });
 }
 
 
-function bundleTemplate(pattern, outfile, options) {
+function bundleTemplate(pattern, outfile, options, baseURL, paths) {
   var templates = [];
 
   glob
@@ -50,7 +52,7 @@ function bundleTemplate(pattern, outfile, options) {
         encoding: 'utf8'
       });
       var $ = whacko.load(content);
-      var tid = getTemplateId(file);
+      var tid = getTemplateId(file, baseURL, paths);
 
       $('template').attr('id', tid);
       var template = $.html('template');
@@ -60,32 +62,31 @@ function bundleTemplate(pattern, outfile, options) {
   fs.writeFileSync(outfile, templates.join('\n'));
 
   if (options.inject) {
-    injectLink(outfile);
+    injectLink(outfile, baseURL);
   }
 }
 
-function injectLink(outfile) {
-  var baseURL = loader.baseURL.replace(/^file:/, '') + path.sep;
-  var content = fs.readFileSync(baseURL + 'index.html', {
+function injectLink(outfile, baseURL) {
+  var bu = baseURL.replace(/^file:/, '') + path.sep;
+  var content = fs.readFileSync(bu + 'index.html', {
     encoding: 'utf8'
   });
 
   var $ = whacko.load(content);
 
   $('head').append('<link aurlia-view-bundle rel="import" href="./' + outfile + '">');
-  fs.writeFileSync('text_index.html', $.html());
 }
 
 
-function getTemplateId(file) {
-  var baseURL = loader.baseURL.replace(/\\/g, '/') + '/';
-  var address = baseURL + file;
-  return getModuleName(address, baseURL);
+function getTemplateId(file, baseURL, paths) {
+  var bu = baseURL.replace(/\\/g, '/') + '/';
+  var address = bu + file;
+
+  return getModuleName(address, bu, paths);
 }
 
-function getModuleName(address, baseURL) {
-
-  var paths = loader.paths;
+function getModuleName(address, baseURL, paths) {
+  var pathMatch, curMatchLength, curPath, wIndex, pathMatchLength = 0;
 
   if (pluginName) {
     var extension = address.split('/').pop();
@@ -94,13 +95,12 @@ function getModuleName(address, baseURL) {
       address = address.substr(0, address.length - extension.length) + '.js';
   }
 
-  var pathMatch, pathMatchLength = 0;
-  var curMatchlength;
-  for (var p in loader.paths) {
 
-    var curPath = decodeURI(url.resolve(encodeURI(baseURL), paths[p].replace(/\\/g, '/')));
+  for (var p in paths) {
 
-    var wIndex = curPath.indexOf('*');
+    curPath = decodeURI(url.resolve(encodeURI(baseURL), paths[p].replace(/\\/g, '/')));
+    wIndex = curPath.indexOf('*');
+
     if (wIndex === -1) {
       if (address === curPath) {
         curMatchLength = curPath.split('/').length;
@@ -128,9 +128,3 @@ function getModuleName(address, baseURL) {
 
   return pathMatch;
 }
-
-module.exports = {
-  bundleJS: bundleJS,
-  bundleTemplate: bundleTemplate,
-  bundle: bundle
-};
