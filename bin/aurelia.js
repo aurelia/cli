@@ -8,7 +8,7 @@ process.env.INIT_CWD = process.cwd();
 var DEV_ENV = parseInt(process.env.AURELIA_CLI_DEV_ENV, 10);
 
 const cli = new Liftoff({
-  name: 'hacker',
+  name: 'aurelia',
   configName: 'Aureliafile'
 });
 
