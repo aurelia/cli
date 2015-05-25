@@ -16,14 +16,15 @@ class Aurelia {
 
   init(config) {
     this.config = config;
-    let bundle = new BundleCommand(program, this.config, this.logger);
-    let init = new InitCommand(program, this.config, this.logger);
-    let newCmd = new NewCommand(program, this.config, this.logger);
 
-    this.commands[bundle.commandId] = bundle;
-    this.commands[init.commandId] = init;
-    this.commands[newCmd.commandId] = newCmd;
+    this.register(BundleCommand);
+    this.register(InitCommand);
+    this.register(NewCommand);
+  }
 
+  register(Construction) {
+    let command   = new Construction(this.config, this.logger);
+    Construction.register(this.program.command.bind(this.program, command));
   }
 
   command(...args) {
@@ -43,7 +44,19 @@ class Aurelia {
   }
 
   run(argv) {
-    program.parse(argv);
+    var commandId = argv._[0];
+    if (this.commands[commandId]) {
+      this.program.emit(commandId);
+
+      if (argv.help) {
+        this.program.emit('--help');
+      } else {
+        this.program.emit('action');
+      }
+    }
+    else if (argv.help) {
+      this.program.emit('--help');
+    }
   }
 }
 
