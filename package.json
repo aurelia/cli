@@ -8,6 +8,10 @@
     "bundle",
     "scaffold"
   ],
+  "scripts": {
+    "test": "mocha --compilers js:babel/register",
+    "tdd": "mocha --compilers js:babel/register -w"
+  },
   "homepage": "http://aurelia.io",
   "bugs": {
     "url": "https://github.com/aurelia/cli/issues"
@@ -23,7 +27,6 @@
     "url": "https://github.com/aurelia/cli"
   },
   "dependencies": {
-    "babel": "^5.4.7",
     "bluebird": "^2.9.25",
     "commander": "^2.8.1",
     "download-github-repo": "^0.1.3",

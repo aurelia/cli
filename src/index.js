@@ -37,7 +37,9 @@ class Aurelia {
 
     if (typeof args[0] === 'function') {
       let Cmd = args[0];
+      let commandConfig = args[1];
       let c = new Cmd(program, this.config, this.logger);
+      c.commandConfig = commandConfig;
       this.commands[c.commandId()] = c;
       return;
     }
