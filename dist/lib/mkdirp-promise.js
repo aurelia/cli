@@ -8,9 +8,18 @@ var fs = require('fs'),
     Promise = require('bluebird'),
     map = require('lodash/collection/map'),
     cli = process.AURELIA,
-    mkdirp_module = require('mkdirp');
+    mkdirp_module = require('mkdirp'),
+    logger = require('./logger');
 
-var logger = cli['import']('lib/logger');
+/**
+ * mkdirp
+ *
+ * > Recursively make directories and resolve a Promise when finished
+ *
+ * @param  {String || Array} dirs  Either a path or and Array of paths to recursively create
+ * @param  {String || Array} initialDirs The Original dirs after recursive call
+ * @return {Promise}         resolve a Promise when finished
+ */
 
 function mkdirp(dirs, initialDirs) {
   if (Array.isArray(dirs)) {

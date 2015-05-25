@@ -5,6 +5,7 @@ var ghdownload = require('download-github-repo'),
     Promise = require('bluebird');
 
 var github = new GitHubApi({
+  // required
   version: '3.0.0',
   debug: false,
   protocol: 'https',
@@ -17,6 +18,7 @@ var github = new GitHubApi({
 });
 
 function installTemplate(repoName) {
+  // find the latest available tag
   return new Promise(function (resolve, reject) {
 
     github.repos.getTags({ user: 'aurelia', repo: repoName, page: 1, per_page: 1 }, function (err, result) {
@@ -31,6 +33,7 @@ function installTemplate(repoName) {
       }
       console.log('Downloading latest available release: ' + result[0].name);
 
+      // Kick off the repo download
       ghdownload('aurelia/skeleton-navigation#' + result[0].name, '', function (err) {
         if (err !== undefined && err !== null) {
           reject('An error occurred while downloading the template');
@@ -65,6 +68,7 @@ function runNPMInstall(cb) {
     });
 
     npm.on('log', function (message) {
+      // log the progress of the installation
       console.log(message);
     });
   });

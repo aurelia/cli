@@ -25,7 +25,6 @@ var Config = (function () {
     _classCallCheck(this, Config);
 
     cli = process.AURELIA;
-    this.env = env;
     this.configName = basename(cli.env.configName);
     this.template = __dirname + ('/template/' + cli.env.configName);
     this._onready = [];
@@ -34,32 +33,57 @@ var Config = (function () {
 
   _createClass(Config, [{
     key: 'configPath',
+
+    // Return the correct path to the configFile
     get: function () {
       return cli.env.configPath;
     }
   }, {
     key: 'config',
+
+    // Return the current store Object
     get: function () {
-      return cli.env.isAureliaFile ? cli.env.aurelia.configuration : _defaults.defaults;
+      return cli.settings.isAureliaFile ? cli.aurelia.configuration : _defaults.defaults;
     },
+
+    // Extend the current config
     set: function (value) {
       this._config = extend(this._config, value);
-      cli.env.aurelia.configuration = this._config;
+      cli.aurelia.configuration = this._config;
     }
   }, {
     key: 'init',
+
+    /**
+     * init
+     *
+     * > Initialize the config store, creating a new AureliaFile if one does not exist
+     *
+     * @param  {Object} config Updates to the _config
+     */
     value: function init(config) {
-      config = config || (0, _defaults.defaults)();
       if (cli.env.configPath) {
         this._config = extend(this.config, config);
         logger.ok('Finished checking config file at [%s]', cli.env.configPath.cyan);
       } else {
-        this._config = config;
+
+        this._config = (0, _defaults.defaults)();
+        this._config = extend(this._config, config);
         this.write(this._config);
       }
     }
   }, {
     key: 'write',
+
+    /**
+     * write
+     *
+     * > Write to the current configFile
+     *
+     * @param  {Object}   data  Updates to the _config
+     * @param  {Function}  cb   callback function when complete
+     * @return {Stream}         Return the vynl stream
+     */
     value: function write(data, cb) {
 
       var self = this,
@@ -80,6 +104,16 @@ var Config = (function () {
     }
   }, {
     key: 'set',
+
+    /**
+     * set
+     *
+     * > Set properties on config to be saved.
+     *
+     * @param {String}   key   String || Object of new properties to add or Update config with
+     * @param {value}   value  Object or value to apply to the key
+     * @param {Function} cb    Callback to call when complete
+     */
     value: function set(key, value, cb) {
 
       return this.ready(function () {
@@ -98,6 +132,12 @@ var Config = (function () {
     }
   }, {
     key: 'save',
+
+    /**
+     * save
+     * @param  {Object}   data Data to extend _config with
+     * @param  {Function} cb   Callback to invoke when complete
+     */
     value: function save(data, cb) {
       return this.ready(function () {
         if (data) {

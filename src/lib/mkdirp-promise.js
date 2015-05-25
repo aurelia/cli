@@ -3,10 +3,9 @@ var fs      = require('fs')
    ,map     = require('lodash/collection/map')
    ,cli     = process.AURELIA
    ,mkdirp_module  = require('mkdirp')
+   ,logger  = require('./logger')
 ;
 
-
-var logger = cli.import('lib/logger');
 
 /**
  * mkdirp
