@@ -5,6 +5,7 @@ import logger from 'winston';
 import BundleCommand from './commands/bundle';
 import InitCommand from './commands/init';
 import NewCommand from './commands/new';
+import GenerateCommand from './commands/generate';
 
 class Aurelia {
   constructor() {
@@ -19,10 +20,12 @@ class Aurelia {
     let bundle = new BundleCommand(program, this.config, this.logger);
     let init = new InitCommand(program, this.config, this.logger);
     let newCmd = new NewCommand(program, this.config, this.logger);
+    let generateCmd = new GenerateCommand(program, this.config, this.logger);
 
     this.commands[bundle.commandId] = bundle;
     this.commands[init.commandId] = init;
     this.commands[newCmd.commandId] = newCmd;
+    this.commands[generateCmd.commandId] = generateCmd;
 
   }
 

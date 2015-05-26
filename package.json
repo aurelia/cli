@@ -40,7 +40,8 @@
     "mkdirp": "^0.5.1",
     "npm": "^2.10.1",
     "whacko": "^0.18.1",
-    "winston": "^1.0.0"
+    "winston": "^1.0.0",
+    "handlebars": "^3.0.3"
   },
   "devDependencies": {
     "babel": "^5.4.7",
@@ -48,6 +49,7 @@
     "gulp": "^3.8.11",
     "gulp-babel": "^5.1.0",
     "injectr": "^0.5.1",
-    "mocha": "^2.2.5"
+    "mocha": "^2.2.5",
+    "sinon": "^1.14.1"
   }
 }
