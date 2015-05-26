@@ -11,19 +11,26 @@ export class Command{
     var self = this;
     this.context = this.createContext(Construction, commandId);
     this._readyCallbacks = [];
-    this._prompts = [];
-    program.on(commandId, function() {
+    this._prompts = this.context.prompts || [];
 
-      self._readyCallbacks.forEach(function(fn){fn();});
-      program.on('action', function(){
-        self._runAction();
-      });
-
-      program.on('--help', function(){
-        self.context.help();
-      });
+    program.on('start', function(payload) {
+      if (payload.commandId === commandId)
+        self.onReady(function(){
+          self._runAction();
+        });
+    });
+    program.on('--help', function(payload){
+      if (payload.commandId === commandId || payload.all)
+        self.onReady(function(){
+          self.context.help();
+        });
     });
     return this;
+  }
+
+  onReady(cb) {
+    this._readyCallbacks.forEach(function(fn){fn();});
+    cb.call(this);
   }
 
   createContext (Construction, commandId){
@@ -38,6 +45,7 @@ export class Command{
     Construction.commandId = commandId;
     Construction.argv    = {_:[]};
     Construction._args   = argv._.slice(1);
+    Construction.args    = {};
     Construction.options = {};
     Construction.help    = Construction.help || this._help.bind(Construction, console.log, Construction.argv, Construction.options);
     Construction.prompts = Construction.prompts || {};
@@ -117,6 +125,8 @@ export class Command{
       this.context.argv[name] = value;
       this.context.argv._.push(value);
     }
+    this.context.commandArgs = this.context.commandArgs || '';
+    this.context.commandArgs += ' ' + str;
     return this;
   }
 
@@ -211,10 +221,16 @@ export class Command{
   }
 
   _help(log, argv, options) {
+    var isFlags;
     log();
     log('@%s %s', 'command'.green, this.commandId);
+
+    if (this.commandArgs)
+      log('@%s %s', 'args  '.green, this.commandArgs);
+
     log('@%s %s', 'info   '.green, this.description);
-    var isFlags;
+
+
     for (let index in options) {
       if (!isFlags)
         log('@%s', 'flags  '.green);

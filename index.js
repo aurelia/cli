@@ -5,5 +5,4 @@ if (DEV_ENV) {
 } else {
   aurelia = require('./dist');
 }
-
 module.exports = aurelia;

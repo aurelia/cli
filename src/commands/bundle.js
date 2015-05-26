@@ -1,4 +1,4 @@
-import  bundle  from '../../lib/bundler';
+import  bundle  from '../lib/bundler';
 
 export default class BundleCommand {
 
@@ -20,6 +20,6 @@ export default class BundleCommand {
   }
 
   action(){
-    bundle(this.commandConfig);
+    return bundle(this.commandConfig);
   }
 }

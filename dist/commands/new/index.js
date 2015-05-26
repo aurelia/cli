@@ -16,73 +16,59 @@ var logger = _interopRequireWildcard(_libLogger);
 
 var _libInstaller = require('../../lib/installer');
 
-var _lodash = require('lodash');
+var _libInit = require('../../lib/init');
 
-var _libAsk = require('../../lib/ask');
+var _lodash = require('lodash');
 
 var templates = {
   navigation: 'skeleton-navigation',
   plugin: 'skeleton-plugin'
 };
 
-var prompts = [{
-  type: 'list',
-  name: 'template',
-  message: 'Template?',
-  choices: (0, _lodash.map)(templates, function (temp, key) {
-    return {
-      name: key,
-      value: temp
-    };
-  })
-}];
-
 var NewCommand = (function () {
-  function NewCommand(program, config, logger) {
-    var _this = this;
-
+  function NewCommand(config, logger) {
     _classCallCheck(this, NewCommand);
 
-    this.program = program;
     this.logger = logger;
     this.commandId = 'new';
     this.globalConfig = config;
 
-    program.command('new [type]').description('create a new Aurelia project').action(function (opt) {
-      _this.run(opt);
-    }).on('--help', function () {
-      example('new', {
-        navigation: {
-          flags: 'navigation',
-          info: 'create a new skeleton navigation style app',
-          required: true
-        },
-        plugin: {
-          flags: 'plugin',
-          info: 'create a new aurelia plugin template',
-          required: true
-        }
-      });
-    });
+    this.prompts = [{
+      type: 'list',
+      name: 'template',
+      message: 'Template?',
+      choices: (0, _lodash.map)(templates, function (temp, key) {
+        return {
+          name: key,
+          value: temp
+        };
+      })
+    }];
   }
 
   _createClass(NewCommand, [{
-    key: 'run',
-    value: function run(opt) {
-      (0, _libAsk.ask)(prompts).then(function (answers) {
-        var app = answers.template;
+    key: 'action',
+    value: function action(argv, options, answers) {
+      var app = answers.template || agrv.template && templates[argv.template];
 
-        if (!app) {
-          logger.error('Unknown template, please type aurelia new --help to get information on available types');
-          return;
-        }
-
-        (0, _libInstaller.installTemplate)(app).then(function (response) {
-          logger.log(response);
-        })['catch'](function (err) {
-          logger.error(err);
-        });
+      if (!app) {
+        logger.error('Unknown template, please type aurelia new --help to get information on available types');
+        return;
+      }
+      var self = this;
+      return (0, _libInstaller.installTemplate)(app).then(function (response) {
+        logger.log(response.msg || response);
+        return (0, _libInit.init)(self.globalConfig, { overwrite: true });
+      }).then(function (response) {
+        logger.log(response.msg || response);
+      })['catch'](function (err) {
+        logger.error(err);
       });
+    }
+  }], [{
+    key: 'register',
+    value: function register(command) {
+      command('new').arg('[template]').description('create a new Aurelia project').beforeAction('prompt');
     }
   }]);
 

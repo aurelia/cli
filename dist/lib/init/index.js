@@ -27,30 +27,28 @@ var _path2 = _interopRequireDefault(_path);
  * @return {Promise}        Resolved when all directories are made
  */
 
-function init(options, config) {
+function init(options, answers) {
 
-  var aureliaDir = config.env.cwd + _path2['default'].sep + '.aurelia';
-
-  console.log('aureliaDir: ' + aureliaDir);
-  return;
-
-  if (!options.env) {
-    return _bluebird2['default'].resolve(cli.store.init({ config: config }));
-  }
+  var store = options.store;
+  var aureliaDir = _path2['default'].join.bind(_path2['default'], process.cwd() + _path2['default'].sep + '.aurelia');
 
   var dirs = [aureliaDir('plugins'), aureliaDir('templates')];
-
-  return (0, _installer.installTemplate)('skeleton-navigation').then(function () {
-    return (0, _mkdirpPromise.mkdirp)(dirs).then(function () {
-
-      config.env = config.env || {};
-      config.env.plugins = dirs[0];
-      config.env.templates = dirs[1];
-      config.isInstalled = true;
-
-      cli.store.init({ config: config });
-      cli.store.save({ config: config });
-      return;
-    });
+  return store.init().then(function (response) {
+    if (!options.env.modulePath) {
+      return { msg: 'Local moduleFile not found, Please run $ npm install --save-dev aurelia-cli' };
+    }
+    if (!response.exists || answers.overwrite) {
+      return store.create();
+    }
+    return response;
   });
+
+  // if (options.create)
+  //   return mkdirp(dirs)
+  //     .then(function(){
+  //       if (store) {
+  //         return store.init({config:config});
+  //       }
+  //       return {msg:'Folders created in .aurelia/'};
+  //     });
 }

@@ -23,7 +23,7 @@ export function init(options, answers) {
   return store.init()
     .then(function(response){
       if (!options.env.modulePath) {
-        return {msg: 'Local moduleFile not found, Please run $ aurelia new'};
+        return {msg: 'Local moduleFile not found, Please run $ npm install --save-dev aurelia-cli'};
       }
       if (!response.exists || answers.overwrite){
         return store.create();

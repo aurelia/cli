@@ -12,18 +12,14 @@ export default class InitCommand {
   constructor(config, logger) {
     this.logger       = logger;
     this.globalConfig = config;
-  }
-
-  prompt(ask, argv, options){
-    var self = this;
-    var prompts = [{
+    this.prompts = [{
         type: 'confirm'
       , name: 'overwrite'
       , message: 'ConfigFile Exists! Overwrite?'
       , default: false
       , when: function() {
-          return self.globalConfig.store.isConfig;
-        }
+          return this.globalConfig.store.isConfig;
+        }.bind(this)
     },{
         type: 'confirm'
       , name: 'sure'
@@ -33,14 +29,9 @@ export default class InitCommand {
           return answers.overwrite;
         }
     }];
-    return ask(prompts)
-      .then(function(answers){
-        answers.overwrite = answers.overwrite || false;
-        return answers;
-      });
   }
-
   action(argv, opts, answers){
+    answers.overwrite = answers.overwrite || false;
     return init(this.globalConfig, answers)
       .then(function(responce){
         if (responce.msg)

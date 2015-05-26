@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env node --harmony
 
 var Liftoff = require('liftoff');
 var argv = require('minimist')(process.argv.slice(2));
@@ -8,7 +8,7 @@ process.env.INIT_CWD = process.cwd();
 var DEV_ENV = parseInt(process.env.AURELIA_CLI_DEV_ENV, 10);
 
 const cli = new Liftoff({
-  name: 'aurelia',
+  name: 'aurelia-cli',
   configName: 'Aureliafile'
 });
 
@@ -66,7 +66,6 @@ function handleCommands(env) {
   } else {
     logger.log('warn', 'Aureliafile not found');
   }
-
   aurelia.run(argv);
   process.nextTick(function() {
   });

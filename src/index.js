@@ -20,9 +20,9 @@ class Aurelia {
     this.config       = config;
     this.config.store = this.store;
 
-    this.register(BundleCommand);
-    this.register(InitCommand);
     this.register(NewCommand);
+    this.register(InitCommand);
+    this.register(BundleCommand);
   }
 
   register(Construction) {
@@ -53,16 +53,14 @@ class Aurelia {
     var commandId = argv._[0];
     if (this.commands[commandId]) {
 
-      this.program.emit(commandId);
-
       if (argv.help) {
-        this.program.emit('--help');
+        this.program.emit('--help', {commandId:commandId});
       } else {
-        this.program.emit('action');
+        this.program.emit('start', {commandId:commandId});
       }
     }
     else if (argv.help) {
-      this.program.emit('--help');
+      this.program.emit('--help', {all:true});
     }
   }
 }

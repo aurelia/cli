@@ -10,9 +10,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _commander = require('commander');
+var _libProgram = require('./lib/program');
 
-var _commander2 = _interopRequireDefault(_commander);
+var _libConfigStore = require('./lib/config/store');
 
 var _glob = require('glob');
 
@@ -47,14 +47,21 @@ var Aurelia = (function () {
   _createClass(Aurelia, [{
     key: 'init',
     value: function init(config) {
+      this.program = new _libProgram.Program(config);
+      this.store = new _libConfigStore.Store(config);
       this.config = config;
-      var bundle = new _commandsBundle2['default'](_commander2['default'], this.config, this.logger);
-      var init = new _commandsInit2['default'](_commander2['default'], this.config, this.logger);
-      var newCmd = new _commandsNew2['default'](_commander2['default'], this.config, this.logger);
+      this.config.store = this.store;
 
-      this.commands[bundle.commandId] = bundle;
-      this.commands[init.commandId] = init;
-      this.commands[newCmd.commandId] = newCmd;
+      this.register(_commandsBundle2['default']);
+      this.register(_commandsInit2['default']);
+      this.register(_commandsNew2['default']);
+    }
+  }, {
+    key: 'register',
+    value: function register(Construction) {
+      var command = new Construction(this.config, this.logger);
+      Construction.register(this.program.command.bind(this.program, command));
+      this.commands[command.commandId] = command;
     }
   }, {
     key: 'command',
@@ -68,7 +75,9 @@ var Aurelia = (function () {
 
       if (typeof arguments[0] === 'function') {
         var Cmd = arguments[0];
-        var c = new Cmd(_commander2['default'], this.config, this.logger);
+        var commandConfig = arguments[1];
+        var c = new Cmd(program, this.config, this.logger);
+        c.commandConfig = commandConfig;
         this.commands[c.commandId()] = c;
         return;
       }
@@ -76,7 +85,19 @@ var Aurelia = (function () {
   }, {
     key: 'run',
     value: function run(argv) {
-      _commander2['default'].parse(argv);
+      var commandId = argv._[0];
+      if (this.commands[commandId]) {
+
+        this.program.emit(commandId);
+
+        if (argv.help) {
+          this.program.emit('--help');
+        } else {
+          this.program.emit('action');
+        }
+      } else if (argv.help) {
+        this.program.emit('--help');
+      }
     }
   }]);
 
