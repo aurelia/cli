@@ -1,51 +1,75 @@
-import program from 'commander';
+import {Program} from './lib/program';
+import {Store} from './lib/config/store';
 import glob from 'glob';
 import logger from 'winston';
-
 import BundleCommand from './commands/bundle';
 import InitCommand from './commands/init';
 import NewCommand from './commands/new';
 
 class Aurelia {
+
   constructor() {
     this.commands = {};
+    this.aliases  = {};
     this.name = 'Aurelia CLI tool';
     this.config = {};
     this.logger = logger;
   }
 
   init(config) {
-    this.config = config;
-    let bundle = new BundleCommand(program, this.config, this.logger);
-    let init = new InitCommand(program, this.config, this.logger);
-    let newCmd = new NewCommand(program, this.config, this.logger);
+    this.program      = new Program(config);
+    this.store        = new Store(config);
+    this.config       = config;
+    this.config.store = this.store;
 
-    this.commands[bundle.commandId] = bundle;
-    this.commands[init.commandId] = init;
-    this.commands[newCmd.commandId] = newCmd;
-
+    this.register(NewCommand);
+    this.register(InitCommand);
+    this.register(BundleCommand);
   }
 
-  command(...args) {
-    if (typeof args[0] === 'string') {
-      let commandId = args[0];
-      let config = args[1];
-      this.commands[commandId].commandConfig = config;
+  register(Construction) {
+    let command   = new Construction(this.config, this.logger);
+    Construction.register(this.program.command.bind(this.program, command));
+    this.commands[command.commandId] = command;
+    this.aliases[command.alias] = command.commandId;
+  }
+
+  command(commandId, Construction) {
+
+    if (typeof commandId === 'function') {
+      Construction = commandId;
+      commandId = null;
+    }
+
+    if (commandId && typeof Construction === 'object') {
+      this.commands[commandId].commandConfig = Construction;
       return;
     }
 
-    if (typeof args[0] === 'function') {
-      let Cmd = args[0];
-      let commandConfig = args[1];
-      let c = new Cmd(program, this.config, this.logger);
-      c.commandConfig = commandConfig;
-      this.commands[c.commandId()] = c;
+    if (typeof Construction === 'function') {
+      this.register(Construction);
       return;
     }
   }
 
   run(argv) {
-    program.parse(argv);
+    var commandId = argv._[0];
+
+    if (this.isCommand(commandId)) {
+
+      if (argv.help) {
+        this.program.emit('--help', {commandId:commandId});
+      } else {
+        this.program.emit('start', {commandId:commandId});
+      }
+    }
+    else if (argv.help) {
+      this.program.emit('--help', {all:true});
+    }
+  }
+
+  isCommand(commandId) {
+    return !!this.commands[commandId] || this.aliases[commandId];
   }
 }
 

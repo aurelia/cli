@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env node --harmony
 
 var Liftoff = require('liftoff');
 var argv = require('minimist')(process.argv.slice(2));
@@ -8,7 +8,7 @@ process.env.INIT_CWD = process.cwd();
 var DEV_ENV = parseInt(process.env.AURELIA_CLI_DEV_ENV, 10);
 
 const cli = new Liftoff({
-  name: 'aurelia',
+  name: 'aurelia-cli',
   configName: 'Aureliafile'
 });
 
@@ -29,7 +29,7 @@ cli.on('require', function(name) {
 
 if (DEV_ENV) {
   require("babel/register");
-} 
+}
 
 cli.launch({
   cwd: argv.cwd,
@@ -56,17 +56,15 @@ function handleCommands(env) {
   }
 
   aurelia.init({
-    env : env
+      env : env
+    , argv: argv
   });
 
-  if (env.configPath) {
+  if (env.configPath && env.modulePath) {
     require(env.configPath);
     logger.info('Using Aureliafile: %s', env.configPath);
   } else {
     logger.log('warn', 'Aureliafile not found');
   }
-
-  process.nextTick(function() {
-    aurelia.run(process.argv);
-  });
+  aurelia.run(argv);
 }

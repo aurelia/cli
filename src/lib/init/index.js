@@ -11,35 +11,32 @@ import path from  'path';
  * @return {Promise}        Resolved when all directories are made
  */
 
-export function init(options, config) {
+export function init(options, answers) {
 
-  var  aureliaDir = config.env.cwd +  path.sep + '.aurelia';
+  var store = options.store;
+  var aureliaDir = path.join.bind(path, process.cwd() +  path.sep + '.aurelia');
 
-  console.log('aureliaDir: ' + aureliaDir);
-  return;
-
-  if (!options.env) {
-    return Promise.resolve(cli.store.init({config:config}));
-  }
-
-  var dirs   = [
+  var dirs = [
     aureliaDir('plugins'),
     aureliaDir('templates')
   ];
-
-  return installTemplate('skeleton-navigation')
-    .then(function() {
-      return mkdirp(dirs)
-        .then(function(){
-
-          config.env = config.env || {};
-          config.env.plugins   = dirs[0];
-          config.env.templates = dirs[1];
-          config.isInstalled = true;
-
-          cli.store.init({config:config});
-          cli.store.save({config:config});
-          return ;
-        });
+  return store.init()
+    .then(function(response){
+      if (!options.env.modulePath) {
+        return {msg: 'Local moduleFile not found, Please run $ npm install --save-dev aurelia-cli'};
+      }
+      if (!response.exists || answers.overwrite){
+        return store.create();
+      }
+      return response;
     });
+
+  // if (options.create)
+  //   return mkdirp(dirs)
+  //     .then(function(){
+  //       if (store) {
+  //         return store.init({config:config});
+  //       }
+  //       return {msg:'Folders created in .aurelia/'};
+  //     });
 }
