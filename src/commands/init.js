@@ -32,10 +32,6 @@ export default class InitCommand {
     }];
   }
 
-  onHelp(){
-    console.log('Hello');
-  }
-
   action(argv, opts, answers){
     answers.overwrite = answers.overwrite || false;
     return init(this.globalConfig, answers)
