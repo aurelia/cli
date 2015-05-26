@@ -8,7 +8,7 @@ process.env.INIT_CWD = process.cwd();
 var DEV_ENV = parseInt(process.env.AURELIA_CLI_DEV_ENV, 10);
 
 const cli = new Liftoff({
-  name: 'aurelia',
+  name: 'aurelia-cli',
   configName: 'Aureliafile'
 });
 
@@ -36,7 +36,8 @@ cli.launch({
   configPath: argv.Aureliafile,
   require: argv.require,
   init_cwd: process.env.INIT_CWD,
-  isDevEnv : DEV_ENV
+  isDevEnv : DEV_ENV,
+  cliPackage : cliPackage
 }, handleCommands);
 
 

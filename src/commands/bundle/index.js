@@ -1,4 +1,4 @@
-import  bundle  from '../../lib/bundler';
+import bundle from '../../lib/bundler';
 
 export default class BundleCommand {
   constructor(program, config, logger) {
@@ -14,8 +14,8 @@ export default class BundleCommand {
       .option('-a --add <path>', "Add system.js path to files or file to bundle")
       .option('-r --remove <remove_path>', 'Remove file path or file from bundle')
       .option('-l, --list', 'List paths and files included in bundle')
-      .action((options) => {
-        bundle(this.commandConfig);
+      .action((cmd, options) => {
+         bundle(this.commandConfig);
       });
   }
 }
