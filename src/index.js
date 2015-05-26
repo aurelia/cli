@@ -1,7 +1,7 @@
-import program from 'commander';
+import {Program} from './lib/program';
+import {Store} from './lib/config/store';
 import glob from 'glob';
 import logger from 'winston';
-
 import BundleCommand from './commands/bundle';
 import InitCommand from './commands/init';
 import NewCommand from './commands/new';
@@ -15,7 +15,10 @@ class Aurelia {
   }
 
   init(config) {
-    this.config = config;
+    this.program      = new Program(config);
+    this.store        = new Store(config);
+    this.config       = config;
+    this.config.store = this.store;
 
     this.register(BundleCommand);
     this.register(InitCommand);
@@ -25,6 +28,7 @@ class Aurelia {
   register(Construction) {
     let command   = new Construction(this.config, this.logger);
     Construction.register(this.program.command.bind(this.program, command));
+    this.commands[command.commandId] = command;
   }
 
   command(...args) {
@@ -48,6 +52,7 @@ class Aurelia {
   run(argv) {
     var commandId = argv._[0];
     if (this.commands[commandId]) {
+
       this.program.emit(commandId);
 
       if (argv.help) {

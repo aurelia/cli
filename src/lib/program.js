@@ -1,13 +1,28 @@
 let argv, env, program;
 import extend from 'lodash/object/extend';
 import repeat from 'lodash/string/repeat';
+import {ask} from './ask';
+var Promise      = require('bluebird');
 var EventEmitter = require('events').EventEmitter;
 
 export class Command{
 
   constructor(Construction, commandId) {
+    var self = this;
     this.context = this.createContext(Construction, commandId);
+    this._readyCallbacks = [];
+    this._prompts = [];
+    program.on(commandId, function() {
 
+      self._readyCallbacks.forEach(function(fn){fn();});
+      program.on('action', function(){
+        self._runAction();
+      });
+
+      program.on('--help', function(){
+        self.context.help();
+      });
+    });
     return this;
   }
 
@@ -24,9 +39,14 @@ export class Command{
     Construction.argv    = {_:[]};
     Construction._args   = argv._.slice(1);
     Construction.options = {};
-    Construction.help    = this._help.bind(Construction, console.log, Construction.argv, Construction.options);
+    Construction.help    = Construction.help || this._help.bind(Construction, console.log, Construction.argv, Construction.options);
+    Construction.prompts = Construction.prompts || {};
     return Construction;
   }
+  _ready(fn) {
+    this._readyCallbacks.push(fn.bind(this));
+  }
+
   _onEvent(proto, evt){
     program.on(evt, function(payload){
       this.context[proto].bind(this.context)(payload);
@@ -78,14 +98,11 @@ export class Command{
     }
     var name  = flags.match(/\-\-(\w+)/)[1];
     var alias = flags.match(/^\-(\w+)/)[1];
-    program.on('--'+name, function(){
-      self._option(flags, info, parseFn, name, alias);
-    });
-    program.on('-'+alias, function(){
-      program.emit('--'+name);
-    });
-    program.on('help', function(){
-      program.emit('--'+name);
+
+    this._ready(function(){
+      if (argv[name] || argv[alias] || argv.help) {
+        self._option(flags, info, parseFn, name, alias);
+      }
     });
     return this;
   }
@@ -115,18 +132,62 @@ export class Command{
     this.context.description = text;
     return this;
   }
+  _runPrompt() {
 
+    var self = this;
+    if(this.context.prompt) {
+      return this.context.prompt(ask, this.argv, self.options, self._prompts);
+    }
+    if (this._prompts.length) {
+      return ask(self._prompts);
+    }
+  }
   prompt(stringFN) {
+    var self = this;
     if (typeof stringFN === 'string' && this.isPrototype(stringFN)) {
       this.context.prompt = this.context[stringFN];
     } else if (typeof stringFN === 'function') {
       this.context.prompt = stringFN.bind(this.context);
-    } else {
-      this.context.prompt = this.context.prompt || function(){return console.log('No Prompt found for command %s', this.name);}.bind(this);
+    } else if (Array.isArray(stringFN)) {
+      this._prompts = stringFN;
+    } else if (typeof stringFN === 'object') {
+      this._prompts.push(stringFN);
     }
     return this;
   }
+  beforeAction(stringFN){
+    if (typeof stringFN === 'string') {
+      if (stringFN === 'prompt') {
+        this._beforeAction = this._runPrompt;
+      } else if(this.isPrototype(stringFN)) {
+        this._beforeAction = this.context[str].bind(this.context);
+      }
+    } else if (typeof stringFN === 'function') {
+      this._beforeAction = stringFN.bind(this);
+    }
+    return this;
+  }
+  _runAction(){
+    var self = this;
+    return Promise.resolve()
+      .then(function(){
+        if (self._beforeAction)
+          return self._beforeAction(self.context.argv, self.context.options);
 
+        if (self.context.beforAction && typeof self.context.beforAction === 'function')
+          return self.context.beforAction(self.context.argv, self.context.options);
+
+        return;
+      })
+      .then(function(before){
+        return self.context.action(self.context.argv, self.context.options, before);
+      })
+      .then(function(action){
+        if (self.context.afterAction && typeof self.context.afterAction)
+          return self.context.afterAction(self.context.argv, self.context.options, action);
+        return;
+      });
+  }
   action(stringFN) {
     if (typeof stringFN === 'string' && this.isPrototype(stringFN)) {
       this.context.action = this.context[stringFN];
@@ -146,6 +207,7 @@ export class Command{
     } else {
       this.context.help = this.context.help || this._help.bind(this.context, console.log);
     }
+    return this;
   }
 
   _help(log, argv, options) {

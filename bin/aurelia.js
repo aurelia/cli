@@ -29,7 +29,7 @@ cli.on('require', function(name) {
 
 if (DEV_ENV) {
   require("babel/register");
-} 
+}
 
 cli.launch({
   cwd: argv.cwd,
@@ -56,17 +56,18 @@ function handleCommands(env) {
   }
 
   aurelia.init({
-    env : env
+      env : env
+    , argv: argv
   });
 
-  if (env.configPath) {
+  if (env.configPath && env.modulePath) {
     require(env.configPath);
     logger.info('Using Aureliafile: %s', env.configPath);
   } else {
     logger.log('warn', 'Aureliafile not found');
   }
 
+  aurelia.run(argv);
   process.nextTick(function() {
-    aurelia.run(process.argv);
   });
 }
