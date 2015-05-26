@@ -7,8 +7,10 @@ import InitCommand from './commands/init';
 import NewCommand from './commands/new';
 
 class Aurelia {
+
   constructor() {
     this.commands = {};
+    this.aliases  = {};
     this.name = 'Aurelia CLI tool';
     this.config = {};
     this.logger = logger;
@@ -29,29 +31,31 @@ class Aurelia {
     let command   = new Construction(this.config, this.logger);
     Construction.register(this.program.command.bind(this.program, command));
     this.commands[command.commandId] = command;
+    this.aliases[command.alias] = command.commandId;
   }
 
-  command(...args) {
-    if (typeof args[0] === 'string') {
-      let commandId = args[0];
-      let config = args[1];
-      this.commands[commandId].commandConfig = config;
+  command(commandId, Construction) {
+
+    if (typeof commandId === 'function') {
+      Construction = commandId;
+      commandId = null;
+    }
+
+    if (commandId && typeof Construction === 'object') {
+      this.commands[commandId].commandConfig = Construction;
       return;
     }
 
-    if (typeof args[0] === 'function') {
-      let Cmd = args[0];
-      let commandConfig = args[1];
-      let c = new Cmd(program, this.config, this.logger);
-      c.commandConfig = commandConfig;
-      this.commands[c.commandId()] = c;
+    if (typeof Construction === 'function') {
+      this.register(Construction);
       return;
     }
   }
 
   run(argv) {
     var commandId = argv._[0];
-    if (this.commands[commandId]) {
+
+    if (this.isCommand(commandId)) {
 
       if (argv.help) {
         this.program.emit('--help', {commandId:commandId});
@@ -62,6 +66,10 @@ class Aurelia {
     else if (argv.help) {
       this.program.emit('--help', {all:true});
     }
+  }
+
+  isCommand(commandId) {
+    return !!this.commands[commandId] || this.aliases[commandId];
   }
 }
 

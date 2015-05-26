@@ -1,38 +1,63 @@
 let argv, env, program;
 import extend from 'lodash/object/extend';
 import repeat from 'lodash/string/repeat';
-import {ask} from './ask';
+import {ask} from '../ask';
 var Promise      = require('bluebird');
-var EventEmitter = require('events').EventEmitter;
 
 export class Command{
 
-  constructor(Construction, commandId) {
+  /*
+      constructor
+      @param parent    program
+      @param config    globalConfig
+
+      @Event start     Check if is current command
+                       Call pareOptions to parse options
+                       run _runAction()
+
+      @Event --help    Check if is current command or if all commands
+                       Call pareOptions to parse options
+                       run context.help()
+
+   */
+  constructor(parent, config) {
     var self = this;
-    this.context = this.createContext(Construction, commandId);
+    program = parent;
+    argv    = config.argv;
+    this.program  = program;
     this._readyCallbacks = [];
-    this._prompts = this.context.prompts || [];
 
     program.on('start', function(payload) {
-      if (payload.commandId === commandId)
-        self.onReady(function(){
-          self._runAction();
-        });
+      if (payload.commandId === self.context.commandId || payload.commandId === self.context.alias) {
+        self.pareOptions();
+        self._runAction();
+      }
     });
+
     program.on('--help', function(payload){
-      if (payload.commandId === commandId || payload.all)
-        self.onReady(function(){
-          self.context.help();
-        });
+      if (payload.all || payload.commandId === self.context.commandId || payload.commandId === self.context.alias) {
+        self.pareOptions();
+        self.context.help();
+      }
     });
+
     return this;
   }
 
-  onReady(cb) {
+  /*
+      pareOptions
+      Parse all contained options
+
+   */
+  pareOptions() {
     this._readyCallbacks.forEach(function(fn){fn();});
-    cb.call(this);
   }
 
+  /*
+      Create context
+      @param Construction {Constructor} The CustomCommand Constructor.
+      @param commandId    {String}      The name of the command;
+   */
   createContext (Construction, commandId){
 
     for (let proto in Construction.prototype) {
@@ -42,75 +67,63 @@ export class Command{
               this._onEvent(proto, eventName);
         }
     }
+
     Construction.commandId = commandId;
     Construction.argv    = {_:[]};
-    Construction._args   = argv._.slice(1);
+    Construction._args   = argv._.slice(1) || [];
     Construction.args    = {};
     Construction.options = {};
     Construction.help    = Construction.help || this._help.bind(Construction, console.log, Construction.argv, Construction.options);
-    Construction.prompts = Construction.prompts || {};
+    Construction.prompts = Construction.prompts || [];
+    this._prompts = Construction.prompts;
+    this.context = Construction;
     return Construction;
   }
+
+  // Called by option that pushed the function into an array to be called on parseOptions
   _ready(fn) {
     this._readyCallbacks.push(fn.bind(this));
   }
 
+  // Handles events bound to the specific command
   _onEvent(proto, evt){
     program.on(evt, function(payload){
       this.context[proto].bind(this.context)(payload);
     }.bind(this));
   }
-  _option(flags, info, parseFn, name, alias){
-    var value = argv[name] || argv[alias];
-    var isRequired = /</.test(flags);
-    var isOptional = /\[/.test(flags);
-    var getValue, prototypeName = parseFn;
-    parseFn = function(){return value;};
 
-    getValue = function(protoName) {
-      return function() {
-        return protoName ? this.context[protoName](value) : value;
-      };
-    };
-
-    if (this.isPrototype(prototypeName)) {
-      parseFn = getValue(prototypeName);
-    } else {
-      prototypeName = 'on' + name[0].toUpperCase() + name.slice(1);
-      if (this.isPrototype(prototypeName)) {
-        parseFn = getValue(prototypeName);
-      }
-    }
-
-    this.context.options[name] = {
-        name : name
-      , alias: alias
-      , info : info
-      , flags:flags
-      , required : isRequired
-      , optional : isOptional
-      , get value() {
-          return parseFn();
-        }
-    };
-
-    if (value)
-      this.context.argv[name] = this.options[name].value;
-
-    return this;
-  }
   option(flags, info, parseFn){
     var self = this;
     if (flags.length > program.maxFlags) {
       program.maxFlags = flags.length;
     }
-    var name  = flags.match(/\-\-(\w+)/)[1];
-    var alias = flags.match(/^\-(\w+)/)[1];
 
     this._ready(function(){
-      if (argv[name] || argv[alias] || argv.help) {
-        self._option(flags, info, parseFn, name, alias);
+
+      if (!parseFn || typeof parseFn !== 'function') {
+        parseFn = function(c){return c;};
       }
+      var value;
+      var option = {
+          name     : flags.match(/\-\-(\w+)/)[1]
+        , alias    : flags.match(/^\-(\w+)/)[1]
+        , flags    : flags
+        , info     : info
+        , required : /</.test(flags)
+        , optional : /\[/.test(flags)
+        , get value() {
+            return parseFn(value);
+          }
+      };
+
+      value = argv[option.name] || argv[option.alias];
+
+      if (value !== undefined)
+        if (argv[option.name] || argv[option.alias] || argv.help)
+            self.context.argv[option.name] = option.value;
+
+      self.context.options[option.name] = option;
+
     });
     return this;
   }
@@ -132,7 +145,7 @@ export class Command{
 
   alias(str) {
     this.context.alias = str;
-    if ((argv._[0] === str) && arg._[0] !== this.context.commandId) {
+    if ((argv._[0] === str) && argv._[0] !== this.context.commandId) {
       argv._[0] = this.context.commandId;
     }
     return this;
@@ -142,6 +155,7 @@ export class Command{
     this.context.description = text;
     return this;
   }
+
   _runPrompt() {
 
     var self = this;
@@ -198,6 +212,7 @@ export class Command{
         return;
       });
   }
+
   action(stringFN) {
     if (typeof stringFN === 'string' && this.isPrototype(stringFN)) {
       this.context.action = this.context[stringFN];
@@ -246,23 +261,6 @@ export class Command{
 
   isPrototype(name) {
     return typeof name === 'string' && typeof this.context[name] === 'function';
-  }
-}
-
-
-export class Program extends EventEmitter{
-
-  constructor(config) {
-    super();
-    program = this;
-    argv = config.argv;
-    this.maxFlags = 0;
-  }
-
-  command(cmd, cmdId) {
-    let commandId = commandId;
-    var command = new Command(cmd, cmdId);
-    return command;
   }
 }
 

@@ -67,6 +67,4 @@ function handleCommands(env) {
     logger.log('warn', 'Aureliafile not found');
   }
   aurelia.run(argv);
-  process.nextTick(function() {
-  });
 }

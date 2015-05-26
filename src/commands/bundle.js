@@ -16,7 +16,6 @@ export default class BundleCommand {
     this.logger        = logger;
     this.globalConfig  = config;
     this.commandConfig = {};
-
   }
 
   action(){
