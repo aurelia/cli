@@ -60,7 +60,7 @@ aurelia bundle
 
 # Authoring project specific command/plugin
 
-Currently `CLI` offers some built in commands that includes  `new`, `bundle`, and `generate` etc. Often times these are not enough you need some project specific commands. Let's see how easy it is to write one of these. Here we will write a `custom command` that prints `Hello cli plugin world!` to the console.
+Currently `CLI` offers some built in commands that includes  `new`, `bundle`, and `generate` etc. Often times these are not enough you need some project specific commands. Let's see how easy it is to write one of these. 
 
 
 Place the following code in a file named `example-command.js` relative to the `Aureliafile`. 
@@ -84,8 +84,8 @@ Now, let's `require` the command in the `Aureliafie.js`. It should look like:
 ```javascript
 
   var aurelia = require('aurelia-cli');
-
   var ExampleCommand = require('./example-command');
+
   
   aurelia.command(ExampleCommand);
 
@@ -97,3 +97,6 @@ Notice `aurelia.command(...)` this is actually hooking the plugin with `cli`. Wi
 aurelia example
 ```
 
+That's it! This should print `Hello cli plugin world!` to the console.
+
+You can package your plugin/command as an `npm package`,  publish  and share with the world. Our `registry`  will help you discover other great `plugins` created by the community. 
