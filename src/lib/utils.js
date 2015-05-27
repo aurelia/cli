@@ -1,8 +1,3 @@
-var fs      = require('fs')
-  , path    = require('path')
-  , _f      = require('fs-utils')
-  , repeat  = require('lodash/string/repeat');
-
 
 export function ucFirst(val) {
   return val.charAt(0).toUpperCase() + val.slice(1);

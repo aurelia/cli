@@ -19,20 +19,6 @@ export default class GenerateCommand {
       .option('-t, --template <name>', "Specify the name of the template to use as override")
       .action((cmd,  options) => {
         this.run(cmd, options);
-      })
-      .on('--help', function() {
-        example('generate', {
-          type: {
-            flags: 'type',
-            info: 'creates the given type',
-            required: true
-          },
-          '-v': {
-            flags: '-v',
-            info: 'creates additionally a view file',
-            required: false
-          }
-        });
       });
   }
 
