@@ -77,7 +77,7 @@ module.exports = function ExampleCommand(program, config, logger) {
       });
 };
 ```
-> You can place the the file any where in your project directory. You may organize all your custom commands in a `command` directory.
+> You can place the file any where in your project directory. You may organize all your custom commands in a `command` directory.
 
 Now, let's `require` the command in the `Aureliafie.js`. It should look like:
 
