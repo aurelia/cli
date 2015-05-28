@@ -5,7 +5,7 @@ import {ask} from '../ask';
 import * as fs from 'fs';
 import * as handlebars from 'handlebars';
 import * as bluebird from 'bluebird';
-import * as chalk from 'chalk';
+var chalk = require('chalk');
 
 
 // Register handlebars helpers
