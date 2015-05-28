@@ -3,6 +3,15 @@
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
+
+/**
+ * init
+ * Create a directory at cwd/.aurelia, for creating plugins & storing templates
+ * @param  {Object} config  Config passed from commands/init
+ * @param  {Object} options Command Arguments
+ * @return {Promise}        Resolved when all directories are made
+ */
+
 exports.init = init;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -18,14 +27,6 @@ var _bluebird2 = _interopRequireDefault(_bluebird);
 var _path = require('path');
 
 var _path2 = _interopRequireDefault(_path);
-
-/**
- * init
- * Create a directory at cwd/.aurelia, for creating plugins & storing templates
- * @param  {Object} config  Config passed from commands/init
- * @param  {Object} options Command Arguments
- * @return {Promise}        Resolved when all directories are made
- */
 
 function init(options, config) {
 

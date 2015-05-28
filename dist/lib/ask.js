@@ -3,14 +3,13 @@
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
-exports.ask = ask;
-var Promise = require('bluebird');
-var inquirer = require('inquirer');
 
 // Ask
 // Service for prompting users and promising the answers
 // @param {Array}  prompts  requires a prompts array containing the correct prompt syntax form inquirer.js
-
+exports.ask = ask;
+var Promise = require('bluebird');
+var inquirer = require('inquirer');
 function ask(prompts) {
   return new Promise(function (resolve, reject) {
     if (!prompts.length) {

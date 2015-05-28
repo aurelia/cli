@@ -3,8 +3,20 @@
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
+
+// log
+// color   magenta
+// prefix [aurelia]:
 exports.log = log;
+
+// err
+// color red
+// prefix [aurelia] [Error]:
 exports.err = err;
+
+// ok
+// color green
+// prefix [aurelia] [OK]:
 exports.ok = ok;
 if (!String.prototype.magenta) {
   Object.defineProperties(String.prototype, {
@@ -42,10 +54,6 @@ var prefix = {
   err: 'Error'.red,
   ok: 'OK'.green
 };
-
-// log
-// color   magenta
-// prefix [aurelia]:
 function log() {
   var args = Array.prototype.slice.call(arguments).slice(1);
   args.unshift(prefix.aurelia);
@@ -54,9 +62,6 @@ function log() {
   console.log.apply(console, args);
 }
 
-// err
-// color red
-// prefix [aurelia] [Error]:
 function err() {
   var args = Array.prototype.slice.call(arguments).slice(1);
   args.unshift(prefix.err);
@@ -66,9 +71,6 @@ function err() {
   console.log.apply(console, args);
 }
 
-// ok
-// color green
-// prefix [aurelia] [OK]:
 function ok() {
   var args = Array.prototype.slice.call(arguments).slice(1);
   args.unshift(prefix.ok);

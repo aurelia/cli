@@ -42,7 +42,7 @@ class Aurelia {
       let commandConfig = args[1];
       let c = new Cmd(program, this.config, this.logger);
       c.commandConfig = commandConfig;
-      this.commands[c.commandId()] = c;
+      this.commands[c.commandId] = c;
       return;
     }
   }

@@ -34,6 +34,10 @@ var _commandsNew = require('./commands/new');
 
 var _commandsNew2 = _interopRequireDefault(_commandsNew);
 
+var _commandsGenerate = require('./commands/generate');
+
+var _commandsGenerate2 = _interopRequireDefault(_commandsGenerate);
+
 var Aurelia = (function () {
   function Aurelia() {
     _classCallCheck(this, Aurelia);
@@ -51,10 +55,12 @@ var Aurelia = (function () {
       var bundle = new _commandsBundle2['default'](_commander2['default'], this.config, this.logger);
       var init = new _commandsInit2['default'](_commander2['default'], this.config, this.logger);
       var newCmd = new _commandsNew2['default'](_commander2['default'], this.config, this.logger);
+      var generateCmd = new _commandsGenerate2['default'](_commander2['default'], this.config, this.logger);
 
       this.commands[bundle.commandId] = bundle;
       this.commands[init.commandId] = init;
       this.commands[newCmd.commandId] = newCmd;
+      this.commands[generateCmd.commandId] = generateCmd;
     }
   }, {
     key: 'command',
@@ -68,8 +74,10 @@ var Aurelia = (function () {
 
       if (typeof arguments[0] === 'function') {
         var Cmd = arguments[0];
+        var commandConfig = arguments[1];
         var c = new Cmd(_commander2['default'], this.config, this.logger);
-        this.commands[c.commandId()] = c;
+        c.commandConfig = commandConfig;
+        this.commands[c.commandId] = c;
         return;
       }
     }
