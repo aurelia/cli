@@ -24,9 +24,7 @@ var _bluebird = require('bluebird');
 
 var bluebird = _interopRequireWildcard(_bluebird);
 
-var _chalk = require('chalk');
-
-var chalk = _interopRequireWildcard(_chalk);
+var chalk = require('chalk');
 
 // Register handlebars helpers
 handlebars.registerHelper('toCamelCase', function (str) {

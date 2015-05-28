@@ -3,13 +3,6 @@
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
-exports.mkdirp = mkdirp;
-var fs = require('fs'),
-    Promise = require('bluebird'),
-    map = require('lodash/collection/map'),
-    cli = process.AURELIA,
-    mkdirp_module = require('mkdirp'),
-    logger = require('./logger');
 
 /**
  * mkdirp
@@ -20,7 +13,13 @@ var fs = require('fs'),
  * @param  {String || Array} initialDirs The Original dirs after recursive call
  * @return {Promise}         resolve a Promise when finished
  */
-
+exports.mkdirp = mkdirp;
+var fs = require('fs'),
+    Promise = require('bluebird'),
+    map = require('lodash/collection/map'),
+    cli = process.AURELIA,
+    mkdirp_module = require('mkdirp'),
+    logger = require('./logger');
 function mkdirp(dirs, initialDirs) {
   if (Array.isArray(dirs)) {
     return Promise.all(map(dirs, function (dir) {
