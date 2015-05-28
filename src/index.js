@@ -1,11 +1,7 @@
 import program from 'commander';
-import glob from 'glob';
 import logger from 'winston';
-
-import BundleCommand from './commands/bundle';
-import InitCommand from './commands/init';
-import NewCommand from './commands/new';
-import GenerateCommand from './commands/generate';
+import fs from 'fs';
+import path from 'path';
 
 class Aurelia {
   constructor() {
@@ -17,16 +13,14 @@ class Aurelia {
 
   init(config) {
     this.config = config;
-    let bundle = new BundleCommand(program, this.config, this.logger);
-    let init = new InitCommand(program, this.config, this.logger);
-    let newCmd = new NewCommand(program, this.config, this.logger);
-    let generateCmd = new GenerateCommand(program, this.config, this.logger);
 
-    this.commands[bundle.commandId] = bundle;
-    this.commands[init.commandId] = init;
-    this.commands[newCmd.commandId] = newCmd;
-    this.commands[generateCmd.commandId] = generateCmd;
-
+    var cmdDir = __dirname + path.sep + 'commands';
+    fs.readdirSync(cmdDir)
+      .forEach((f) => {
+        var Cmd = require(cmdDir + path.sep + f);
+        let c = new Cmd(program, this.config, this.logger);
+        this.commands[c.commandId] = c;
+      });
   }
 
   command(...args) {
