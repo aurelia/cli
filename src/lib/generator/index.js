@@ -5,7 +5,7 @@ import {ask} from '../ask';
 import * as fs from 'fs';
 import * as handlebars from 'handlebars';
 import * as bluebird from 'bluebird';
-import * as chalk from 'chalk';
+import chalk from 'chalk';
 
 
 // Register handlebars helpers
@@ -46,9 +46,10 @@ function createView(name, template) {
   var resultingFile = compiled({
     pageName: utils.ucFirst(name)
   });
+
   console.log(resultingFile);
 
-  return promptForCreation(name + '.js')
+  return promptForCreation(name + '.html')
     .then(function(response) { return writeFile(response, name + '.html', resultingFile); })
     .then(function(result){
       logger.ok(result);
@@ -69,10 +70,11 @@ function createViewModel(name, template, inject) {
 
   logger.log(chalk.bgMagenta('vvvvvv [Here is what we created for you] vvvvvv'));
   var resultingFile = compiled({
-    pageName: utils.ucFirst(name),
+    pageName: utils.ucFirst(utils.dashToCamelCase(name)),
     isInjectionUsed: inject !== undefined && inject.length > 0,
     inject: inject
   });
+
   console.log(resultingFile);
 
   return promptForCreation(name + '.js')
