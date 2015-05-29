@@ -12,7 +12,18 @@ export function toCamelCase(str) {
   }
 }
 
+export function dashToCamelCase(str) {
+  return str.replace(/[-_]([a-z])/g, function (g) { return g[1].toUpperCase(); })
+}
+
 export function parseList (listString){
   if(listString)
     return listString.split(/[ ,]+/);
 }
+
+module.exports = {
+  ucFirst: ucFirst,
+  toCamelCase: toCamelCase,
+  dashToCamelCase: dashToCamelCase,
+  parseList: parseList
+};

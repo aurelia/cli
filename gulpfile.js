@@ -2,7 +2,7 @@ var gulp  = require('gulp');
 var babel = require('gulp-babel');
 
 var srcFiles      = ['src/**/*.js', '!**/templates/**/*.js']
-  , templateFiles = 'src/**/templates/**/*.js';
+  , templateFiles = 'src/**/templates/**/*.*';
 
 gulp.task('default', ['copy-source', 'copy-templates'], function () {
 

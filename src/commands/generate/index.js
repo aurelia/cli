@@ -33,11 +33,9 @@ export default class GenerateCommand {
         , inject   = options.inject;
 
       generator.createViewModel(options.name, template, inject).then( function(response) {
-        logger.log(response);
-
         if(options.view && options.view !== '') {
           generator.createView(options.name, template)
-            .then(function(response) { logger.log(response); })
+            .then(function(response) {})
             .catch(function(response) { logger.log(response); });
         }
       }).catch(function(err) {
