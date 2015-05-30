@@ -1,32 +1,30 @@
 import * as logger from '../../lib/logger';
 import * as generator from '../../lib/generator';
 import {parseList} from '../../lib/utils';
+import {command, option, description, arg} from 'aurelia-command';
 
+@command('generate')
+@arg('<type>')
+@description('scaffold elements for your project')
+@option('-n, --name <name>', "Name of the file / class")
+@option('-v, --view', "Create a view for generated file type")
+@option('-i, --inject <list>', "Name of dependency to inject", parseList)
+@option('--no-lifecycle', "Do not create lifecycle callbacks, if applicable")
+@option('-t, --template <name>', "Specify the name of the template to use as override")
 export default class GenerateCommand {
-  constructor(program, config, logger) {
-    this.program = program;
+
+  constructor(config, logger) {
     this.logger = logger;
-    this.commandId = 'generate';
     this.globalConfig = config;
     this.commandConfig = {};
-
-    program.command('generate <type>')
-      .description('scaffold elements for your project')
-      .option('-n, --name <name>', "Name of the file / class")
-      .option('-v, --view', "Create a view for generated file type")
-      .option('-i, --inject <list>', "Name of dependency to inject", parseList)
-      .option('--no-lifecycle', "Do not create lifecycle callbacks, if applicable")
-      .option('-t, --template <name>', "Specify the name of the template to use as override")
-      .action((cmd,  options) => {
-        this.run(cmd, options);
-      });
   }
 
-  run(cmd, options) {
-    if(typeof options.name === 'function' || options.name === '') {
+  action(argv, options) {
+    if(argv.name) {
       logger.err('You must provide a name for the new element');
       return;
     }
+    let cmd = argv.type;
 
     if(cmd.toLowerCase() === generator.templateType.vm) {
       var template = options.template || 'default'
