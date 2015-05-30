@@ -27,7 +27,7 @@
     "url": "https://github.com/aurelia/cli"
   },
   "dependencies": {
-    "aurelia-command": "file:../aurelia-command",
+    "aurelia-command": "^0.1.1",
     "bluebird": "^2.9.25",
     "chalk": "^1.0.0",
     "commander": "^2.8.1",
