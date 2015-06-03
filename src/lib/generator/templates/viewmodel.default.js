@@ -6,9 +6,7 @@ import { {{this}} } from 'aurelia-framework';
 {{/isInjectionUsed}}
 
 {{#isInjectionUsed}}
-{{#each inject}}
-@inject({{this}})
-{{/each}}
+@inject({{#join inject ','}}{{this}}{{/join}})
 {{/isInjectionUsed}}
 export class {{pageName}} {
   hello = 'Welcome to Aurelia!';
