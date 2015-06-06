@@ -1,6 +1,6 @@
 {{#isInjectionUsed}}
 import { inject } from 'aurelia-framework';
-{{#each inject}}
+{{#each injectWithoutImport}}
 import { {{this}} } from 'aurelia-framework';
 {{/each}}
 {{/isInjectionUsed}}
