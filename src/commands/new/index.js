@@ -1,3 +1,4 @@
+import {command, args, description} from 'aurelia-command';
 import * as logger from '../../lib/logger';
 import { installTemplate } from '../../lib/installer';
 import { map } from 'lodash';
@@ -20,36 +21,17 @@ let prompts = [{
   })
 }];
 
+@command('new')
+@args('[type]')
+@description('create a new Aurelia project')
 export default class NewCommand {
-  constructor(program, config, logger) {
-    this.program = program;
+  constructor(config, logger) {
     this.logger = logger;
-    this.commandId = 'new';
     this.globalConfig = config;
-
-    program.command('new [type]')
-      .description('create a new Aurelia project')
-      .action((opt) => {
-        this.run(opt);
-      })
-      .on('--help', function() {
-        example('new', {
-          navigation: {
-            flags: 'navigation',
-            info: 'create a new skeleton navigation style app',
-            required: true
-          },
-          plugin: {
-            flags: 'plugin',
-            info: 'create a new aurelia plugin template',
-            required: true
-          }
-        });
-      });
   }
 
 
-  run(opt) {
+  action(args, opt) {
     ask(prompts)
       .then((answers) => {
         var app = answers.template;
