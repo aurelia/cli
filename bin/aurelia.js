@@ -3,7 +3,9 @@
 var Liftoff = require('liftoff');
 var argv = require('minimist')(process.argv.slice(2));
 var logger = require('winston');
-
+process.AURELIA = {
+  argv:argv
+};
 process.env.INIT_CWD = process.cwd();
 var DEV_ENV = parseInt(process.env.AURELIA_CLI_DEV_ENV, 10);
 
@@ -28,8 +30,14 @@ cli.on('require', function(name) {
 });
 
 if (DEV_ENV) {
-  require("babel/register");
-} 
+  require("babel/register")({
+    modules: 'common',
+    optional: [
+      "es7.decorators",
+      "es7.classProperties"
+    ]
+  });
+}
 
 cli.launch({
   cwd: argv.cwd,
@@ -68,6 +76,6 @@ function handleCommands(env) {
   }
 
   process.nextTick(function() {
-    aurelia.run(process.argv);
+    aurelia.run(argv);
   });
 }

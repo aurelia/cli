@@ -1,7 +1,6 @@
-import program from 'commander';
 import glob from 'glob';
 import logger from 'winston';
-
+import program from 'aurelia-command';
 import BundleCommand from './commands/bundle';
 import InitCommand from './commands/init';
 import NewCommand from './commands/new';
@@ -17,38 +16,32 @@ class Aurelia {
 
   init(config) {
     this.config = config;
-    let bundle = new BundleCommand(program, this.config, this.logger);
-    let init = new InitCommand(program, this.config, this.logger);
-    let newCmd = new NewCommand(program, this.config, this.logger);
-    let generateCmd = new GenerateCommand(program, this.config, this.logger);
-
-    this.commands[bundle.commandId] = bundle;
-    this.commands[init.commandId] = init;
-    this.commands[newCmd.commandId] = newCmd;
-    this.commands[generateCmd.commandId] = generateCmd;
-
+    program.init(config);
+    program.register(BundleCommand);
+    program.register(InitCommand);
+    program.register(NewCommand);
+    program.register(GenerateCommand);
   }
 
-  command(...args) {
-    if (typeof args[0] === 'string') {
-      let commandId = args[0];
-      let config = args[1];
-      this.commands[commandId].commandConfig = config;
+  command(commandId, Construction) {
+    if (typeof commandId === 'function') {
+      Construction = commandId;
+      commandId = null;
+    }
+
+    if (commandId && typeof Construction === 'object') {
+      this.program.commands[commandId].commandConfig = Construction;
       return;
     }
 
-    if (typeof args[0] === 'function') {
-      let Cmd = args[0];
-      let commandConfig = args[1];
-      let c = new Cmd(program, this.config, this.logger);
-      c.commandConfig = commandConfig;
-      this.commands[c.commandId] = c;
+    if (typeof Construction === 'function') {
+      program.register(Construction);
       return;
     }
   }
 
   run(argv) {
-    program.parse(argv);
+    program.start(argv);
   }
 }
 
