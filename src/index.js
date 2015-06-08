@@ -17,10 +17,10 @@ class Aurelia {
   init(config) {
     this.config = config;
     program.init(config);
-    program.register(BundleCommand);
-    program.register(InitCommand);
-    program.register(NewCommand);
-    program.register(GenerateCommand);
+    program.register(BundleCommand, this.config, this.logger);
+    program.register(InitCommand, this.config, this.logger);
+    program.register(NewCommand, this.config, this.logger);
+    program.register(GenerateCommand, this.config, this.logger);
   }
 
   command(commandId, Construction) {
