@@ -93,8 +93,7 @@ import { inject } from 'aurelia-framework';
 import { Element } from 'aurelia-framework';
 import { HttpClient } from 'aurelia-framework';
 
-@inject(Element)
-@inject(HttpClient)
+@inject(Element, HttpClient)
 export class YOURNAME {
   hello = 'Welcome to Aurelia!';
 

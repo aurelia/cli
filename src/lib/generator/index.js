@@ -6,6 +6,7 @@ import * as fs from 'fs';
 import * as handlebars from 'handlebars';
 import * as bluebird from 'bluebird';
 import chalk from 'chalk';
+import { difference } from 'lodash';
 
 
 // Register handlebars helpers
@@ -72,7 +73,8 @@ function createViewModel(name, template, inject) {
   var resultingFile = compiled({
     pageName: utils.ucFirst(utils.dashToCamelCase(name)),
     isInjectionUsed: inject !== undefined && inject.length > 0,
-    inject: inject
+    inject: inject,
+    injectWithoutImport: difference(inject, ['Element'])
   });
 
   console.log(resultingFile);

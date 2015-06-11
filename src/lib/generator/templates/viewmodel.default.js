@@ -1,14 +1,12 @@
 {{#isInjectionUsed}}
 import { inject } from 'aurelia-framework';
-{{#each inject}}
+{{#each injectWithoutImport}}
 import { {{this}} } from 'aurelia-framework';
 {{/each}}
 {{/isInjectionUsed}}
 
 {{#isInjectionUsed}}
-{{#each inject}}
-@inject({{this}})
-{{/each}}
+@inject({{#join inject ','}}{{this}}{{/join}})
 {{/isInjectionUsed}}
 export class {{pageName}} {
   hello = 'Welcome to Aurelia!';
