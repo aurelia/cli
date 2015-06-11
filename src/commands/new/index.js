@@ -2,6 +2,7 @@ import * as logger from '../../lib/logger';
 import { installTemplate } from '../../lib/installer';
 import { map } from 'lodash';
 import { ask } from '../../lib/ask';
+import {description, command, args} from '../../decorators';
 
 let templates = {
   navigation: 'skeleton-navigation',
@@ -20,36 +21,13 @@ let prompts = [{
   })
 }];
 
+
+@command('new')
+@args('[type]')
 export default class NewCommand {
-  constructor(program, config, logger) {
-    this.program = program;
-    this.logger = logger;
-    this.commandId = 'new';
-    this.globalConfig = config;
-
-    program.command('new [type]')
-      .description('create a new Aurelia project')
-      .action((opt) => {
-        this.run(opt);
-      })
-      .on('--help', function() {
-        example('new', {
-          navigation: {
-            flags: 'navigation',
-            info: 'create a new skeleton navigation style app',
-            required: true
-          },
-          plugin: {
-            flags: 'plugin',
-            info: 'create a new aurelia plugin template',
-            required: true
-          }
-        });
-      });
+  constructor(config, logger) {
   }
-
-
-  run(opt) {
+  action(cmd, opt) {
     ask(prompts)
       .then((answers) => {
         var app = answers.template;

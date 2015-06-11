@@ -36,11 +36,20 @@ class Aurelia {
 
     let c = program.command(fullCommand);
 
-    c.alias(Command.alias);
-    Command.options.forEach(o => {
-      c.option(o.opt, o.desc);
-    });
-    c.description(Command.description);
+    if(Command.alias){
+      c.alias(Command.alias);
+    }
+
+    if(Command.options){
+      Command.options.forEach(o => {
+        c.option(o.opt, o.desc);
+      });
+    }
+
+    if(Command.description){
+      c.description(Command.description);
+    }
+
     c.action(cmd.action.bind(cmd));
 
     cmd.commandConfig = cmdConfig;
