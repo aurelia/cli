@@ -10,12 +10,14 @@ export function alias(value) {
   }
 }
 
-export function option(opt, description) {
+export function option(opt, description, fn, defaultValue) {
   return function(target) {
     target.options = target.options || [];
     target.options.push({
       opt: opt,
-      desc: description
+      desc: description,
+      fn: fn,
+      defaultValue: defaultValue
     });
   }
 }
