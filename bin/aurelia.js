@@ -3,9 +3,7 @@
 var Liftoff = require('liftoff');
 var argv = require('minimist')(process.argv.slice(2));
 var logger = require('winston');
-process.AURELIA = {
-  argv:argv
-};
+
 process.env.INIT_CWD = process.cwd();
 var DEV_ENV = parseInt(process.env.AURELIA_CLI_DEV_ENV, 10);
 
@@ -76,6 +74,6 @@ function handleCommands(env) {
   }
 
   process.nextTick(function() {
-    aurelia.run(argv);
+    aurelia.run(process.argv);
   });
 }

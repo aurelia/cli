@@ -1,28 +1,21 @@
 import * as logger from '../../lib/logger';
 import * as generator from '../../lib/generator';
 import {parseList} from '../../lib/utils';
+import {command, args, alias, option, description} from '../../decorators';
 
+@command('generate')
+@args('<type>')
+@option('-n, --name <name>', "Name of the file / class")
+@option('-v, --view', "Create a view for generated file type")
+@option('-i, --inject <list>', "Name of dependency to inject", parseList)
+@option('--no-lifecycle', "Do not create lifecycle callbacks, if applicable")
+@option('-t, --template <name>', "Specify the name of the template to use as override")
+@description('scaffold elements for your project')
 export default class GenerateCommand {
-  constructor(program, config, logger) {
-    this.program = program;
-    this.logger = logger;
-    this.commandId = 'generate';
-    this.globalConfig = config;
-    this.commandConfig = {};
-
-    program.command('generate <type>')
-      .description('scaffold elements for your project')
-      .option('-n, --name <name>', "Name of the file / class")
-      .option('-v, --view', "Create a view for generated file type")
-      .option('-i, --inject <list>', "Name of dependency to inject", parseList)
-      .option('--no-lifecycle', "Do not create lifecycle callbacks, if applicable")
-      .option('-t, --template <name>', "Specify the name of the template to use as override")
-      .action((cmd,  options) => {
-        this.run(cmd, options);
-      });
+  constructor(config, logger) {
   }
 
-  run(cmd, options) {
+  action(cmd, options) {
     if(typeof options.name === 'function' || options.name === '') {
       logger.err('You must provide a name for the new element');
       return;
