@@ -42,7 +42,11 @@ class Aurelia {
 
     if(Command.options){
       Command.options.forEach(o => {
-        c.option(o.opt, o.desc);
+        if(o.fn) {
+          c.option(o.opt, o.desc, o.fn, o.defaultValue);
+        } else {
+          c.option(o.opt, o.desc);
+        }
       });
     }
 

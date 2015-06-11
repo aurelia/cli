@@ -10,7 +10,13 @@ gulp.task('default', ['copy-source', 'copy-templates'], function () {
 
 gulp.task('copy-source', function() {
   return gulp.src(srcFiles)
-    .pipe(babel())
+    .pipe(babel({
+      stage:2,
+      optional: [
+        "es7.decorators",
+        "es7.classProperties"
+      ]
+    }))
     .pipe(gulp.dest('dist'));
 });
 
