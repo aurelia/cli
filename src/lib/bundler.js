@@ -48,26 +48,26 @@ function bundleTemplate(pattern, outfile, options, baseURL, paths) {
   var templates = [];
   var cwd = baseURL.replace(/^file:/, '');
 
-  glob
-    .sync(pattern, {
-      cwd: cwd
-    })
-    .forEach(function(file) {
+    glob
+      .sync(pattern, {
+        cwd: cwd
+      })
+      .forEach(function(file) {
 
-      file = path.resolve(cwd, file);
+        file = path.resolve(cwd, file);
 
-      var content = fs.readFileSync(file, {
-        encoding: 'utf8'
+        var content = fs.readFileSync(file, {
+          encoding: 'utf8'
+        });
+        var $ = whacko.load(content);
+        var tid = getTemplateId(file, baseURL, paths);
+
+        $('template').attr('id', tid);
+        var template = $.html('template');
+        templates.push(template);
       });
-      var $ = whacko.load(content);
-      var tid = getTemplateId(file, baseURL, paths);
 
-      $('template').attr('id', tid);
-      var template = $.html('template');
-      templates.push(template);
-    });
-
-  fs.writeFileSync(outfile, templates.join('\n'));
+    fs.writeFileSync(outfile, templates.join('\n'));
 
   if (options.inject) {
     injectLink(outfile, baseURL);
@@ -76,13 +76,28 @@ function bundleTemplate(pattern, outfile, options, baseURL, paths) {
 
 function injectLink(outfile, baseURL) {
   var bu = baseURL.replace(/^file:/, '') + path.sep;
-  var content = fs.readFileSync(bu + 'index.html', {
+  var link = '';
+  var bundle = path.resolve(bu, path.relative(bu, outfile));
+  var index = path.resolve(bu, 'index.html');
+
+  var relpath = path.relative(path.dirname(index), path.dirname(bundle)).replace(/\\/g, '/');
+
+  //regex : !link.startsWith('.')
+  if (!(/^\./.test(relpath))) {
+    link = relpath ? './' + relpath + '/' + path.basename(bundle) : './' + path.basename(bundle);
+  } else {
+    link = relpath + '/' + path.basename(bundle);
+  }
+
+  var content = fs.readFileSync(index, {
     encoding: 'utf8'
   });
 
   var $ = whacko.load(content);
 
-  $('head').append('<link aurlia-view-bundle rel="import" href="./' + outfile + '">');
+  $('body').append('<link aurlia-view-bundle rel="import" href="' + link + '">');
+
+  fs.writeFileSync(index, $.html());
 }
 
 
