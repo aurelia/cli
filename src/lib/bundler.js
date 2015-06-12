@@ -44,10 +44,15 @@ export default function bundle(config) {
 
 function bundleTemplate(pattern, outfile, options, baseURL, paths) {
   var templates = [];
+  var cwd = baseURL.replace(/^file:/, '');
 
   glob
-    .sync(pattern, {})
+    .sync(pattern, {cwd: cwd})
     .forEach(function(file) {
+
+      file = path.resolve(cwd, file);
+      console.log(file);
+
       var content = fs.readFileSync(file, {
         encoding: 'utf8'
       });
@@ -80,8 +85,7 @@ function injectLink(outfile, baseURL) {
 
 function getTemplateId(file, baseURL, paths) {
   var bu = baseURL.replace(/\\/g, '/') + '/';
-  var address = bu + file;
-
+   var address = 'file:' +  file.replace(/\\/g, '/');
   return getModuleName(address, bu, paths);
 }
 
@@ -110,7 +114,8 @@ function getModuleName(address, baseURL, paths) {
         }
       }
     } else {
-      if (address.substr(0, wIndex) === curPath.substr(0, wIndex) && address.substr(address.length - curPath.length + wIndex + 1) === curPath.substr(wIndex + 1)) {
+      if (address.substr(0, wIndex) === curPath.substr(0, wIndex) 
+          && address.substr(address.length - curPath.length + wIndex + 1) === curPath.substr(wIndex + 1)) {
         curMatchLength = curPath.split('/').length;
         if (curMatchLength > pathMatchLength) {
           pathMatch = p.replace('*', address.substr(wIndex, address.length - curPath.length + 1));
