@@ -4,6 +4,7 @@ import glob from 'glob';
 import fs from 'fs';
 import url from 'url';
 import path from 'path';
+import * as log from './logger';
 
 var pluginName = 'view';
 
@@ -11,7 +12,7 @@ function bundleJS(moduleExpression, outfile, options) {
   api.bundle(moduleExpression, outfile, options);
 }
 
-export default function bundle(config) {
+export default function bundle(config, bundleOpts) {
 
   var loader = api.Builder().loader;
   var baseURL = loader.baseURL;
@@ -24,9 +25,17 @@ export default function bundle(config) {
     .forEach(function(key) {
       var cfg = jsConfig[key];
       var outfile = key + '.js';
+
+      if (fs.existsSync(outfile)) {
+        if (!bundleOpts.force) {
+          log.err('A bundle named "' + outfile + '" is already exists. Use --force to overwrite.');
+          return;
+        }
+        fs.unlinkSync(outfile);
+      }
+
       var moduleExpr = cfg.modules.join(' + ');
       var opt = cfg.options;
-
       bundleJS(moduleExpr, outfile, opt);
     });
 
@@ -39,6 +48,14 @@ export default function bundle(config) {
       var pattern = cfg.pattern;
       var options = cfg.options;
 
+      if (fs.existsSync(outfile)) {
+        if (!bundleOpts.force) {
+          log.err('A bundle named "' + outfile + '" is already exists. Use --force to overwrite.');
+          return;
+        }
+        fs.unlinkSync(outfile);
+      }
+
       bundleTemplate(pattern, outfile, options, baseURL, paths);
     });
 }
@@ -48,26 +65,26 @@ function bundleTemplate(pattern, outfile, options, baseURL, paths) {
   var templates = [];
   var cwd = baseURL.replace(/^file:/, '');
 
-    glob
-      .sync(pattern, {
-        cwd: cwd
-      })
-      .forEach(function(file) {
+  glob
+    .sync(pattern, {
+      cwd: cwd
+    })
+    .forEach(function(file) {
 
-        file = path.resolve(cwd, file);
+      file = path.resolve(cwd, file);
 
-        var content = fs.readFileSync(file, {
-          encoding: 'utf8'
-        });
-        var $ = whacko.load(content);
-        var tid = getTemplateId(file, baseURL, paths);
-
-        $('template').attr('id', tid);
-        var template = $.html('template');
-        templates.push(template);
+      var content = fs.readFileSync(file, {
+        encoding: 'utf8'
       });
+      var $ = whacko.load(content);
+      var tid = getTemplateId(file, baseURL, paths);
 
-    fs.writeFileSync(outfile, templates.join('\n'));
+      $('template').attr('id', tid);
+      var template = $.html('template');
+      templates.push(template);
+    });
+
+  fs.writeFileSync(outfile, templates.join('\n'));
 
   if (options.inject) {
     injectLink(outfile, baseURL);
@@ -95,7 +112,7 @@ function injectLink(outfile, baseURL) {
 
   var $ = whacko.load(content);
 
-  if($('link[aurelia-view-bundle][href="'+ link +'"]').length === 0 ){
+  if ($('link[aurelia-view-bundle][href="' + link + '"]').length === 0) {
     $('body').append('<link aurelia-view-bundle rel="import" href="' + link + '">');
   }
 

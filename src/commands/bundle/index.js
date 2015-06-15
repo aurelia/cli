@@ -7,14 +7,15 @@ import {command, alias, option, description} from '../../decorators';
 @option('-a --add <path>', "Add system.js path to files or file to bundle")
 @option('-r --remove <remove_path>', 'Remove file path or file from bundle')
 @option('-l, --list', 'List paths and files included in bundle')
+@option('-f, --force', 'Overwrite output file!')
 export default class BundleCommand {
   constructor(config, logger) {
     this.config = config;
     this.logger = logger;
   }
 
-   action(cmd, options)  {
+   action(options)  {
      this.logger.info('Creating bundle ...');
-     bundle(this.commandConfig);
+     bundle(this.commandConfig, options);
    };
 }
