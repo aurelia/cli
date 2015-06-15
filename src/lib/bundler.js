@@ -5,6 +5,7 @@ import fs from 'fs';
 import url from 'url';
 import path from 'path';
 import * as log from './logger';
+import globby from 'globby';
 
 var pluginName = 'view';
 
@@ -65,7 +66,7 @@ function bundleTemplate(pattern, outfile, options, baseURL, paths) {
   var templates = [];
   var cwd = baseURL.replace(/^file:/, '');
 
-  glob
+  globby
     .sync(pattern, {
       cwd: cwd
     })
