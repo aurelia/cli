@@ -95,7 +95,9 @@ function injectLink(outfile, baseURL) {
 
   var $ = whacko.load(content);
 
-  $('body').append('<link aurlia-view-bundle rel="import" href="' + link + '">');
+  if($('link[aurelia-view-bundle][href="'+ link +'"]').length === 0 ){
+    $('body').append('<link aurelia-view-bundle rel="import" href="' + link + '">');
+  }
 
   fs.writeFileSync(index, $.html());
 }
