@@ -1,38 +1,31 @@
-  var aurelia = require('hacker');
+  var aurelia = require('aurelia-cli');
 
   // var awesome = require('aurelia-awesome');
   // aurelia.command(awesome); // register command plug in without configuration
   // aurelia.command(awesomeCommand, {}); //register command plugin with cnfiguration
 
-
-  // buit in command configuration
   aurelia.command('bundle', {
     js: {
-      app: {
+      "dist/app-build": {
         modules: [
-          'aurelia-skeleton-navigation/*',
-        ],
-        options: {
-          inject: true
-        }
-      },
-      'aurelia-bundle': {
-        modules: [
+          '*',
+          'aurelia-animator-css',
           'aurelia-bootstrapper',
           'aurelia-router',
           'aurelia-http-client'
         ],
         options: {
-          inject: false
+          inject: true
         }
       }
-    },
+   },
     template: {
-      app: {
-        pattern: 'dist/*.html',
+      "dist/app-build": {
+        pattern: ['dist/**/*.html', '!dist/about/*.html'],
         options: {
           inject: true
         }
       }
     }
   });
+
