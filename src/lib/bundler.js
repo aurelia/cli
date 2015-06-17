@@ -7,10 +7,8 @@ import path from 'path';
 import * as log from './logger';
 import globby from 'globby';
 
-var pluginName = 'view';
-
 function bundleJS(moduleExpression, outfile, options) {
-  api.bundle(moduleExpression, outfile, options);
+  return api.bundle(moduleExpression, outfile, options);
 }
 
 export default function bundle(config, bundleOpts) {
@@ -18,6 +16,7 @@ export default function bundle(config, bundleOpts) {
   var loader = api.Builder().loader;
   var baseURL = loader.baseURL;
   var paths = loader.paths;
+  var cleanBaseURL = baseURL.replace(/^file:/, '');
 
   var jsConfig = config.js;
   var templateConfig = config.template;
@@ -27,7 +26,11 @@ export default function bundle(config, bundleOpts) {
       var cfg = jsConfig[key];
       var outfile = key + '.js';
 
-      if (fs.existsSync(outfile)) {
+      let destPath = path.resolve(cleanBaseURL, outfile);
+      var bundleName = getModuleId(destPath, baseURL, paths, '') + '.js';
+      let bundlePath = path.resolve(cleanBaseURL, bundleName);
+
+      if (fs.existsSync(destPath)) {
         if (!bundleOpts.force) {
           log.err('A bundle named "' + outfile + '" is already exists. Use --force to overwrite.');
           return;
@@ -37,7 +40,14 @@ export default function bundle(config, bundleOpts) {
 
       var moduleExpr = cfg.modules.join(' + ');
       var opt = cfg.options;
-      bundleJS(moduleExpr, outfile, opt);
+
+      bundleJS(moduleExpr, bundleName, opt)
+        .then(function() {
+          // move file to correct location
+          if (destPath !== bundlePath) {
+            fs.renameSync(bundlePath, destPath);
+          }
+        });
     });
 
   if (!templateConfig) return;
@@ -78,7 +88,7 @@ function bundleTemplate(pattern, outfile, options, baseURL, paths) {
         encoding: 'utf8'
       });
       var $ = whacko.load(content);
-      var tid = getTemplateId(file, baseURL, paths);
+      var tid = getModuleId(file, baseURL, paths, 'view');
 
       $('template').attr('id', tid);
       var template = $.html('template');
@@ -91,6 +101,7 @@ function bundleTemplate(pattern, outfile, options, baseURL, paths) {
     injectLink(outfile, baseURL);
   }
 }
+
 
 function injectLink(outfile, baseURL) {
   var bu = baseURL.replace(/^file:/, '') + path.sep;
@@ -121,13 +132,13 @@ function injectLink(outfile, baseURL) {
 }
 
 
-function getTemplateId(file, baseURL, paths) {
+function getModuleId(file, baseURL, paths, pluginName) {
   var bu = baseURL.replace(/\\/g, '/') + '/';
   var address = 'file:' + file.replace(/\\/g, '/');
-  return getModuleName(address, bu, paths);
+  return getModuleName(address, bu, paths, pluginName);
 }
 
-function getModuleName(address, baseURL, paths) {
+function getModuleName(address, baseURL, paths, pluginName) {
   var pathMatch, curMatchLength, curPath, wIndex, pathMatchLength = 0;
 
   if (pluginName) {
