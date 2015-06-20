@@ -5,6 +5,7 @@ Object.defineProperty(exports, '__esModule', {
 });
 exports.ucFirst = ucFirst;
 exports.toCamelCase = toCamelCase;
+exports.dashToCamelCase = dashToCamelCase;
 exports.parseList = parseList;
 
 function ucFirst(val) {
@@ -21,6 +22,19 @@ function toCamelCase(str) {
   }
 }
 
+function dashToCamelCase(str) {
+  return str.replace(/[-_]([a-z])/g, function (g) {
+    return g[1].toUpperCase();
+  });
+}
+
 function parseList(listString) {
   if (listString) return listString.split(/[ ,]+/);
 }
+
+module.exports = {
+  ucFirst: ucFirst,
+  toCamelCase: toCamelCase,
+  dashToCamelCase: dashToCamelCase,
+  parseList: parseList
+};

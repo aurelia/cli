@@ -1,5 +1,7 @@
 'use strict';
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 
 var _logger = require('../logger');
@@ -26,7 +28,9 @@ var bluebird = _interopRequireWildcard(_bluebird);
 
 var _chalk = require('chalk');
 
-var chalk = _interopRequireWildcard(_chalk);
+var _chalk2 = _interopRequireDefault(_chalk);
+
+var _lodash = require('lodash');
 
 // Register handlebars helpers
 handlebars.registerHelper('toCamelCase', function (str) {
@@ -62,13 +66,14 @@ function createView(name, template) {
 
   var compiled = getCompiledTemplate(templateTypes.view + '.' + template + '.html');
 
-  logger.log(chalk.bgMagenta('vvvvvv [Here is what we created for you] vvvvvv'));
+  logger.log(_chalk2['default'].bgMagenta('vvvvvv [Here is what we created for you] vvvvvv'));
   var resultingFile = compiled({
     pageName: utils.ucFirst(name)
   });
+
   console.log(resultingFile);
 
-  return promptForCreation(name + '.js').then(function (response) {
+  return promptForCreation(name + '.html').then(function (response) {
     return writeFile(response, name + '.html', resultingFile);
   }).then(function (result) {
     logger.ok(result);
@@ -86,12 +91,14 @@ function createViewModel(name, template, inject) {
 
   var compiled = getCompiledTemplate(templateTypes.vm + '.' + template + '.js');
 
-  logger.log(chalk.bgMagenta('vvvvvv [Here is what we created for you] vvvvvv'));
+  logger.log(_chalk2['default'].bgMagenta('vvvvvv [Here is what we created for you] vvvvvv'));
   var resultingFile = compiled({
-    pageName: utils.ucFirst(name),
+    pageName: utils.ucFirst(utils.dashToCamelCase(name)),
     isInjectionUsed: inject !== undefined && inject.length > 0,
-    inject: inject
+    inject: inject,
+    injectWithoutImport: (0, _lodash.difference)(inject, ['Element'])
   });
+
   console.log(resultingFile);
 
   return promptForCreation(name + '.js').then(function (response) {

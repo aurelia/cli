@@ -20,6 +20,8 @@ var _lodash = require('lodash');
 
 var _libAsk = require('../../lib/ask');
 
+var _decorators = require('../../decorators');
+
 var templates = {
   navigation: 'skeleton-navigation',
   plugin: 'skeleton-plugin'
@@ -38,37 +40,15 @@ var prompts = [{
 }];
 
 var NewCommand = (function () {
-  function NewCommand(program, config, logger) {
-    var _this = this;
-
-    _classCallCheck(this, NewCommand);
-
-    this.program = program;
-    this.logger = logger;
-    this.commandId = 'new';
-    this.globalConfig = config;
-
-    program.command('new [type]').description('create a new Aurelia project').action(function (opt) {
-      _this.run(opt);
-    }).on('--help', function () {
-      example('new', {
-        navigation: {
-          flags: 'navigation',
-          info: 'create a new skeleton navigation style app',
-          required: true
-        },
-        plugin: {
-          flags: 'plugin',
-          info: 'create a new aurelia plugin template',
-          required: true
-        }
-      });
-    });
+  function NewCommand(config, logger) {
+    _classCallCheck(this, _NewCommand);
   }
 
-  _createClass(NewCommand, [{
-    key: 'run',
-    value: function run(opt) {
+  var _NewCommand = NewCommand;
+
+  _createClass(_NewCommand, [{
+    key: 'action',
+    value: function action(cmd, opt) {
       (0, _libAsk.ask)(prompts).then(function (answers) {
         var app = answers.template;
 
@@ -86,6 +66,8 @@ var NewCommand = (function () {
     }
   }]);
 
+  NewCommand = (0, _decorators.args)('[type]')(NewCommand) || NewCommand;
+  NewCommand = (0, _decorators.command)('new')(NewCommand) || NewCommand;
   return NewCommand;
 })();
 

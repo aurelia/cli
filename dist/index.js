@@ -10,10 +10,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _commander = require('commander');
-
-var _commander2 = _interopRequireDefault(_commander);
-
 var _glob = require('glob');
 
 var _glob2 = _interopRequireDefault(_glob);
@@ -22,21 +18,17 @@ var _winston = require('winston');
 
 var _winston2 = _interopRequireDefault(_winston);
 
-var _commandsBundle = require('./commands/bundle');
+var _commander = require('commander');
 
-var _commandsBundle2 = _interopRequireDefault(_commandsBundle);
+var _commander2 = _interopRequireDefault(_commander);
 
-var _commandsInit = require('./commands/init');
+var _fs = require('fs');
 
-var _commandsInit2 = _interopRequireDefault(_commandsInit);
+var _fs2 = _interopRequireDefault(_fs);
 
-var _commandsNew = require('./commands/new');
+var _path = require('path');
 
-var _commandsNew2 = _interopRequireDefault(_commandsNew);
-
-var _commandsGenerate = require('./commands/generate');
-
-var _commandsGenerate2 = _interopRequireDefault(_commandsGenerate);
+var _path2 = _interopRequireDefault(_path);
 
 var Aurelia = (function () {
   function Aurelia() {
@@ -51,16 +43,53 @@ var Aurelia = (function () {
   _createClass(Aurelia, [{
     key: 'init',
     value: function init(config) {
-      this.config = config;
-      var bundle = new _commandsBundle2['default'](_commander2['default'], this.config, this.logger);
-      var init = new _commandsInit2['default'](_commander2['default'], this.config, this.logger);
-      var newCmd = new _commandsNew2['default'](_commander2['default'], this.config, this.logger);
-      var generateCmd = new _commandsGenerate2['default'](_commander2['default'], this.config, this.logger);
+      var _this = this;
 
-      this.commands[bundle.commandId] = bundle;
-      this.commands[init.commandId] = init;
-      this.commands[newCmd.commandId] = newCmd;
-      this.commands[generateCmd.commandId] = generateCmd;
+      this.config = config;
+
+      var cmdDir = __dirname + _path2['default'].sep + 'commands';
+      _fs2['default'].readdirSync(cmdDir).forEach(function (f) {
+        _this._register(require(cmdDir + _path2['default'].sep + f));
+      });
+    }
+  }, {
+    key: '_register',
+    value: function _register(Command, cmdConfig) {
+
+      var commandName = Command.command;
+      var fullCommand = commandName;
+      var cmd = new Command(this.config, this.logger);
+
+      var subcommand = Command.args || '';
+
+      if (subcommand !== '') {
+        fullCommand = '' + commandName + ' ' + subcommand;
+      }
+
+      var c = _commander2['default'].command(fullCommand);
+
+      if (Command.alias) {
+        c.alias(Command.alias);
+      }
+
+      if (Command.options) {
+        Command.options.forEach(function (o) {
+          if (o.fn) {
+            c.option(o.opt, o.desc, o.fn, o.defaultValue);
+          } else {
+            c.option(o.opt, o.desc);
+          }
+        });
+      }
+
+      if (Command.description) {
+        c.description(Command.description);
+      }
+
+      c.action(cmd.action.bind(cmd));
+
+      cmd.commandConfig = cmdConfig;
+      this.commands[commandName] = cmd;
     }
   }, {
     key: 'command',
@@ -75,9 +104,7 @@ var Aurelia = (function () {
       if (typeof arguments[0] === 'function') {
         var Cmd = arguments[0];
         var commandConfig = arguments[1];
-        var c = new Cmd(_commander2['default'], this.config, this.logger);
-        c.commandConfig = commandConfig;
-        this.commands[c.commandId] = c;
+        this._register(Cmd, commandConfig);
         return;
       }
     }

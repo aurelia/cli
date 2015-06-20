@@ -20,26 +20,18 @@ var generator = _interopRequireWildcard(_libGenerator);
 
 var _libUtils = require('../../lib/utils');
 
+var _decorators = require('../../decorators');
+
 var GenerateCommand = (function () {
-  function GenerateCommand(program, config, logger) {
-    var _this = this;
-
-    _classCallCheck(this, GenerateCommand);
-
-    this.program = program;
-    this.logger = logger;
-    this.commandId = 'generate';
-    this.globalConfig = config;
-    this.commandConfig = {};
-
-    program.command('generate <type>').description('scaffold elements for your project').option('-n, --name <name>', 'Name of the file / class').option('-v, --view', 'Create a view for generated file type').option('-i, --inject <list>', 'Name of dependency to inject', _libUtils.parseList).option('--no-lifecycle', 'Do not create lifecycle callbacks, if applicable').option('-t, --template <name>', 'Specify the name of the template to use as override').action(function (cmd, options) {
-      _this.run(cmd, options);
-    });
+  function GenerateCommand(config, logger) {
+    _classCallCheck(this, _GenerateCommand);
   }
 
-  _createClass(GenerateCommand, [{
-    key: 'run',
-    value: function run(cmd, options) {
+  var _GenerateCommand = GenerateCommand;
+
+  _createClass(_GenerateCommand, [{
+    key: 'action',
+    value: function action(cmd, options) {
       if (typeof options.name === 'function' || options.name === '') {
         logger.err('You must provide a name for the new element');
         return;
@@ -50,12 +42,8 @@ var GenerateCommand = (function () {
             inject = options.inject;
 
         generator.createViewModel(options.name, template, inject).then(function (response) {
-          logger.log(response);
-
           if (options.view && options.view !== '') {
-            generator.createView(options.name, template).then(function (response) {
-              logger.log(response);
-            })['catch'](function (response) {
+            generator.createView(options.name, template).then(function (response) {})['catch'](function (response) {
               logger.log(response);
             });
           }
@@ -70,6 +58,14 @@ var GenerateCommand = (function () {
     }
   }]);
 
+  GenerateCommand = (0, _decorators.description)('scaffold elements for your project')(GenerateCommand) || GenerateCommand;
+  GenerateCommand = (0, _decorators.option)('-t, --template <name>', 'Specify the name of the template to use as override')(GenerateCommand) || GenerateCommand;
+  GenerateCommand = (0, _decorators.option)('--no-lifecycle', 'Do not create lifecycle callbacks, if applicable')(GenerateCommand) || GenerateCommand;
+  GenerateCommand = (0, _decorators.option)('-i, --inject <list>', 'Name of dependency to inject', _libUtils.parseList)(GenerateCommand) || GenerateCommand;
+  GenerateCommand = (0, _decorators.option)('-v, --view', 'Create a view for generated file type')(GenerateCommand) || GenerateCommand;
+  GenerateCommand = (0, _decorators.option)('-n, --name <name>', 'Name of the file / class')(GenerateCommand) || GenerateCommand;
+  GenerateCommand = (0, _decorators.args)('<type>')(GenerateCommand) || GenerateCommand;
+  GenerateCommand = (0, _decorators.command)('generate')(GenerateCommand) || GenerateCommand;
   return GenerateCommand;
 })();
 

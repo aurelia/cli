@@ -5,6 +5,8 @@ Object.defineProperty(exports, '__esModule', {
 });
 exports['default'] = bundle;
 
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 var _jspmApi = require('jspm/api');
@@ -31,17 +33,24 @@ var _path = require('path');
 
 var _path2 = _interopRequireDefault(_path);
 
-var pluginName = 'view';
+var _logger = require('./logger');
+
+var log = _interopRequireWildcard(_logger);
+
+var _globby = require('globby');
+
+var _globby2 = _interopRequireDefault(_globby);
 
 function bundleJS(moduleExpression, outfile, options) {
-  _jspmApi2['default'].bundle(moduleExpression, outfile, options);
+  return _jspmApi2['default'].bundle(moduleExpression, outfile, options);
 }
 
-function bundle(config) {
+function bundle(config, bundleOpts) {
 
   var loader = _jspmApi2['default'].Builder().loader;
   var baseURL = loader.baseURL;
   var paths = loader.paths;
+  var cleanBaseURL = baseURL.replace(/^file:/, '');
 
   var jsConfig = config.js;
   var templateConfig = config.template;
@@ -49,11 +58,31 @@ function bundle(config) {
   Object.keys(jsConfig).forEach(function (key) {
     var cfg = jsConfig[key];
     var outfile = key + '.js';
+
+    var destPath = _path2['default'].resolve(cleanBaseURL, outfile);
+    var bundleName = getModuleId(destPath, baseURL, paths, '') + '.js';
+    var bundlePath = _path2['default'].resolve(cleanBaseURL, bundleName);
+
+    if (_fs2['default'].existsSync(destPath)) {
+      if (!bundleOpts.force) {
+        log.err('A bundle named "' + outfile + '" is already exists. Use --force to overwrite.');
+        return;
+      }
+      _fs2['default'].unlinkSync(outfile);
+    }
+
     var moduleExpr = cfg.modules.join(' + ');
     var opt = cfg.options;
 
-    bundleJS(moduleExpr, outfile, opt);
+    bundleJS(moduleExpr, bundleName, opt).then(function () {
+      // move file to correct location
+      if (destPath !== bundlePath) {
+        _fs2['default'].renameSync(bundlePath, destPath);
+      }
+    });
   });
+
+  if (!templateConfig) return;
 
   Object.keys(templateConfig).forEach(function (key) {
     var cfg = templateConfig[key];
@@ -61,19 +90,33 @@ function bundle(config) {
     var pattern = cfg.pattern;
     var options = cfg.options;
 
+    if (_fs2['default'].existsSync(outfile)) {
+      if (!bundleOpts.force) {
+        log.err('A bundle named "' + outfile + '" is already exists. Use --force to overwrite.');
+        return;
+      }
+      _fs2['default'].unlinkSync(outfile);
+    }
+
     bundleTemplate(pattern, outfile, options, baseURL, paths);
   });
 }
 
 function bundleTemplate(pattern, outfile, options, baseURL, paths) {
   var templates = [];
+  var cwd = baseURL.replace(/^file:/, '');
 
-  _glob2['default'].sync(pattern, {}).forEach(function (file) {
+  _globby2['default'].sync(pattern, {
+    cwd: cwd
+  }).forEach(function (file) {
+
+    file = _path2['default'].resolve(cwd, file);
+
     var content = _fs2['default'].readFileSync(file, {
       encoding: 'utf8'
     });
     var $ = _whacko2['default'].load(content);
-    var tid = getTemplateId(file, baseURL, paths);
+    var tid = getModuleId(file, baseURL, paths, 'view');
 
     $('template').attr('id', tid);
     var template = $.html('template');
@@ -89,23 +132,39 @@ function bundleTemplate(pattern, outfile, options, baseURL, paths) {
 
 function injectLink(outfile, baseURL) {
   var bu = baseURL.replace(/^file:/, '') + _path2['default'].sep;
-  var content = _fs2['default'].readFileSync(bu + 'index.html', {
+  var link = '';
+  var bundle = _path2['default'].resolve(bu, _path2['default'].relative(bu, outfile));
+  var index = _path2['default'].resolve(bu, 'index.html');
+
+  var relpath = _path2['default'].relative(_path2['default'].dirname(index), _path2['default'].dirname(bundle)).replace(/\\/g, '/');
+
+  //regex : !link.startsWith('.')
+  if (!/^\./.test(relpath)) {
+    link = relpath ? './' + relpath + '/' + _path2['default'].basename(bundle) : './' + _path2['default'].basename(bundle);
+  } else {
+    link = relpath + '/' + _path2['default'].basename(bundle);
+  }
+
+  var content = _fs2['default'].readFileSync(index, {
     encoding: 'utf8'
   });
 
   var $ = _whacko2['default'].load(content);
 
-  $('head').append('<link aurlia-view-bundle rel="import" href="./' + outfile + '">');
+  if ($('link[aurelia-view-bundle][href="' + link + '"]').length === 0) {
+    $('body').append('<link aurelia-view-bundle rel="import" href="' + link + '">');
+  }
+
+  _fs2['default'].writeFileSync(index, $.html());
 }
 
-function getTemplateId(file, baseURL, paths) {
+function getModuleId(file, baseURL, paths, pluginName) {
   var bu = baseURL.replace(/\\/g, '/') + '/';
-  var address = bu + file;
-
-  return getModuleName(address, bu, paths);
+  var address = 'file:' + file.replace(/\\/g, '/');
+  return getModuleName(address, bu, paths, pluginName);
 }
 
-function getModuleName(address, baseURL, paths) {
+function getModuleName(address, baseURL, paths, pluginName) {
   var pathMatch,
       curMatchLength,
       curPath,
