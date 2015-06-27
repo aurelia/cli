@@ -13,46 +13,54 @@ npm install aurelia-cli -g
  
 # Configuration
 
-The cli uses `Aureliafile.js` for various configuration. An example config file looks like:
+The cli uses `Aureliafile.js` for various configuration. A typical example with bundle config for [skeleton-navigation](https://github.com/aurelia/skeleton-navigation) looks like:
 
 ```javascript
-  var aurelia = require('aurelia-cli');
+var aurelia = require('aurelia-cli');
 
-  aurelia.command('bundle', {
-    js: {
-      app: {
-        modules: [
-          'aurelia-skeleton-navigation/*',
-        ],
-        options: {
-          inject: true
-        }
-      },
-      'aurelia-bundle': {
-        modules: [
-          'aurelia-bootstrapper',
-          'aurelia-router',
-          'aurelia-http-client'
-        ],
-        options: {
-          inject: false
-        }
-      }
-    },
-    template: {
-      app: {
-        pattern: 'dist/*.html',
-        options: {
-          inject: true,
-        }
+aurelia.command('bundle', {
+  js: {
+    "dist/app-bundle": {
+      modules: [
+        '*',
+        'aurelia-bootstrapper',
+        'aurelia-http-client',
+        'aurelia-router',
+        'aurelia-animator-css',
+        'github:aurelia/templating-binding@0.12.0',
+        'github:aurelia/templating-resources@0.12.1',
+        'github:aurelia/templating-router@0.13.0',
+        'github:aurelia/loader-default@0.8.0',
+        'github:aurelia/history-browser@0.5.0'
+      ],
+      options: {
+        inject: true,
+        minify: true
       }
     }
-  });
+  },
+  template: {
+    "dist/app-bundle": {
+      pattern: 'dist/*.html',
+      options: {
+        inject: true
+      }
+    }
+  }
+});
 ```
+> Note that, this bundle configuration is valid for [v0.14.0 of skeleton-navigation](https://github.com/aurelia/skeleton-navigation/tree/0.14.0) only.
 
 # Commands
+The following section explains how to use the different CLI commands. 
 
-The following section explains how to use the different CLI commands. In order to get help inside your command line just type
+To see all currently supported commands and options run:
+
+```shell
+aurelia -h
+```
+
+To get help for a specific command run:
 
 ```shell
 aurelia COMMANDNAME -h
@@ -122,49 +130,11 @@ export class YOURNAME {
 
 With `Aureliafile.js` file placed in the root of project containing the above configuration, run the following command to bundle the `js` modules and `templates`. 
 
+To learn more details about how bundling works read [this post](http://blog.durandal.io/2015/06/23/bundling-an-aurelia-application/).
+
 ```shell
 aurelia bundle
 ```
 
 # Authoring project specific command/plugin
-
-Currently `CLI` offers some built in commands that includes  `new`, `bundle`, and `generate` etc. Often times these are not enough you need some project specific commands. Let's see how easy it is to write one of these. 
-
-
-Place the following code in a file named `example-command.js` relative to the `Aureliafile`. 
-
-```
-module.exports = function ExampleCommand(program, config, logger) {
-    var self = this;
-
-    program.command('example')
-      .alias('e')
-      .description('This is just an example command to show how to write a plugin')
-      .action(function (options) {
-         console.log('Hello cli plugin world!');
-      });
-};
-```
-> You can place the file any where in your project directory. You may organize all your custom commands in a `command` directory.
-
-Now, let's `require` the command in the `Aureliafie.js`. It should look like:
-
-```javascript
-
-  var aurelia = require('aurelia-cli');
-  var ExampleCommand = require('./example-command');
-
-  
-  aurelia.command(ExampleCommand);
-
-```
-
-Notice `aurelia.command(...)` this is actually hooking the plugin with `cli`. With that in place run:
-
-```shell
-aurelia example
-```
-
-That's it! This should print `Hello cli plugin world!` to the console.
-
-You can package your plugin/command as an `npm package`,  publish  and share with the world. Our `registry`  will help you discover other great `plugins` created by the community. 
+Coming soon!
