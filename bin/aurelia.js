@@ -68,7 +68,6 @@ function handleCommands(env) {
 
   if (env.configPath) {
     require(env.configPath);
-    logger.info('Using Aureliafile: %s', env.configPath);
   } else {
     logger.log('warn', 'Aureliafile not found');
   }

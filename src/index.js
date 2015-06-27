@@ -6,6 +6,8 @@ import path from 'path';
 
 class Aurelia {
   constructor() {
+    program.version('0.2.1');
+
     this.commands = {};
     this.name = 'Aurelia CLI tool';
     this.config = {};
