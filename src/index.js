@@ -6,7 +6,7 @@ import path from 'path';
 
 class Aurelia {
   constructor() {
-    program.version('0.2.1');
+    program.version(require('../package.json').version);
 
     this.commands = {};
     this.name = 'Aurelia CLI tool';
