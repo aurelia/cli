@@ -6,8 +6,6 @@ import path from 'path';
 
 class Aurelia {
   constructor() {
-    program.version(require('../package.json').version);
-
     this.commands = {};
     this.name = 'Aurelia CLI tool';
     this.config = {};
@@ -16,6 +14,12 @@ class Aurelia {
 
   init(config) {
     this.config = config;
+
+    program.version(require('../package.json').version);
+    program.on('*', (cmd) => {
+      this.logger.warn(`Unknown command: '${cmd}'`);
+      program.outputHelp();
+    });
 
     var cmdDir = __dirname + path.sep + 'commands';
     fs.readdirSync(cmdDir)
@@ -32,19 +36,19 @@ class Aurelia {
 
     let subcommand = Command.args || '';
 
-    if(subcommand !== ''){
-        fullCommand = `${commandName} ${subcommand}`;
+    if (subcommand !== '') {
+      fullCommand = `${commandName} ${subcommand}`;
     }
 
     let c = program.command(fullCommand);
 
-    if(Command.alias){
+    if (Command.alias) {
       c.alias(Command.alias);
     }
 
-    if(Command.options){
+    if (Command.options) {
       Command.options.forEach(o => {
-        if(o.fn) {
+        if (o.fn) {
           c.option(o.opt, o.desc, o.fn, o.defaultValue);
         } else {
           c.option(o.opt, o.desc);
@@ -52,7 +56,7 @@ class Aurelia {
       });
     }
 
-    if(Command.description){
+    if (Command.description) {
       c.description(Command.description);
     }
 
@@ -80,6 +84,9 @@ class Aurelia {
 
   run(argv) {
     program.parse(argv);
+    if (program.args.length < 1) {
+      program.outputHelp();
+    }
   }
 }
 
