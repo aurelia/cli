@@ -66,6 +66,36 @@ To get help for a specific command run:
 aurelia COMMANDNAME -h
 ```
 
+## Bundle
+
+With `Aureliafile.js` file placed in the root of project having the above configuration, run the following command to bundle the `js` modules and `templates`. 
+
+```shell
+aurelia bundle
+```
+### JS bundle options
+- Options
+  - *inject:* set it to true to inject the bundle in `config.js`.  No manual script tag needs to be created in `index.html` to include the bundle file. SystemJS will load the bundle when any of the module of the bundle is required by the application.
+  - *minify:* minifies the bundle.
+
+- Notes:
+  - modules are not files, they are SystemJS module names.
+  - Globs like `*` or `*/**` can be used as well.
+  - Executes relative to `baseURL`.
+  - `paths` are important to consider when specifying `module names` 
+
+### Template bundle option
+- Option
+  - *inject:* injects a `<link aurelia-view-bundle rel="import" href="bundle_name.html">` at the end of the body tag of  `index.html` to include the bundle file.
+
+- Note:
+  - Globs template relative to `baseURL`
+  - Glob files. 
+  - Multiple glob pattern can be specified as `['dist/about/*.html', 'other/**/*.html']`
+  - Ignore pattern can be specified too: `['dist/**/*.html', '!dist/about/*.html']`
+
+> To learn more details about how bundling works read [this post](http://blog.durandal.io/2015/06/23/bundling-an-aurelia-application/).
+
 ## Generate
 This is used to scaffold new elements for your application. Currently it supports creating a ViewModel alongside a View.
 The minimal necessary command is:
@@ -126,15 +156,6 @@ export class YOURNAME {
 * no-lifecycle
 * template
 
-## Bundle
-
-With `Aureliafile.js` file placed in the root of project containing the above configuration, run the following command to bundle the `js` modules and `templates`. 
-
-To learn more details about how bundling works read [this post](http://blog.durandal.io/2015/06/23/bundling-an-aurelia-application/).
-
-```shell
-aurelia bundle
-```
 
 # Authoring project specific command/plugin
 Coming soon!
