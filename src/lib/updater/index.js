@@ -44,7 +44,7 @@ function normalUpdate() {
           logger.log('Updating all aurelia libs');
 
           Promise.all(repoList.map(repo => {
-             return spawn(jspm, ['install', 'github:aurelia/animator-css@0.2.0'])
+             return spawn(jspm, ['install', repo])
                 .progress(function(cp) {
                   cp.stdout.on('data', function(data) {
                     logger.log(data.toString());
@@ -117,11 +117,19 @@ function getRepoList(maps) {
     var v = maps[p];
     if (typeof v === 'object') {
       if (canAddToRepoList(list, p)) {
-        list.push(p);
+        var newValue = p.match(repoMatcher);
+        if (newValue){
+          newValue = 'aurelia-' + newValue[0].substring(9);
+        }
+        list.push(newValue);
       }
     } else {
       if (canAddToRepoList(list, v)) {
-        list.push(v);
+        var newValue = v.match(repoMatcher);
+        if (newValue){
+          newValue = 'aurelia-' + newValue[0].substring(9);
+        }
+        list.push(newValue);
       }
     }
   }
