@@ -35,7 +35,6 @@ function normalUpdate() {
   var updateCommands = [];
   var repoList = readConfigJs();
 
-
   unbundle()
     .then(() => {
       installer
@@ -110,6 +109,8 @@ function readConfigJs() {
   var repoList = getRepoList(cfg.map);
   return repoList;
 }
+
+var repoMatcher = new RegExp(/(:aurelia)(.*?)(?=@)/)
 
 function getRepoList(maps) {
   var list = [];
