@@ -44,7 +44,7 @@ function normalUpdate() {
           logger.log('Updating all aurelia libs');
 
           Promise.all(repoList.map(repo => {
-             return spawn('jspm.cmd', ['install', 'github:aurelia/animator-css@0.2.0'])
+             return spawn(jspm, ['install', 'github:aurelia/animator-css@0.2.0'])
                 .progress(function(cp) {
                   cp.stdout.on('data', function(data) {
                     logger.log(data.toString());
