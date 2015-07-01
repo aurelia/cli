@@ -2,7 +2,10 @@ import * as logger from '../logger';
 import * as installer from '../installer';
 import util from 'util';
 import fs from 'fs';
-import { spawn } from 'child-process-promise';
+import {
+  spawn, exec
+}
+from 'child-process-promise';
 import Promise from 'bluebird';
 
 var jspm = process.platform === "win32" ? "jspm.cmd" : "jspm";
@@ -32,25 +35,34 @@ function normalUpdate() {
   var updateCommands = [];
   var repoList = readConfigJs();
 
+
   unbundle()
     .then(() => {
       installer
         .runNPMInstall(function() {
           logger.log('Successfully npm installed');
           logger.log('Updating all aurelia libs');
-          repoList.forEach(repo => {
-            updateCommands.push(spawn(jspm, ['install ' + repo]));
-          });
 
-          Promise.all(updateCommands)
+          Promise.all(repoList.map(repo => {
+             return spawn('jspm.cmd', ['install', 'github:aurelia/animator-css@0.2.0'])
+                .progress(function(cp) {
+                  cp.stdout.on('data', function(data) {
+                    logger.log(data.toString());
+                  });
+
+                  cp.stderr.on('data', function(data) {
+                    logger.err('Errror: ', data.toString());
+                  });
+                });
+            }))
             .then(function() {
               logger.log('LASTLY, CLEANING JSPM')
               spawn(jspm, ['clean']);
             });
         });
     })
-    .fail((err)=>{
-      console.log(err);
+    .fail((err) => {
+      logger.err(err.toString());
     });
 }
 
