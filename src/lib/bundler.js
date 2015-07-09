@@ -18,7 +18,7 @@ export default function bundle(config, bundleOpts) {
   var paths = loader.paths;
   var cleanBaseURL = baseURL.replace(/^file:/, '');
 
-  var jsConfig = config.js;
+  var jsConfig = 'config.js';
   var templateConfig = config.template;
 
   Object.keys(jsConfig)
