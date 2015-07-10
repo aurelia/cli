@@ -14,7 +14,7 @@ function bundleJS(moduleExpression, outfile, options) {
 export default function bundle(config, bundleOpts) {
 
   var loader = api.Builder().loader;
-  var baseURL = loader.baseURL;
+  var baseURL = bundleOpts.baseURL || loader.baseURL;
   var paths = loader.paths;
   var cleanBaseURL = baseURL.replace(/^file:/, '');
 
