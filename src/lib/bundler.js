@@ -1,4 +1,4 @@
-import api from 'jspm/api';
+import jspm from 'jspm';
 import whacko from 'whacko';
 import glob from 'glob';
 import fs from 'fs';
@@ -6,14 +6,25 @@ import url from 'url';
 import path from 'path';
 import * as log from './logger';
 import globby from 'globby';
+import Builder from 'systemjs-builder';
+import utils from 'systemjs-builder/lib/utils';
 
 function bundleJS(moduleExpression, outfile, options) {
-  return api.bundle(moduleExpression, outfile, options);
+  return jspm.bundle(moduleExpression, outfile, options);
 }
 
 export default function bundle(config, bundleOpts) {
 
-  var loader = api.Builder().loader;
+   var builder = new jspm.Builder();
+   // configure baseURL here.
+
+
+    builder.build('app', 'dist/outfile.js', {inject:true});
+           
+
+
+return;
+  var loader = jspm.Builder().loader;
   var baseURL = loader.baseURL;
   var paths = loader.paths;
   var cleanBaseURL = baseURL.replace(/^file:/, '');
@@ -50,6 +61,10 @@ export default function bundle(config, bundleOpts) {
         });
     });
 
+
+
+  // template bundling
+  return;
   if (!templateConfig) return;
 
   Object.keys(templateConfig)
@@ -136,48 +151,4 @@ function getModuleId(file, baseURL, paths, pluginName) {
   var bu = baseURL.replace(/\\/g, '/') + '/';
   var address = 'file:' + file.replace(/\\/g, '/');
   return getModuleName(address, bu, paths, pluginName);
-}
-
-function getModuleName(address, baseURL, paths, pluginName) {
-  var pathMatch, curMatchLength, curPath, wIndex, pathMatchLength = 0;
-
-  if (pluginName) {
-    var extension = address.split('/').pop();
-    extension = extension.substr(extension.lastIndexOf('.'));
-    if (extension != address && extension != '.js')
-      address = address.substr(0, address.length - extension.length) + '.js';
-  }
-
-
-  for (var p in paths) {
-
-    curPath = decodeURI(url.resolve(encodeURI(baseURL), paths[p].replace(/\\/g, '/')));
-    wIndex = curPath.indexOf('*');
-
-    if (wIndex === -1) {
-      if (address === curPath) {
-        curMatchLength = curPath.split('/').length;
-        if (curMatchLength > pathMatchLength) {
-          pathMatch = p;
-          pathMatchLength = curMatchLength;
-        }
-      }
-    } else {
-      if (address.substr(0, wIndex) === curPath.substr(0, wIndex) && address.substr(address.length - curPath.length + wIndex + 1) === curPath.substr(wIndex + 1)) {
-        curMatchLength = curPath.split('/').length;
-        if (curMatchLength > pathMatchLength) {
-          pathMatch = p.replace('*', address.substr(wIndex, address.length - curPath.length + 1));
-          pathMatchLength = curMatchLength;
-        }
-      }
-    }
-  }
-
-  if (!pathMatch)
-    throw "Unable to calculate path for " + address;
-
-  if (pluginName)
-    pathMatch += extension + '!' + (pluginName == extension ? '' : pluginName);
-
-  return pathMatch;
 }
