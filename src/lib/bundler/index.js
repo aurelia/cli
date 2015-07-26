@@ -7,7 +7,7 @@ import path from 'path';
 import * as log from '../logger';
 import globby from 'globby';
 import utils from 'systemjs-builder/lib/utils';
-import { bundleJS } from './bundle';
+import { bundleJS } from './js-bundler';
 
 // before calling any jspm api we should call the function bellow to set custom package path.
 // jspm.setPackagePath('.');
