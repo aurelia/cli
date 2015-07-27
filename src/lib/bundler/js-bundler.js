@@ -4,7 +4,6 @@ import ui from 'jspm/lib/ui';
 import { alphabetize } from 'jspm/lib/common';
 import fs from 'fs';
 import Promise from 'bluebird';
-import Builder from 'systemjs-builder';
 import { toFileURL, fromFileURL } from 'systemjs-builder/lib/utils';
 import path from 'path';
 
@@ -12,23 +11,16 @@ ui.setResolver(this);
 ui.useDefaults();
 
 export function bundleJS(moduleExpression, fileName, opts, bundleOpts) {
+  jspm.setPackagePath('.');
+  var customCfg = {} // pass all sort of custom configuration like baseURL etc here.
+  var builder = new jspm.Builder(customCfg);
 
-  var systemBuilder = new Builder();
-  config.loadSync();
-
-  fileName = fileName || path.resolve(config.pjson.baseURL, 'build.js');
+  var outfile = path.resolve(fromFileURL(builder.loader.baseURL), fileName);
 
   if (!opts.sourceMaps) {
-    removeExistingSourceMap(fileName);
+    removeExistingSourceMap(outfile);
   }
 
-  ui.log('info', 'Building the bundle tree for `' + moduleExpression + '`...');
-
-  // trace the starting module
-  var cfg = config.loader.getConfig();
-  cfg.baseURL = toFileURL(config.pjson.baseURL);
-
-  var outfile = path.resolve(fromFileURL(cfg.baseURL), fileName);
   if (fs.existsSync(outfile)) {
     if (!bundleOpts.force) {
       ui.log('err', 'A bundle named `' + outfile + '` is already exists. Use --force to overwrite.');
@@ -37,28 +29,16 @@ export function bundleJS(moduleExpression, fileName, opts, bundleOpts) {
     fs.unlinkSync(outfile);
   }
 
-
-  systemBuilder.config(cfg);
-  return systemBuilder.trace(moduleExpression)
+  return builder.trace(moduleExpression)
     .then(function(buildTree) {
       logTree(buildTree);
       if (!('lowResSourceMaps' in opts))
         opts.lowResSourceMaps = true;
-      return systemBuilder.buildTree(buildTree, fileName, opts);
+      return builder.buildTree(buildTree, fileName, opts);
     })
     .then(function(output) {
       delete config.loader.depCache;
-
-      if (opts.inject) {
-        // Add the bundle to config if the inject flag was given.
-        var bundleName = systemBuilder.getCanonicalName(toFileURL(path.resolve(config.pjson.baseURL, fileName)));
-
-        if (!config.loader.bundles)
-          config.loader.bundles = {};
-        config.loader.bundles[bundleName] = output.modules;
-
-        ui.log('ok', '`' + bundleName + '` added to config bundles.');
-      }
+      if (opts.inject) injectBundle(builder);
     })
     .then(config.save)
     .then(function() {
@@ -70,6 +50,15 @@ export function bundleJS(moduleExpression, fileName, opts, bundleOpts) {
     });
 };
 
+function injectBundle(builder){
+  var bundleName = builder.getCanonicalName(toFileURL(path.resolve(config.pjson.baseURL, fileName)));
+  if (!config.loader.bundles){
+    config.loader.bundles = {};
+  }
+  config.loader.bundles[bundleName] = output.modules;
+  ui.log('ok', '`' + bundleName + '` added to config bundles.');
+}
+
 function logTree(tree) {
   ui.log('info', '');
   tree = alphabetize(tree);
@@ -78,10 +67,10 @@ function logTree(tree) {
   ui.log('info', '');
 }
 
-function removeExistingSourceMap(fileName) {
-  var sourceMapFile = fileName + '.map';
-  if (fs.existsSync(sourceMapFile)) {
-    fs.unlinkSync(sourceMapFile);
+function removeExistingSourceMap(outfile) {
+  var mapFile = outfile + '.map'
+  if (fs.existsSync(mapFile)) {
+    fs.unlinkSync(mapFile);
   }
 }
 

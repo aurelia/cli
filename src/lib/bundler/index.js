@@ -10,22 +10,22 @@ export default function bundle(config, bundleOpts) {
   var templateConfig = config.template;
 
   Object.keys(jsConfig)
-    .forEach(function(key) {
-      var cfg = jsConfig[key];
-      var outfile = key + '.js';
-      var moduleExpr = cfg.modules.join(' + ');
-      var opt = cfg.options;
+    .forEach(key  => {
+      let cfg = jsConfig[key];
+      let outfile = key + '.js';
+      let moduleExpr = cfg.modules.join(' + ');
+      let opt = cfg.options;
       bundleJS(moduleExpr, outfile, opt, bundleOpts);
     });
 
   if (!templateConfig) return;
 
   Object.keys(templateConfig)
-    .forEach(function(key) {
-      var cfg = templateConfig[key];
-      var outfileName = key + '.html';
-      var pattern = cfg.pattern;
-      var options = cfg.options;
-      bundleTemplate(pattern, outfileName, options, bundleOpts);
+    .forEach(key  => {
+      let cfg = templateConfig[key];
+      let outfile = key + '.html';
+      let pattern = cfg.pattern;
+      let opt = cfg.options;
+      bundleTemplate(pattern, outfile, opt, bundleOpts);
     });
 }
