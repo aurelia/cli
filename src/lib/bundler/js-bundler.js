@@ -34,7 +34,7 @@ export function bundleJS(moduleExpression, fileName, opts, bundleOpts) {
       logTree(buildTree);
       if (!('lowResSourceMaps' in opts))
         opts.lowResSourceMaps = true;
-      return builder.buildTree(buildTree, fileName, opts);
+      return builder.buildTree(buildTree, outfile, opts);
     })
     .then(function(output) {
       delete config.loader.depCache;
