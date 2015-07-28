@@ -27,6 +27,7 @@
     "url": "https://github.com/aurelia/cli"
   },
   "dependencies": {
+    "babel-core": "^5.8.3",
     "bluebird": "^2.9.25",
     "chalk": "^1.0.0",
     "child-process-promise": "^1.1.0",
@@ -37,12 +38,13 @@
     "globby": "^2.0.0",
     "handlebars": "^3.0.3",
     "inquirer": "^0.8.5",
-    "jspm": "^0.15.6",
+    "jspm": "git://github.com/jspm/jspm-cli#master",
     "liftoff": "^2.1.0",
     "lodash": "^3.9.1",
     "minimist": "^1.1.1",
     "mkdirp": "^0.5.1",
     "npm": "^2.10.1",
+    "systemjs-builder": "git://github.com/systemjs/builder#master",
     "whacko": "^0.18.1",
     "winston": "^1.0.0"
   },
