@@ -38,7 +38,7 @@ export function bundleJS(moduleExpression, fileName, opts, bundleOpts) {
     })
     .then(function(output) {
       delete config.loader.depCache;
-      if (opts.inject) injectBundle(builder);
+      if (opts.inject) injectBundle(builder, fileName, output);
     })
     .then(config.save)
     .then(function() {
@@ -50,7 +50,7 @@ export function bundleJS(moduleExpression, fileName, opts, bundleOpts) {
     });
 };
 
-function injectBundle(builder){
+function injectBundle(builder, fileName, output){
   var bundleName = builder.getCanonicalName(toFileURL(path.resolve(config.pjson.baseURL, fileName)));
   if (!config.loader.bundles){
     config.loader.bundles = {};
