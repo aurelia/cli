@@ -12,8 +12,6 @@ ui.useDefaults();
 
 export function bundleJS(modules, fileName, opts, bundleOpts) {
 
-  var moduleExpression = modules.map(m => getFullModuleName(m)).join(' + ');
-
   jspm.setPackagePath('.');
   var customCfg = {} // pass all sort of custom configuration like baseURL etc here.
   var builder = new jspm.Builder(customCfg);
@@ -32,6 +30,9 @@ export function bundleJS(modules, fileName, opts, bundleOpts) {
     fs.unlinkSync(outfile);
   }
 
+  var moduleExpression = modules.map(m => getFullModuleName(m, config.loader.__originalConfig.map)).join(' + ');
+
+  console.log(moduleExpression);
   return builder.trace(moduleExpression)
     .then(function(buildTree) {
       logTree(buildTree);
@@ -53,9 +54,9 @@ export function bundleJS(modules, fileName, opts, bundleOpts) {
     });
 };
 
-function injectBundle(builder, fileName, output){
+function injectBundle(builder, fileName, output) {
   var bundleName = builder.getCanonicalName(toFileURL(path.resolve(config.pjson.baseURL, fileName)));
-  if (!config.loader.bundles){
+  if (!config.loader.bundles) {
     config.loader.bundles = {};
   }
   config.loader.bundles[bundleName] = output.modules;
@@ -67,6 +68,14 @@ function logTree(tree) {
   tree = alphabetize(tree);
   for (var name in tree)
     ui.log('info', '  `' + name + '`');
+  ui.log('info', '');
+}
+
+function logModules(modules) {
+  ui.log('info', '');
+  modules.forEach(m => {
+    ui.log('info', '  `' + m + '`');
+  });
   ui.log('info', '');
 }
 
@@ -85,6 +94,26 @@ function logBuild(outFile, opts) {
     (opts.minify ? (opts.mangle ? ', ' : ', un') + 'mangled.' : '.'));
 }
 
-function getFullModuleName(moduleName){
-  return moduleName;
+function getFullModuleName(moduleName, map) {
+  var matches = [];
+
+  Object.keys(map)
+    .forEach(m => {
+      if (m.startsWith(moduleName)) {
+        matches.push(m);
+      }
+    });
+
+  if (matches.length === 0) {
+    return moduleName;
+  }
+
+  if (matches.length > 1) {
+    ui.log('err', `Multiple mathces found for module: '${moduleName}'. Matches are:`);
+    logModules(matches);
+    ui.log('info', `Try including specific version number. Or, resolve the conflict with manually with 'jspm'`);
+    throw 'Version conflict found in module names specified in `aureliafile`';
+  }
+
+  return matches[0];
 }
