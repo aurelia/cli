@@ -14,7 +14,8 @@ gulp.task('copy-source', function() {
       stage:2,
       optional: [
         "es7.decorators",
-        "es7.classProperties"
+        "es7.classProperties",
+        "runtime"
       ]
     }))
     .pipe(gulp.dest('dist'));
