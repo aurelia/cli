@@ -13,9 +13,8 @@ export default function bundle(config, bundleOpts) {
     .forEach(key  => {
       let cfg = jsConfig[key];
       let outfile = key + '.js';
-      let moduleExpr = cfg.modules.join(' + ');
       let opt = cfg.options;
-      bundleJS(moduleExpr, outfile, opt, bundleOpts);
+      bundleJS(cfg.modules, outfile, opt, bundleOpts);
     });
 
   if (!templateConfig) return;
@@ -29,3 +28,4 @@ export default function bundle(config, bundleOpts) {
       bundleTemplate(pattern, outfile, opt, bundleOpts);
     });
 }
+

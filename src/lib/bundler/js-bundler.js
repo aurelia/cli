@@ -10,7 +10,10 @@ import path from 'path';
 ui.setResolver(this);
 ui.useDefaults();
 
-export function bundleJS(moduleExpression, fileName, opts, bundleOpts) {
+export function bundleJS(modules, fileName, opts, bundleOpts) {
+
+  var moduleExpression = modules.map(m => getFullModuleName(m)).join(' + ');
+
   jspm.setPackagePath('.');
   var customCfg = {} // pass all sort of custom configuration like baseURL etc here.
   var builder = new jspm.Builder(customCfg);
@@ -80,4 +83,8 @@ function logBuild(outFile, opts) {
     (opts.sourceMaps ? ' with ' + resolution + 'source maps' : '') + ', ' +
     (opts.minify ? '' : 'un') + 'minified' +
     (opts.minify ? (opts.mangle ? ', ' : ', un') + 'mangled.' : '.'));
+}
+
+function getFullModuleName(moduleName){
+  return moduleName;
 }
