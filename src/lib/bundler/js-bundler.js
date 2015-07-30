@@ -32,7 +32,6 @@ export function bundleJS(modules, fileName, opts, bundleOpts) {
 
   var moduleExpression = modules.map(m => getFullModuleName(m, config.loader.__originalConfig.map)).join(' + ');
 
-  console.log(moduleExpression);
   return builder.trace(moduleExpression)
     .then(function(buildTree) {
       logTree(buildTree);
@@ -109,9 +108,9 @@ function getFullModuleName(moduleName, map) {
   }
 
   if (matches.length > 1) {
-    ui.log('err', `Multiple mathces found for module: '${moduleName}'. Matches are:`);
+    ui.log('err', `Multiple matches found for module: '${moduleName}'. Matches are:`);
     logModules(matches);
-    ui.log('info', `Try including specific version number. Or, resolve the conflict with manually with 'jspm'`);
+    ui.log('info', 'Try including a specific version number or resolve the conflict manually with jspm');
     throw 'Version conflict found in module names specified in `aureliafile`';
   }
 
