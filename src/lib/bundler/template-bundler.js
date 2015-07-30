@@ -42,15 +42,16 @@ export function bundleTemplate(pattern, fileName, options, bundleOpts) {
   fs.writeFileSync(outfile, templates.join('\n'));
 
   if (options.inject) {
-    injectLink(outfile, utils.fromFileURL(baseURL));
+    injectLink(outfile, utils.fromFileURL(baseURL), options.inject.indexFile);
   }
 }
 
 
-function injectLink(outfile, baseURL) {
+function injectLink(outfile, baseURL, fileName) {
   var link = '';
   var bundle = path.resolve(baseURL, path.relative(baseURL, outfile));
-  var index = path.resolve(baseURL, 'index.html');
+
+  var index = path.resolve(baseURL, fileName || 'index.html');
   var relpath = path.relative(path.dirname(index), path.dirname(bundle)).replace(/\\/g, '/');
 
   if (!relpath.startsWith('.')) {
