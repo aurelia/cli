@@ -53,8 +53,7 @@ function injectLink(outfile, baseURL) {
   var index = path.resolve(baseURL, 'index.html');
   var relpath = path.relative(path.dirname(index), path.dirname(bundle)).replace(/\\/g, '/');
 
-  //regex : !link.startsWith('.')
-  if (!(/^\./.test(relpath))) {
+  if (!relpath.startsWith('.')) {
     link = relpath ? './' + relpath + '/' + path.basename(bundle) : './' + path.basename(bundle);
   } else {
     link = relpath + '/' + path.basename(bundle);
