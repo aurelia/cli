@@ -42,19 +42,21 @@ export function bundleTemplate(pattern, fileName, options, bundleOpts) {
   fs.writeFileSync(outfile, templates.join('\n'));
 
   if (options.inject) {
-    injectLink(outfile, utils.fromFileURL(baseURL));
+    injectLink(outfile, utils.fromFileURL(baseURL), options.inject);
   }
 }
 
 
-function injectLink(outfile, baseURL) {
+function injectLink(outfile, baseURL, injectOptions) {
   var link = '';
+  var fileName = injectOptions.indexFile;
   var bundle = path.resolve(baseURL, path.relative(baseURL, outfile));
-  var index = path.resolve(baseURL, 'index.html');
+  var index = path.resolve(baseURL, fileName || 'index.html');
+  var destFile = injectOptions.destFile ? path.resolve(baseURL, injectOptions.destFile) : index;
+
   var relpath = path.relative(path.dirname(index), path.dirname(bundle)).replace(/\\/g, '/');
 
-  //regex : !link.startsWith('.')
-  if (!(/^\./.test(relpath))) {
+  if (!relpath.startsWith('.')) {
     link = relpath ? './' + relpath + '/' + path.basename(bundle) : './' + path.basename(bundle);
   } else {
     link = relpath + '/' + path.basename(bundle);
@@ -70,7 +72,7 @@ function injectLink(outfile, baseURL) {
     $('body').append('<link aurelia-view-bundle rel="import" href="' + link + '">');
   }
 
-  fs.writeFileSync(index, $.html());
+  fs.writeFileSync(destFile, $.html());
 }
 
 function getCanonicalName(builder, file, pluginName) {

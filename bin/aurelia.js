@@ -32,7 +32,8 @@ if (DEV_ENV) {
     modules: 'common',
     optional: [
       "es7.decorators",
-      "es7.classProperties"
+      "es7.classProperties",
+      "runtime"
     ]
   });
 }

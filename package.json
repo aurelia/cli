@@ -50,6 +50,7 @@
   },
   "devDependencies": {
     "babel": "^5.4.7",
+    "babel-runtime": "^5.8.19",
     "chai": "^2.3.0",
     "gulp": "^3.8.11",
     "gulp-babel": "^5.1.0",

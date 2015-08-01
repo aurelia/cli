@@ -10,7 +10,8 @@ import path from 'path';
 ui.setResolver(this);
 ui.useDefaults();
 
-export function bundleJS(moduleExpression, fileName, opts, bundleOpts) {
+export function bundleJS(modules, fileName, opts, bundleOpts) {
+
   jspm.setPackagePath('.');
   var customCfg = {} // pass all sort of custom configuration like baseURL etc here.
   var builder = new jspm.Builder(customCfg);
@@ -28,6 +29,8 @@ export function bundleJS(moduleExpression, fileName, opts, bundleOpts) {
     }
     fs.unlinkSync(outfile);
   }
+
+  var moduleExpression = modules.map(m => getFullModuleName(m, config.loader.__originalConfig.map)).join(' + ');
 
   return builder.trace(moduleExpression)
     .then(function(buildTree) {
@@ -50,9 +53,9 @@ export function bundleJS(moduleExpression, fileName, opts, bundleOpts) {
     });
 };
 
-function injectBundle(builder, fileName, output){
+function injectBundle(builder, fileName, output) {
   var bundleName = builder.getCanonicalName(toFileURL(path.resolve(config.pjson.baseURL, fileName)));
-  if (!config.loader.bundles){
+  if (!config.loader.bundles) {
     config.loader.bundles = {};
   }
   config.loader.bundles[bundleName] = output.modules;
@@ -64,6 +67,14 @@ function logTree(tree) {
   tree = alphabetize(tree);
   for (var name in tree)
     ui.log('info', '  `' + name + '`');
+  ui.log('info', '');
+}
+
+function logModules(modules) {
+  ui.log('info', '');
+  modules.forEach(m => {
+    ui.log('info', '  `' + m + '`');
+  });
   ui.log('info', '');
 }
 
@@ -80,4 +91,28 @@ function logBuild(outFile, opts) {
     (opts.sourceMaps ? ' with ' + resolution + 'source maps' : '') + ', ' +
     (opts.minify ? '' : 'un') + 'minified' +
     (opts.minify ? (opts.mangle ? ', ' : ', un') + 'mangled.' : '.'));
+}
+
+function getFullModuleName(moduleName, map) {
+  var matches = [];
+
+  Object.keys(map)
+    .forEach(m => {
+      if (m.startsWith(moduleName)) {
+        matches.push(m);
+      }
+    });
+
+  if (matches.length === 0) {
+    return moduleName;
+  }
+
+  if (matches.length > 1) {
+    ui.log('err', `Multiple matches found for module: '${moduleName}'. Matches are:`);
+    logModules(matches);
+    ui.log('info', 'Try including a specific version number or resolve the conflict manually with jspm');
+    throw 'Version conflict found in module names specified in `aureliafile`';
+  }
+
+  return matches[0];
 }

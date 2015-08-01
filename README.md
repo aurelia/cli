@@ -85,10 +85,29 @@ aurelia bundle
   - `paths` are important to consider when specifying `module names` 
 
 ### Template bundle option
-- Option
-  - *inject:* injects a `<link aurelia-view-bundle rel="import" href="bundle_name.html">` at the end of the body tag of  `index.html` to include the bundle file.
 
-- Note:
+#### Options
+  - *inject:* injects a `<link aurelia-view-bundle rel="import" href="bundle_name.html">` at the end of the body tag of  `index.html` to include the bundle file.
+  - *inject* can be an object too. 
+
+```javascript
+  template: {
+    "dist/app-bundle": {
+      pattern: 'dist/*.html',
+      options: {
+        inject: {
+          indexFile: 'index.html',
+          destFile: 'dist/index.html'
+        },
+      }
+    }
+  }
+```
+  - *indexFile* : Path of the `index.html` relative to baseURL. If not specified default is `baseURL/index.html`.
+  - *destFile* :  Path of the new html file with the injected link. When not specified defaults to `indexFile`.
+  
+#### Note:
+
   - Globs template relative to `baseURL`
   - Glob files. 
   - Multiple glob pattern can be specified as `['dist/about/*.html', 'other/**/*.html']`
