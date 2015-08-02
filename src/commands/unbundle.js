@@ -1,4 +1,5 @@
 import { description, command, args, option } from '../decorators';
+import {unbundle} from '../lib/unbundler';
 
 
 @command('unbundle')
@@ -7,9 +8,14 @@ import { description, command, args, option } from '../decorators';
 export default class InitCommand {
   constructor(config, logger) {
     this.config = config;
+    this.logger = logger;
   }
 
   action(opt) {
-    console.log('Un bundling ... ');
+    this.logger.info('Un bundling ... ');
+    unbundle()
+      .then(() => {
+         this.logger.info('Bundle configuration removed ...');
+      });
   }
 }

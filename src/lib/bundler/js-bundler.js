@@ -7,10 +7,9 @@ import Promise from 'bluebird';
 import { toFileURL, fromFileURL } from 'systemjs-builder/lib/utils';
 import path from 'path';
 
-ui.setResolver(this);
-ui.useDefaults();
-
 export function bundleJS(modules, fileName, opts, bundleOpts) {
+  ui.setResolver(this);
+  ui.useDefaults();
 
   jspm.setPackagePath('.');
   var customCfg = {} // pass all sort of custom configuration like baseURL etc here.
