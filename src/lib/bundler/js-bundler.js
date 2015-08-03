@@ -31,7 +31,8 @@ export function bundleJS(modules, fileName, opts, bundleOpts) {
 
   var moduleExpression = modules.map(m => getFullModuleName(m, config.loader.__originalConfig.map)).join(' + ');
 
-  return builder.trace(moduleExpression)
+  return builder
+    .trace(moduleExpression)
     .then(function(buildTree) {
       logTree(buildTree);
       if (!('lowResSourceMaps' in opts))
@@ -44,7 +45,7 @@ export function bundleJS(modules, fileName, opts, bundleOpts) {
     })
     .then(config.save)
     .then(function() {
-      logBuild(path.relative(process.cwd(), fileName), opts);
+      logBuild(outfile, opts);
     })
     .catch(function(e) {
       ui.log('err', e.stack || e);
