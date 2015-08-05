@@ -7,16 +7,19 @@ export function unbundle(opts) {
   var packagePath = opts.packagePath || '.';
   jspm.setPackagePath(opts.packagePath);
 
-  var tasks = [jspm.unbundle(), unbundleTemplate(opts)];
-
+  var tasks = [removeJSBundle(opts), removeTemplateBundle(opts)];
   return Promise.all(tasks)
     .then(() => {
       console.log('Unbundle completed!');
     });
 }
 
-function removeTemplateInjection(opts) {
-  var file =  // get normalized path of the index.html relative to baseURL;
+function removeJsBundle(opts) {
+  return jspm.unbundle();
+}
+
+function removeTemplateBundle(opts) {
+  var file = '';  // get normalized path of the index.html relative to baseURL;
   return Promise
     .promisify(fs.readFile)(file, {
       encoding: utf8
@@ -24,8 +27,12 @@ function removeTemplateInjection(opts) {
     .then((content) => {
       return Promise.resolve(whacko.load(content));
     })
-    .then(removeInvalidLinks($))
-    .then(removeLinkInjections($))
+    .then(($)=> { 
+      return removeInvalidLinks($)
+    })
+    .then(($) => {
+      return removeLinkInjections($)
+    });
 }
 
 function removeInvalidLinks($) {
