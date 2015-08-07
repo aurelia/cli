@@ -31,7 +31,7 @@ function installTemplate(repoName) {
       }
 
       if(result.length < 1) {
-        reject('No Release-Tags luginavailable');
+        reject('No Release-Tags available');
         return;
       }
       console.log('Downloading latest available release: ' + result[0].name);
