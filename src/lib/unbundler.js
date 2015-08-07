@@ -1,48 +1,70 @@
 import jspm from 'jspm';
 import Promise from 'bluebird';
 import whacko from 'whacko';
+import _ from 'lodash';
+import fs from 'fs';
+import utils from 'systemjs-builder/lib/utils';
+import path from 'path';
 
-export function unbundle(opts) {
+export function unbundle(_opts) {
+  let opts = _.defaultsDeep(_opts, {
+    packagePath: '.',
+    template: {}
+  });
 
-  var packagePath = opts.packagePath || '.';
   jspm.setPackagePath(opts.packagePath);
+  let builder = new jspm.Builder();
 
-  var tasks = [removeJSBundle(opts), removeTemplateBundle(opts)];
-  return Promise.all(tasks)
-    .then(() => {
-      console.log('Unbundle completed!');
-    });
+  let tasks = [removeJSBundle(opts), removeTemplateBundles(opts, builder)];
+  return Promise.all(tasks);
 }
 
-function removeJsBundle(opts) {
+function removeJSBundle(opts) {
   return jspm.unbundle();
 }
 
-function removeTemplateBundle(opts) {
-  var file = '';  // get normalized path of the index.html relative to baseURL;
-  return Promise
-    .promisify(fs.readFile)(file, {
-      encoding: utf8
-    })
-    .then((content) => {
-      return Promise.resolve(whacko.load(content));
-    })
-    .then(($)=> { 
-      return removeInvalidLinks($)
-    })
-    .then(($) => {
-      return removeLinkInjections($)
+function removeTemplateBundles(opts, builder) {
+
+  let baseURL = utils.fromFileURL(builder.loader.baseURL);
+  let tmplCfg = opts.template;
+  let tasks = [];
+
+  Object
+    .keys(tmplCfg)
+    .forEach((key) => {
+      let cfg = tmplCfg[key];
+      tasks.push(removeTemplateBundle(cfg, baseURL))
     });
+
+
+  return Promise.all(tasks);
+
+  function removeTemplateBundle(_cfg, _baseURL) {
+    let cfg = _.defaultsDeep(_cfg, {
+      indexFile: 'index.html',
+      destFile: 'index.html'
+    });
+
+    let file = path.resolve(_baseURL, cfg.destFile);
+
+    return Promise
+      .promisify(fs.readFile)(file, {
+        encoding: 'utf8'
+      })
+      .then((content) => {
+        let $ = whacko.load(content);
+        return Promise.resolve($);
+      })
+      .then(($) => {
+        return removeLinkInjections($)
+      })
+      .then(($) => {
+        return Promise.promisify(fs.writeFile)(file, $.html());
+      });
+  }
 }
 
-function removeInvalidLinks($) {
-  // search all the links with `aurelia-view-bundle` in `index.html`
-  // complare with aureliafile's bundle config.
-  // find the invalid links from the comparisn
-  // remove them from the DOM
-  // return promise with clean DOM.
-}
-
-function removeLinkInjection() {
-
+function removeLinkInjections($) {
+  $('link[aurelia-view-bundle]').remove();
+  return Promise.resolve($);
 }
