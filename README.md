@@ -16,26 +16,25 @@ npm install aurelia-cli -g
 The cli uses `Aureliafile.js` for various configuration. A typical example with bundle config for [skeleton-navigation](https://github.com/aurelia/skeleton-navigation) looks like:
 
 ```javascript
-var aurelia = require('aurelia-cli');
+var cli = require('aurelia-cli');
 
-aurelia.command('bundle', {
+var bundleCfg = {
   js: {
     "dist/app-bundle": {
       modules: [
         '*',
         'aurelia-bootstrapper',
-        'aurelia-http-client',
+        'aurelia-fetch-client',
         'aurelia-router',
         'aurelia-animator-css',
-        'github:aurelia/templating-binding@0.12.0',
-        'github:aurelia/templating-resources@0.12.1',
-        'github:aurelia/templating-router@0.13.0',
-        'github:aurelia/loader-default@0.8.0',
-        'github:aurelia/history-browser@0.5.0'
+        'github:aurelia/templating-binding',
+        'github:aurelia/templating-resources',
+        'github:aurelia/templating-router',
+        'github:aurelia/loader-default',
+        'github:aurelia/history-browser'
       ],
       options: {
-        inject: true,
-        minify: true
+        inject: true
       }
     }
   },
@@ -47,9 +46,12 @@ aurelia.command('bundle', {
       }
     }
   }
-});
+};
+
+cli.command('bundle', bundleCfg);
+cli.command('unbundle', bundleCfg);
 ```
-> Note that, this bundle configuration is valid for [v0.14.0 of skeleton-navigation](https://github.com/aurelia/skeleton-navigation/tree/0.14.0) only.
+> Note that, this bundle configuration is valid for [v0.16.2 of skeleton-navigation](https://github.com/aurelia/skeleton-navigation/tree/0.16.2) only. 
 
 # Commands
 The following section explains how to use the different CLI commands. 
@@ -79,10 +81,9 @@ aurelia bundle
   - *minify:* minifies the bundle.
 
 - Notes:
-  - modules are not files, they are SystemJS module names.
+  - modules are not files, they are SystemJS module names/urls.
   - Globs like `*` or `*/**` can be used as well.
   - Executes relative to `baseURL`.
-  - `paths` are important to consider when specifying `module names` 
 
 ### Template bundle option
 
@@ -105,7 +106,7 @@ aurelia bundle
 ```
   - *indexFile* : Path of the `index.html` relative to baseURL. If not specified default is `baseURL/index.html`.
   - *destFile* :  Path of the new html file with the injected link. When not specified defaults to `indexFile`.
-  
+
 #### Note:
 
   - Globs template relative to `baseURL`
@@ -114,6 +115,13 @@ aurelia bundle
   - Ignore pattern can be specified too: `['dist/**/*.html', '!dist/about/*.html']`
 
 > To learn more details about how bundling works read [this post](http://blog.durandal.io/2015/06/23/bundling-an-aurelia-application/).
+
+## Unbundle
+
+This command does the following.
+
+ - Removes any `js` bundle injection from `config.js`
+ - Removes all `<link aurelia-view-bundle rel="impoort" href="" >` from the `index` file.
 
 ## Generate
 This is used to scaffold new elements for your application. Currently it supports creating a ViewModel alongside a View.
