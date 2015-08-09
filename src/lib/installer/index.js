@@ -1,8 +1,8 @@
-var ghdownload = require('download-github-repo')
-  , GitHubApi  = require("github")
-  , Promise = require('bluebird')
-  , request = require('request')
-  , jspm = require('jspm');
+import download from 'download-github-repo';
+import GitHubApi  from 'github';
+import Promise from 'bluebird';
+import request from 'request';
+import jspm from 'jspm';
 
 var github = new GitHubApi({
   // required
@@ -19,8 +19,7 @@ var github = new GitHubApi({
 
 var pluginList = null;
 
-
-function installTemplate(repoName) {
+export function installTemplate(repoName) {
   // find the latest available tag
   return new Promise(function(resolve, reject){
 
@@ -58,7 +57,7 @@ function installTemplate(repoName) {
   });
 }
 
-function runNPMInstall(cb) {
+export function runNPMInstall(cb) {
   var npm = require('npm');
   npm.load(function(err) {
     npm.commands.install(['.'], function(er, data) {
@@ -77,7 +76,7 @@ function runNPMInstall(cb) {
   });
 }
 
-function runJSPMInstall(cb) {
+export function runJSPMInstall(cb) {
   var jspm = require('jspm');
   jspm.configureLoader({ transpiler: 'babel'})
     .then(function() {
@@ -105,7 +104,7 @@ function _loadPluginList() {
   });
 }
 
-function getPluginListPrompt() {
+export function getPluginListPrompt() {
   return _loadPluginList().then( (list) => {
     var registry = {};
 
@@ -117,7 +116,7 @@ function getPluginListPrompt() {
   });
 }
 
-function getPluginInfo(name) {
+export function getPluginInfo(name) {
   return _loadPluginList().then( (list) => {
     var result = list.filter( (plugin) => {
 
@@ -132,7 +131,7 @@ function getPluginInfo(name) {
   });
 }
 
-function installPlugin(name, endpoint, location) {
+export function installPlugin(name, endpoint, location) {
   return new Promise(function(resolve, reject) {
     let user = location.substring(0, location.indexOf('/'))
       , repo = location.substring(location.indexOf('/') + 1);
@@ -162,12 +161,3 @@ function installPlugin(name, endpoint, location) {
 
   });
 }
-
-module.exports = {
-  installTemplate: installTemplate,
-  runNPMInstall: runNPMInstall,
-  runJSPMInstall: runJSPMInstall,
-  getPluginListPrompt: getPluginListPrompt,
-  installPlugin: installPlugin,
-  getPluginInfo: getPluginInfo
-};
