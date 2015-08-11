@@ -38,7 +38,7 @@
     "globby": "^2.0.0",
     "handlebars": "^3.0.3",
     "inquirer": "^0.8.5",
-    "jspm": "^0.16.0-beta.6",
+    "jspm": "^0.16.0-beta.7",
     "liftoff": "^2.1.0",
     "lodash": "^3.10.1",
     "minimist": "^1.1.1",

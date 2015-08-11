@@ -33,35 +33,41 @@ function removeTemplateBundles(opts, builder) {
     .keys(tmplCfg)
     .forEach((key) => {
       let cfg = tmplCfg[key];
-      tasks.push(removeTemplateBundle(cfg, baseURL))
+      tasks.push(removeTemplateBundle(cfg.options, baseURL))
     });
-
 
   return Promise.all(tasks);
+}
 
-  function removeTemplateBundle(_cfg, _baseURL) {
-    let cfg = _.defaultsDeep(_cfg, {
-      indexFile: 'index.html',
-      destFile: 'index.html'
+function removeTemplateBundle(options, _baseURL) {
+
+  if(!options) Promise.resolve();
+
+  let inject = options.inject;
+  if(!inject) Promise.resolve();
+
+  let cfg = _.defaults(inject, {
+    indexFile: 'index.html',
+    destFile: 'index.html'
+  });
+
+
+  let file = path.resolve(_baseURL, cfg.destFile);
+
+  return Promise
+    .promisify(fs.readFile)(file, {
+      encoding: 'utf8'
+    })
+    .then((content) => {
+      let $ = whacko.load(content);
+      return Promise.resolve($);
+    })
+    .then(($) => {
+      return removeLinkInjections($)
+    })
+    .then(($) => {
+      return Promise.promisify(fs.writeFile)(file, $.html());
     });
-
-    let file = path.resolve(_baseURL, cfg.destFile);
-
-    return Promise
-      .promisify(fs.readFile)(file, {
-        encoding: 'utf8'
-      })
-      .then((content) => {
-        let $ = whacko.load(content);
-        return Promise.resolve($);
-      })
-      .then(($) => {
-        return removeLinkInjections($)
-      })
-      .then(($) => {
-        return Promise.promisify(fs.writeFile)(file, $.html());
-      });
-  }
 }
 
 function removeLinkInjections($) {
