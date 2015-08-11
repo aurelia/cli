@@ -101,6 +101,7 @@ var bundleCfg = {
   - *minify:* minifies the bundle.
 
 - Notes:
+  - Module names can be specified without the `versoon number`. CLI will search the `config.js` file to get the proper `moduleName` with version number. An error will be thrown if any conflict is found.
   - modules are not files, they are SystemJS module names/urls.
   - Globs like `*` or `*/**` can be used as well.
   - Executes relative to `baseURL`.
