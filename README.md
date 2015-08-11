@@ -65,7 +65,7 @@ aurelia -h
 To get help for a specific command run:
 
 ```shell
-aurelia COMMANDNAME -h
+aurelia command_name -h
 ```
 
 ## Bundle
@@ -75,6 +75,26 @@ With `Aureliafile.js` file placed in the root of project having the above config
 ```shell
 aurelia bundle
 ```
+
+### Common options
+
+- *packagePath*: Set the path of `package.json` file. This allows to customize paths like `baseURL`, `config.js` etc. Example: 
+
+```javascript
+var cli = require('aurelia-cli');
+
+var bundleCfg = {
+  packagePath : '.',
+  js: {
+    "dist/app-bundle": {
+      modules: [
+        '*',
+        'aurelia-bootstrapper',
+ ...
+ ...
+```
+> Note that we should only specify the `path` without the file name.
+
 ### JS bundle options
 - Options
   - *inject:* set it to true to inject the bundle in `config.js`.  No manual script tag needs to be created in `index.html` to include the bundle file. SystemJS will load the bundle when any of the module of the bundle is required by the application.
