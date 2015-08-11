@@ -19,7 +19,7 @@ export default class InitCommand {
        removefiles : opt.removefiles || false
     };
 
-    let options = _.defaults(this.commandconfig, otheropts);
+    let options = _.defaults(this.commandConfig, otheropts);
 
     this.logger.info('Un bundling ... ');
 
