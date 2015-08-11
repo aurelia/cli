@@ -46,6 +46,8 @@ function removeTemplateBundle(options, _baseURL) {
   let inject = options.inject;
   if(!inject) Promise.resolve();
 
+  if(!_.isObject(inject)) inject = {};
+
   let cfg = _.defaults(inject, {
     indexFile: 'index.html',
     destFile: 'index.html'
