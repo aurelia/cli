@@ -1,5 +1,6 @@
 import bundle from '../../lib/bundler';
 import {command, alias, option, description} from '../../decorators';
+import _ from 'lodash';
 
 @command('bundle')
 @alias('b')
@@ -11,8 +12,16 @@ export default class BundleCommand {
     this.logger = logger;
   }
 
-  action(options)  {
+  action(opt)  {
    this.logger.info('Creating bundle ...');
-   bundle(this.commandConfig, options);
+
+   let otheropts = {
+      force : opt.force || false,
+   };
+
+   let options = _.defaults(this.commandConfig, otheropts);
+
+   bundle(options);
+
   };
 }

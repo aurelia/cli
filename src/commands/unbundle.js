@@ -14,13 +14,12 @@ export default class InitCommand {
   }
 
   action(opt) {
-
-    let otherOpts = {
-       clearInvalids : opt.clearInvalids || false,
-       removeFiles : opt.removeFiles || false
+    let otheropts = {
+       clearinvalids : opt.clearinvalids || false,
+       removefiles : opt.removefiles || false
     };
 
-    let options = _.defaults(this.commandConfig, otherOpts);
+    let options = _.defaults(this.commandconfig, otheropts);
 
     this.logger.info('Un bundling ... ');
 
