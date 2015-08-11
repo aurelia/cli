@@ -10,7 +10,10 @@ export default function bundle(config) {
       let cfg = jsConfig[key];
       let outfile = key + '.js';
       let opt = cfg.options;
+
       opt.force = config.force;
+      opt.packagePath = config.packagePath;
+
       bundleJS(cfg.modules, outfile, opt);
     });
 
@@ -22,7 +25,10 @@ export default function bundle(config) {
       let outfile = key + '.html';
       let pattern = cfg.pattern;
       let opt = cfg.options;
+
       opt.force = config.force;
+      opt.packagePath = config.packagePath;
+
       bundleTemplate(pattern, outfile, opt);
     });
 }

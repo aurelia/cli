@@ -6,13 +6,18 @@ import fs from 'fs';
 import Promise from 'bluebird';
 import { toFileURL, fromFileURL } from 'systemjs-builder/lib/utils';
 import path from 'path';
+import _ from 'lodash';
 
-export function bundleJS(modules, fileName, opts) {
+export function bundleJS(modules, fileName, _opts) {
 
   ui.setResolver(this);
   ui.useDefaults();
 
-  jspm.setPackagePath('.');
+  let opts = _.defaultsDeep(_opts, {
+    packagePath: '.'
+  });
+
+  jspm.setPackagePath(opts.packagePath);
 
   var builder = new jspm.Builder();
   var outfile = path.resolve(fromFileURL(builder.loader.baseURL), fileName);

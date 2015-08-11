@@ -5,9 +5,17 @@ import path from 'path';
 import * as log from '../logger';
 import globby from 'globby';
 import utils from 'systemjs-builder/lib/utils';
+import _ from 'lodash';
 
-export function bundleTemplate(pattern, fileName, options) {
+export function bundleTemplate(pattern, fileName, _opts) {
   var templates = [];
+
+  let options = _.defaultsDeep(_opts, {
+    packagePath: '.'
+  });
+
+  jspm.setPackagePath(options.packagePath);
+
   var builder = new jspm.Builder();
   var baseURL = builder.loader.baseURL;
   var cwd = utils.fromFileURL(baseURL);;
