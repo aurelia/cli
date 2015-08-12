@@ -5,7 +5,7 @@ import {command, option, alias, description } from '../decorators';
 
 @command('update')
 @alias('u')
-@description('Update aurealia')
+@description('Update Aurelia')
 @option('-n --nuclear', "Go nuclear")
 export default class UpdateCommand {
   constructor(config, logger) {
