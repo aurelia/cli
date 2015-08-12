@@ -5,16 +5,24 @@ import path from 'path';
 import * as log from '../logger';
 import globby from 'globby';
 import utils from 'systemjs-builder/lib/utils';
+import _ from 'lodash';
 
-export function bundleTemplate(pattern, fileName, options, bundleOpts) {
+export function bundleTemplate(pattern, fileName, _opts) {
   var templates = [];
+
+  let options = _.defaultsDeep(_opts, {
+    packagePath: '.'
+  });
+
+  jspm.setPackagePath(options.packagePath);
+
   var builder = new jspm.Builder();
   var baseURL = builder.loader.baseURL;
   var cwd = utils.fromFileURL(baseURL);;
   var outfile = path.resolve(utils.fromFileURL(baseURL), fileName);
 
   if (fs.existsSync(outfile)) {
-    if (!bundleOpts.force) {
+    if (!options.force) {
       log.err('A bundle named `' + outfile + '` is already exists. Use --force to overwrite.');
       return;
     }

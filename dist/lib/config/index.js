@@ -1,14 +1,14 @@
 'use strict';
 
+var _createClass = require('babel-runtime/helpers/create-class')['default'];
+
+var _classCallCheck = require('babel-runtime/helpers/class-call-check')['default'];
+
+var _interopRequireWildcard = require('babel-runtime/helpers/interop-require-wildcard')['default'];
+
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 var _logger = require('../logger');
 
@@ -31,27 +31,9 @@ var Config = (function () {
     this.isReady = false;
   }
 
+  // Return the correct path to the configFile
+
   _createClass(Config, [{
-    key: 'configPath',
-
-    // Return the correct path to the configFile
-    get: function () {
-      return cli.env.configPath;
-    }
-  }, {
-    key: 'config',
-
-    // Return the current store Object
-    get: function () {
-      return cli.settings.isAureliaFile ? cli.aurelia.configuration : _defaults.defaults;
-    },
-
-    // Extend the current config
-    set: function (value) {
-      this._config = extend(this._config, value);
-      cli.aurelia.configuration = this._config;
-    }
-  }, {
     key: 'init',
 
     /**
@@ -72,8 +54,6 @@ var Config = (function () {
         this.write(this._config);
       }
     }
-  }, {
-    key: 'write',
 
     /**
      * write
@@ -84,6 +64,8 @@ var Config = (function () {
      * @param  {Function}  cb   callback function when complete
      * @return {Stream}         Return the vynl stream
      */
+  }, {
+    key: 'write',
     value: function write(data, cb) {
 
       var self = this,
@@ -102,8 +84,6 @@ var Config = (function () {
         logger.err('Issue creating config file at [%s]', cli.cwd().red);
       });
     }
-  }, {
-    key: 'set',
 
     /**
      * set
@@ -114,6 +94,8 @@ var Config = (function () {
      * @param {value}   value  Object or value to apply to the key
      * @param {Function} cb    Callback to call when complete
      */
+  }, {
+    key: 'set',
     value: function set(key, value, cb) {
 
       return this.ready(function () {
@@ -130,14 +112,14 @@ var Config = (function () {
         }
       });
     }
-  }, {
-    key: 'save',
 
     /**
      * save
      * @param  {Object}   data Data to extend _config with
      * @param  {Function} cb   Callback to invoke when complete
      */
+  }, {
+    key: 'save',
     value: function save(data, cb) {
       return this.ready(function () {
         if (data) {
@@ -161,6 +143,24 @@ var Config = (function () {
       this._onready.forEach(function (cb) {
         cb.call(this);
       });
+    }
+  }, {
+    key: 'configPath',
+    get: function get() {
+      return cli.env.configPath;
+    }
+
+    // Return the current store Object
+  }, {
+    key: 'config',
+    get: function get() {
+      return cli.settings.isAureliaFile ? cli.aurelia.configuration : _defaults.defaults;
+    },
+
+    // Extend the current config
+    set: function set(value) {
+      this._config = extend(this._config, value);
+      cli.aurelia.configuration = this._config;
     }
   }]);
 

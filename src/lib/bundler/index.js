@@ -1,7 +1,7 @@
 import { bundleJS } from './js-bundler';
 import { bundleTemplate } from './template-bundler';
 
-export default function bundle(config, bundleOpts) {
+export default function bundle(config) {
   var jsConfig = config.js;
   var templateConfig = config.template;
 
@@ -10,7 +10,11 @@ export default function bundle(config, bundleOpts) {
       let cfg = jsConfig[key];
       let outfile = key + '.js';
       let opt = cfg.options;
-      bundleJS(cfg.modules, outfile, opt, bundleOpts);
+
+      opt.force = config.force;
+      opt.packagePath = config.packagePath;
+
+      bundleJS(cfg.modules, outfile, opt);
     });
 
   if (!templateConfig) return;
@@ -21,7 +25,11 @@ export default function bundle(config, bundleOpts) {
       let outfile = key + '.html';
       let pattern = cfg.pattern;
       let opt = cfg.options;
-      bundleTemplate(pattern, outfile, opt, bundleOpts);
+
+      opt.force = config.force;
+      opt.packagePath = config.packagePath;
+
+      bundleTemplate(pattern, outfile, opt);
     });
 }
 

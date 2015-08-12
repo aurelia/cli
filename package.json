@@ -1,6 +1,6 @@
 {
   "name": "aurelia-cli",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "The command line tooling for Aurelia, used for creating projects, scaffolding, bundling and more.",
   "keywords": [
     "aurelia",
@@ -38,12 +38,13 @@
     "globby": "^2.0.0",
     "handlebars": "^3.0.3",
     "inquirer": "^0.8.5",
-    "jspm": "git://github.com/jspm/jspm-cli#master",
+    "jspm": "^0.16.0-beta.7",
     "liftoff": "^2.1.0",
     "lodash": "^3.10.1",
     "minimist": "^1.1.1",
     "mkdirp": "^0.5.1",
     "npm": "^2.10.1",
+    "request": "^2.60.0",
     "systemjs-builder": "^0.13.0",
     "whacko": "^0.18.1",
     "winston": "^1.0.0"

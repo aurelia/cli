@@ -6,15 +6,20 @@ import fs from 'fs';
 import Promise from 'bluebird';
 import { toFileURL, fromFileURL } from 'systemjs-builder/lib/utils';
 import path from 'path';
+import _ from 'lodash';
 
-export function bundleJS(modules, fileName, opts, bundleOpts) {
+export function bundleJS(modules, fileName, _opts) {
+
   ui.setResolver(this);
   ui.useDefaults();
 
-  jspm.setPackagePath('.');
-  var customCfg = {} // pass all sort of custom configuration like baseURL etc here.
-  var builder = new jspm.Builder(customCfg);
+  let opts = _.defaultsDeep(_opts, {
+    packagePath: '.'
+  });
 
+  jspm.setPackagePath(opts.packagePath);
+
+  var builder = new jspm.Builder();
   var outfile = path.resolve(fromFileURL(builder.loader.baseURL), fileName);
 
   if (!opts.sourceMaps) {
@@ -22,7 +27,7 @@ export function bundleJS(modules, fileName, opts, bundleOpts) {
   }
 
   if (fs.existsSync(outfile)) {
-    if (!bundleOpts.force) {
+    if (!opts.force) {
       ui.log('err', 'A bundle named `' + outfile + '` is already exists. Use --force to overwrite.');
       return;
     }
