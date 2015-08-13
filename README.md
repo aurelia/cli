@@ -144,6 +144,18 @@ This command does the following.
  - Removes any `js` bundle injection from `config.js`
  - Removes all `<link aurelia-view-bundle rel="impoort" href="" >` from the `index` file.
 
+## Plugin
+
+This command automates the installation of aurelia plugins. They are managed in the [aurelia registry](https://github.com/aurelia/registry).
+You use this command by running
+
+```bash
+aurelia plugin
+```
+
+Now you will get a list of available plugins. By selecting one it will get automatically installed via jspm. Dont forget, you still
+need to load the plugin in your application as described [here](http://aurelia.io/docs.html#plugins).  
+
 ## Generate
 This is used to scaffold new elements for your application. Currently it supports creating a ViewModel alongside a View.
 The minimal necessary command is:
