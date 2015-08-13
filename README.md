@@ -1,16 +1,17 @@
 # aurelia-cli
+[![Build Status](https://secure.travis-ci.org/aurelia/cli.svg?branch=master)](https://travis-ci.org/aurelia/cli)
 
 The command line tooling for Aurelia, used for creating projects, scaffolding, bundling and more.
 
 > To keep up to date on [Aurelia](http://www.aurelia.io/), please visit and subscribe to [the official blog](http://blog.durandal.io/). If you have questions, we invite you to join us on [our Gitter Channel](https://gitter.im/aurelia/discuss).
 
 # Install
-Run the following command to install `aurelia-cli` 
+Run the following command to install `aurelia-cli`
 
 ```shell
 npm install aurelia-cli -g
 ```
- 
+
 # Configuration
 
 The cli uses `Aureliafile.js` for various configuration. A typical example with bundle config for [skeleton-navigation](https://github.com/aurelia/skeleton-navigation) looks like:
@@ -51,10 +52,10 @@ var bundleCfg = {
 cli.command('bundle', bundleCfg);
 cli.command('unbundle', bundleCfg);
 ```
-> Note that, this bundle configuration is valid for [v0.16.2 of skeleton-navigation](https://github.com/aurelia/skeleton-navigation/tree/0.16.2) only. 
+> Note that, this bundle configuration is valid for [v0.16.2 of skeleton-navigation](https://github.com/aurelia/skeleton-navigation/tree/0.16.2) only.
 
 # Commands
-The following section explains how to use the different CLI commands. 
+The following section explains how to use the different CLI commands.
 
 To see all currently supported commands and options run:
 
@@ -70,7 +71,7 @@ aurelia command_name -h
 
 ## Bundle
 
-With `Aureliafile.js` file placed in the root of project having the above configuration, run the following command to bundle the `js` modules and `templates`. 
+With `Aureliafile.js` file placed in the root of project having the above configuration, run the following command to bundle the `js` modules and `templates`.
 
 ```shell
 aurelia bundle
@@ -78,7 +79,7 @@ aurelia bundle
 
 ### Common options
 
-- *packagePath*: Set the path of `package.json` file. This allows to customize paths like `baseURL`, `config.js` etc. Example: 
+- *packagePath*: Set the path of `package.json` file. This allows to customize paths like `baseURL`, `config.js` etc. Example:
 
 ```javascript
 var cli = require('aurelia-cli');
@@ -110,7 +111,7 @@ var bundleCfg = {
 
 #### Options
   - *inject:* injects a `<link aurelia-view-bundle rel="import" href="bundle_name.html">` at the end of the body tag of  `index.html` to include the bundle file.
-  - *inject* can be an object too. 
+  - *inject* can be an object too.
 
 ```javascript
   template: {
@@ -131,7 +132,7 @@ var bundleCfg = {
 #### Note:
 
   - Globs template relative to `baseURL`
-  - Glob files. 
+  - Glob files.
   - Multiple glob pattern can be specified as `['dist/about/*.html', 'other/**/*.html']`
   - Ignore pattern can be specified too: `['dist/**/*.html', '!dist/about/*.html']`
 
@@ -154,7 +155,7 @@ aurelia plugin
 ```
 
 Now you will get a list of available plugins. By selecting one it will get automatically installed via jspm. Dont forget, you still
-need to load the plugin in your application as described [here](http://aurelia.io/docs.html#plugins).  
+need to load the plugin in your application as described [here](http://aurelia.io/docs.html#plugins).
 
 ## Generate
 This is used to scaffold new elements for your application. Currently it supports creating a ViewModel alongside a View.
