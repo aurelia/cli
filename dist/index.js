@@ -4,9 +4,11 @@ var _createClass = require('babel-runtime/helpers/create-class')['default'];
 
 var _classCallCheck = require('babel-runtime/helpers/class-call-check')['default'];
 
+var _Object$defineProperty = require('babel-runtime/core-js/object/define-property')['default'];
+
 var _interopRequireDefault = require('babel-runtime/helpers/interop-require-default')['default'];
 
-Object.defineProperty(exports, '__esModule', {
+_Object$defineProperty(exports, '__esModule', {
   value: true
 });
 
@@ -69,7 +71,7 @@ var Aurelia = (function () {
       var subcommand = Command.args || '';
 
       if (subcommand !== '') {
-        fullCommand = commandName + ' ' + subcommand;
+        fullCommand = '' + commandName + ' ' + subcommand;
       }
 
       var c = _commander2['default'].command(fullCommand);

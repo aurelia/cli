@@ -4,7 +4,9 @@ var _createClass = require('babel-runtime/helpers/create-class')['default'];
 
 var _classCallCheck = require('babel-runtime/helpers/class-call-check')['default'];
 
-Object.defineProperty(exports, '__esModule', {
+var _Object$defineProperty = require('babel-runtime/core-js/object/define-property')['default'];
+
+_Object$defineProperty(exports, '__esModule', {
   value: true
 });
 
@@ -19,14 +21,15 @@ var InitCommand = (function () {
     this.config = config;
   }
 
-  _createClass(InitCommand, [{
+  var _InitCommand = InitCommand;
+
+  _createClass(_InitCommand, [{
     key: 'action',
     value: function action(opt) {
       (0, _libInit.init)(opt, this.config);
     }
   }]);
 
-  var _InitCommand = InitCommand;
   InitCommand = (0, _decorators.description)('Initialize a new Aurelia Project and creates an Aureliafile')(InitCommand) || InitCommand;
   InitCommand = (0, _decorators.option)('-e, --env', 'Initialize an aurelia project environment')(InitCommand) || InitCommand;
   InitCommand = (0, _decorators.command)('init')(InitCommand) || InitCommand;

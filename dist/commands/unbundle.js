@@ -4,9 +4,11 @@ var _createClass = require('babel-runtime/helpers/create-class')['default'];
 
 var _classCallCheck = require('babel-runtime/helpers/class-call-check')['default'];
 
+var _Object$defineProperty = require('babel-runtime/core-js/object/define-property')['default'];
+
 var _interopRequireDefault = require('babel-runtime/helpers/interop-require-default')['default'];
 
-Object.defineProperty(exports, '__esModule', {
+_Object$defineProperty(exports, '__esModule', {
   value: true
 });
 
@@ -26,7 +28,9 @@ var InitCommand = (function () {
     this.logger = logger;
   }
 
-  _createClass(InitCommand, [{
+  var _InitCommand = InitCommand;
+
+  _createClass(_InitCommand, [{
     key: 'action',
     value: function action(opt) {
       var _this = this;
@@ -46,7 +50,6 @@ var InitCommand = (function () {
     }
   }]);
 
-  var _InitCommand = InitCommand;
   InitCommand = (0, _decorators.description)('Unbundles based on bundle config in Aureliafile')(InitCommand) || InitCommand;
   InitCommand = (0, _decorators.option)('-r, --remove-files', 'Remove bundle files.')(InitCommand) || InitCommand;
   InitCommand = (0, _decorators.alias)('u')(InitCommand) || InitCommand;

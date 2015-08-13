@@ -1,12 +1,15 @@
 'use strict';
 
+var _Object$defineProperty = require('babel-runtime/core-js/object/define-property')['default'];
+
 var _Object$keys = require('babel-runtime/core-js/object/keys')['default'];
 
 var _interopRequireDefault = require('babel-runtime/helpers/interop-require-default')['default'];
 
-Object.defineProperty(exports, '__esModule', {
+_Object$defineProperty(exports, '__esModule', {
   value: true
 });
+
 exports.bundleJS = bundleJS;
 
 var _jspm = require('jspm');

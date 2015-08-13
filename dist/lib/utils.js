@@ -1,8 +1,11 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+var _Object$defineProperty = require('babel-runtime/core-js/object/define-property')['default'];
+
+_Object$defineProperty(exports, '__esModule', {
   value: true
 });
+
 exports.ucFirst = ucFirst;
 exports.toCamelCase = toCamelCase;
 exports.dashToCamelCase = dashToCamelCase;

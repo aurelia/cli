@@ -1,10 +1,13 @@
 'use strict';
 
+var _Object$defineProperty = require('babel-runtime/core-js/object/define-property')['default'];
+
 var _interopRequireDefault = require('babel-runtime/helpers/interop-require-default')['default'];
 
-Object.defineProperty(exports, '__esModule', {
+_Object$defineProperty(exports, '__esModule', {
   value: true
 });
+
 exports.installTemplate = installTemplate;
 exports.runNPMInstall = runNPMInstall;
 exports.runJSPMInstall = runJSPMInstall;
@@ -34,14 +37,14 @@ var _jspm2 = _interopRequireDefault(_jspm);
 
 var github = new _github2['default']({
   // required
-  version: "3.0.0",
+  version: '3.0.0',
   debug: false,
-  protocol: "https",
-  host: "api.github.com",
-  pathPrefix: "",
+  protocol: 'https',
+  host: 'api.github.com',
+  pathPrefix: '',
   timeout: 5000,
   headers: {
-    "user-agent": "Aurelia-Github-Loader"
+    'user-agent': 'Aurelia-Github-Loader'
   }
 });
 
@@ -64,7 +67,7 @@ function installTemplate(repoName) {
       console.log('Downloading latest available release: ' + result[0].name);
 
       // Kick off the repo download
-      ghdownload("aurelia/skeleton-navigation#" + result[0].name, "", function (err) {
+      ghdownload('aurelia/skeleton-navigation#' + result[0].name, '', function (err) {
         if (err !== undefined && err !== null) {
           reject('An error occurred while downloading the template');
           console.log(err);
@@ -97,7 +100,7 @@ function runNPMInstall(cb) {
       }
     });
 
-    npm.on("log", function (message) {
+    npm.on('log', function (message) {
       // log the progress of the installation
       console.log(message);
     });
@@ -169,17 +172,17 @@ function installPlugin(name, endpoint, location) {
         return;
       }
 
-      var tag = "master";
+      var tag = 'master';
 
       if (result.length > 0) {
-        tag = "^" + result[0].name;
+        tag = '^' + result[0].name;
       }
 
       _jspm2['default'].install(name, endpoint + ':' + location + '@^' + tag);
 
       return _jspm2['default'].install(name, endpoint + ':' + location + '@' + tag).then(function (result) {
 
-        resolve("Successfully installed plugin " + name + "@" + tag);
+        resolve('Successfully installed plugin ' + name + '@' + tag);
       })['catch'](function (err) {
         console.log(err);
       });
