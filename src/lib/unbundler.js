@@ -7,6 +7,9 @@ import utils from 'systemjs-builder/lib/utils';
 import path from 'path';
 
 export function unbundle(_opts) {
+  
+  if(!_opts) return Promise.reject('No bundle configuration is supplied!');
+
   let opts = _.defaultsDeep(_opts, {
     packagePath: '.',
     template: {}
