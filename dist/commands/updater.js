@@ -4,11 +4,9 @@ var _createClass = require('babel-runtime/helpers/create-class')['default'];
 
 var _classCallCheck = require('babel-runtime/helpers/class-call-check')['default'];
 
-var _Object$defineProperty = require('babel-runtime/core-js/object/define-property')['default'];
-
 var _interopRequireWildcard = require('babel-runtime/helpers/interop-require-wildcard')['default'];
 
-_Object$defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
@@ -30,9 +28,7 @@ var UpdateCommand = (function () {
     this.logger = logger;
   }
 
-  var _UpdateCommand = UpdateCommand;
-
-  _createClass(_UpdateCommand, [{
+  _createClass(UpdateCommand, [{
     key: 'action',
     value: function action(opts) {
       logger.log('Updating Aurelia...');
@@ -41,7 +37,8 @@ var UpdateCommand = (function () {
     }
   }]);
 
-  UpdateCommand = (0, _decorators.option)('-n --nuclear', 'Go nuclear')(UpdateCommand) || UpdateCommand;
+  var _UpdateCommand = UpdateCommand;
+  UpdateCommand = (0, _decorators.option)('-n --nuclear', "Go nuclear")(UpdateCommand) || UpdateCommand;
   UpdateCommand = (0, _decorators.description)('Update Aurelia')(UpdateCommand) || UpdateCommand;
   UpdateCommand = (0, _decorators.alias)('u')(UpdateCommand) || UpdateCommand;
   UpdateCommand = (0, _decorators.command)('update')(UpdateCommand) || UpdateCommand;

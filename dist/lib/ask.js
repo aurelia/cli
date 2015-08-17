@@ -1,11 +1,8 @@
 'use strict';
 
-var _Object$defineProperty = require('babel-runtime/core-js/object/define-property')['default'];
-
-_Object$defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
-
 exports.ask = ask;
 var Promise = require('bluebird');
 var inquirer = require('inquirer');
