@@ -16,7 +16,7 @@ export function bundleTemplate(pattern, fileName, _opts) {
 
   jspm.setPackagePath(options.packagePath);
 
-  var builder = new jspm.Builder();
+  var builder = new jspm.Builder(options.builder);
   var baseURL = builder.loader.baseURL;
   var cwd = utils.fromFileURL(baseURL);;
   var outfile = path.resolve(utils.fromFileURL(baseURL), fileName);
