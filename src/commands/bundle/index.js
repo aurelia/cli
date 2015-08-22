@@ -1,4 +1,4 @@
-import bundle from '../../lib/bundler';
+import bundle from 'aurelia-bundler';
 import {command, alias, option, description} from '../../decorators';
 import _ from 'lodash';
 

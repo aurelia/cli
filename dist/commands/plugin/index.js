@@ -4,11 +4,9 @@ var _createClass = require('babel-runtime/helpers/create-class')['default'];
 
 var _classCallCheck = require('babel-runtime/helpers/class-call-check')['default'];
 
-var _Object$defineProperty = require('babel-runtime/core-js/object/define-property')['default'];
-
 var _interopRequireWildcard = require('babel-runtime/helpers/interop-require-wildcard')['default'];
 
-_Object$defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
@@ -31,9 +29,7 @@ var PluginCommand = (function () {
     _classCallCheck(this, _PluginCommand);
   }
 
-  var _PluginCommand = PluginCommand;
-
-  _createClass(_PluginCommand, [{
+  _createClass(PluginCommand, [{
     key: 'action',
     value: function action(cmd, options) {
       var prompts = undefined;
@@ -84,8 +80,9 @@ var PluginCommand = (function () {
     }
   }]);
 
+  var _PluginCommand = PluginCommand;
   PluginCommand = (0, _decorators.description)('install an aurelia plugin from the registry')(PluginCommand) || PluginCommand;
-  PluginCommand = (0, _decorators.option)('-l, --list', 'List all installed plugins')(PluginCommand) || PluginCommand;
+  PluginCommand = (0, _decorators.option)('-l, --list', "List all installed plugins")(PluginCommand) || PluginCommand;
   PluginCommand = (0, _decorators.args)('[p]')(PluginCommand) || PluginCommand;
   PluginCommand = (0, _decorators.command)('plugin')(PluginCommand) || PluginCommand;
   return PluginCommand;

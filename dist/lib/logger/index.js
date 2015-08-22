@@ -1,45 +1,43 @@
 'use strict';
 
-var _Object$defineProperty = require('babel-runtime/core-js/object/define-property')['default'];
-
 var _Object$defineProperties = require('babel-runtime/core-js/object/define-properties')['default'];
 
-_Object$defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
-
 exports.log = log;
 exports.err = err;
 exports.ok = ok;
 if (!String.prototype.magenta) {
   _Object$defineProperties(String.prototype, {
     magenta: { get: function get() {
-        return '\u001b[35m' + this.valueOf() + '\u001b[39m';
+        return '\x1B[35m' + this.valueOf() + '\x1B[39m';
       } },
     yellow: { get: function get() {
-        return '\u001b[33m' + this.valueOf() + '\u001b[39m';
+        return '\x1B[33m' + this.valueOf() + '\x1B[39m';
       } },
     white: { get: function get() {
-        return '\u001b[37m' + this.valueOf() + '\u001b[39m';
+        return '\x1B[37m' + this.valueOf() + '\x1B[39m';
       } },
     black: { get: function get() {
-        return '\u001b[30m' + this.valueOf() + '\u001b[39m';
+        return '\x1B[30m' + this.valueOf() + '\x1B[39m';
       } },
     green: { get: function get() {
-        return '\u001b[32m' + this.valueOf() + '\u001b[39m';
+        return '\x1B[32m' + this.valueOf() + '\x1B[39m';
       } },
     grey: { get: function get() {
-        return '\u001b[90m' + this.valueOf() + '\u001b[39m';
+        return '\x1B[90m' + this.valueOf() + '\x1B[39m';
       } },
     blue: { get: function get() {
-        return '\u001b[34m' + this.valueOf() + '\u001b[39m';
+        return '\x1B[34m' + this.valueOf() + '\x1B[39m';
       } },
     cyan: { get: function get() {
-        return '\u001b[36m' + this.valueOf() + '\u001b[39m';
+        return '\x1B[36m' + this.valueOf() + '\x1B[39m';
       } },
     red: { get: function get() {
-        return '\u001b[31m' + this.valueOf() + '\u001b[39m';
-      } } });
+        return '\x1B[31m' + this.valueOf() + '\x1B[39m';
+      } }
+  });
 }
 
 var prefix = {
