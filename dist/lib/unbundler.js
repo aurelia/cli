@@ -38,6 +38,9 @@ var _path = require('path');
 var _path2 = _interopRequireDefault(_path);
 
 function unbundle(_opts) {
+
+  if (!_opts) return _bluebird2['default'].reject('No bundle configuration is supplied!');
+
   var opts = _lodash2['default'].defaultsDeep(_opts, {
     packagePath: '.',
     template: {}
