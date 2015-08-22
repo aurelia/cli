@@ -26,7 +26,7 @@ var _bluebird = require('bluebird');
 
 var _bluebird2 = _interopRequireDefault(_bluebird);
 
-var jspm = process.platform === 'win32' ? 'jspm.cmd' : 'jspm';
+var jspm = process.platform === "win32" ? "jspm.cmd" : "jspm";
 
 function update(options) {
   if (options.nuclear) {

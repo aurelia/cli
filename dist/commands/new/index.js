@@ -4,11 +4,9 @@ var _createClass = require('babel-runtime/helpers/create-class')['default'];
 
 var _classCallCheck = require('babel-runtime/helpers/class-call-check')['default'];
 
-var _Object$defineProperty = require('babel-runtime/core-js/object/define-property')['default'];
-
 var _interopRequireWildcard = require('babel-runtime/helpers/interop-require-wildcard')['default'];
 
-_Object$defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
@@ -46,9 +44,7 @@ var NewCommand = (function () {
     _classCallCheck(this, _NewCommand);
   }
 
-  var _NewCommand = NewCommand;
-
-  _createClass(_NewCommand, [{
+  _createClass(NewCommand, [{
     key: 'action',
     value: function action(cmd, opt) {
       (0, _libAsk.ask)(prompts).then(function (answers) {
@@ -68,6 +64,7 @@ var NewCommand = (function () {
     }
   }]);
 
+  var _NewCommand = NewCommand;
   NewCommand = (0, _decorators.args)('[type]')(NewCommand) || NewCommand;
   NewCommand = (0, _decorators.command)('new')(NewCommand) || NewCommand;
   return NewCommand;

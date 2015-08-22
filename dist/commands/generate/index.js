@@ -4,11 +4,9 @@ var _createClass = require('babel-runtime/helpers/create-class')['default'];
 
 var _classCallCheck = require('babel-runtime/helpers/class-call-check')['default'];
 
-var _Object$defineProperty = require('babel-runtime/core-js/object/define-property')['default'];
-
 var _interopRequireWildcard = require('babel-runtime/helpers/interop-require-wildcard')['default'];
 
-_Object$defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
@@ -29,9 +27,7 @@ var GenerateCommand = (function () {
     _classCallCheck(this, _GenerateCommand);
   }
 
-  var _GenerateCommand = GenerateCommand;
-
-  _createClass(_GenerateCommand, [{
+  _createClass(GenerateCommand, [{
     key: 'action',
     value: function action(cmd, options) {
       if (typeof options.name === 'function' || options.name === '') {
@@ -60,12 +56,13 @@ var GenerateCommand = (function () {
     }
   }]);
 
+  var _GenerateCommand = GenerateCommand;
   GenerateCommand = (0, _decorators.description)('scaffold elements for your project')(GenerateCommand) || GenerateCommand;
-  GenerateCommand = (0, _decorators.option)('-t, --template <name>', 'Specify the name of the template to use as override')(GenerateCommand) || GenerateCommand;
-  GenerateCommand = (0, _decorators.option)('--no-lifecycle', 'Do not create lifecycle callbacks, if applicable')(GenerateCommand) || GenerateCommand;
-  GenerateCommand = (0, _decorators.option)('-i, --inject <list>', 'Name of dependency to inject', _libUtils.parseList)(GenerateCommand) || GenerateCommand;
-  GenerateCommand = (0, _decorators.option)('-v, --view', 'Create a view for generated file type')(GenerateCommand) || GenerateCommand;
-  GenerateCommand = (0, _decorators.option)('-n, --name <name>', 'Name of the file / class')(GenerateCommand) || GenerateCommand;
+  GenerateCommand = (0, _decorators.option)('-t, --template <name>', "Specify the name of the template to use as override")(GenerateCommand) || GenerateCommand;
+  GenerateCommand = (0, _decorators.option)('--no-lifecycle', "Do not create lifecycle callbacks, if applicable")(GenerateCommand) || GenerateCommand;
+  GenerateCommand = (0, _decorators.option)('-i, --inject <list>', "Name of dependency to inject", _libUtils.parseList)(GenerateCommand) || GenerateCommand;
+  GenerateCommand = (0, _decorators.option)('-v, --view', "Create a view for generated file type")(GenerateCommand) || GenerateCommand;
+  GenerateCommand = (0, _decorators.option)('-n, --name <name>', "Name of the file / class")(GenerateCommand) || GenerateCommand;
   GenerateCommand = (0, _decorators.args)('<type>')(GenerateCommand) || GenerateCommand;
   GenerateCommand = (0, _decorators.command)('generate')(GenerateCommand) || GenerateCommand;
   return GenerateCommand;

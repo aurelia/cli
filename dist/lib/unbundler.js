@@ -1,15 +1,12 @@
 'use strict';
 
-var _Object$defineProperty = require('babel-runtime/core-js/object/define-property')['default'];
-
 var _Object$keys = require('babel-runtime/core-js/object/keys')['default'];
 
 var _interopRequireDefault = require('babel-runtime/helpers/interop-require-default')['default'];
 
-_Object$defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
-
 exports.unbundle = unbundle;
 
 var _jspm = require('jspm');
@@ -41,6 +38,9 @@ var _path = require('path');
 var _path2 = _interopRequireDefault(_path);
 
 function unbundle(_opts) {
+
+  if (!_opts) return _bluebird2['default'].reject('No bundle configuration is supplied!');
+
   var opts = _lodash2['default'].defaultsDeep(_opts, {
     packagePath: '.',
     template: {}
