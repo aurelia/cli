@@ -36,7 +36,7 @@ export function installTemplate(repoName) {
       console.log('Downloading latest available release: ' + result[0].name);
 
       // Kick off the repo download
-      ghdownload("aurelia/skeleton-navigation#" + result[0].name, "", function(err) {
+      download("aurelia/skeleton-navigation#" + result[0].name, "", function(err) {
         if (err !== undefined && err !== null) {
           reject('An error occurred while downloading the template');
           console.log(err);
