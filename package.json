@@ -46,7 +46,7 @@
     "mkdirp": "^0.5.1",
     "npm": "^2.10.1",
     "request": "^2.60.0",
-    "systemjs-builder": "^0.13.0",
+    "systemjs-builder": "0.13.2",
     "whacko": "^0.18.1",
     "winston": "^1.0.0"
   },
