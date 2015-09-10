@@ -1,3 +1,8 @@
+# This project is DEPRECATED and no longer MAINTAINED any more.
+
+use [Aurelia Bundler](http://github.com/aurelia/bundler) for bundling Aurelia application
+
+
 # aurelia-cli
 
 The command line tooling for Aurelia, used for creating projects, scaffolding, bundling and more.
