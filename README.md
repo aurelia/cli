@@ -1,4 +1,4 @@
-# This project is DEPRECATED and no longer MAINTAINED any more.
+# This project is DEPRECATED and no longer MAINTAINED.
 
 use [Aurelia Bundler](http://github.com/aurelia/bundler) for bundling Aurelia application
 
