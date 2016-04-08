@@ -4,5 +4,11 @@ aurelia new <project-name> [--plugin]
   * Creates a new Aurelia application project.
   * Use the --plugin flag to create a plugin project instead.
 
+aurelia install <package-name>
+  * Install a package and tracks it as a client dependency.
+
+aurelia uninstall <package-name>
+  * Uninstalls the package and removes is as a tracked client dependency.
+
 aurelia help
   * Displays the Aurelia CLI Help.

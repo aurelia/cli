@@ -22,7 +22,13 @@ function createOptionsText(options) {
   let text = os.EOL;
 
   for(let i = 0; i < options.length; ++i) {
-    text += `${i + 1}. ${options[i]} ${os.EOL}`;
+    text += `${i + 1}. ${options[i]}`;
+
+    if (i == 0) {
+      text += ' (Default)';
+    }
+
+    text += os.EOL;
   }
 
   return text;
@@ -44,7 +50,7 @@ exports.ConsoleUI = class {
     return new Promise((resolve, reject) => {
       if (options) {
         let comparableOptions = options.map(x => x.toLowerCase());
-        let fullText = text + createOptionsText(comparableOptions) + ': ';
+        let fullText = text + createOptionsText(options) + ': ';
 
         this.rl.question(fullText, answer => {
           resolve(interpretAnswer(answer, options));
