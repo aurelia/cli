@@ -1,63 +1,25 @@
 {
   "name": "aurelia-cli",
-  "version": "0.3.1",
-  "description": "The command line tooling for Aurelia, used for creating projects, scaffolding, bundling and more.",
+  "version": "0.4.0",
+  "description": "The command line tooling for Aurelia.",
   "keywords": [
     "aurelia",
     "cli",
     "bundle",
     "scaffold"
   ],
-  "scripts": {
-    "test": "mocha --compilers js:babel/register",
-    "tdd": "mocha --compilers js:babel/register -w"
-  },
   "homepage": "http://aurelia.io",
   "bugs": {
     "url": "https://github.com/aurelia/cli/issues"
   },
   "bin": {
-    "aurelia": "bin/aurelia.js"
+    "aurelia": "bin/aurelia-cli.js"
   },
   "license": "MIT",
   "author": "Rob Eisenberg <rob@bluespire.com> (http://robeisenberg.com/)",
-  "main": "dist/commonjs/index.js",
+  "main": "lib/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/aurelia/cli"
-  },
-  "dependencies": {
-    "babel-core": "^5.8.3",
-    "babel-runtime": "^5.8.20",
-    "bluebird": "^2.9.25",
-    "chalk": "^1.0.0",
-    "child-process-promise": "^1.1.0",
-    "commander": "^2.8.1",
-    "download-github-repo": "^0.1.3",
-    "github": "^0.2.4",
-    "glob": "^5.0.9",
-    "globby": "^2.0.0",
-    "handlebars": "^3.0.3",
-    "inquirer": "^0.8.5",
-    "jspm": "^0.16.0-beta.7",
-    "liftoff": "^2.1.0",
-    "lodash": "^3.10.1",
-    "minimist": "^1.1.1",
-    "mkdirp": "^0.5.1",
-    "npm": "^2.10.1",
-    "request": "^2.60.0",
-    "systemjs-builder": "^0.13.0",
-    "whacko": "^0.18.1",
-    "winston": "^1.0.0"
-  },
-  "devDependencies": {
-    "babel": "^5.4.7",
-    "babel-runtime": "^5.8.19",
-    "chai": "^2.3.0",
-    "gulp": "^3.8.11",
-    "gulp-babel": "^5.1.0",
-    "injectr": "^0.5.1",
-    "mocha": "^2.2.5",
-    "sinon": "^1.14.1"
   }
 }
