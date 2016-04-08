@@ -1,0 +1,8 @@
+Aurelia CLI Help
+
+aurelia new <project-name> [--plugin]
+  * Creates a new Aurelia application project.
+  * Use the --plugin flag to create a plugin project instead.
+
+aurelia help
+  * Displays the Aurelia CLI Help.
