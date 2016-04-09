@@ -7,6 +7,7 @@ exports.NewProjecWizard = class {
   }
 
   start(projectName) {
+    this.ui.open();
     this.configuration = {
       name: projectName,
       transpiler: 'babel',
@@ -17,10 +18,16 @@ exports.NewProjecWizard = class {
 
     if (projectName) {
       this.ui.write('New Aurelia Project: ' + projectName);
-      return this.chooseCustomOrDefault();
+      return this.chooseCustomOrDefault().then(() => {
+        this.ui.close();
+        return this.configuration;
+      });
     } else {
       this.ui.write('New Aurelia Project');
-      return this.chooseName();
+      return this.chooseName().then(() => {
+        this.ui.close();
+        return this.configuration;
+      });
     }
   }
 
