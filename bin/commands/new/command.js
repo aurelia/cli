@@ -8,15 +8,14 @@ exports.Command = class {
     let ui = new ConsoleUI();
     let wizard = new NewProjecWizard(ui);
 
-    wizard.start(args[0]).then(result => {
+    return wizard.start(args[0]).then(result => {
       let builder = new ProjectBuilder(result);
-
-      builder.build().then(() => {
-        console.log(`New Aurelia project "${result.name}" successfully created.`);
-      }).catch(error => {
-        console.log('There was an error creating the Aurelia project.')
-        console.error(error);
-      });
+      return builder.build()
+    }).then(project => {
+      console.log(`New Aurelia project "${project.name}" successfully created.`);
+    }).catch(error => {
+      console.log('There was an error creating the Aurelia project.')
+      console.error(error);
     });
   }
 }

@@ -50,11 +50,11 @@ exports.ProjectItem = class {
       });
     } else if (this.resourcePath) {
       return new Promise((resolve, reject) => {
-        let fileLocation = require.resolve('./resources/' + this.resourcePath);
+
       });
     } else if (this.jsonObject){
       return new Promise((resolve, reject) => {
-        fs.writeFile(fullPath, JSON.stringify(this.jsonObject, 2), 'utf8', (err) => {
+        fs.writeFile(fullPath, JSON.stringify(this.jsonObject, null, 2), 'utf8', (err) => {
           if (err) reject(err);
           else resolve();
         });

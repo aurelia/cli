@@ -2,7 +2,7 @@
 const Project = require('../project').Project;
 const ProjectItem = require('../project-item').ProjectItem;
 
-exports.create = function(choices, rootFolder) {
+module.exports = function(choices, rootFolder) {
   let project = new Project(choices, rootFolder);
 
   project.withChild(project.src);

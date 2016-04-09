@@ -10,9 +10,9 @@ exports.Project = class {
     this.package = {
       name: choices.name,
       version: "0.1.0",
-      dependencies: [],
-      peerDependencies: [],
-      devDependencies: [],
+      dependencies: {},
+      peerDependencies: {},
+      devDependencies: {},
       aurelia: {
         project: choices
       }
@@ -23,11 +23,19 @@ exports.Project = class {
       .withChild(ProjectItem.directory('e2e'));
   }
 
+  get name() {
+    return this.package.name;
+  }
+
   withChild(item) {
     return this.root.withChild(item);
   }
 
   create(location) {
     return this.root.create(location);
+  }
+
+  install() {
+    return Promise.resolve();
   }
 }
