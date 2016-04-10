@@ -22,7 +22,7 @@ module.exports = function(choices, rootFolder) {
     ProjectItem.resource('index.html', require.resolve('./resources/index.html'))
   );
 
-  project.addDevDependency('aurelia-tools');
+  //project.addDevDependency('aurelia-tools');
 
   project.addClientDependency('aurelia-bootstrapper');
   project.addClientDependency('aurelia-fetch-client');

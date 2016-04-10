@@ -4,11 +4,20 @@ const NPM = require('../../npm').NPM;
 const path = require('path');
 const add = ProjectItem.prototype.add;
 
+function sluggify(text) {
+  return text.toString().toLowerCase()
+    .replace(/\s+/g, '-')           // Replace spaces with -
+    .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+    .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+    .replace(/^-+/, '')             // Trim - from start of text
+    .replace(/-+$/, '');            // Trim - from end of text
+}
+
 exports.Project = class {
   constructor(choices, rootFolder) {
     this.choices = choices;
     this.package = {
-      name: choices.name,
+      name: sluggify(choices.name),
       description: 'An Aurelia client application.',
       version: '0.1.0',
       repository : {
