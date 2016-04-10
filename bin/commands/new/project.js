@@ -68,7 +68,7 @@ exports.Project = class {
   }
 
   addDevDependency(name, version) {
-    this.package.devDependencies = version || '*';
+    this.package.devDependencies[name] = version || '*';
   }
 
   addDependency(name, version) {
