@@ -12,8 +12,13 @@ exports.ProjectBuilder = class {
     let configureTranspiler = require(`./transpilers/${this.choices.transpiler}`);
     configureTranspiler(project);
 
+    console.log(`Creating project "${project.choices.name}"`)
+
     return project.create(process.cwd())
+      .then(() => console.log('Project resources successfully created.'))
+      .then(() => console.log('Installing project dependencies.'))
       .then(() => project.install())
+      .then(() => console.log('Project dependencies successfully installed.'))
       .then(() => project);
   }
 }

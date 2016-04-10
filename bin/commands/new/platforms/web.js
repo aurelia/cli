@@ -17,5 +17,9 @@ module.exports = function(choices, rootFolder) {
     project.e2eTests
   );
 
+  project.addClientDependency('aurelia-bootstrapper');
+  project.addClientDependency('aurelia-fetch-client');
+  project.addClientDependency('aurelia-animator-css');
+
   return project;
 };

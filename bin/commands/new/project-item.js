@@ -22,9 +22,15 @@ exports.ProjectItem = class {
     }
 
     for(let i = 0; i < arguments.length; ++i) {
-      console.log(arguments[i]);
-      this.children.push(arguments[i]);
+      let child = arguments[i];
+      child.parent = this;
+      this.children.push(child);
     }
+  }
+
+  relativePath() {
+    let parentRelativePath = this.parent ? this.parent.relativePath() : '';
+    return path.join(parentRelativePath, this.name);
   }
 
   setJSONObject(jsonObject) {

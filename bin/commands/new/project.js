@@ -1,5 +1,7 @@
 "use strict";
 const ProjectItem = require('./project-item').ProjectItem;
+const NPM = require('../../npm').NPM;
+const path = require('path');
 const add = ProjectItem.prototype.add;
 
 exports.Project = class {
@@ -7,12 +9,20 @@ exports.Project = class {
     this.choices = choices;
     this.package = {
       name: choices.name,
-      version: "0.1.0",
+      description: 'An Aurelia client application.',
+      version: '0.1.0',
+      repository : {
+        type : '???',
+        url : '???'
+      },
+      license: 'MIT',
       dependencies: {},
       peerDependencies: {},
       devDependencies: {},
       aurelia: {
-        project: choices
+        project: Object.assign({}, choices, {
+          dependencies: []
+        })
       }
     };
 
@@ -52,11 +62,32 @@ exports.Project = class {
     add.apply(this.e2eTests, arguments);
   }
 
+  addClientDependency(name, version) {
+    this.package.aurelia.project.dependencies.push(name);
+    this.package.dependencies[name] = version || '*';
+  }
+
+  addDevDependency(name, version) {
+    this.package.devDependencies = version || '*';
+  }
+
+  addDependency(name, version) {
+    this.package.dependencies[name] = version || '*';
+  }
+
+  addPeerDependency(name, version) {
+    this.package.peerDependencies[name] = version || '*';
+  }
+
   create(location) {
     return this.root.create(location);
   }
 
   install() {
-    return Promise.resolve();
+    let npm = new NPM({
+      cwd: path.join(process.cwd(), this.content.relativePath())
+    });
+
+    return npm.install();
   }
 }
