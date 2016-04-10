@@ -12,6 +12,12 @@ exports.ProjectBuilder = class {
     let configureTranspiler = require(`./transpilers/${this.choices.transpiler}`);
     configureTranspiler(project);
 
+    let configureCSSProcessor = require(`./css-processors/${this.choices.cssProcessor}`);
+    configureCSSProcessor(project);
+
+    let configureCodeEditor = require(`./code-editors/${this.choices.codeEditor}`);
+    configureCodeEditor(project);
+
     console.log(`Creating project "${project.choices.name}"`)
 
     return project.create(process.cwd())

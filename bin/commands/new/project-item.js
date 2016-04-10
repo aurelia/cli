@@ -26,23 +26,28 @@ exports.ProjectItem = class {
       child.parent = this;
       this.children.push(child);
     }
+
+    return this;
   }
 
-  relativePath() {
-    let parentRelativePath = this.parent ? this.parent.relativePath() : '';
+  calculateRelativePath() {
+    let parentRelativePath = this.parent ? this.parent.calculateRelativePath() : '';
     return path.join(parentRelativePath, this.name);
   }
 
   setJSONObject(jsonObject) {
     this.jsonObject = jsonObject;
+    return this;
   }
 
   setText(text) {
     this.text = text;
+    return this;
   }
 
   setResourcePath(path) {
     this.resourcePath = path;
+    return this;
   }
 
   create(location) {

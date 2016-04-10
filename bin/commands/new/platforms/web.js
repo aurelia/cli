@@ -8,13 +8,14 @@ module.exports = function(choices, rootFolder) {
 
   project.addToContent(
     project.src,
+    project.tests.add(
+      project.unitTests,
+      project.e2eTests
+    ),
     ProjectItem.jsonObject('package.json', project.package),
-    project.tests
-  );
-
-  project.addToTests(
-    project.unitTests,
-    project.e2eTests
+    ProjectItem.directory('client_modules').add(
+      ProjectItem.resource('require.js', require.resolve('./resources/require.js'))
+    )
   );
 
   project.addClientDependency('aurelia-bootstrapper');

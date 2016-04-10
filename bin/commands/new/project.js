@@ -85,7 +85,7 @@ exports.Project = class {
 
   install() {
     let npm = new NPM({
-      cwd: path.join(process.cwd(), this.content.relativePath())
+      cwd: path.join(process.cwd(), this.content.calculateRelativePath())
     });
 
     return npm.install();
