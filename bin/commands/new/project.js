@@ -13,6 +13,25 @@ function sluggify(text) {
     .replace(/-+$/, '');            // Trim - from end of text
 }
 
+function installDependencies(workingDirectory, dependencies, flag) {
+  let npm = new NPM({ cwd: workingDirectory });
+  let index = -1;
+
+  let installer = function() {
+    index++;
+
+    if (index < dependencies.length) {
+      let current = dependencies[index];
+      console.log(`Installing ${current}...`);
+      return npm.install(current, flag).then(installer);
+    }
+
+    return Promise.resolve();
+  };
+
+  return installer();
+}
+
 exports.Project = class {
   constructor(choices, rootFolder) {
     this.choices = choices;
@@ -26,14 +45,19 @@ exports.Project = class {
       },
       license: 'MIT',
       dependencies: {},
-      peerDependencies: {},
       devDependencies: {},
+      peerDependencies: {},
       aurelia: {
         project: Object.assign({}, choices, {
           dependencies: []
         })
       }
     };
+
+    this.clientDependencies = [];
+    this.dependencies = [];
+    this.peerDependencies = [];
+    this.devDependencies = [];
 
     this.root = ProjectItem.directory(rootFolder);
     this.src = ProjectItem.directory('src');
@@ -71,21 +95,21 @@ exports.Project = class {
     add.apply(this.e2eTests, arguments);
   }
 
-  addClientDependency(name, version) {
+  addClientDependency(name) {
     this.package.aurelia.project.dependencies.push(name);
-    this.package.dependencies[name] = version || '*';
+    this.clientDependencies.push(name);
   }
 
-  addDevDependency(name, version) {
-    this.package.devDependencies[name] = version || '*';
+  addDevDependency(name) {
+    this.devDependencies.push(name);
   }
 
-  addDependency(name, version) {
-    this.package.dependencies[name] = version || '*';
+  addDependency(name) {
+    this.dependencies.push(name);
   }
 
-  addPeerDependency(name, version) {
-    this.package.peerDependencies[name] = version || '*';
+  addPeerDependency(name) {
+    this.peerDependencies.push(name);
   }
 
   create(location) {
@@ -93,10 +117,11 @@ exports.Project = class {
   }
 
   install() {
-    let npm = new NPM({
-      cwd: path.join(process.cwd(), this.content.calculateRelativePath())
-    });
+    let workingDirectory = path.join(process.cwd(), this.content.calculateRelativePath());
 
-    return npm.install();
+    return installDependencies(workingDirectory, this.clientDependencies, '--save')
+      .then(() => installDependencies(workingDirectory, this.devDependencies, '--save-dev'))
+      .then(() => installDependencies(workingDirectory, this.dependencies, '--save'))
+      .then(() => installDependencies(workingDirectory, this.peerDependencies, '--save-peer'))
   }
 }

@@ -4,7 +4,8 @@ const slice = Array.prototype.slice;
 
 function runCommand(command, args, options) {
   return new Promise((resolve, reject) => {
-    const npm = spawn('npm', [command].concat(args), options);
+    const cliArgs = [command].concat(args);
+    const npm = spawn('npm', cliArgs, options);
 
     npm.stdout.on('data', data => {
       console.log(data.toString());
