@@ -13,6 +13,7 @@ module.exports = function(choices, rootFolder) {
       project.e2eTests
     ),
     ProjectItem.jsonObject('package.json', project.package),
+    ProjectItem.jsonObject('aurelia-project.json', project.model),
     ProjectItem.directory('client_modules').add(
       ProjectItem.resource('require.js', require.resolve('./resources/require.js'))
     ),
@@ -21,8 +22,6 @@ module.exports = function(choices, rootFolder) {
     ProjectItem.resource('favicon.ico', require.resolve('./resources/favicon.ico')),
     ProjectItem.resource('index.html', require.resolve('./resources/index.html'))
   );
-
-  //project.addDevDependency('aurelia-tools');
 
   project.addClientDependency('aurelia-bootstrapper');
   project.addClientDependency('aurelia-fetch-client');

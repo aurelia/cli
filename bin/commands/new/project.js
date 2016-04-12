@@ -43,16 +43,12 @@ exports.Project = class {
         type : '???',
         url : '???'
       },
-      license: 'MIT',
-      dependencies: {},
-      devDependencies: {},
-      peerDependencies: {},
-      aurelia: {
-        project: Object.assign({}, choices, {
-          dependencies: []
-        })
-      }
+      license: 'MIT'
     };
+
+    this.model = Object.assign({}, choices, {
+      dependencies: []
+    });
 
     this.clientDependencies = [];
     this.dependencies = [];
@@ -96,7 +92,7 @@ exports.Project = class {
   }
 
   addClientDependency(name) {
-    this.package.aurelia.project.dependencies.push(name);
+    this.model.dependencies.push(name);
     this.clientDependencies.push(name);
   }
 
