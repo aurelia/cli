@@ -10,10 +10,8 @@ resolve('aurelia-cli', {
   let CLI;
 
   if (error) {
-    console.log('Using Global CLI');
     CLI = require('../lib/cli').CLI;
   } else {
-    console.log('Using Local CLI');
     CLI = require(projectLocalCli).CLI;
   }
 
