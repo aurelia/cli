@@ -1,18 +1,25 @@
 #!/usr/bin/env node
 "use strict";
+const resolve = require('../lib/resolve');
+
 process.title = 'aurelia';
 
-let userArgs = process.argv.slice(2);
-let commandName = userArgs[0];
-let commandArgs = userArgs.slice(1);
+resolve('aurelia-cli', {
+  basedir: process.cwd()
+}, function(error, projectLocalCli) {
+  let CLI;
 
-let CLI;
+  if (error) {
+    console.log('Using Global CLI');
+    CLI = require('../lib/cli').CLI;
+  } else {
+    console.log('Using Local CLI');
+    CLI = require(projectLocalCli);
+  }
 
-try {
-  let location = require.resolve('aurelia-cli');
-  CLI = require(location).CLI;
-} catch (e) {
-  CLI = require('../lib/cli').CLI;
-}
+  let userArgs = process.argv.slice(2);
+  let commandName = userArgs[0];
+  let commandArgs = userArgs.slice(1);
 
-new CLI().run(commandName, commandArgs);
+  new CLI().run(commandName, commandArgs);
+});
