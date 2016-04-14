@@ -17,7 +17,7 @@
   },
   "license": "MIT",
   "author": "Rob Eisenberg <rob@bluespire.com> (http://robeisenberg.com/)",
-  "main": "lib/index.js",
+  "main": "lib/cli.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/aurelia/cli"

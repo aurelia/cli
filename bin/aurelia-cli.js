@@ -14,7 +14,7 @@ resolve('aurelia-cli', {
     CLI = require('../lib/cli').CLI;
   } else {
     console.log('Using Local CLI');
-    CLI = require(projectLocalCli);
+    CLI = require(projectLocalCli).CLI;
   }
 
   let userArgs = process.argv.slice(2);
