@@ -10,7 +10,7 @@ resolve('aurelia-cli', {
   let CLI;
 
   if (error) {
-    CLI = require('../lib/cli').CLI;
+    CLI = require('../lib/index').CLI;
   } else {
     CLI = require(projectLocalCli).CLI;
   }
