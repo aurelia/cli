@@ -1,14 +1,9 @@
-Aurelia CLI Help
+<underline><bold><magenta>Aurelia CLI Help</magenta></bold></underline>
 
-aurelia new <project-name> [--plugin]
-  * Creates a new Aurelia application project.
-  * Use the --plugin flag to create a plugin project instead.
+<blue><bold>aurelia new</bold> project-name</blue>
 
-aurelia install <package-name>
-  * Install a package and tracks it as a client dependency.
+    Creates a new Aurelia application project. You can optionally provide a <dim>project-name</dim>. If one is not provided, the new project wizard will ask for one.
 
-aurelia uninstall <package-name>
-  * Uninstalls the package and removes is as a tracked client dependency.
+<blue><bold>aurelia help</bold></blue>
 
-aurelia help
-  * Displays the Aurelia CLI Help.
+    Displays the Aurelia CLI Help.
