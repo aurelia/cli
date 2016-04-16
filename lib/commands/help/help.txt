@@ -1,9 +1,9 @@
-<underline><bold><magenta>Aurelia CLI Help</magenta></bold></underline>
+<underline><bold>Aurelia CLI Help</bold></underline>
 
-<blue><bold>aurelia new</bold> project-name</blue>
+<magenta><bold>new</bold></magenta> <dim>project-name</dim> <yellow>--plugin</yellow>
 
     Creates a new Aurelia application project. You can optionally provide a <dim>project-name</dim>. If one is not provided, the new project wizard will ask for one.
 
-<blue><bold>aurelia help</bold></blue>
+<magenta><bold>help</bold></magenta>
 
     Displays the Aurelia CLI Help.
