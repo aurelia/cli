@@ -1,0 +1,183 @@
+{
+  "name": "New Aurelia Application",
+  "activities": [
+    {
+      "id": 1,
+      "type": "state:assign",
+      "nextActivity": 2,
+      "state": {
+        "name": null,
+        "transpiler": "babel",
+        "cssProcessor": "none",
+        "editor": "vscode",
+        "platform": "web"
+      }
+    },
+    {
+      "id": 2,
+      "type": "input:text",
+      "nextActivity": 3,
+      "question": "What would you like to name your new project?",
+      "stateProperty": "name"
+    },
+    {
+      "id": 3,
+      "type": "input:select",
+      "nextActivity": 4,
+      "question": "Would you like to use the default setup or customize your choices?",
+      "stateProperty": "defaultOrCustom",
+      "options": [
+        {
+          "displayName": "Default",
+          "description": "A basic web-oriented setup with Babel for modern JavaScript development.",
+          "value": "default"
+        },
+        {
+          "displayName": "Custom",
+          "description": "Choose from a variety of platforms, transpilers and CSS pre-processors.",
+          "value": "custom"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "branch:switch",
+      "stateProperty": "defaultOrCustom",
+      "branches": [
+        {
+          "case": "default",
+          "nextActivity": 9
+        },
+        {
+          "case": "custom",
+          "nextActivity": 5
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "input:select",
+      "nextActivity": 6,
+      "question": "What transpiler would you like to use?",
+      "stateProperty": "transpiler",
+      "options": [
+        {
+          "displayName": "Babel",
+          "description": "An open source, standards-compliant ES2015 and ESNext transpiler.",
+          "value": "babel"
+        },
+        {
+          "displayName": "TypeScript",
+          "description": "An open source, ESNext superset that adds optional strong typing.",
+          "value": "typescript"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "input:select",
+      "nextActivity": 7,
+      "question": "What css processor would you like to use?",
+      "stateProperty": "cssProcessor",
+      "options": [
+        {
+          "displayName": "None",
+          "description": "Use standard CSS with no pre-processor.",
+          "value": "none"
+        },
+        {
+          "displayName": "Less",
+          "description": "Extends the CSS language, adding features that allow variables, mixins, functions and many other techniques.",
+          "value": "less"
+        },
+        {
+          "displayName": "Sass",
+          "description": "A mature, stable, and powerful professional grade CSS extension.",
+          "value": "sass"
+        },
+        {
+          "displayName": "Stylus",
+          "description": "Expressive, dynamic and robust CSS.",
+          "value": "stylus"
+        },
+        {
+          "displayName": "Post CSS",
+          "description": "A tool for transforming CSS with JavaScript.",
+          "value": "post-css"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "type": "input:select",
+      "nextActivity": 8,
+      "question": "What is your default code editor?",
+      "stateProperty": "editor",
+      "options": [
+        {
+          "displayName": "VSCode",
+          "description": "Code editing. Redefined. Free. Open source. Runs everywhere.",
+          "value": "vscode"
+        },
+        {
+          "displayName": "Atom",
+          "description": "A hackable text editor for the 21st Century.",
+          "value": "atom"
+        },
+        {
+          "displayName": "Submlime",
+          "description": "A sophisticated text editor for code, markup and prose.",
+          "value": "sublime"
+        },
+        {
+          "displayName": "WebStorm",
+          "description": "A lightweight yet powerful IDE, perfectly equipped for complex client-side development.",
+          "value": "webstorm"
+        },
+        {
+          "displayName": "VisualStudio",
+          "description": "A rich, integrated development environment for creating stunning applications.",
+          "value": "visualstudio"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": "input:select",
+      "nextActivity": 9,
+      "question": "What platform are you targeting?",
+      "stateProperty": "platform",
+      "options": [
+        {
+          "displayName": "Web",
+          "description": "A basic web-oriented setup.",
+          "value": "web"
+        },
+        {
+          "displayName": "MVC",
+          "description": "A powerful, patterns-based way to build dynamic websites with .NET.",
+          "value": "mvc"
+        },
+        {
+          "displayName": "Cordova/PhoneGap",
+          "description": "Mobile apps with HTML, CSS & JS. Target multiple platforms with one code base.",
+          "value": "cordova-phonegap"
+        },
+        {
+          "displayName": "Electron",
+          "description": "Build cross platform desktop apps with web technologies.",
+          "value": "electron"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "type": "project:create",
+      "nextActivity": 10
+    },
+    {
+      "id": 10,
+      "type": "project:install"
+    }
+  ]
+}
