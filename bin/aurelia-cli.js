@@ -7,20 +7,19 @@ process.title = 'aurelia';
 resolve('aurelia-cli', {
   basedir: process.cwd()
 }, function(error, projectLocalCli) {
-  let CLI;
-  let options = {};
+  let cli;
 
   if (error) {
-    options.runningGlobally = true;
-    CLI = require('../lib/index').CLI;
+    cli = new (require('../lib/index').CLI);
+    cli.options.runningGlobally = true;
   } else {
-    options.runningLocally = true;
-    CLI = require(projectLocalCli).CLI;
+    cli = new (require(projectLocalCli).CLI);
+    cli.options.runningLocally = true;
   }
 
   let userArgs = process.argv.slice(2);
   let commandName = userArgs[0];
   let commandArgs = userArgs.slice(1);
 
-  new CLI(options).run(commandName, commandArgs);
+  cli.run(commandName, commandArgs);
 });

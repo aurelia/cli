@@ -3,10 +3,10 @@
   "activities": [
     {
       "id": 1,
-      "type": "state:assign",
+      "type": "state-assign",
       "nextActivity": 2,
       "state": {
-        "name": null,
+        "type": "application",
         "transpiler": "babel",
         "cssProcessor": "none",
         "editor": "vscode",
@@ -15,14 +15,14 @@
     },
     {
       "id": 2,
-      "type": "input:text",
+      "type": "input-text",
       "nextActivity": 3,
       "question": "What would you like to name your new project?",
       "stateProperty": "name"
     },
     {
       "id": 3,
-      "type": "input:select",
+      "type": "input-select",
       "nextActivity": 4,
       "question": "Would you like to use the default setup or customize your choices?",
       "stateProperty": "defaultOrCustom",
@@ -41,7 +41,7 @@
     },
     {
       "id": 4,
-      "type": "branch:switch",
+      "type": "branch-switch",
       "stateProperty": "defaultOrCustom",
       "branches": [
         {
@@ -56,8 +56,37 @@
     },
     {
       "id": 5,
-      "type": "input:select",
+      "type": "input-select",
       "nextActivity": 6,
+      "question": "What platform are you targeting?",
+      "stateProperty": "platform",
+      "options": [
+        {
+          "displayName": "Web",
+          "description": "A basic web-oriented setup.",
+          "value": "web"
+        },
+        {
+          "displayName": "MVC",
+          "description": "A powerful, patterns-based way to build dynamic websites with .NET.",
+          "value": "mvc"
+        },
+        {
+          "displayName": "Cordova/PhoneGap",
+          "description": "Mobile apps with HTML, CSS & JS. Target multiple platforms with one code base.",
+          "value": "cordova-phonegap"
+        },
+        {
+          "displayName": "Electron",
+          "description": "Build cross platform desktop apps with web technologies.",
+          "value": "electron"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "input-select",
+      "nextActivity": 7,
       "question": "What transpiler would you like to use?",
       "stateProperty": "transpiler",
       "options": [
@@ -74,9 +103,9 @@
       ]
     },
     {
-      "id": 6,
-      "type": "input:select",
-      "nextActivity": 7,
+      "id": 7,
+      "type": "input-select",
+      "nextActivity": 8,
       "question": "What css processor would you like to use?",
       "stateProperty": "cssProcessor",
       "options": [
@@ -108,9 +137,9 @@
       ]
     },
     {
-      "id": 7,
-      "type": "input:select",
-      "nextActivity": 8,
+      "id": 8,
+      "type": "input-select",
+      "nextActivity": 9,
       "question": "What is your default code editor?",
       "stateProperty": "editor",
       "options": [
@@ -142,42 +171,13 @@
       ]
     },
     {
-      "id": 8,
-      "type": "input:select",
-      "nextActivity": 9,
-      "question": "What platform are you targeting?",
-      "stateProperty": "platform",
-      "options": [
-        {
-          "displayName": "Web",
-          "description": "A basic web-oriented setup.",
-          "value": "web"
-        },
-        {
-          "displayName": "MVC",
-          "description": "A powerful, patterns-based way to build dynamic websites with .NET.",
-          "value": "mvc"
-        },
-        {
-          "displayName": "Cordova/PhoneGap",
-          "description": "Mobile apps with HTML, CSS & JS. Target multiple platforms with one code base.",
-          "value": "cordova-phonegap"
-        },
-        {
-          "displayName": "Electron",
-          "description": "Build cross platform desktop apps with web technologies.",
-          "value": "electron"
-        }
-      ]
-    },
-    {
       "id": 9,
-      "type": "project:create",
+      "type": "project-create",
       "nextActivity": 10
     },
     {
       "id": 10,
-      "type": "project:install"
+      "type": "project-install"
     }
   ]
 }
