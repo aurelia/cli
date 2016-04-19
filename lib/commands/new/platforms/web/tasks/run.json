@@ -1,0 +1,4 @@
+{
+  "name": "run",
+  "description": "Builds the application and serves up the assets via a local web server, watching files for changes as you work."
+}
