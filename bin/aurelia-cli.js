@@ -21,5 +21,5 @@ resolve('aurelia-cli', {
   let commandName = userArgs[0];
   let commandArgs = userArgs.slice(1);
 
-  cli.run(commandName, commandArgs);
+  cli.run(commandName, commandArgs).catch(error => console.log(error));
 });
