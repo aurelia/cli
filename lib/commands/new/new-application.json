@@ -67,7 +67,7 @@
           "value": "web"
         },
         {
-          "displayName": "MVC",
+          "displayName": "ASP.NET MVC",
           "description": "A powerful, patterns-based way to build dynamic websites with .NET.",
           "value": "mvc"
         },
