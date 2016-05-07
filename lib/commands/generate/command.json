@@ -4,7 +4,6 @@
   "parameters": [
     {
       "name": "generator-name",
-      "optional": true,
       "description": "The name of the generator you want to run."
     }
   ]
