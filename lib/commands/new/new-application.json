@@ -7,10 +7,24 @@
       "nextActivity": 2,
       "state": {
         "type": "application",
-        "transpiler": "babel",
-        "cssProcessor": "none",
-        "editor": "vscode",
-        "platform": "web"
+        "transpiler": {
+          "id": "babel",
+          "displayName": "Babel",
+          "fileExtension": ".js"
+        },
+        "cssProcessor": {
+          "id": "none",
+          "displayName": "None",
+          "fileExtension": ".css"
+        },
+        "editor": {
+          "id": "vscode",
+          "displayName": "Visual Studio Code"
+        },
+        "platform": {
+          "id": "web",
+          "displayName": "Web"
+        }
       }
     },
     {
@@ -64,22 +78,34 @@
         {
           "displayName": "Web",
           "description": "A basic web-oriented setup.",
-          "value": "web"
+          "value": {
+            "id": "web",
+            "displayName": "Web"
+          }
         },
         {
           "displayName": "ASP.NET MVC",
           "description": "A powerful, patterns-based way to build dynamic websites with .NET.",
-          "value": "mvc"
+          "value": {
+            "id": "aspnetmvc",
+            "displayName": "ASP.NET MVC"
+          }
         },
         {
           "displayName": "Cordova/PhoneGap",
           "description": "Mobile apps with HTML, CSS & JS. Target multiple platforms with one code base.",
-          "value": "cordova-phonegap"
+          "value": {
+            "id": "cordova-phonegap",
+            "displayName": "Cordova/PhoneGap"
+          }
         },
         {
           "displayName": "Electron",
           "description": "Build cross platform desktop apps with web technologies.",
-          "value": "electron"
+          "value": {
+            "id": "electron",
+            "displayName": "Electron"
+          }
         }
       ]
     },
@@ -93,12 +119,20 @@
         {
           "displayName": "Babel",
           "description": "An open source, standards-compliant ES2015 and ESNext transpiler.",
-          "value": "babel"
+          "value": {
+            "id": "babel",
+            "displayName": "Babel",
+            "fileExtension": ".js"
+          }
         },
         {
           "displayName": "TypeScript",
           "description": "An open source, ESNext superset that adds optional strong typing.",
-          "value": "typescript"
+          "value": {
+            "id": "typescript",
+            "displayName": "TypeScript",
+            "fileExtension": ".ts"
+          }
         }
       ]
     },
@@ -112,27 +146,47 @@
         {
           "displayName": "None",
           "description": "Use standard CSS with no pre-processor.",
-          "value": "none"
+          "value": {
+            "id": "none",
+            "displayName": "None",
+            "fileExtension": ".css"
+          }
         },
         {
           "displayName": "Less",
           "description": "Extends the CSS language, adding features that allow variables, mixins, functions and many other techniques.",
-          "value": "less"
+          "value": {
+            "id": "less",
+            "displayName": "Less",
+            "fileExtension": ".less"
+          }
         },
         {
           "displayName": "Sass",
           "description": "A mature, stable, and powerful professional grade CSS extension.",
-          "value": "sass"
+          "value": {
+            "id": "sass",
+            "displayName": "Sass",
+            "fileExtension": ".scss"
+          }
         },
         {
           "displayName": "Stylus",
           "description": "Expressive, dynamic and robust CSS.",
-          "value": "stylus"
+          "value": {
+            "id": "stylus",
+            "displayName": "Stylus",
+            "fileExtension": ".styl"
+          }
         },
         {
           "displayName": "Post CSS",
           "description": "A tool for transforming CSS with JavaScript.",
-          "value": "post-css"
+          "value": {
+            "id": "post-css",
+            "displayName": "Post CSS",
+            "fileExtension": ".css"
+          }
         }
       ]
     },
@@ -144,29 +198,44 @@
       "stateProperty": "editor",
       "options": [
         {
-          "displayName": "VSCode",
+          "displayName": "Visual Studio Code",
           "description": "Code editing. Redefined. Free. Open source. Runs everywhere.",
-          "value": "vscode"
+          "value": {
+            "id": "vscode",
+            "displayName": "Visual Studio Code"
+          }
         },
         {
           "displayName": "Atom",
           "description": "A hackable text editor for the 21st Century.",
-          "value": "atom"
+          "value": {
+            "id": "atom",
+            "displayName": "Atom"
+          }
         },
         {
           "displayName": "Submlime",
           "description": "A sophisticated text editor for code, markup and prose.",
-          "value": "sublime"
+          "value": {
+            "id": "sublime",
+            "displayName": "Submlime"
+          }
         },
         {
           "displayName": "WebStorm",
           "description": "A lightweight yet powerful IDE, perfectly equipped for complex client-side development.",
-          "value": "webstorm"
+          "value": {
+            "id": "webstorm",
+            "displayName": "WebStorm"
+          }
         },
         {
-          "displayName": "VisualStudio",
+          "displayName": "Visual Studio",
           "description": "A rich, integrated development environment for creating stunning applications.",
-          "value": "visualstudio"
+          "value": {
+            "id": "visualstudio",
+            "displayName": "Visual Studio"
+          }
         }
       ]
     },
