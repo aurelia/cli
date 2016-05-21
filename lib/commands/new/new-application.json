@@ -12,6 +12,11 @@
           "displayName": "Babel",
           "fileExtension": ".js"
         },
+        "markupProcessor": {
+          "id": "none",
+          "displayName": "None",
+          "fileExtension": ".html"
+        },
         "cssProcessor": {
           "id": "none",
           "displayName": "None",
