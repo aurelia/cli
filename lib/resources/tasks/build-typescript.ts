@@ -11,9 +11,7 @@ import {CLIOptions} from 'aurelia-cli';
 
 @inject(CLIOptions)
 class ConfigureEnvironment {
-  constructor(options) {
-    this.options = options;
-  }
+  constructor(private options: CLIOptions) { }
 
   execute() {
     let env = this.options.getFlag('env') || process.env.NODE_ENV || 'dev';
