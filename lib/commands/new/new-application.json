@@ -188,7 +188,7 @@
           "displayName": "Post CSS",
           "description": "A tool for transforming CSS with JavaScript.",
           "value": {
-            "id": "post-css",
+            "id": "postcss",
             "displayName": "Post CSS",
             "fileExtension": ".css"
           }
