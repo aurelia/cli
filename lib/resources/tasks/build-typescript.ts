@@ -29,7 +29,7 @@ function buildJavaScript() {
     typescriptCompiler = typescript.create(require('../../tsconfig.json').compilerOptions);
   }
 
-  return gulp.src(project.paths.dtsSrc.concat(project.paths.source))
+  return gulp.src(project.paths.dtsSource.concat(project.paths.source))
     .pipe(plumber({errorHandler: notify.onError('Error: <%= error.message %>')}))
     .pipe(changed(project.paths.output, {extension: '.js'}))
     .pipe(sourcemaps.init({loadMaps: true}))
