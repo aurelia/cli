@@ -1,5 +1,5 @@
 import * as gulp from 'gulp';
-import * as clean from './clean';
+import clean from './clean';
 import buildStyles from './build-styles';
 import buildJavaScript from './build-javascript';
 import buildMarkup from './build-markup';
