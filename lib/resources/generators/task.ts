@@ -13,7 +13,7 @@ export default class TaskGenerator {
         let className = this.project.makeClassName(name);
 
         this.project.tasks.add(
-          ProjectItem.text(`${fileName}.js`, this.generateSource(functionName))
+          ProjectItem.text(`${fileName}.ts`, this.generateSource(functionName))
         );
 
         return this.project.commitChanges()
@@ -22,9 +22,9 @@ export default class TaskGenerator {
   }
 
   generateSource(functionName) {
-return `import gulp from 'gulp';
-import changed from 'gulp-changed';
-import project from '../aurelia.json';
+return `import * as gulp from 'gulp';
+import * as changed from 'gulp-changed';
+import * as project from '../aurelia.json';
 
 export default function ${functionName}() {
   return gulp.src(project.paths.???)

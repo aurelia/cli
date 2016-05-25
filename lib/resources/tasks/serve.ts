@@ -1,5 +1,5 @@
-let gulp = require('gulp');
-let browserSync = require('browser-sync');
+import * as gulp from 'gulp';
+import * as browserSync from 'browser-sync';
 import build from './build';
 
 export default gulp.series(

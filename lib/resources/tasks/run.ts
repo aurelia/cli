@@ -1,6 +1,6 @@
-let gulp = require('gulp');
-let browserSync = require('browser-sync');
-let project = require('../aurelia.json');
+import * as gulp from 'gulp';
+import * as browserSync from 'browser-sync';
+import * as project from '../aurelia.json';
 import serve from './serve';
 import buildJavaScript from './build-javascript';
 import buildMarkup from './build-markup';

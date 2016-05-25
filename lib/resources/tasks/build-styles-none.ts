@@ -1,6 +1,6 @@
-let gulp = require('gulp');
-let changed = require('gulp-changed');
-let project = require('../aurelia.json');
+import * as gulp from 'gulp';
+import * as changed from 'gulp-changed';
+import * as project from '../aurelia.json';
 
 export default function buildStyles() {
   return gulp.src(project.paths.styles)

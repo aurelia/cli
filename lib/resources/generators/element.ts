@@ -13,7 +13,7 @@ export default class ElementGenerator {
         let className = this.project.makeClassName(name);
 
         this.project.elements.add(
-          ProjectItem.text(`${fileName}.js`, this.generateJSSource(className)),
+          ProjectItem.text(`${fileName}.ts`, this.generateJSSource(className)),
           ProjectItem.text(`${fileName}.html`, this.generateHTMLSource(className))
         );
 

@@ -13,7 +13,7 @@ export default class BindingBehaviorGenerator {
         let className = this.project.makeClassName(name);
 
         this.project.bindingBehaviors.add(
-          ProjectItem.text(`${fileName}.js`, this.generateSource(className))
+          ProjectItem.text(`${fileName}.ts`, this.generateSource(className))
         );
 
         return this.project.commitChanges()
