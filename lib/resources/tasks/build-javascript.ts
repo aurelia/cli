@@ -1,13 +1,13 @@
-import gulp from 'gulp';
-import plumber from 'gulp-plumber';
-import notify from 'gulp-notify';
-import changed from 'gulp-changed';
-import sourcemaps from 'gulp-sourcemaps';
-import typescript from 'gulp-tsb';
-import rename from 'gulp-rename';
-import project from '../aurelia.json';
-import {inject} from 'aurelia-dependency-injection';
-import {CLIOptions} from 'aurelia-cli';
+let gulp = require('gulp');
+let plumber = require('gulp-plumber');
+let notify = require('gulp-notify');
+let changed = require('gulp-changed');
+let sourcemaps = require('gulp-sourcemaps');
+let typescript = require('gulp-tsb');
+let rename = require('gulp-rename');
+let project = require('../aurelia.json');
+let {inject} = require('aurelia-dependency-injection');
+let {CLIOptions} = require('aurelia-cli');
 
 @inject(CLIOptions)
 class ConfigureEnvironment {
@@ -22,7 +22,7 @@ class ConfigureEnvironment {
   }
 }
 
-let typescriptCompiler = typescriptCompiler || null;
+let typescriptCompiler = global.typescriptCompiler || null;
 
 function buildJavaScript() {
   if (!typescriptCompiler) {
