@@ -1,10 +1,10 @@
 import * as gulp from 'gulp';
 import * as changed from 'gulp-changed';
 import * as plumber from 'gulp-plumber';
-import * as babel from 'gulp-babel';
 import * as sourcemaps from 'gulp-sourcemaps';
 import * as notify from 'gulp-notify';
 import * as rename from 'gulp-rename';
+import * as typescript from 'gulp-tsb';
 import * as project from '../aurelia.json';
 import {inject} from 'aurelia-dependency-injection';
 import {CLIOptions} from 'aurelia-cli';
