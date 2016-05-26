@@ -6,7 +6,7 @@
       "type": "state-assign",
       "nextActivity": 2,
       "state": {
-        "type": "application",
+        "type": "project:application",
         "transpiler": {
           "id": "babel",
           "displayName": "Babel",
