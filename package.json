@@ -13,7 +13,8 @@
     "url": "https://github.com/aurelia/cli/issues"
   },
   "bin": {
-    "aurelia": "bin/aurelia-cli.js"
+    "aurelia": "bin/aurelia-cli.js",
+    "au": "bin/aurelia-cli.js"
   },
   "license": "MIT",
   "author": "Rob Eisenberg <rob@bluespire.com> (http://robeisenberg.com/)",

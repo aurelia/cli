@@ -6,20 +6,14 @@ import * as notify from 'gulp-notify';
 import * as rename from 'gulp-rename';
 import * as typescript from 'gulp-tsb';
 import * as project from '../aurelia.json';
-import {inject} from 'aurelia-dependency-injection';
 import {CLIOptions} from 'aurelia-cli';
 
-@inject(CLIOptions)
-class ConfigureEnvironment {
-  constructor(private options: CLIOptions) { }
+function configureEnvironment() {
+  let env = CLIOptions.getEnvironment();
 
-  execute() {
-    let env = this.options.getFlag('env') || process.env.NODE_ENV || 'dev';
-
-    return gulp.src(`aurelia_project/environments/${env}.ts`)
-      .pipe(rename('environment.ts'))
-      .pipe(gulp.dest(project.paths.root));
-  }
+  return gulp.src(`aurelia_project/environments/${env}.js`)
+    .pipe(rename('environment.js'))
+    .pipe(gulp.dest(project.paths.root));
 }
 
 let typescriptCompiler = global.typescriptCompiler || null;
@@ -39,6 +33,6 @@ function buildJavaScript() {
 }
 
 export default gulp.series(
-  ConfigureEnvironment,
+  configureEnvironment,
   buildJavaScript
 );
