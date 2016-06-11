@@ -4,7 +4,7 @@ import * as plumber from 'gulp-plumber';
 import * as sourcemaps from 'gulp-sourcemaps';
 import * as notify from 'gulp-notify';
 import * as rename from 'gulp-rename';
-import * as typescript from 'gulp-tsb';
+import * as typescript from 'gulp-tsb'; //switch to gulp-typescript fpr sourcemaps
 import * as project from '../aurelia.json';
 import {CLIOptions} from 'aurelia-cli';
 
