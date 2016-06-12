@@ -1,14 +1,24 @@
 import * as gulp from 'gulp';
-import clean from './clean';
 import buildStyles from './build-styles';
 import buildJavaScript from './build-javascript';
 import buildMarkup from './build-markup';
+import build from 'aurelia-cli';
+import * as project from '../aurelia.json';
 
 export default gulp.series(
-  clean,
+  startBundling,
   gulp.parallel(
     buildJavaScript,
-    buildMarkup,
+    buildHTML,
     buildStyles
-  )
+  ),
+  endBundling
 );
+
+function startBundling() {
+  return build.src(project);
+}
+
+function endBundling() {
+  return build.dest();
+}

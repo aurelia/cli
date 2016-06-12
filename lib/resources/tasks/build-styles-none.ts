@@ -1,9 +1,10 @@
 import * as gulp from 'gulp';
-import * as changed from 'gulp-changed';
+import * as changedInPlace from 'gulp-changed-in-place';
 import * as project from '../aurelia.json';
+import {build} from 'aurelia-cli';
 
 export default function buildStyles() {
   return gulp.src(project.paths.styles)
-    .pipe(changed(project.paths.output, {extension: '.css'}))
-    .pipe(gulp.dest(project.paths.output));
+    .pipe(changedInPlace({firstPass:true}))
+    .pipe(build.bundle());
 };
