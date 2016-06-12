@@ -94,7 +94,8 @@
           "value": {
             "id": "aspnetmvc",
             "displayName": "ASP.NET MVC"
-          }
+          },
+          "disabled": true
         },
         {
           "displayName": "Cordova/PhoneGap",
@@ -102,7 +103,8 @@
           "value": {
             "id": "cordova-phonegap",
             "displayName": "Cordova/PhoneGap"
-          }
+          },
+          "disabled": true
         },
         {
           "displayName": "Electron",
@@ -110,7 +112,8 @@
           "value": {
             "id": "electron",
             "displayName": "Electron"
-          }
+          },
+          "disabled": true
         }
       ]
     },
@@ -240,7 +243,8 @@
           "value": {
             "id": "visualstudio",
             "displayName": "Visual Studio"
-          }
+          },
+          "disabled": true
         }
       ]
     },
