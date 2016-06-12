@@ -272,7 +272,8 @@
     {
       "id": 10,
       "type": "project-create",
-      "nextActivity": 11
+      "nextActivity": 11,
+      "restartActivity": 1
     },
     {
       "id": 11,
