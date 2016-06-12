@@ -47,9 +47,14 @@
       "stateProperty": "defaultOrCustom",
       "options": [
         {
-          "displayName": "Default",
+          "displayName": "Default ESNext",
           "description": "A basic web-oriented setup with Babel for modern JavaScript development.",
-          "value": "default"
+          "value": "default-esnext"
+        },
+        {
+          "displayName": "Default TypeScript",
+          "description": "A basic web-oriented setup with TypeScript for modern JavaScript development.",
+          "value": "default-typescript"
         },
         {
           "displayName": "Custom",
@@ -64,7 +69,11 @@
       "stateProperty": "defaultOrCustom",
       "branches": [
         {
-          "case": "default",
+          "case": "default-esnext",
+          "nextActivity": 10
+        },
+        {
+          "case": "default-typescript",
           "nextActivity": 9
         },
         {
@@ -201,7 +210,7 @@
     {
       "id": 8,
       "type": "input-select",
-      "nextActivity": 9,
+      "nextActivity": 10,
       "question": "What is your default code editor?",
       "stateProperty": "editor",
       "options": [
@@ -250,11 +259,23 @@
     },
     {
       "id": 9,
-      "type": "project-create",
-      "nextActivity": 10
+      "type": "state-assign",
+      "nextActivity": 10,
+      "state": {
+        "transpiler": {
+          "id": "typescript",
+          "displayName": "TypeScript",
+          "fileExtension": ".ts"
+        }
+      }
     },
     {
       "id": 10,
+      "type": "project-create",
+      "nextActivity": 11
+    },
+    {
+      "id": 11,
       "type": "project-install"
     }
   ]
