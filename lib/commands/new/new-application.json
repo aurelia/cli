@@ -273,11 +273,19 @@
       "id": 10,
       "type": "project-create",
       "nextActivity": 11,
-      "restartActivity": 1
+      "restartActivity": 12
     },
     {
       "id": 11,
       "type": "project-install"
+    },
+    {
+      "id": 12,
+      "type": "state-assign",
+      "nextActivity": 1,
+      "state": {
+        "name": null
+      }
     }
   ]
 }
