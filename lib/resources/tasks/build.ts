@@ -9,7 +9,7 @@ export default gulp.series(
   startBundling,
   gulp.parallel(
     buildJavaScript,
-    buildHTML,
+    buildMarkup,
     buildStyles
   ),
   endBundling
