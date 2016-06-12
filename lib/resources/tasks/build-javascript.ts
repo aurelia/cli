@@ -4,7 +4,7 @@ import * as plumber from 'gulp-plumber';
 import * as sourcemaps from 'gulp-sourcemaps';
 import * as notify from 'gulp-notify';
 import * as rename from 'gulp-rename';
-import * as typescript from 'gulp-tsb'; //switch to gulp-typescript fpr sourcemaps
+import * as ts from 'gulp-typescript';
 import * as project from '../aurelia.json';
 import {CLIOptions, build} from 'aurelia-cli';
 
@@ -17,18 +17,14 @@ function configureEnvironment() {
     .pipe(gulp.dest(project.paths.root));
 }
 
-let typescriptCompiler = global.typescriptCompiler || null;
+var tsProject = ts.createProject('../../tsconfig.json');
 
 function buildJavaScript() {
-  if (!typescriptCompiler) {
-    typescriptCompiler = typescript.create(require('../../tsconfig.json').compilerOptions);
-  }
-
   return gulp.src(project.paths.dtsSource.concat(project.paths.source))
     .pipe(plumber({errorHandler: notify.onError('Error: <%= error.message %>')}))
     .pipe(changedInPlace({firstPass:true}))
     .pipe(sourcemaps.init())
-    .pipe(typescriptCompiler())
+    .pipe(ts(tsProject))
     .pipe(build.bundle());
 }
 
