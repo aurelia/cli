@@ -17,7 +17,7 @@ function configureEnvironment() {
     .pipe(gulp.dest(project.paths.root));
 }
 
-var tsProject = ts.createProject('../../tsconfig.json');
+var tsProject = ts.createProject('tsconfig.json');
 
 function buildJavaScript() {
   return gulp.src(project.paths.dtsSource.concat(project.paths.source))
