@@ -13,6 +13,9 @@
     "moduleResolution": "node",
     "lib": ["es6", "dom"]
   },
+  "exclude": [
+    "node_modules"
+  ],
   "filesGlob": [
     "./src/**/*.ts",
     "./test/**/*.ts",
