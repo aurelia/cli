@@ -17,14 +17,20 @@ function configureEnvironment() {
     .pipe(gulp.dest(project.paths.root));
 }
 
-var tsProject = ts.createProject('tsconfig.json');
+var typescriptCompiler = typescriptCompiler || null;
 
 function buildJavaScript() {
+  if(!typescriptCompiler) {
+    typescriptCompiler = ts.createProject('tsconfig.json', {
+      "typescript": require('typescript')
+    });
+  }
+
   return gulp.src(project.paths.dtsSource.concat(project.paths.source))
     .pipe(plumber({errorHandler: notify.onError('Error: <%= error.message %>')}))
     .pipe(changedInPlace({firstPass:true}))
     .pipe(sourcemaps.init())
-    .pipe(ts(tsProject))
+    .pipe(ts(typescriptCompiler))
     .pipe(build.bundle());
 }
 
