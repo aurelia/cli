@@ -22,6 +22,14 @@
           "displayName": "None",
           "fileExtension": ".css"
         },
+        "unitTestRunner": {
+          "id": "karma",
+          "displayName": "Karma"
+        },
+        "testFramework": {
+          "id": "jasmine",
+          "displayName": "Jasmine"
+        },
         "editor": {
           "id": "vscode",
           "displayName": "Visual Studio Code"
@@ -70,11 +78,11 @@
       "branches": [
         {
           "case": "default-esnext",
-          "nextActivity": 10
+          "nextActivity": 11
         },
         {
           "case": "default-typescript",
-          "nextActivity": 9
+          "nextActivity": 10
         },
         {
           "case": "custom",
@@ -91,7 +99,7 @@
       "options": [
         {
           "displayName": "Default",
-          "description": "The default platform setup.",
+          "description": "The default web platform setup.",
           "value": {
             "id": "default",
             "displayName": "Default"
@@ -192,7 +200,32 @@
     {
       "id": 8,
       "type": "input-select",
-      "nextActivity": 10,
+      "nextActivity": 9,
+      "question": "Would you like to configure unit testing?",
+      "stateProperty": "unitTestRunner",
+      "options": [
+        {
+          "displayName": "Yes",
+          "description": "Configure your app with Jasmine and Karma.",
+          "value": {
+            "id": "karma",
+            "displayName": "Karma"
+          }
+        },
+        {
+          "displayName": "No",
+          "description": "Skip testing. My code is always perfect anyway.",
+          "value": {
+            "id": "none",
+            "displayName": "None"
+          }
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "type": "input-select",
+      "nextActivity": 11,
       "question": "What is your default code editor?",
       "stateProperty": "editor",
       "options": [
@@ -240,9 +273,9 @@
       ]
     },
     {
-      "id": 9,
+      "id": 10,
       "type": "state-assign",
-      "nextActivity": 10,
+      "nextActivity": 11,
       "state": {
         "transpiler": {
           "id": "typescript",
@@ -252,17 +285,17 @@
       }
     },
     {
-      "id": 10,
-      "type": "project-create",
-      "nextActivity": 11,
-      "restartActivity": 12
-    },
-    {
       "id": 11,
-      "type": "project-install"
+      "type": "project-create",
+      "nextActivity": 12,
+      "restartActivity": 13
     },
     {
       "id": 12,
+      "type": "project-install"
+    },
+    {
+      "id": 13,
       "type": "state-assign",
       "nextActivity": 1,
       "state": {
