@@ -19,11 +19,6 @@
     "./typings/index.d.ts",
     "./custom_typings/**/*.d.ts"
   ],
-  "exclude": [
-    "node_modules",
-    "jspm_packages",
-    "test"
-  ],
   "atom": {
     "rewriteTsconfig": false
   }
