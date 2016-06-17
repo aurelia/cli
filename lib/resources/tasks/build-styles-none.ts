@@ -4,7 +4,7 @@ import * as project from '../aurelia.json';
 import {build} from 'aurelia-cli';
 
 export default function buildStyles() {
-  return gulp.src(project.paths.styles)
+  return gulp.src(project.cssProcessor.source)
     .pipe(changedInPlace({firstPass:true}))
     .pipe(build.bundle());
 };

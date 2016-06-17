@@ -11,7 +11,7 @@ export default function buildStyles() {
     autoprefixer({browsers: ['last 1 version']})
   ];
 
-  return gulp.src(project.paths.styles)
+  return gulp.src(project.cssProcessor.source)
     .pipe(changedInPlace({firstPass:true}))
     .pipe(sourcemaps.init())
     .pipe(postcss(processors))

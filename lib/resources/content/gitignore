@@ -1,6 +1,3 @@
-client_modules
 node_modules
 .idea
 .DS_STORE
-/dist
-test/e2e/dist
