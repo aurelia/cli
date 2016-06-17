@@ -26,7 +26,7 @@ function buildJavaScript() {
     });
   }
 
-  return gulp.src(project.transpiler.dtsSource.concat(project.transpliler.source))
+  return gulp.src(project.transpiler.dtsSource.concat(project.transpiler.source))
     .pipe(plumber({errorHandler: notify.onError('Error: <%= error.message %>')}))
     .pipe(changedInPlace({firstPass:true}))
     .pipe(sourcemaps.init())
