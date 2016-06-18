@@ -21,8 +21,8 @@ let refresh = gulp.series(
 export default gulp.series(
   serve,
   () => {
-    gulp.watch(project.paths.source, refresh).on('change', onChange);
-    gulp.watch(project.paths.markup, refresh).on('change', onChange);
-    gulp.watch(project.paths.styles, refresh).on('change', onChange);
+    gulp.watch(project.transpiler.source, refresh).on('change', onChange);
+    gulp.watch(project.markupProcessor.source, refresh).on('change', onChange);
+    gulp.watch(project.cssProcessor.source, refresh).on('change', onChange);
   }
 );
