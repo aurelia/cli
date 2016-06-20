@@ -6,7 +6,7 @@ export function unit(done) {
   new Karma({
     configFile: __dirname + '/../../karma.conf.js',
     singleRun: !CLIOptions.hasFlag('watch')
-  }, function() { done(); }).start();
+  }, done).start();
 }
 
 export default unit;
