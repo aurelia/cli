@@ -19,7 +19,7 @@ function configureEnvironment() {
 
 var typescriptCompiler = typescriptCompiler || null;
 
-function buildJavaScript() {
+function buildTypeScript() {
   if(!typescriptCompiler) {
     typescriptCompiler = ts.createProject('tsconfig.json', {
       "typescript": require('typescript')
@@ -36,5 +36,5 @@ function buildJavaScript() {
 
 export default gulp.series(
   configureEnvironment,
-  buildJavaScript
+  buildTypeScript
 );
