@@ -78,11 +78,11 @@
       "branches": [
         {
           "case": "default-esnext",
-          "nextActivity": 11
+          "nextActivity": 12
         },
         {
           "case": "default-typescript",
-          "nextActivity": 10
+          "nextActivity": 11
         },
         {
           "case": "custom",
@@ -111,8 +111,7 @@
           "value": {
             "id": "aspnetcore",
             "displayName": "ASP.NET Core"
-          },
-          "disabled": true
+          }
         }
       ]
     },
@@ -224,8 +223,23 @@
     },
     {
       "id": 9,
+      "type": "branch-switch",
+      "stateProperty": "platform",
+      "branches": [
+        {
+          "case": "aspnetcore",
+          "nextActivity": 12
+        },
+        {
+          "case": "default",
+          "nextActivity": 10
+        }
+      ]
+    },
+    {
+      "id": 10,
       "type": "input-select",
-      "nextActivity": 11,
+      "nextActivity": 12,
       "question": "What is your default code editor?",
       "stateProperty": "editor",
       "options": [
@@ -260,22 +274,13 @@
             "id": "webstorm",
             "displayName": "WebStorm"
           }
-        },
-        {
-          "displayName": "Visual Studio",
-          "description": "A rich, integrated development environment for creating stunning applications.",
-          "value": {
-            "id": "visualstudio",
-            "displayName": "Visual Studio"
-          },
-          "disabled": true
         }
       ]
     },
     {
-      "id": 10,
+      "id": 11,
       "type": "state-assign",
-      "nextActivity": 11,
+      "nextActivity": 12,
       "state": {
         "transpiler": {
           "id": "typescript",
@@ -285,17 +290,28 @@
       }
     },
     {
-      "id": 11,
-      "type": "project-create",
-      "nextActivity": 12,
-      "restartActivity": 13
-    },
-    {
       "id": 12,
-      "type": "project-install"
+      "type": "state-assign",
+      "nextActivity": 13,
+      "state": {
+        "editor": {
+          "id": "visualstudio",
+          "displayName": "Visual Studio"
+        }
+      }
     },
     {
       "id": 13,
+      "type": "project-create",
+      "nextActivity": 14,
+      "restartActivity": 15
+    },
+    {
+      "id": 14,
+      "type": "project-install"
+    },
+    {
+      "id": 15,
       "type": "state-assign",
       "nextActivity": 1,
       "state": {
