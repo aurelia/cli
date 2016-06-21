@@ -5,6 +5,10 @@
     {
       "name": "env",
       "description": "Sets the build environment."
+    },
+    {
+      "name": "watch",
+      "description": "Watches source files for changes and refreshes the app automatically."
     }
   ]
 }

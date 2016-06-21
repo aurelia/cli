@@ -1,0 +1,14 @@
+{
+  "name": "test",
+  "description": "Runs all unit tests and reports the results.",
+  "flags": [
+    {
+      "name": "env",
+      "description": "Sets the build environment."
+    },
+    {
+      "name": "watch",
+      "description": "Watches test files for changes and re-runs the tests automatically."
+    }
+  ]
+}
