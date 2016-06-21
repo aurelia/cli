@@ -11,7 +11,7 @@
   "flags": [
     {
       "name": "here",
-      "description": "Creates a new project with the current working directory as the root of the project instead of creating a project folder.",
+      "description": "Creates a new project with the current working directory as the root of the project instead of creating a new project folder.",
       "type": "boolean"
     }
   ]
