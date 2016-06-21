@@ -4,7 +4,8 @@
   "flags": [
     {
       "name": "env",
-      "description": "Sets the build environment."
+      "description": "Sets the build environment.",
+      "type": "string"
     }
   ]
 }
