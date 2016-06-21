@@ -108,6 +108,7 @@
         {
           "displayName": "ASP.NET Core",
           "description": "A powerful, patterns-based way to build dynamic websites with .NET.",
+          "flag": "here",
           "value": {
             "id": "aspnetcore",
             "displayName": "ASP.NET Core"

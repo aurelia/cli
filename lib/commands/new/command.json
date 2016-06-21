@@ -7,5 +7,12 @@
       "optional": true,
       "description": "The name to create the project with. If one isn't provided, the wizard will ask for one."
     }
+  ],
+  "flags": [
+    {
+      "name": "here",
+      "description": "Creates a new project with the current working directory as the root of the project instead of creating a project folder.",
+      "type": "boolean"
+    }
   ]
 }
