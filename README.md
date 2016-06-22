@@ -10,7 +10,7 @@ This library is part of the [Aurelia](http://www.aurelia.io/) platform and conta
 
 ## Machine Setup
 
-The CLI itself has a couple of pre-requisites that you need to install first.
+The CLI itself has a couple of prerequisites that you need to install first.
 
 * Install NodeJS >= 4.x.
     * You can [download it here](https://nodejs.org/en/).
@@ -55,7 +55,7 @@ Aurelia CLI apps always run in bundled mode, even during development. To build y
 
 ## Unit Testing
 
-If you selected a project setup that includes unit tests, you can run your tests with `au test`. If you would like to adopt a tdd-based workflow, writing code and tests with continual test evaluation, you can use the `--watch` flag. For exmaple: `au test --watch`.
+If you selected a project setup that includes unit tests, you can run your tests with `au test`. If you would like to adopt a tdd-based workflow, writing code and tests with continual test evaluation, you can use the `--watch` flag. For example: `au test --watch`.
 
 ## Generators
 
