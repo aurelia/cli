@@ -27,6 +27,8 @@ npm install aurelia-cli -g
 
 Note: Always run commands from a Bash (preferred) or Powershell prompt. Depending on your environment, you may need to use `sudo` when executing npm global installs.
 
+Note: While creating a new project doesn't require NPM 3, front-end development, in general, requires a flat-package structure, which is not what NPM < 3 provides. It is recommended that you update to NPM 3, which will be able to manage this structural requirement.
+
 ## Creating A New Aurelia Project
 
 To create a new project, you can run `au new`. You will be presented with a number of options. If you aren't sure what you want, you can select one of the defaults. Otherwise, you can create a custom project. Simply follow the prompts.
