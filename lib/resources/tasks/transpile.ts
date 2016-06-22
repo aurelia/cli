@@ -13,7 +13,7 @@ function configureEnvironment() {
 
   return gulp.src(`aurelia_project/environments/${env}.ts`)
     .pipe(changedInPlace({firstPass:true}))
-    .pipe(rename('environment.js'))
+    .pipe(rename('environment.ts'))
     .pipe(gulp.dest(project.paths.root));
 }
 
