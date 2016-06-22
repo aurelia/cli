@@ -261,11 +261,11 @@
           }
         },
         {
-          "displayName": "Submlime",
+          "displayName": "Sublime",
           "description": "A sophisticated text editor for code, markup and prose.",
           "value": {
             "id": "sublime",
-            "displayName": "Submlime"
+            "displayName": "Sublime"
           }
         },
         {
