@@ -78,7 +78,7 @@
       "branches": [
         {
           "case": "default-esnext",
-          "nextActivity": 12
+          "nextActivity": 13
         },
         {
           "case": "default-typescript",
@@ -240,7 +240,7 @@
     {
       "id": 10,
       "type": "input-select",
-      "nextActivity": 12,
+      "nextActivity": 13,
       "question": "What is your default code editor?",
       "stateProperty": "editor",
       "options": [
@@ -281,7 +281,7 @@
     {
       "id": 11,
       "type": "state-assign",
-      "nextActivity": 12,
+      "nextActivity": 13,
       "state": {
         "transpiler": {
           "id": "typescript",
