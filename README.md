@@ -69,6 +69,6 @@ If you need to add a client library to your project, first `npm install` the lib
 
 Note: One of the first new features you'll see in the coming weeks is a new command to help you with 3rd party module installation. The command will inspect a previously npm-installed package, and make a configuration recommendation to you, automating the process if you desire.
 
-## What if I forget these commands?
+## What if I forget this stuff?
 
-If you need your memory refreshed as to what the available options are, at any time you can execute `au help`.
+If you need your memory refreshed as to what the available options are, at any time you can execute `au help`. If you aren't sure what version of the CLI you are running, you can run `au -v`;
