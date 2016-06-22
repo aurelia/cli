@@ -7,7 +7,7 @@ export default class ValueConverterGenerator {
 
   execute() {
     return this.ui
-      .ensureAnswer(this.options.args[0], 'What would you like to call the generator?')
+      .ensureAnswer(this.options.args[0], 'What would you like to call the value converter?')
       .then(name => {
         let fileName = this.project.makeFileName(name);
         let className = this.project.makeClassName(name);
