@@ -6,7 +6,7 @@ import * as project from '../aurelia.json';
 import {build} from 'aurelia-cli';
 
 export default function processCSS() {
-  gulp.src(project.cssProcessor.source)
+  return gulp.src(project.cssProcessor.source)
     .pipe(changedInPlace({firstPass:true}))
     .pipe(sourcemaps.init())
     .pipe(less())
