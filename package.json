@@ -26,6 +26,7 @@
   "dependencies": {
     "aurelia-dependency-injection": "^1.0.0-beta.1.2.0",
     "aurelia-polyfills": "^1.0.0-beta.1.1.2",
+    "connect-history-api-fallback": "^1.2.0",
     "npm": "^3.8.6"
   }
 }
