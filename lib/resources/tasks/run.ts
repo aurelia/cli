@@ -3,6 +3,7 @@ import * as browserSync from 'browser-sync';
 import * as project from '../aurelia.json';
 import build from './build';
 import {CLIOptions} from 'aurelia-cli';
+import historyApiFallback from 'connect-history-api-fallback/lib';
 
 function onChange(path) {
   console.log(`File Changed: ${path}`);
@@ -22,10 +23,10 @@ let serve = gulp.series(
       port: 9000,
       server: {
         baseDir: ['.'],
-        middleware: function(req, res, next) {
+        middleware: [historyApiFallback(), function(req, res, next) {
           res.setHeader('Access-Control-Allow-Origin', '*');
           next();
-        }
+        }]
       }
     }, done);
   }
