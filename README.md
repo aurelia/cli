@@ -71,30 +71,26 @@ If you need to add a client library to your project, first `npm install` the lib
 
 Note: One of the first new features you'll see in the coming weeks is a new command to help you with 3rd party module installation. The command will inspect a previously npm-installed package, and make a configuration recommendation to you, automating the process if you desire.
 
-## Styling your application
+## Styling your Application
 
-There are many ways to style components in Aurelia.
-It's quite trivial to add a css file to Aurelia in Aurelia starter kit but for cli generated
-projects, it's quite different.
-  1. For `default` to CSS project: You write css and use
+There are many ways to style components in Aurelia. The CLI sets up your project to only process styles inside your application's `src` folder. Those styles can then be imported into a view using Aurelia's `require` element.
+
+* If you aren't using any CSS preprocessor, you write css and then simply require it in the view like this:
     ```html
-      <require from="./path/to/css"></require>
-    ``` 
-  2. For project with CSS preprocessor (that you chose during cli setup questions):
-    You write your styling in format you chose (styl, sass, less ...) and use with following
-    notes:
-    - Style files have to be inside src folder (This can be changed)
-    - Require the style by `[filename].css` instead of `[filename].[extension]`. This is because
-      your style file is transpiled into an `AMD` module with id `[..path]/[filename].css`
+    <require from="./path/to/css"></require>
+    ```
+* For projects that use a CSS preprocessor (chosen from the cli setup questions):
+  * Write your styles in the format you chose (styl, sass, less ...).
+  * Require the style by `[filename].css` instead of `[filename].[extension]`. This is because
+      your style file is transpiled into a module that encodes the resulting `css` file extension.
     ```html
-      <!-- example -->
-      <!-- say you have stylus at: [project_root]/src/styles/main.styl -->
-      <require from ="./styles/main.css"></require>
+    <!-- example -->
+    <!-- if you have stylus at: [project_root]/src/styles/main.styl -->
+    <require from ="./styles/main.css"></require>
     ```
 
-You can configure the way things work by modifying gulp tasks in `aurelia_project/tasks` folder.
-For styling purpose, that would be `process-css.js` file.
-
+Bear in mind that you can always configure things any way you want by modifying the tasks in the `aurelia_project/tasks` folder.
+For styling purposes, you can modify the `process-css.js` file.
 
 ## What if I forget this stuff?
 
