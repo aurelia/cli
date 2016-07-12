@@ -77,16 +77,20 @@ There are many ways to style components in Aurelia. The CLI sets up your project
 
 * If you aren't using any CSS preprocessor, you write css and then simply require it in the view like this:
     ```html
+    
     <require from="./path/to/css"></require>
+    
     ```
 * For projects that use a CSS preprocessor (chosen from the cli setup questions):
   * Write your styles in the format you chose (styl, sass, less ...).
   * Require the style by `[filename].css` instead of `[filename].[extension]`. This is because
       your style file is transpiled into a module that encodes the resulting `css` file extension.
     ```html
+    
     <!-- example -->
     <!-- if you have stylus at: [project_root]/src/styles/main.styl -->
     <require from ="./styles/main.css"></require>
+    
     ```
 
 Bear in mind that you can always configure things any way you want by modifying the tasks in the `aurelia_project/tasks` folder.
