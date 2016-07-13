@@ -31,6 +31,8 @@ export class ${className}CustomAttribute {
   valueChanged(newValue, oldValue) {
 
   }
-}`
+}
+
+`
   }
 }

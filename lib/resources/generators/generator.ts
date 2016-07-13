@@ -54,9 +54,12 @@ export class \${className} {
   valueChanged(newValue, oldValue) {
 
   }
-}\`
+}
+
+\`
   }
 }
+
 `
   }
 }

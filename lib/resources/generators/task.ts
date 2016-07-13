@@ -30,6 +30,8 @@ export default function ${functionName}() {
   return gulp.src(project.paths.???)
     .pipe(changed(project.paths.output, {extension: '.???'}))
     .pipe(gulp.dest(project.paths.output));
-}`
+}
+
+`
   }
 }

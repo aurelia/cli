@@ -30,6 +30,8 @@ return `export class ${className}BindingBehavior {
   unbind(binding, source) {
 
   }
-}`
+}
+
+`
   }
 }

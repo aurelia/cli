@@ -30,6 +30,8 @@ return `export class ${className}ValueConverter {
   fromView(value) {
 
   }
-}`
+}
+
+`
   }
 }
