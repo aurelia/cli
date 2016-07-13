@@ -4,8 +4,10 @@ const resolve = require('../lib/resolve');
 
 process.title = 'aurelia';
 
+let originalBaseDir = process.cwd();
+
 resolve('aurelia-cli', {
-  basedir: process.cwd()
+  basedir: originalBaseDir
 }, function(error, projectLocalCli) {
   let cli;
 
@@ -16,6 +18,8 @@ resolve('aurelia-cli', {
     cli = new (require(projectLocalCli).CLI);
     cli.options.runningLocally = true;
   }
+
+  cli.options.originalBaseDir = originalBaseDir;
 
   let userArgs = process.argv.slice(2);
   let commandName = userArgs[0];
