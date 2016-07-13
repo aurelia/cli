@@ -35,8 +35,8 @@
           "displayName": "Visual Studio Code"
         },
         "platform": {
-          "id": "default",
-          "displayName": "Default"
+          "id": "web",
+          "displayName": "Web"
         }
       }
     },
@@ -99,11 +99,11 @@
       "stateProperty": "platform",
       "options": [
         {
-          "displayName": "Default",
+          "displayName": "Web",
           "description": "The default web platform setup.",
           "value": {
-            "id": "default",
-            "displayName": "Default"
+            "id": "web",
+            "displayName": "Web"
           }
         },
         {
