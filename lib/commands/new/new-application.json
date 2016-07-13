@@ -44,8 +44,9 @@
       "id": 2,
       "type": "input-text",
       "nextActivity": 3,
-      "question": "What would you like to name your new project?",
-      "stateProperty": "name"
+      "question": "Please enter a name for your new project below.",
+      "stateProperty": "name",
+      "defaultValue": "aurelia-app"
     },
     {
       "id": 3,
