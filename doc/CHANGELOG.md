@@ -1,3 +1,7 @@
+## 0.14.0
+
+* fix(aspnet): correctly configure base url
+
 ## 0.13.10
 
 * fix(run): manually log ports to avoid browser sync color issues
