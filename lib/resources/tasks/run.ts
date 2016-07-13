@@ -21,6 +21,7 @@ let serve = gulp.series(
       online: false,
       open: false,
       port: 9000,
+      logLevel: 'silent',
       server: {
         baseDir: ['.'],
         middleware: [historyApiFallback(), function(req, res, next) {
@@ -28,7 +29,12 @@ let serve = gulp.series(
           next();
         }]
       }
-    }, done);
+    }, function (err, bs) {
+      let urls = bs.options.get('urls').toJS();
+      console.log(`Application Available At: ${urls.local}`);
+      console.log(`BrowserSync Available At: ${urls.ui}`);
+      done();
+    });
   }
 );
 
