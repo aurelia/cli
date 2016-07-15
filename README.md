@@ -69,7 +69,7 @@ Executing `au generate resource` runs a generator to scaffold out typical Aureli
 
 If you need to add a 3rd party client library to your project, first `npm install` the library. After that, open the `aurelia_project/aurelia.json` file and scroll down to the `build.bundles` section. You'll need to add the library into one of your bundle's `dependencies` sections.
 
-Note: One of the first new features you'll see soon is a command to help you with 3rd party module configuration. The command will inspect a previously npm-installed package, and make a configuration recommendation to you, automating the process if you desire.
+> Note: One of the first new features you'll see soon is a command to help you with 3rd party module configuration. The command will inspect a previously npm-installed package, and make a configuration recommendation to you, automating the process if you desire.
 
 Below is some guidance for how to manually configure several different common 3rd party library scenarios:
 
