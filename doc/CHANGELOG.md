@@ -1,3 +1,11 @@
+## 0.16.0
+
+* feat(bundler): enable dependencies to include additional resources
+
+## 0.15.0
+
+* feat(bundler): add support for shims via deps and exports
+
 ## 0.14.0
 
 * fix(aspnet): correctly configure base url
