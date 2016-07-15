@@ -1,3 +1,7 @@
+## 0.16.1
+
+* fix(source-inclusion): move dependency
+
 ## 0.16.0
 
 * feat(bundler): enable dependencies to include additional resources
