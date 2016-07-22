@@ -1,3 +1,7 @@
+## 0.16.2
+
+* fix(source-inclusion): incorrect module ids on windows
+
 ## 0.16.1
 
 * fix(source-inclusion): move dependency
