@@ -1,3 +1,7 @@
+## 0.17.0
+
+* feat(bundle): add an option to use absolute path in requirejs
+
 ## 0.16.2
 
 * fix(source-inclusion): incorrect module ids on windows
