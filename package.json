@@ -26,6 +26,8 @@
   "dependencies": {
     "aurelia-dependency-injection": "^1.0.0",
     "aurelia-polyfills": "^1.0.0",
-    "npm": "^3.10.5"
+    "jsonfile": "^2.3.1",
+    "npm": "^3.10.5",
+    "object-assign-deep": "0.0.4"
   }
 }

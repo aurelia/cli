@@ -261,6 +261,42 @@ There are many ways to style components in Aurelia. The CLI sets up your project
 Bear in mind that you can always configure things any way you want by modifying the tasks in the `aurelia_project/tasks` folder.
 For styling purposes, you can modify the `process-css.js` file.
 
+### Install libraries
+
+*Experimental WIP*
+
+`au install <library>`
+
+Example:
+
+`au install bootstrap`
+
+Requires an entry for the library in `lib/commands/install/registry.json`
+
+```js
+{
+  // ...
+  "bootstrap": {
+    "dependencies": [
+      "jquery",
+      {
+        "name": "bootstrap",
+        "path": "../node_modules/bootstrap/dist",
+        "main": "js/bootstrap.min",
+        "deps": ["jquery"],
+        "exports": "$",
+        "resources": [
+          "css/bootstrap.css"
+        ]
+      }
+    ]    
+  }
+}
+
+The entry for the library will then be deep merged into `aurelia_project/aurelia.json`
+```
+
+
 ## What if I forget this stuff?
 
 If you need your memory refreshed as to what the available options are, at any time you can execute `au help`. If you aren't sure what version of the CLI you are running, you can run `au -v`;
