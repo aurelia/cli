@@ -75,7 +75,7 @@ Below is some guidance for how to manually configure several different common 3r
 
 #### A Single-File Module
 
-If the library you have installed is a single CommonJS or AMD file, you can add an entry similar to the following to the dependencies of yoru bundle:
+If the library you have installed is a single CommonJS or AMD file, you can add an entry similar to the following to the dependencies of your bundle:
 
 ```javascript
 "dependencies": [
@@ -116,7 +116,7 @@ Many modules installed through NPM are packages made up of multiple source files
 * `path` - This is a path to the folder where the package's source is located. This path is relative to your application's `src` folder.
 * `main` - This is the main module (entry point) of the package, relative to the `path`. You should not include the file extension. `.js` will be appended automatically.
 
-> Note: We've also shown how to use the `env` setting on a dependency. This can be used on any dependency in the bundle to indicate what environment builds the dependency should be included in. Bey default, dependencies are included in all builds. The example above shows how to include the library only in builds targeting the "dev" environment. You can also specify multiple environments like `dev & stage`.
+> Note: We've also shown how to use the `env` setting on a dependency. This can be used on any dependency in the bundle to indicate what environment builds the dependency should be included in. By default, dependencies are included in all builds. The example above shows how to include the library only in builds targeting the "dev" environment. You can also specify multiple environments like `dev & stage`.
 
 #### A Legacy Library
 
