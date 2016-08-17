@@ -1,3 +1,10 @@
+## 0.18.0
+
+* feat(dependency-description): enable direct pathing to standard files
+* fix(package-analyzer): dependency package location no longer tied to name
+* fix(package-analyzer): ensure path splits across potential plat differences
+* feat(project): configure all paths as project items
+
 ## 0.17.0
 
 * feat(bundle): add an option to use absolute path in requirejs
