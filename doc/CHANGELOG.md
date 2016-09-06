@@ -1,3 +1,8 @@
+## 0.19.0
+
+* feat(cli): add exit error code
+* feat(bundle,source-inclusion): allow `exclude` option in bundle source
+
 ## 0.18.0
 
 * feat(dependency-description): enable direct pathing to standard files
