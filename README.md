@@ -272,6 +272,23 @@ Sometimes you can't get a library to work with the module loading system. That's
 }
 ```
 
+#### Configuring the loader
+
+You can configure the loader by adding a `config` key to `build.loader` with the options you want to add. For instance, if you want to increase the timeout for requirejs, you would do this:
+
+```
+"build": {
+    "loader": {
+        "type": "require",
+        "configTarget": "vendor-bundle.js",
+        "includeBundleMetadataInConfig": "auto",
+        "config": {
+            "waitSeconds": 60
+        }
+    }
+}
+```
+
 ## Styling your Application
 
 There are many ways to style components in Aurelia. The CLI sets up your project to only process styles inside your application's `src` folder. Those styles can then be imported into a view using Aurelia's `require` element.
