@@ -26,7 +26,7 @@
   "dependencies": {
     "aurelia-dependency-injection": "^1.0.0",
     "aurelia-polyfills": "^1.0.0",
-    "npm": "^3.10.5"
+    "npm": "^3.10.8"
   },
   "devDependencies": {
     "aurelia-tools": "^0.2.2"
