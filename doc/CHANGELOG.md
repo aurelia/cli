@@ -1,3 +1,18 @@
+## 0.20.0
+
+### Features
+
+* Support bundle revision numbers.
+* Support arbitrary module loader configuration.
+
+### Bug Fixes
+
+* Don't add .vscode settings unless the VS Code editor is selected.
+* Update NPM dependency to prevent event emitter warnings.
+* Use path.root for Karma tests
+* Always ensure directory structure exists before creating files
+* Erroneous source module inclusing resulting in empty/broken bundled modules
+
 ## 0.19.0
 
 * feat(cli): add exit error code
