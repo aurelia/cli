@@ -1,3 +1,9 @@
+## 0.20.2
+
+### Bug Fixes
+
+* **package-analyzer:** correct resolution of scoped package path
+
 ## 0.20.0
 
 ### Features
