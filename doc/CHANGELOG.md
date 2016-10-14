@@ -1,3 +1,14 @@
+## 0.21.0
+
+### Bug Fixes
+
+* **dependency-inclusion:** wait until all resources are traced before bundling
+* **aurelia-karma:** make it compatible with PhantomJS
+
+### Features
+
+* **bundler, bundle:** abstract out loader config generator
+
 ## 0.20.2
 
 ### Bug Fixes
