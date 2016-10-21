@@ -14,4 +14,4 @@ export default function processCSS() {
     .pipe(sourcemaps.init())
     .pipe(less())
     .pipe(build.bundle());
-};
+}
