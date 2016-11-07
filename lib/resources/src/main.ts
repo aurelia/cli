@@ -2,8 +2,8 @@ import {Aurelia} from 'aurelia-framework'
 import environment from './environment';
 
 //Configure Bluebird Promises.
-//Note: You may want to use environment-specific configuration.
 (<any>Promise).config({
+  longStackTraces: environment.debug,
   warnings: {
     wForgottenReturn: false
   }
