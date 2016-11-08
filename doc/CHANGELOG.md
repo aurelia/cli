@@ -1,3 +1,17 @@
+## 0.22.0
+
+### Bug Fixes
+
+**index.html:** ensure charset is added to html page
+**build** Fix #382 by catching errors with gulp-plumber
+**file-paths:** don't use windows style path separators
+
+### Features
+
+* **autocomplete:** disable built-in Angular1 auto-complete/ suggest
+* **main:** only use bluebird long stack traces during debug mode
+* **build** move require and text to external module
+
 ## 0.21.0
 
 ### Bug Fixes
