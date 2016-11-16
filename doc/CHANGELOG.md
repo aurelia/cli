@@ -1,3 +1,17 @@
+## 0.23.0
+### Notes for upgrading from `<= 0.21.0` versions of CLI
+Version `0.22.0` of the CLI made changes to the `aurelia.json` file. This release has fixed issues with source maps; however, these changes require users who are upgrading existing projects to make the following tweaks to their `aurelia.json` file to enjoy these fixes:
+- replace all instances of `\\` with `/` in file paths
+- replace `"scripts/require.js"` with `node_modules/requirejs/require.js"`
+- the `text` dependency in the `vendor-bundle.js` dependencies is an object literal as shown below. It should be replaced with just the string `"text"`
+```javascript
+{
+   "text",
+   "name": "text",		
+   "path": "../scripts/text"		
+}
+```
+
 ## 0.22.0
 
 ### Bug Fixes
