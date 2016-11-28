@@ -278,11 +278,11 @@
           }
         },
         {
-          "displayName": "None of the above",
-          "description": "Do not configure any editor specific options.",
+          "displayName": "None of the Above",
+          "description": "Do not configure any editor-specific options.",
           "value": {
             "id": "none",
-            "displayName": "n/a"
+            "displayName": "None"
           }
         }
       ]
