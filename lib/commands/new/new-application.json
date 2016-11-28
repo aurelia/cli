@@ -276,6 +276,14 @@
             "id": "webstorm",
             "displayName": "WebStorm"
           }
+        },
+        {
+          "displayName": "None of the above",
+          "description": "Do not configure any editor specific options.",
+          "value": {
+            "id": "none",
+            "displayName": "n/a"
+          }
         }
       ]
     },
