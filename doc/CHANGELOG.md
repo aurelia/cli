@@ -1,9 +1,23 @@
 ## 0.23.0
-### Notes for upgrading from `<= 0.21.0` versions of CLI
+
+### Features
+
+* Add a "None of the above" choice for the Editor step in the `new` wizard
+* **settings.json:** disable ionic html tags
+
+### Bug fixes
+
+* **transpile:** create tsProj every time to avoid crashing
+* **sourcemaps:** stop adding non-existent sourcemaps to sourcemap
+
+### Notes for Upgrading from `<= 0.21.0` Versions of CLI
+
 Version `0.22.0` of the CLI made changes to the `aurelia.json` file. This release has fixed issues with source maps; however, these changes require users who are upgrading existing projects to make the following tweaks to their `aurelia.json` file to enjoy these fixes:
-- replace all instances of `\\` with `/` in file paths
-- replace `"scripts/require.js"` with `node_modules/requirejs/require.js"`
-- the `text` dependency in the `vendor-bundle.js` dependencies is an object literal as shown below. It should be replaced with just the string `"text"`
+
+* replace all instances of `\\` with `/` in file paths
+* replace `"scripts/require.js"` with `node_modules/requirejs/require.js"`
+* the `text` dependency in the `vendor-bundle.js` dependencies is an object literal as shown below. It should be replaced with just the string `"text"`.
+
 ```javascript
 {
    "text",
