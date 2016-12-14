@@ -18,6 +18,8 @@ Version `0.22.0` of the CLI made changes to the `aurelia.json` file. This releas
 * replace `"scripts/require.js"` with `node_modules/requirejs/require.js"`
 * the `text` dependency in the `vendor-bundle.js` dependencies is an object literal as shown below. It should be replaced with just the string `"text"`.
 
+So this:
+
 ```javascript
 {
    "text",
@@ -25,6 +27,14 @@ Version `0.22.0` of the CLI made changes to the `aurelia.json` file. This releas
    "path": "../scripts/text"		
 }
 ```
+
+becomes this:
+
+```javascript
+"text"
+```
+
+After making the above changes to `aurelia.json`, run `npm install requirejs requirejs/text --save` from the project directory.
 
 ## 0.22.0
 
