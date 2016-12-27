@@ -1,0 +1,4 @@
+{
+  "name": "copy-files",
+  "description": "Copy files from root to the output directory."
+}
