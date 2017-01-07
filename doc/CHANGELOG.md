@@ -1,3 +1,17 @@
+## 0.24.0
+
+### Features
+
+* **typescript:** set lib to es2017 for upcoming js features
+* **new command:** enable configuration of html minification
+
+### Bug Fixes
+
+* **transform:** enable wrap shim for shimmed definitions
+* **build:** update babel presets to avoid deprecated module
+* **package-analyzing:** allow deeper levels for source root
+* **src/main:** remove bluebird config that causes Edge issue
+
 ## 0.23.0
 
 ### Features
@@ -5,7 +19,7 @@
 * Add a "None of the above" choice for the Editor step in the `new` wizard
 * **settings.json:** disable ionic html tags
 
-### Bug fixes
+### Bug Fixes
 
 * **transpile:** create tsProj every time to avoid crashing
 * **sourcemaps:** stop adding non-existent sourcemaps to sourcemap
