@@ -1,0 +1,1 @@
+require('aurelia-polyfills');
