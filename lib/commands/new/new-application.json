@@ -13,8 +13,8 @@
           "fileExtension": ".js"
         },
         "markupProcessor": {
-          "id": "none",
-          "displayName": "None",
+          "id": "minimum",
+          "displayName": "Minimal Minification",
           "fileExtension": ".html"
         },
         "cssProcessor": {
@@ -79,11 +79,11 @@
       "branches": [
         {
           "case": "default-esnext",
-          "nextActivity": 13
+          "nextActivity": 14
         },
         {
           "case": "default-typescript",
-          "nextActivity": 11
+          "nextActivity": 12
         },
         {
           "case": "custom",
@@ -148,6 +148,42 @@
       "id": 7,
       "type": "input-select",
       "nextActivity": 8,
+      "question": "How would you like to setup your template?",
+      "stateProperty": "markupProcessor",
+      "options": [
+        {
+          "displayName": "Default",
+          "description": "No markup processing.",
+          "value": {
+            "id": "none",
+            "displayName": "None",
+            "fileExtension": ".html"
+          }
+        },
+        {
+          "displayName": "Minimum Minification",
+          "description": "Removes comments and whitespace between block level elements such as div, blockquote, p, header, footer ...etc",
+          "value": {
+            "id": "minimum",
+            "displayName": "Minimal Minification",
+            "fileExtension": ".html"
+          }
+        },
+        {
+          "displayName": "Maximum Minification",
+          "description": "Removes comments, script & link element [type] attributes and all whitespace between all elements. Also remove attribute quotes where possible. Collapses boolean attributes.",
+          "value": {
+            "id": "maximum",
+            "displayName": "Maximum Minification",
+            "fileExtension": ".html"
+          }
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": "input-select",
+      "nextActivity": 9,
       "question": "What css processor would you like to use?",
       "stateProperty": "cssProcessor",
       "options": [
@@ -199,9 +235,9 @@
       ]
     },
     {
-      "id": 8,
+      "id": 9,
       "type": "input-select",
-      "nextActivity": 9,
+      "nextActivity": 10,
       "question": "Would you like to configure unit testing?",
       "stateProperty": "unitTestRunner",
       "options": [
@@ -224,24 +260,24 @@
       ]
     },
     {
-      "id": 9,
+      "id": 10,
       "type": "branch-switch",
       "stateProperty": "platform",
       "branches": [
         {
           "case": "aspnetcore",
-          "nextActivity": 12
+          "nextActivity": 13
         },
         {
           "case": "default",
-          "nextActivity": 10
+          "nextActivity": 11
         }
       ]
     },
     {
-      "id": 10,
+      "id": 11,
       "type": "input-select",
-      "nextActivity": 13,
+      "nextActivity": 14,
       "question": "What is your default code editor?",
       "stateProperty": "editor",
       "options": [
@@ -276,13 +312,21 @@
             "id": "webstorm",
             "displayName": "WebStorm"
           }
+        },
+        {
+          "displayName": "None of the Above",
+          "description": "Do not configure any editor-specific options.",
+          "value": {
+            "id": "none",
+            "displayName": "None"
+          }
         }
       ]
     },
     {
-      "id": 11,
+      "id": 12,
       "type": "state-assign",
-      "nextActivity": 13,
+      "nextActivity": 14,
       "state": {
         "transpiler": {
           "id": "typescript",
@@ -292,9 +336,9 @@
       }
     },
     {
-      "id": 12,
+      "id": 13,
       "type": "state-assign",
-      "nextActivity": 13,
+      "nextActivity": 14,
       "state": {
         "editor": {
           "id": "visualstudio",
@@ -303,17 +347,17 @@
       }
     },
     {
-      "id": 13,
-      "type": "project-create",
-      "nextActivity": 14,
-      "restartActivity": 15
-    },
-    {
       "id": 14,
-      "type": "project-install"
+      "type": "project-create",
+      "nextActivity": 15,
+      "restartActivity": 16
     },
     {
       "id": 15,
+      "type": "project-install"
+    },
+    {
+      "id": 16,
       "type": "state-assign",
       "nextActivity": 1,
       "state": {

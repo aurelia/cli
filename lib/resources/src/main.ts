@@ -3,7 +3,6 @@ import environment from './environment';
 
 //Configure Bluebird Promises.
 (<any>Promise).config({
-  longStackTraces: environment.debug,
   warnings: {
     wForgottenReturn: false
   }

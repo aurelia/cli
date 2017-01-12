@@ -1,9 +1,39 @@
+## 0.24.0
+
+### Features
+
+* **typescript:** set lib to es2017 for upcoming js features
+* **new command:** enable configuration of html minification
+
+### Bug Fixes
+
+* **transform:** enable wrap shim for shimmed definitions
+* **build:** update babel presets to avoid deprecated module
+* **package-analyzing:** allow deeper levels for source root
+* **src/main:** remove bluebird config that causes Edge issue
+
 ## 0.23.0
-### Notes for upgrading from `<= 0.21.0` versions of CLI
+
+### Features
+
+* Add a "None of the above" choice for the Editor step in the `new` wizard
+* **settings.json:** disable ionic html tags
+
+### Bug Fixes
+
+* **transpile:** create tsProj every time to avoid crashing
+* **sourcemaps:** stop adding non-existent sourcemaps to sourcemap
+
+### Notes for Upgrading from `<= 0.21.0` Versions of CLI
+
 Version `0.22.0` of the CLI made changes to the `aurelia.json` file. This release has fixed issues with source maps; however, these changes require users who are upgrading existing projects to make the following tweaks to their `aurelia.json` file to enjoy these fixes:
-- replace all instances of `\\` with `/` in file paths
-- replace `"scripts/require.js"` with `node_modules/requirejs/require.js"`
-- the `text` dependency in the `vendor-bundle.js` dependencies is an object literal as shown below. It should be replaced with just the string `"text"`
+
+* replace all instances of `\\` with `/` in file paths
+* replace `"scripts/require.js"` with `node_modules/requirejs/require.js"`
+* the `text` dependency in the `vendor-bundle.js` dependencies is an object literal as shown below. It should be replaced with just the string `"text"`.
+
+So this:
+
 ```javascript
 {
    "text",
@@ -11,6 +41,14 @@ Version `0.22.0` of the CLI made changes to the `aurelia.json` file. This releas
    "path": "../scripts/text"		
 }
 ```
+
+becomes this:
+
+```javascript
+"text"
+```
+
+After making the above changes to `aurelia.json`, run `npm install requirejs requirejs/text --save` from the project directory.
 
 ## 0.22.0
 
