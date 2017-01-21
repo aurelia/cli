@@ -1,0 +1,5 @@
+{
+  "tutorial": [
+    "1. Import jQuery via: \"import $ from 'jquery';\""
+  ]
+}
