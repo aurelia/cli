@@ -3,7 +3,6 @@ import * as browserSync from 'browser-sync';
 import * as historyApiFallback from 'connect-history-api-fallback/lib';
 import * as project from '../aurelia.json';
 import build from './build';
-import copyFiles from './copy-files';
 import {CLIOptions} from 'aurelia-cli';
 
 function onChange(path) {
@@ -17,7 +16,6 @@ function reload(done) {
 
 let serve = gulp.series(
   build,
-  copyFiles,
   done => {
     browserSync({
       online: false,
