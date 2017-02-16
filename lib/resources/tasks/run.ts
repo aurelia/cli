@@ -47,6 +47,12 @@ let watch = function() {
   gulp.watch(project.transpiler.source, refresh).on('change', onChange);
   gulp.watch(project.markupProcessor.source, refresh).on('change', onChange);
   gulp.watch(project.cssProcessor.source, refresh).on('change', onChange);
+
+  //see if there are static files to be watched
+  if (typeof project.build.copyFiles === 'object') {
+    const files = Object.keys(project.build.copyFiles);
+    gulp.watch(files, refresh).on('change', onChange);
+  } 
 }
 
 let run;

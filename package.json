@@ -25,9 +25,13 @@
   },
   "dependencies": {
     "aurelia-dependency-injection": "^1.0.0",
+    "aurelia-logging": "^1.2.0",
     "aurelia-polyfills": "^1.0.0",
+    "requirejs": "^2.3.2",
+    "glob": "^7.1.1",
     "npm": "^3.10.8",
-    "requirejs": "^2.3.2"
+    "rfc6902": "^1.2.2",
+    "semver": "^5.3.0"
   },
   "devDependencies": {
     "aurelia-tools": "^0.2.2"
