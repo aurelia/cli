@@ -43,27 +43,30 @@ let refresh = gulp.series(
   reload
 );
 
-let watch = function() {
-  gulp.watch(project.transpiler.source, refresh).on('change', onChange);
-  gulp.watch(project.markupProcessor.source, refresh).on('change', onChange);
-  gulp.watch(project.cssProcessor.source, refresh).on('change', onChange);
+let watch = function(refreshCb, onChangeCb) {
+  return function(done) {
+    gulp.watch(project.transpiler.source, refreshCb).on('change', onChangeCb);
+    gulp.watch(project.markupProcessor.source, refreshCb).on('change', onChangeCb);
+    gulp.watch(project.cssProcessor.source, refreshCb).on('change', onChangeCb);
 
-  //see if there are static files to be watched
-  if (typeof project.build.copyFiles === 'object') {
-    const files = Object.keys(project.build.copyFiles);
-    gulp.watch(files, refresh).on('change', onChange);
-  } 
-}
+    //see if there are static files to be watched
+    if (typeof project.build.copyFiles === 'object') {
+      const files = Object.keys(project.build.copyFiles);
+      gulp.watch(files, refreshCb).on('change', onChangeCb);
+    }
+  };
+};
 
 let run;
 
 if (CLIOptions.hasFlag('watch')) {
   run = gulp.series(
     serve,
-    watch
+    watch(refresh, onChange)
   );
 } else {
   run = serve;
 }
 
-export default run;
+export { run as default, watch };
+
