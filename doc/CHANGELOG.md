@@ -1,3 +1,17 @@
+## 0.25.0
+
+### Notes for upgrading to 0.25.0
+
+We have removed the code for configuring Bluebird from `main.[js|ts]`. This code has been moved to a file that is now prepended to `vendor-bundle.js`. You will need to update the `prepend` section of your `vendor-bundle.js` configuration to start with the following two files:
+
+```json
+"prepend": [
+  "node_modules/bluebird/js/browser/bluebird.core.js",
+  "node_modules/aurelia-cli/lib/resources/scripts/configure-bluebird.js",
+```
+
+This change will remove the errors seen when running an Aurelia CLI app in Firefox, Edge, or IE.
+
 ## 0.24.0
 
 ### Features
