@@ -10,6 +10,18 @@ We have removed the code for configuring Bluebird from `main.[js|ts]`. This code
   "node_modules/aurelia-cli/lib/resources/scripts/configure-bluebird.js",
 ```
 
+### Features
+
+So much stuff!
+
+* au import command
+* au install command
+* huge performance improvements to building/bundling.
+
+### Bugs
+
+Lots of bugs fixed all over the place. Oh my!
+
 This change will remove the errors seen when running an Aurelia CLI app in Firefox, Edge, or IE.
 
 ## 0.24.0
