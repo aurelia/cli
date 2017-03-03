@@ -1,3 +1,7 @@
+## 0.26.0
+
+* Fix minor bug in hashed bundles.
+
 ## 0.25.0
 
 ### Notes for upgrading to 0.25.0
