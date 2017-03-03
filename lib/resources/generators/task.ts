@@ -23,7 +23,7 @@ export default class TaskGenerator {
 
   generateSource(functionName) {
 return `import * as gulp from 'gulp';
-import * as changed from 'gulp-changed';
+import * as changed from 'gulp-changed-in-place';
 import * as project from '../aurelia.json';
 
 export default function ${functionName}() {
