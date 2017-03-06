@@ -1,3 +1,7 @@
+## 0.26.1
+
+* Fix/base64 sourcemap
+
 ## 0.26.0
 
 * Fix minor bug in hashed bundles.
