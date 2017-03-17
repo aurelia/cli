@@ -1,3 +1,6 @@
 {
-  "extends": "./node_modules/aurelia-tools/.eslintrc.json"
+  "extends": "./node_modules/aurelia-tools/.eslintrc.json",
+  "rules": {
+    "strict": 0
+  }
 }
