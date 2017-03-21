@@ -30,6 +30,7 @@ let serve = gulp.series(
         }]
       }
     }, function (err, bs) {
+      if (err) return done(err);
       let urls = bs.options.get('urls').toJS();
       console.log(`Application Available At: ${urls.local}`);
       console.log(`BrowserSync Available At: ${urls.ui}`);
