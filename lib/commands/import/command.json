@@ -1,0 +1,10 @@
+{
+  "name": "import",
+  "description": "Configures a package in aurelia.json",
+  "parameters": [
+    {
+      "name": "packages",
+      "description": "Package names, separated by spaces"
+    }
+  ]
+}

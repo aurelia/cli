@@ -13,8 +13,8 @@
           "fileExtension": ".js"
         },
         "markupProcessor": {
-          "id": "none",
-          "displayName": "None",
+          "id": "minimum",
+          "displayName": "Minimal Minification",
           "fileExtension": ".html"
         },
         "cssProcessor": {
@@ -146,33 +146,36 @@
     },
     {
       "id": 7,
-      "type": "markup-select",
+      "type": "input-select",
       "nextActivity": 8,
       "question": "How would you like to setup your template?",
       "stateProperty": "markupProcessor",
       "options": [
         {
           "displayName": "Default",
-          "description": "No markup processing",
+          "description": "No markup processing.",
           "value": {
             "id": "none",
-            "displayName": "None"
+            "displayName": "None",
+            "fileExtension": ".html"
           }
         },
         {
-          "displayName": "Minimum minification",
-          "description": "Minify JS, CSS in template. Remove comments, whitespace between block level element, such as div, blockquote, p, header, footer ...etc",
+          "displayName": "Minimum Minification",
+          "description": "Removes comments and whitespace between block level elements such as div, blockquote, p, header, footer ...etc",
           "value": {
             "id": "minimum",
-            "displayName": "Minimal minification"
+            "displayName": "Minimal Minification",
+            "fileExtension": ".html"
           }
         },
         {
           "displayName": "Maximum Minification",
-          "description": "Minify JS, CSS in template. Remove comments, script & link element [type] attribute, all whitespace between all elements. Also remove attributes' quotes where possible. Collapse boolean attributes.",
+          "description": "Removes comments, script & link element [type] attributes and all whitespace between all elements. Also remove attribute quotes where possible. Collapses boolean attributes.",
           "value": {
             "id": "maximum",
-            "displayName": "maximum"
+            "displayName": "Maximum Minification",
+            "fileExtension": ".html"
           }
         }
       ]
