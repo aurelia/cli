@@ -1,5 +1,6 @@
 import * as gulp from 'gulp';
 import * as path from 'path';
+import * as minimatch from 'minimatch';
 import * as changedInPlace from 'gulp-changed-in-place';
 import * as project from '../aurelia.json';
 
@@ -16,7 +17,7 @@ export default function copyFiles(done) {
     .pipe(changedInPlace({ firstPass: true }))
     .pipe(gulp.dest(x => {
       const filePath = prepareFilePath(x.path);
-      const key = files.find(f => f === filePath);
+      const key = files.find(f => minimatch(filePath, f));
       return instruction[key];
     }));
 }
