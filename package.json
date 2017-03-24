@@ -16,6 +16,10 @@
     "aurelia": "bin/aurelia-cli.js",
     "au": "bin/aurelia-cli.js"
   },
+  "scripts": {
+    "test": "jasmine",
+    "test:watch": "nodemon -x 'npm test'"
+  },
   "license": "MIT",
   "author": "Rob Eisenberg <rob@bluespire.com> (http://robeisenberg.com/)",
   "main": "lib/index.js",
@@ -34,6 +38,9 @@
     "semver": "^5.3.0"
   },
   "devDependencies": {
-    "aurelia-tools": "^0.2.2"
+    "aurelia-tools": "^0.2.2",
+    "jasmine": "^2.5.2",
+    "mock-fs": "^4.2.0",
+    "nodemon": "^1.11.0"
   }
 }
