@@ -1,0 +1,21 @@
+#####
+# Circle CI
+#
+# For running docker images on circle ci, see: https://circleci.com/docs/docker
+# For circle.yml explanation, see: https://circleci.com/docs/manually
+#####
+
+machine:
+  node:
+    version: 4.2.6
+
+dependencies:
+  pre:
+    - npm install -g gulp
+  override:
+    - npm install
+
+test:
+  override:
+    - npm test
+    - gulp lint
