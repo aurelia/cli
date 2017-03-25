@@ -1,3 +1,25 @@
+<a name="0.27.0"></a>
+# [0.27.0](https://github.com/aurelia/cli/compare/0.26.1...v0.27.0) (2017-03-25)
+
+
+### Bug Fixes
+
+* **bluebird:** remove unnecessary Bluebird config in main file ([6fb5ee2](https://github.com/aurelia/cli/commit/6fb5ee2)), closes [#534](https://github.com/aurelia/cli/issues/534)
+* **build:** ensure that dependencies get in the correct bundle ([f4c9e8f](https://github.com/aurelia/cli/commit/f4c9e8f))
+* **file-system/logger:** don't use spread operator to support nodejs 4 ([ed6eb25](https://github.com/aurelia/cli/commit/ed6eb25))
+* **importer:** search for css files in root dir and resolve import error ([9a0da9e](https://github.com/aurelia/cli/commit/9a0da9e))
+* **project-template:** set baseDir to '.wwwroot' for ASP.NET Core projects ([c1e0401](https://github.com/aurelia/cli/commit/c1e0401))
+* **run:** don't ignore browserSync errors ([6518279](https://github.com/aurelia/cli/commit/6518279))
+* **test:** esling reports error that path should never be concated as string ([2b3f442](https://github.com/aurelia/cli/commit/2b3f442))
+* **typescript:** do not build typescript files in aurelia_project folder ([334df2f](https://github.com/aurelia/cli/commit/334df2f))
+
+
+### Features
+
+* **tests:** Enabled unit testing ([19c59a1](https://github.com/aurelia/cli/commit/19c59a1))
+
+
+
 ## 0.26.1
 
 * Fix/base64 sourcemap
