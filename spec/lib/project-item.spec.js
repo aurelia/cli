@@ -1,3 +1,5 @@
+'use strict';
+
 describe('The project-item module', () => {
   let mockfs;
 
