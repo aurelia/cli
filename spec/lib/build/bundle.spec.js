@@ -197,6 +197,59 @@ describe('the Bundle module', () => {
     expect(sut.getBundledFiles()).toEqual(['a.js', 'b.js', 'c.js']);
   });
 
+  it('configures dependencies in the same order as they were entered to prevent a wrong module load order', done => {
+    let bundler = new BundlerMock();
+    let configuredDependencies = [];
+    bundler.configureDependency.and.callFake(dep => {
+      let depName = dep.name || dep;
+      let description = {
+        loaderConfig: {
+          name: depName
+        }
+      };
+
+      return new Promise(resolve => {
+        if (depName === 'my-large-plugin') {
+          setTimeout(() => {
+            configuredDependencies.push(depName);
+            resolve(description);
+          }, 100);
+        } else {
+          configuredDependencies.push(depName);
+          resolve(description);
+        }
+      });
+    });
+    bundler.itemIncludedInBuild.and.callFake((dep) => true);
+
+    let config = {
+      name: 'app-bundle.js',
+      dependencies: [
+        'foo',
+        {
+          name: 'my-large-plugin',
+          main: 'index',
+          path: '../node_modules/my-plugin/'
+        },
+        {
+          name: 'my-other-plugin',
+          main: 'index',
+          path: '../node_modules/my-plugin/'
+        }
+      ]
+    };
+
+    Bundle.create(bundler, config)
+    .then((bundle) => {
+      expect(configuredDependencies[0]).toBe('foo');
+      expect(configuredDependencies[1]).toBe('my-large-plugin');
+      expect(configuredDependencies[2]).toBe('my-other-plugin');
+      done();
+    }).catch(e => {
+      done.fail(e);
+    });
+  });
+
   it('add dependencies in the same order as they were entered to prevent a wrong module load order', done => {
     let bundler = new BundlerMock();
     bundler.configureDependency.and.callFake(dep => {
