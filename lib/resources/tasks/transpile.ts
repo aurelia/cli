@@ -34,6 +34,7 @@ function buildTypeScript() {
     .pipe(plumber({ errorHandler: notify.onError('Error: <%= error.message %>') }))
     .pipe(sourcemaps.init())
     .pipe(typescriptCompiler())
+    .pipe(sourcemaps.write({ sourceRoot: 'src' }))
     .pipe(build.bundle());
 }
 

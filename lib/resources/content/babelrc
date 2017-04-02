@@ -1,5 +1,6 @@
 {
   "sourceMap": true,
+  "sourceRoot": "src",
   "moduleIds": false,
   "comments": false,
   "compact": false,
