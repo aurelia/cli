@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = class Bundler {
   constructor() {
     this.itemIncludedInBuild = jasmine.createSpy('itemIncludedInBuild');
