@@ -1,3 +1,23 @@
+<a name="0.28.0"></a>
+# [0.28.0](https://github.com/aurelia/cli/compare/0.27.0...v0.28.0) (2017-04-05)
+
+
+### Bug Fixes
+
+* **all:** improved error reporting ([4060148](https://github.com/aurelia/cli/commit/4060148))
+* **build:** enforce strict mode ([1694290](https://github.com/aurelia/cli/commit/1694290))
+* **bundle:** ensure that dependencies are added in order ([51a2cce](https://github.com/aurelia/cli/commit/51a2cce))
+* **project-template:** paths should be relatively from src ([b23c8dd](https://github.com/aurelia/cli/commit/b23c8dd))
+* **sourcemap:** use src as the sourceroot for sourcemaps ([87ca276](https://github.com/aurelia/cli/commit/87ca276))
+* **test:** resolve join of undefined error ([0207c78](https://github.com/aurelia/cli/commit/0207c78))
+
+
+### Features
+
+* **index.html:** add viewport meta element ([96ce8a9](https://github.com/aurelia/cli/commit/96ce8a9))
+
+
+
 <a name="0.27.0"></a>
 # [0.27.0](https://github.com/aurelia/cli/compare/0.26.1...v0.27.0) (2017-03-25)
 
