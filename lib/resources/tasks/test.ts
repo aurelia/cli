@@ -3,6 +3,7 @@ import {Server as Karma} from 'karma';
 import {CLIOptions} from 'aurelia-cli';
 import build from './build';
 import {watch} from './run';
+import * as path from 'path';
 
 function log(message) {
   console.log(message); //eslint-disable-line no-console
@@ -14,7 +15,7 @@ function onChange(path) {
 
 let karma = done => {
   new Karma({
-    configFile: __dirname + '/../../karma.conf.js',
+    configFile: path.join(__dirname, '/../../karma.conf.js'),
     singleRun: !CLIOptions.hasFlag('watch')
   }, done).start();
 };
