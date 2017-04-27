@@ -1,3 +1,18 @@
+<a name="0.29.0"></a>
+# [0.29.0](https://github.com/aurelia/cli/compare/0.28.0...v0.29.0) (2017-04-27)
+
+
+### Bug Fixes
+
+* **package-analyzer:** find location of packages outside of node_modules ([324f3e1](https://github.com/aurelia/cli/commit/324f3e1))
+
+
+### Features
+
+* **package-analyzer:** support packages without package.json files ([c225bb7](https://github.com/aurelia/cli/commit/c225bb7))
+
+
+
 <a name="0.28.0"></a>
 # [0.28.0](https://github.com/aurelia/cli/compare/0.27.0...v0.28.0) (2017-04-05)
 
