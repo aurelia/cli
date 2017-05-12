@@ -187,4 +187,32 @@ describe('The cli', () => {
       }).catch(fail).then(done);
     });
   });
+
+  describe('The config command', () => {
+    it('creates the command', done => {
+      const command = 'config';
+      const args = {};
+      spyOn(cli, 'createCommand').and.returnValue({ execute: () => {} });
+
+      cli.run(command, args).then(() => {
+        expect(cli.createCommand).toHaveBeenCalledWith(command, args);
+      }).catch(fail).then(done);
+    });
+
+    it('executes the command', done => {
+      const command = {
+        execute: () => {}
+      };
+      const args = {};
+      spyOn(cli, '_establishProject').and.returnValue(new Promise(resolve => 
+        resolve(project)
+      ));
+      spyOn(command, 'execute').and.returnValue(new Promise(resolve => resolve({})));
+      spyOn(cli, 'createCommand').and.returnValue(command);
+
+      cli.run('config', args).then(() => {
+        expect(command.execute).toHaveBeenCalledWith(args);
+      }).catch(fail).then(done);
+    });
+  });
 });

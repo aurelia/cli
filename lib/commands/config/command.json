@@ -1,0 +1,53 @@
+{
+  "name": "config",
+  "description": "Gets or sets configuration for the Aurelia application.",
+  "parameters": [
+    {
+      "name": "key",
+      "optional": true,
+      "description": "The key you want to get or set. Supports hierarchies and array indexes, for example build.targets[0] and arrayWithArray[2].[1]"
+    },
+    {
+      "name": "value",
+      "optional": true,
+      "description": "The value you want to set the key to. Supports json, for example \"{ \\\"myKey\\\": \\\"myValue\\\" }\""
+    }
+  ],
+  "flags": [
+    {
+      "name": "get",
+      "description": "Gets the content of key, ignoring value parameter (the same as not specifying a value).",
+      "type": "boolean"
+    },
+    {
+      "name": "set",
+      "description": "Sets the content of key to value, replacing any existing content.",
+      "type": "boolean"
+    },
+    {
+      "name": "clear",
+      "description": "Deletes the key and all its content from the configuration.",
+      "type": "boolean"
+    },
+    {
+      "name": "add",
+      "description": "If value or existing content of the key is an array, adds value(s) to existing content. If value is an object, merges it into existing content of key.",
+      "type": "boolean"
+    },
+    {
+      "name": "remove",
+      "description": "If value or existing content of the key is an array, removes value(s) from existing content. If value or existing content of the key is an object, removes key(s) from existing content of key.",
+      "type": "boolean"
+    },
+    {
+      "name": "no-save",
+      "description": "Don't save the changes in the configuration file.",
+      "type": "boolean"
+    },
+    {
+      "name": "no-backup",
+      "description": "Don't create a backup configuration file before saving changes.",
+      "type": "boolean"
+    }
+  ]
+}
