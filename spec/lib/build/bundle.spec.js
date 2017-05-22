@@ -2,16 +2,25 @@
 
 const BundlerMock = require('../../mocks/bundler');
 const Bundle = require('../../../lib/build/bundle').Bundle;
+const CLIOptionsMock = require('../../mocks/cli-options');
 
 describe('the Bundle module', () => {
   let sut;
+  let cliOptionsMock;
 
   beforeEach(() => {
+    cliOptionsMock = new CLIOptionsMock();
+    cliOptionsMock.attach();
+
     let bundler = new BundlerMock();
     let config = {
       name: 'app-bundle.js'
     };
     sut = new Bundle(bundler, config);
+  });
+
+  afterEach(() => {
+    cliOptionsMock.detach();
   });
 
   it('only prepends items that are included in the build', () => {
