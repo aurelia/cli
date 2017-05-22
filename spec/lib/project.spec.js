@@ -33,6 +33,22 @@ describe('The project module', () => {
     mockfs.restore();
   });
 
+  it('creates project items for all paths in aurelia.json, using the root path as the parent directory', () => {
+    let model = {
+      paths: {
+        'root': 'src',
+        'resources': 'resources',
+        'elements': 'resources/elements'
+      }
+    };
+
+    project = new Project(ui, '', model);
+
+    expect(hasProjectItem(project.locations, 'src', null)).toBe(true);
+    expect(hasProjectItem(project.locations, 'resources', 'src')).toBe(true);
+    expect(hasProjectItem(project.locations, 'resources/elements', 'src')).toBe(true);
+  });
+
   describe('The resolveGenerator() function', () => {
     it('resolves to teh generators location', done => {
       fs.writeFile('aurelia_project/generators/test.js', '')
@@ -67,3 +83,19 @@ describe('The project module', () => {
     });
   });
 });
+
+function hasProjectItem(locations, name, parent) {
+  for (let i = 0; i < locations.length; i++) {
+    if (locations[i].name === name) {
+      if (!parent && !locations[i].parent) {
+        return true;
+      }
+
+      if (locations[i].parent && locations[i].parent.name === parent) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}

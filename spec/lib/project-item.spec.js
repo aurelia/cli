@@ -6,7 +6,7 @@ describe('The project-item module', () => {
   let fs;
 
   let ProjectItem;
-  let project;
+  let projectItem;
 
   beforeEach(() => {
     mockfs = require('mock-fs');
@@ -24,59 +24,81 @@ describe('The project-item module', () => {
 
   describe('The create() function', () => {
     beforeEach(() => {
-      project = new ProjectItem();
+      projectItem = new ProjectItem();
     });
 
     describe('isDirectory = true', () => {
       beforeEach(() => {
-        project.isDirectory = true;
+        projectItem.isDirectory = true;
+      });
+
+      it('takes parent directory into consideration', done => {
+        let parent = ProjectItem.directory('src');
+        projectItem.name = 'resources';
+        projectItem.parent = parent;
+
+        parent.create()
+        .then(() => {
+          projectItem.create(null, '.')
+            .then(() => fs.readdir('src'))
+            .then(files => {
+              expect(files[0]).toBe('resources');
+            })
+            .then(done);
+        })
+        .catch(e => done.fail(e));
       });
 
       it('creates a directory if it is missing', done => {
-        project.name = 'cli-app';
-        project.create()
-          .then(() => fs.readdir(project.name))
+        projectItem.name = 'cli-app';
+        projectItem.create()
+          .then(() => fs.readdir(projectItem.name))
           .then(files => {
             expect(files).toBeDefined();
-          }).catch(fail).then(done);
+          })
+          .then(done)
+          .catch(e => done.fail(e));
       });
 
       it('creates the childs', done => {
         const ui = {};
         const child = { create: () => { } };
-        project.children.push(child);
+        projectItem.children.push(child);
         spyOn(child, 'create');
 
-        project.name = 'cli-app';
-        project.create(ui)
+        projectItem.name = 'cli-app';
+        projectItem.create(ui)
           .then(() => {
-            expect(child.create).toHaveBeenCalledWith(ui, project.name);
+            expect(child.create).toHaveBeenCalledWith(ui, projectItem.name);
           })
-          .catch(fail).then(done);
+          .then(done)
+          .catch(e => done.fail(e));
       });
     });
   });
 
   describe('The _write() function', () => {
     beforeEach(() => {
-      project = new ProjectItem();
+      projectItem = new ProjectItem();
     });
     it('creates non-existing files', done => {
       const file = {
         path: 'index.html',
-        content: '<html></html>',
+        content: '<html></html>'
       };
 
-      project._write(file.path, file.content)
+      projectItem._write(file.path, file.content)
         .then(() => fs.readFile(file.path))
         .then(content => {
           expect(content).toBe(file.content);
-        }).catch(fail).then(done);
+        })
+        .then(done)
+        .catch(e => done.fail(e));
     });
-    
+
     describe('in `skip` strategy', () => {
       beforeEach(() => {
-        project._fileExistsStrategy = 'skip';
+        projectItem._fileExistsStrategy = 'skip';
       });
 
       it('does not override an existing file', done => {
@@ -86,11 +108,13 @@ describe('The project-item module', () => {
         };
 
         fs.writeFile(file.path, file.content)
-          .then(() => project._write(file.path, 'evil'))
+          .then(() => projectItem._write(file.path, 'evil'))
           .then(() => fs.readFile(file.path))
           .then(content => {
             expect(content).toBe(file.content);
-          }).catch(fail).then(done);
+          })
+          .then(done)
+          .catch(e => done.fail(e));
       });
     });
   });
