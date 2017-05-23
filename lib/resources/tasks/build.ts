@@ -1,4 +1,5 @@
 import * as gulp from 'gulp';
+import {CLIOptions} from 'aurelia-cli';
 import transpile from './transpile';
 import processMarkup from './process-markup';
 import processCSS from './process-css';
@@ -6,7 +7,7 @@ import copyFiles from './copy-files';
 import {build} from 'aurelia-cli';
 import * as project from '../aurelia.json';
 
-export default gulp.series(
+let buildTask = gulp.series(
   readProjectConfiguration,
   gulp.parallel(
     transpile,
@@ -17,6 +18,10 @@ export default gulp.series(
   writeBundles
 );
 
+function onChange(path) {
+  console.log(`File Changed: ${path}`);
+}
+
 function readProjectConfiguration() {
   return build.src(project);
 }
@@ -24,3 +29,22 @@ function readProjectConfiguration() {
 function writeBundles() {
   return build.dest();
 }
+
+let watch = function() {
+  gulp.watch(project.transpiler.source, buildTask).on('change', onChange);
+  gulp.watch(project.markupProcessor.source, buildTask).on('change', onChange);
+  gulp.watch(project.cssProcessor.source, buildTask).on('change', onChange)
+}
+
+let task;
+
+if (CLIOptions.hasFlag('watch')) {
+  task = gulp.series(
+    buildTask,
+    watch
+  );
+} else {
+  task = buildTask;
+}
+
+export default task;
