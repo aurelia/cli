@@ -8,6 +8,11 @@
       "type": "string"
     },
     {
+      "name": "target",
+      "description": "Sets the build target.",
+      "type": "string"
+    },
+    {
       "name": "watch",
       "description": "Watches source files for changes and refreshes the bundles automatically.",
       "type": "boolean"

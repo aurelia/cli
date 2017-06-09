@@ -9,6 +9,11 @@ describe('the DependencyInclusion module', () => {
   let bundler;
 
   beforeEach(() => {
+    mockfs({
+      'aurelia_project': {
+        'aurelia.json': JSON.stringify({ build: {}})
+      }
+    });
     bundler = new BundlerMock();
   });
 

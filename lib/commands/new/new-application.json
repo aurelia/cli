@@ -38,6 +38,12 @@
           "id": "web",
           "displayName": "Web"
         },
+        "targets": [
+          {
+            "id": "web",
+            "displayName": "Web"
+          }
+        ],
         "loader": {
           "id": "require",
           "displayName": "RequireJS"
@@ -224,7 +230,7 @@
     {
       "id": 620,
       "type": "input-select",
-      "nextActivity": 630,
+      "nextActivity": 625,
       "question": "What platform are you targeting?",
       "stateProperty": "platform",
       "options": [
@@ -271,6 +277,55 @@
           }
         }
       ]
+    },
+    {
+      "id": 625,
+      "type": "branch-switch",
+      "stateProperty": "platform",
+      "branches": [
+        {
+          "case": "web",
+          "nextActivity": 626
+        },
+        {
+          "case": "aspnetcore",
+          "nextActivity": 627
+        }
+      ]
+    },
+    {
+      "id": 626,
+      "type": "state-assign",
+      "nextActivity": 630,
+      "state": {
+        "platform": {
+          "id": "web",
+          "displayName": "Web"
+        },
+        "targets": [
+          {
+            "id": "web",
+            "displayName": "Web"
+          }
+        ]
+      }
+    },
+    {
+      "id": 627,
+      "type": "state-assign",
+      "nextActivity": 630,
+      "state": {
+        "platform": {
+          "id": "aspnetcore",
+          "displayName": "ASP.NET Core"
+        },
+        "targets": [
+          {
+            "id": "aspnetcore",
+            "displayName": "ASP.NET Core"
+          }
+        ]
+      }
     },
     {
       "id": 630,
