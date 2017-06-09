@@ -9,13 +9,14 @@ import watch from './watch';
 let serve = gulp.series(
   build,
   done => {
+    const target = CLIOptions.getTarget();
     browserSync({
       online: false,
       open: false,
       port: 9000,
       logLevel: 'silent',
       server: {
-        baseDir: [project.platform.baseDir],
+        baseDir: [target.root],
         middleware: [historyApiFallback(), function(req, res, next) {
           res.setHeader('Access-Control-Allow-Origin', '*');
           next();
