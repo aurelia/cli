@@ -112,6 +112,7 @@ describe('The PackageAnalyzer', () => {
     // setup mock package.json
     const fsConfig = {};
     fsConfig[path.join('node_modules/my-package', 'package.json')] = '{ "name": "my-package", "main": "index.js" }';
+    fsConfig[path.join('node_modules/my-package', 'index.js')] = 'some-content';
     fsConfig[project.paths.root] = {};
     mockfs(fsConfig);
 
@@ -127,6 +128,7 @@ describe('The PackageAnalyzer', () => {
     // setup mock package.json
     const fsConfig = {};
     fsConfig[path.join('node_modules/my-package', 'package.json')] = '{ "name": "my-package", "main": "index.js" }';
+    fsConfig[path.join('node_modules/my-package', 'index.js')] = 'some-content';
     fsConfig[project.paths.root] = {};
     mockfs(fsConfig);
 
@@ -143,6 +145,7 @@ describe('The PackageAnalyzer', () => {
     // setup mock package.json
     const fsConfig = {};
     let json = '{ "name": "my-package", "main": "index.js", "jspm": { "directories": { "dist": "foobar" }, "main": "my-main.js" } }';
+    fsConfig[path.join('node_modules/my-package/foobar', 'my-main.js')] = 'some-content';
     fsConfig[path.join('node_modules/my-package', 'package.json')] = json;
     fsConfig[project.paths.root] = {};
     mockfs(fsConfig);
@@ -156,10 +159,29 @@ describe('The PackageAnalyzer', () => {
     .catch(e => done.fail(e));
   });
 
+  it('infers index.js as main file where package.json has no main property', done => {
+    // setup mock package.json
+    const fsConfig = {};
+    let json = '{ "name": "my-package" }';
+    fsConfig[path.join('node_modules/my-package', 'package.json')] = json;
+    fsConfig[path.join('node_modules/my-package', 'index.js')] = 'some-content';
+    fsConfig[project.paths.root] = {};
+    mockfs(fsConfig);
+
+    sut.analyze('my-package')
+    .then(description => {
+      expect(description.loaderConfig.name).toBe('my-package');
+      expect(description.loaderConfig.path).toBe('..\\node_modules\\my-package\\index');
+      done();
+    })
+    .catch(e => done.fail(e));
+  });
+
   it('analyze() works when there is no package.json. Uses index.js as the main file', done => {
     // setup mock package.json
     const fsConfig = {};
     fsConfig[path.join('node_modules/my-package')] = {};
+    fsConfig[path.join('node_modules/my-package', 'index.js')] = 'some-content';
     fsConfig[project.paths.root] = {};
     mockfs(fsConfig);
 
@@ -170,5 +192,22 @@ describe('The PackageAnalyzer', () => {
       done();
     })
     .catch(e => done.fail(e));
+  });
+
+  it('analyze() throws error when main file does not exist', done => {
+    // setup mock package.json
+    const fsConfig = {};
+    fsConfig[path.join('node_modules', 'my-package', 'package.json')] = '{ "main": "foo.js" }';
+    fsConfig[project.paths.root] = {};
+    mockfs(fsConfig);
+
+    let p = path.resolve(path.join('node_modules', 'my-package', 'foo.js'));
+
+    sut.analyze('my-package')
+    .then(() => done.fail('should have thrown an exception'))
+    .catch(e => {
+      expect(e.message).toBe(`The "my-package" package references a main file that does not exist: ${p}`);
+      done();
+    });
   });
 });
