@@ -2,16 +2,8 @@ import * as gulp from 'gulp';
 import {Server as Karma} from 'karma';
 import {CLIOptions} from 'aurelia-cli';
 import build from './build';
-import {watch} from './run';
+import watch from './watch';
 import * as path from 'path';
-
-function log(message) {
-  console.log(message); //eslint-disable-line no-console
-}
-
-function onChange(path) {
-  log(`File Changed: ${path}`);
-}
 
 let karma = done => {
   new Karma({
@@ -26,7 +18,7 @@ if (CLIOptions.hasFlag('watch')) {
   unit = gulp.series(
     build,
     gulp.parallel(
-      watch(build, onChange),
+      done => { watch(); done(); },
       karma
     )
   );
@@ -37,4 +29,4 @@ if (CLIOptions.hasFlag('watch')) {
   );
 }
 
-export default unit;
+export { unit as default };
