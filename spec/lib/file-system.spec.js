@@ -115,10 +115,6 @@ describe('The file-system module', () => {
         return fs.readdir(writeDir + readDir);
       }).catch(fail).then(done);
     });
-
-    it('rejects if mkdirp returns an error', done => {
-      pending(`change file-system to mkdirp.mkdirp or more helpers.`);
-    });
   });
 
   describe('The readFile() function', () => {

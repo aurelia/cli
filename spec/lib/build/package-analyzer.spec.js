@@ -133,7 +133,7 @@ describe('The PackageAnalyzer', () => {
     sut.analyze('my-package')
     .then(description => {
       expect(description.loaderConfig.name).toBe('my-package');
-      expect(description.loaderConfig.path).toBe('..\\node_modules\\my-package\\index');
+      expect(description.loaderConfig.path).toBe(path.join('..', 'node_modules', 'my-package', 'index'));
       done();
     })
     .catch(e => done.fail(e));
@@ -150,7 +150,7 @@ describe('The PackageAnalyzer', () => {
     sut.analyze('my-package')
     .then(description => {
       expect(description.loaderConfig.name).toBe('my-package');
-      expect(description.loaderConfig.path).toBe('..\\node_modules\\my-package\\foobar\\my-main');
+      expect(description.loaderConfig.path).toBe(path.join('..', 'node_modules', 'my-package', 'foobar', 'my-main'));
       done();
     })
     .catch(e => done.fail(e));
@@ -166,7 +166,7 @@ describe('The PackageAnalyzer', () => {
     sut.analyze('my-package')
     .then(description => {
       expect(description.loaderConfig.name).toBe('my-package');
-      expect(description.loaderConfig.path).toBe('..\\node_modules\\my-package\\index');
+      expect(description.loaderConfig.path).toBe(path.join('..', 'node_modules', 'my-package', 'index'));
       done();
     })
     .catch(e => done.fail(e));
