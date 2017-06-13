@@ -1,3 +1,22 @@
+<a name="0.30.0"></a>
+# [0.30.0](https://github.com/aurelia/cli/compare/0.29.0...v0.30.0) (2017-06-13)
+
+
+### Bug Fixes
+
+* **generators:** create elements/attributes in correct location ([7400e71](https://github.com/aurelia/cli/commit/7400e71))
+* **html-minify:** ignore interpolation expressions ([803c904](https://github.com/aurelia/cli/commit/803c904))
+* **package-analyzer:** infer index.js as main ([f5c0ed1](https://github.com/aurelia/cli/commit/f5c0ed1))
+* **project:** only transpile aurelia_project in project root ([6fd3f7f](https://github.com/aurelia/cli/commit/6fd3f7f))
+
+
+### Features
+
+* **all:** systemjs support ([36fa685](https://github.com/aurelia/cli/commit/36fa685)), closes [aurelia/cli#198](https://github.com/aurelia/cli/issues/198)
+* **build:** allow minify options to be supplied ([177b0c7](https://github.com/aurelia/cli/commit/177b0c7))
+
+
+
 <a name="0.29.0"></a>
 # [0.29.0](https://github.com/aurelia/cli/compare/0.28.0...v0.29.0) (2017-04-27)
 

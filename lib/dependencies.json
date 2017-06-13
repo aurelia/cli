@@ -1,8 +1,8 @@
 {
-  "aurelia-animator-css": "^1.0.1",
-  "aurelia-bootstrapper": "^2.1.0",
-  "aurelia-cli": "^0.27.0",
-  "aurelia-testing": "^1.0.0-beta.2.0.1",
+  "aurelia-animator-css": "^1.0.2",
+  "aurelia-bootstrapper": "^2.1.1",
+  "aurelia-cli": "^0.30.0",
+  "aurelia-testing": "^1.0.0-beta.3.0.1",
   "aurelia-tools": "^1.0.0",
   "autoprefixer": "^6.3.6",
   "babel-eslint": "^6.0.4",
