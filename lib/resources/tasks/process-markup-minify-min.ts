@@ -15,7 +15,7 @@ export default function processMarkup() {
         collapseWhitespace: true,
         minifyCSS: true,
         minifyJS: true,
-        ignoreCustomFragments: [/\${.*}/g] // ignore interpolation expressions
+        ignoreCustomFragments: [/\${.*?}/g] // ignore interpolation expressions
     }))
     .pipe(build.bundle());
 }
