@@ -43,6 +43,7 @@
   "karma-jasmine": "^1.0.2",
   "karma-babel-preprocessor": "^6.0.1",
   "karma-typescript-preprocessor": "^0.2.1",
+  "karma-sourcemap-loader": "^0.3.7",
   "minimatch": "^3.0.2",
   "requirejs": "^2.3.2",
   "text": "github:requirejs/text#latest",

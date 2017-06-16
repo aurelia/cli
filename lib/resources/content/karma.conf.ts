@@ -12,7 +12,12 @@ let output = project.platform.output;
 let appSrc = project.build.bundles.map(x => path.join(output, x.name));
 let entryIndex = appSrc.indexOf(path.join(output, project.build.loader.configTarget));
 let entryBundle = appSrc.splice(entryIndex, 1)[0];
-let files = [entryBundle].concat(testSrc).concat(appSrc);
+let sourceMaps = [{pattern:'scripts/**/*.js.map', included: false}];
+let files = [entryBundle].concat(testSrc).concat(appSrc).concat(sourceMaps);
+
+let compilerOptions = tsconfig.compilerOptions;
+compilerOptions.inlineSourceMap = true;
+compilerOptions.inlineSources = true;
 
 module.exports = function(config) {
   config.set({
@@ -21,11 +26,12 @@ module.exports = function(config) {
     files: files,
     exclude: [],
     preprocessors: {
-      [project.unitTestRunner.source]: [project.transpiler.id]
+      [project.unitTestRunner.source]: [project.transpiler.id],
+      [appSrc]: ['sourcemap']
     },
     typescriptPreprocessor: {
       typescript: require('typescript'),
-      options: tsconfig.compilerOptions
+      options: compilerOptions
     },
     reporters: ['progress'],
     port: 9876,
