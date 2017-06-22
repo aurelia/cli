@@ -51,6 +51,6 @@
   "@types/jasmine": "^2.2.0",
   "@types/node": "^6.0.45",
   "typescript": ">=1.9.0-dev || ^2.0.0",
-  "uglify-js": "^2.6.3",
+  "uglify-js": "^3.0.19",
   "vinyl-fs": "^2.4.3"
 }
