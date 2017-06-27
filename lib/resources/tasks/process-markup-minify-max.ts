@@ -20,7 +20,7 @@ export default function processMarkup() {
         minifyJS: true,
         removeScriptTypeAttributes: true,
         removeStyleLinkTypeAttributes: true,
-        ignoreCustomFragments: [/\${.*}/g] // ignore interpolation expressions
+        ignoreCustomFragments: [/\${.*?}/g] // ignore interpolation expressions
     }))
     .pipe(build.bundle());
 }
