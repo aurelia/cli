@@ -45,6 +45,8 @@
   "karma-typescript-preprocessor": "^0.2.1",
   "minimatch": "^3.0.2",
   "requirejs": "^2.3.2",
+  "systemjs":"0.20.13",
+  "systemjs-plugin-text":"0.0.9",
   "text": "github:requirejs/text#latest",
   "through2": "^2.0.1",
   "tslint": "^3.11.0",
