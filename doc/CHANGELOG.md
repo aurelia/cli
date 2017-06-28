@@ -1,3 +1,15 @@
+<a name="0.30.1"></a>
+## [0.30.1](https://github.com/aurelia/cli/compare/0.30.0...v0.30.1) (2017-06-28)
+
+
+### Bug Fixes
+
+* **bundle:** continue build in case of incorrect sourcemap ([4988dd6](https://github.com/aurelia/cli/commit/4988dd6))
+* **html-minify:** resolve parse error of interpolations ([b15199f](https://github.com/aurelia/cli/commit/b15199f))
+* **systemjs-loader:** systemjs config for karma test runner ([adac051](https://github.com/aurelia/cli/commit/adac051)), closes [aurelia/cli#648](https://github.com/aurelia/cli/issues/648)
+
+
+
 <a name="0.30.0"></a>
 # [0.30.0](https://github.com/aurelia/cli/compare/0.29.0...v0.30.0) (2017-06-13)
 
