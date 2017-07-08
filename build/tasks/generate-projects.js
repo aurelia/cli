@@ -3,7 +3,8 @@ const gulp = require('gulp');
 const Container = require('aurelia-dependency-injection').Container;
 const definition = require('../../lib/commands/new/new-application.json');
 const WorkflowEngine = require('../../lib/workflow/workflow-engine').WorkflowEngine;
-const ProjectCreate = require('../../lib/workflow/activities/project-create');
+const ApplicationCreate = require('../../lib/workflow/activities/application-create');
+const PluginCreate = require('../../lib/workflow/activities/plugin-create');
 const UI = require('../../lib/ui').UI;
 const ConsoleUI = require('../../lib/ui').ConsoleUI;
 const fs = require('fs');
@@ -60,8 +61,10 @@ function createProject(answers) {
   container.registerInstance(UI, new ConsoleUI());
   container.unregister('project-install');
   container.registerInstance('project-install', new AutoProjectInstall());
-  container.unregister('project-create');
-  container.registerSingleton('project-create', AutoProjectCreate);
+  container.unregister('application-create');
+  container.registerSingleton('application-create', AutoApplicationCreate);
+  container.unregister('plugin-create');
+  container.registerSingleton('plugin-create', AutoPluginCreate);
   container.unregister('input-text');
   container.registerInstance('input-text', new AutoInputText(answers));
   container.unregister('input-select');
@@ -129,7 +132,13 @@ class AutoInputText {
   }
 }
 
-class AutoProjectCreate extends ProjectCreate {
+class AutoApplicationCreate extends ApplicationCreate {
+  projectConfirmation() {
+    return Promise.resolve({ value: 'yes' });
+  }
+}
+
+class AutoPluginCreate extends PluginCreate {
   projectConfirmation() {
     return Promise.resolve({ value: 'yes' });
   }

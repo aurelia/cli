@@ -1,6 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    // @if type='project:application'
     // @if bundler.id='cli'
     "sourceMap": true,
     "target": "es5",
@@ -30,8 +31,24 @@
       "es2017", "dom"
     ]
     // @endif
+    // @endif
+    // @if type='project:plugin'
+    "sourceMap": true,
+    "target": "es5",
+    "module": "amd",
+    "declaration": false,
+    "noImplicitAny": false,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "lib": ["es2017", "dom"]
+    // @endif
   },
   "exclude": [
+    // @if type='project:plugin'
+    "dist",
+    // @endif
     "node_modules",
     "aurelia_project"
   ],

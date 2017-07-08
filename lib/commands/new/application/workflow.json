@@ -577,7 +577,7 @@
       ]
     },
     {
-      "type": "project-create",
+      "type": "application-create",
       "id": 1000,
       "nextActivity": 1100,
       "restartActivity": 1200

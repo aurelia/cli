@@ -1,6 +1,6 @@
 {
   "name": "new",
-  "description": "Creates a new Aurelia application project.",
+  "description": "Creates a new Aurelia project.",
   "parameters": [
     {
       "name": "project-name",
@@ -12,6 +12,11 @@
     {
       "name": "here",
       "description": "Creates a new project with the current working directory as the root of the project instead of creating a new project folder.",
+      "type": "boolean"
+    },
+    {
+      "name": "plugin",
+      "description": "Creates a new plugin project instead of an application project.",
       "type": "boolean"
     }
   ]

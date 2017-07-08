@@ -1,0 +1,11 @@
+{
+  "name": "test",
+  "description": "Runs all unit tests and reports the results.",
+  "flags": [
+    {
+      "name": "watch",
+      "description": "Watches src and test files for changes and re-runs the tests automatically.",
+      "type": "boolean"
+    }
+  ]
+}

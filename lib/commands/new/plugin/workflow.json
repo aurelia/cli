@@ -1,0 +1,319 @@
+{
+  "name": "New Aurelia Plugin",
+  "activities": [
+    {
+      "id": 100,
+      "type": "state-assign",
+      "nextActivity": 200,
+      "state": {
+        "type": "project:plugin",
+        "transpiler": {
+          "id": "babel",
+          "displayName": "Babel",
+          "fileExtension": ".js"
+        },
+        "markupProcessor": {
+          "id": "none",
+          "displayName": "None",
+          "fileExtension": ".html"
+        },
+        "cssProcessor": {
+          "id": "none",
+          "displayName": "None",
+          "fileExtension": ".css"
+        },
+        "editor": {
+          "id": "vscode",
+          "displayName": "Visual Studio Code"
+        },
+        "unitTestRunner": {
+          "id": "karma",
+          "displayName": "Karma"
+        },
+        "paths": {
+          "root": "src",
+          "output": "dist"
+        },
+        "testFramework": {
+          "id": "jasmine",
+          "displayName": "Jasmine"
+        },
+        "build": {
+          "copyFiles": {}
+        }
+      }
+    },
+    {
+      "id": 200,
+      "type": "input-text",
+      "nextActivity": 300,
+      "question": "Please enter a name for your new project below.",
+      "stateProperty": "name",
+      "defaultValue": "aurelia-plugin"
+    },
+    {
+      "id": 300,
+      "type": "input-select",
+      "nextActivity": 400,
+      "question": "Would you like to use the default setup or customize your choices?",
+      "stateProperty": "defaultOrCustom",
+      "options": [
+        {
+          "displayName": "Default ESNext",
+          "description": "A basic setup with Babel for modern JavaScript development.",
+          "value": "default-esnext"
+        },
+        {
+          "displayName": "Default TypeScript",
+          "description": "A basic setup with TypeScript for modern JavaScript development.",
+          "value": "default-typescript"
+        },
+        {
+          "displayName": "Custom",
+          "description": "Select transpilers, CSS pre-processors and more.",
+          "value": "custom"
+        }
+      ]
+    },
+    {
+      "id": 400,
+      "type": "branch-switch",
+      "stateProperty": "defaultOrCustom",
+      "branches": [
+        {
+          "case": "default-esnext",
+          "nextActivity": 1100
+        },
+        {
+          "case": "default-typescript",
+          "nextActivity": 1000
+        },
+        {
+          "case": "custom",
+          "nextActivity": 500
+        }
+      ]
+    },
+    {
+      "id": 500,
+      "type": "input-select",
+      "nextActivity": 600,
+      "question": "What transpiler would you like to use?",
+      "stateProperty": "transpiler",
+      "options": [
+        {
+          "displayName": "Babel",
+          "description": "An open source, standards-compliant ES2015 and ESNext transpiler.",
+          "value": {
+            "id": "babel",
+            "displayName": "Babel",
+            "fileExtension": ".js"
+          }
+        },
+        {
+          "displayName": "TypeScript",
+          "description": "An open source, ESNext superset that adds optional strong typing.",
+          "value": {
+            "id": "typescript",
+            "displayName": "TypeScript",
+            "fileExtension": ".ts"
+          }
+        }
+      ]
+    },
+    {
+      "id": 600,
+      "type": "input-select",
+      "nextActivity": 700,
+      "question": "How would you like to setup your template?",
+      "stateProperty": "markupProcessor",
+      "options": [
+        {
+          "displayName": "Default",
+          "description": "No markup processing.",
+          "value": {
+            "id": "none",
+            "displayName": "None",
+            "fileExtension": ".html"
+          }
+        },
+        {
+          "displayName": "Minimum Minification",
+          "description": "Removes comments and whitespace between block level elements such as div, blockquote, p, header, footer ...etc",
+          "value": {
+            "id": "minimum",
+            "displayName": "Minimal Minification",
+            "fileExtension": ".html"
+          }
+        },
+        {
+          "displayName": "Maximum Minification",
+          "description": "Removes comments, script & link element [type] attributes and all whitespace between all elements. Also remove attribute quotes where possible. Collapses boolean attributes.",
+          "value": {
+            "id": "maximum",
+            "displayName": "Maximum Minification",
+            "fileExtension": ".html"
+          }
+        }
+      ]
+    },
+    {
+      "id": 700,
+      "type": "input-select",
+      "nextActivity": 800,
+      "question": "What css processor would you like to use?",
+      "stateProperty": "cssProcessor",
+      "options": [
+        {
+          "displayName": "None",
+          "description": "Use standard CSS with no pre-processor.",
+          "value": {
+            "id": "none",
+            "displayName": "None",
+            "fileExtension": ".css"
+          }
+        },
+        {
+          "displayName": "Less",
+          "description": "Extends the CSS language, adding features that allow variables, mixins, functions and many other techniques.",
+          "value": {
+            "id": "less",
+            "displayName": "Less",
+            "fileExtension": ".less"
+          }
+        },
+        {
+          "displayName": "Sass",
+          "description": "A mature, stable, and powerful professional grade CSS extension.",
+          "value": {
+            "id": "sass",
+            "displayName": "Sass",
+            "fileExtension": ".scss"
+          }
+        },
+        {
+          "displayName": "Stylus",
+          "description": "Expressive, dynamic and robust CSS.",
+          "value": {
+            "id": "stylus",
+            "displayName": "Stylus",
+            "fileExtension": ".styl"
+          }
+        },
+        {
+          "displayName": "Post CSS",
+          "description": "A tool for transforming CSS with JavaScript.",
+          "value": {
+            "id": "postcss",
+            "displayName": "Post CSS",
+            "fileExtension": ".css"
+          }
+        }
+      ]
+    },
+    {
+      "id": 800,
+      "type": "input-select",
+      "nextActivity": 900,
+      "question": "Would you like to configure unit testing?",
+      "stateProperty": "unitTestRunner",
+      "options": [
+        {
+          "displayName": "Yes",
+          "description": "Configure your app with Jasmine and Karma.",
+          "value": {
+            "id": "karma",
+            "displayName": "Karma"
+          }
+        },
+        {
+          "displayName": "No",
+          "description": "Skip testing. My code is always perfect anyway.",
+          "value": {
+            "id": "none",
+            "displayName": "None"
+          }
+        }
+      ]
+    },
+    {
+      "id": 900,
+      "type": "input-select",
+      "nextActivity": 1100,
+      "question": "What is your default code editor?",
+      "stateProperty": "editor",
+      "options": [
+        {
+          "displayName": "Visual Studio Code",
+          "description": "Code editing. Redefined. Free. Open source. Runs everywhere.",
+          "value": {
+            "id": "vscode",
+            "displayName": "Visual Studio Code"
+          }
+        },
+        {
+          "displayName": "Atom",
+          "description": "A hackable text editor for the 21st Century.",
+          "value": {
+            "id": "atom",
+            "displayName": "Atom"
+          }
+        },
+        {
+          "displayName": "Sublime",
+          "description": "A sophisticated text editor for code, markup and prose.",
+          "value": {
+            "id": "sublime",
+            "displayName": "Sublime"
+          }
+        },
+        {
+          "displayName": "WebStorm",
+          "description": "A lightweight yet powerful IDE, perfectly equipped for complex client-side development.",
+          "value": {
+            "id": "webstorm",
+            "displayName": "WebStorm"
+          }
+        },
+        {
+          "displayName": "None of the Above",
+          "description": "Do not configure any editor-specific options.",
+          "value": {
+            "id": "none",
+            "displayName": "None"
+          }
+        }
+      ]
+    },
+    {
+      "id": 1000,
+      "type": "state-assign",
+      "nextActivity": 1100,
+      "state": {
+        "transpiler": {
+          "id": "typescript",
+          "displayName": "TypeScript",
+          "fileExtension": ".ts"
+        }
+      }
+    },
+    {
+      "id": 1100,
+      "type": "plugin-create",
+      "nextActivity": 1200,
+      "restartActivity": 1300
+    },
+    {
+      "id": 1200,
+      "type": "project-install"
+    },
+    {
+      "id": 1300,
+      "type": "state-assign",
+      "nextActivity": 100,
+      "state": {
+        "name": null
+      }
+    }
+  ]
+}

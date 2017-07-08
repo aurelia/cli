@@ -1,0 +1,11 @@
+{
+  "name": "build",
+  "description": "Builds and processes all plugin assets.",
+  "flags": [
+    {
+      "name": "watch",
+      "description": "Watches src files for changes and re-builds automatically.",
+      "type": "boolean"
+    }
+  ]
+}
