@@ -47,3 +47,18 @@ describe('the Utils.runSequentially function', () => {
     });
   });
 });
+
+describe('the Utils.createSrcFileRegex function', () => {
+  it('matches script tag with double quotes', () => {
+    expect('<script src="scripts/vendor-bundle.js"></script>'.match(Utils.createSrcFileRegex('scripts', 'vendor-bundle'))).not.toBeFalsy();
+  });
+  it('matches script tag with single quotes', () => {
+    expect('<script src=\'scripts/vendor-bundle.js\'></script>'.match(Utils.createSrcFileRegex('scripts', 'vendor-bundle'))).not.toBeFalsy();
+  });
+  it('matches script tag without quotes', () => {
+    expect('<script src=scripts/vendor-bundle.js></script>'.match(Utils.createSrcFileRegex('scripts', 'vendor-bundle'))).not.toBeFalsy();
+  });
+  it('does not match other bundles', () => {
+    expect('<script src=scripts/app-bundle.js></script>'.match(Utils.createSrcFileRegex('scripts', 'vendor-bundle'))).toBeFalsy();
+  });
+});
