@@ -39,7 +39,7 @@
   "html-minifier": "^3.2.3",
   "jasmine-core": "^2.4.1",
   "karma": "^0.13.22",
-  "karma-chrome-launcher": "^1.0.1",
+  "karma-chrome-launcher": "^2.2.0",
   "karma-jasmine": "^1.0.2",
   "karma-babel-preprocessor": "^6.0.1",
   "karma-typescript-preprocessor": "^0.2.1",
