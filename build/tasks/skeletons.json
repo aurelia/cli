@@ -44,4 +44,39 @@
     "id": "jest",
     "displayName": "Jest"
   }]
+}, {
+  "200": "skeleton-webpack-esnext-aspnetcore",
+  "300": "custom",
+  "600": "webpack",
+  "621": {
+    "id": "aspnetcore",
+    "displayName": "ASP.NET Core"
+  },
+  "680": [{
+    "id": "karma",
+    "displayName": "Karma"
+  }, {
+    "id": "jest",
+    "displayName": "Jest"
+  }]
+}, {
+  "200": "skeleton-webpack-typescript-aspnetcore",
+  "300": "custom",
+  "600": "webpack",
+  "621": {
+    "id": "aspnetcore",
+    "displayName": "ASP.NET Core"
+  },
+  "630": {
+    "id": "typescript",
+    "displayName": "TypeScript",
+    "fileExtension": ".ts"
+  },
+  "680": [{
+    "id": "karma",
+    "displayName": "Karma"
+  }, {
+    "id": "jest",
+    "displayName": "Jest"
+  }]
 }]
