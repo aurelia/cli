@@ -1,0 +1,82 @@
+[{
+  "200": "skeleton-requirejs-esnext",
+  "300": "default-esnext"
+}, {
+  "200": "skeleton-requirejs-typescript",
+  "300": "default-typescript"
+},{
+  "200": "skeleton-systemjs-esnext",
+  "300": "custom",
+  "600": "systemjs"
+}, {
+  "200": "skeleton-systemjs-typescript",
+  "300": "custom",
+  "600": "systemjs",
+  "630": {
+    "id": "typescript",
+    "displayName": "TypeScript",
+    "fileExtension": ".ts"
+  }
+}, {
+  "200": "skeleton-webpack-esnext",
+  "300": "custom",
+  "600": "webpack",
+  "680": [{
+    "id": "karma",
+    "displayName": "Karma"
+  }, {
+    "id": "jest",
+    "displayName": "Jest"
+  }]
+}, {
+  "200": "skeleton-webpack-typescript",
+  "300": "custom",
+  "600": "webpack",
+  "630": {
+    "id": "typescript",
+    "displayName": "TypeScript",
+    "fileExtension": ".ts"
+  },
+  "680": [{
+    "id": "karma",
+    "displayName": "Karma"
+  }, {
+    "id": "jest",
+    "displayName": "Jest"
+  }]
+}, {
+  "200": "skeleton-webpack-esnext-aspnetcore",
+  "300": "custom",
+  "600": "webpack",
+  "621": {
+    "id": "aspnetcore",
+    "displayName": "ASP.NET Core"
+  },
+  "680": [{
+    "id": "karma",
+    "displayName": "Karma"
+  }, {
+    "id": "jest",
+    "displayName": "Jest"
+  }]
+}, {
+  "200": "skeleton-webpack-typescript-aspnetcore",
+  "300": "custom",
+  "600": "webpack",
+  "621": {
+    "id": "aspnetcore",
+    "displayName": "ASP.NET Core"
+  },
+  "630": {
+    "id": "typescript",
+    "displayName": "TypeScript",
+    "fileExtension": ".ts"
+  },
+  "680": [{
+    "id": "karma",
+    "displayName": "Karma"
+  }, {
+    "id": "jest",
+    "displayName": "Jest"
+  }]
+}]

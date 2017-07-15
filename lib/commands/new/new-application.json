@@ -2,15 +2,11 @@
   "name": "New Aurelia Application",
   "activities": [
     {
-      "id": 1,
+      "id": 100,
       "type": "state-assign",
-      "nextActivity": 2,
+      "nextActivity": 200,
       "state": {
         "type": "project:application",
-        "loader": {
-          "id": "require",
-          "displayName": "RequireJS"
-        },
         "transpiler": {
           "id": "babel",
           "displayName": "Babel",
@@ -37,93 +33,198 @@
         "editor": {
           "id": "vscode",
           "displayName": "Visual Studio Code"
-        },        
+        },
         "platform": {
           "id": "web",
           "displayName": "Web"
+        },
+        "loader": {
+          "id": "require",
+          "displayName": "RequireJS"
+        },
+        "bundler": {
+          "id": "cli",
+          "displayName": "Aurelia-CLI"
         }
       }
     },
     {
-      "id": 2,
       "type": "input-text",
-      "nextActivity": 3,
+      "id": 200,
+      "nextActivity": 300,
       "question": "Please enter a name for your new project below.",
       "stateProperty": "name",
       "defaultValue": "aurelia-app"
     },
     {
-      "id": 3,
       "type": "input-select",
-      "nextActivity": 4,
-      "question": "Which module loader would you like to use?",
-      "stateProperty": "loader",
-      "options": [
-        {
-          "displayName": "RequireJS",
-          "description": "A file and module loader for JavaScript.",
-          "value": {
-            "id": "require",
-            "displayName": "RequireJS"
-          }
-        },
-        {
-          "displayName": "SystemJS",
-          "description": "Dynamic ES module loader",
-          "value": {
-            "id": "system",
-            "displayName": "SystemJS"
-          }
-        }
-      ]
-    },
-    {
-      "id": 4,
-      "type": "input-select",
-      "nextActivity": 5,
+      "id": 300,
+      "nextActivity": 400,
       "question": "Would you like to use the default setup or customize your choices?",
       "stateProperty": "defaultOrCustom",
       "options": [
         {
           "displayName": "Default ESNext",
-          "description": "A basic web-oriented setup with Babel for modern JavaScript development.",
+          "description": "A basic web-oriented setup with Babel and RequireJS for modern JavaScript development.",
           "value": "default-esnext"
         },
         {
           "displayName": "Default TypeScript",
-          "description": "A basic web-oriented setup with TypeScript for modern JavaScript development.",
+          "description": "A basic web-oriented setup with TypeScript and RequireJS for modern JavaScript development.",
           "value": "default-typescript"
         },
         {
           "displayName": "Custom",
-          "description": "Select transpilers, CSS pre-processors and more.",
+          "description": "Select loaders (requirejs/systemjs), bundlers (cli/webpack), transpilers, CSS pre-processors and more.",
           "value": "custom"
         }
       ]
     },
     {
-      "id": 5,
       "type": "branch-switch",
+      "id": 400,
       "stateProperty": "defaultOrCustom",
       "branches": [
         {
           "case": "default-esnext",
-          "nextActivity": 15
+          "nextActivity": 1000
         },
         {
           "case": "default-typescript",
-          "nextActivity": 13
+          "nextActivity": 500
         },
         {
           "case": "custom",
-          "nextActivity": 6
+          "nextActivity": 600
         }
       ]
     },
     {
-      "id": 6,
+      "type": "state-assign",
+      "id": 500,
+      "nextActivity": 1000,
+      "state": {
+        "transpiler": {
+          "id": "typescript",
+          "displayName": "TypeScript",
+          "fileExtension": ".ts"
+        }
+      }
+    },
+    {
+      "id": 600,
       "type": "input-select",
-      "nextActivity": 7,
+      "nextActivity": 610,
+      "question": "Which module loader / bundler would you like to use?",
+      "stateProperty": "loaderBundler",
+      "options": [
+        {
+          "displayName": "RequireJS",
+          "description": "A file and module loader for JavaScript.",
+          "value": "requirejs"
+        },
+        {
+          "displayName": "SystemJS",
+          "description": "Dynamic ES module loader",
+          "value": "systemjs"
+        },
+        {
+          "displayName": "Webpack",
+          "description": "A powerful bundler",
+          "value": "webpack"
+        }
+      ]
+    },
+    {
+      "id": 610,
+      "type": "branch-switch",
+      "stateProperty": "loaderBundler",
+      "branches": [
+        {
+          "case": "requirejs",
+          "nextActivity": 611
+        },
+        {
+          "case": "systemjs",
+          "nextActivity": 612
+        },
+        {
+          "case": "webpack",
+          "nextActivity": 613
+        }
+      ]
+    },
+    {
+      "id": 611,
+      "type": "state-assign",
+      "nextActivity": 620,
+      "state": {
+        "loader": {
+          "id": "require",
+          "displayName": "RequireJS"
+        },
+        "bundler": {
+          "id": "cli",
+          "displayName": "Aurelia-CLI"
+        }
+      }
+    },
+    {
+      "id": 612,
+      "type": "state-assign",
+      "nextActivity": 620,
+      "state": {
+        "loader": {
+          "id": "system",
+          "displayName": "SystemJS"
+        },
+        "bundler": {
+          "id": "cli",
+          "displayName": "Aurelia-CLI"
+        }
+      }
+    },
+    {
+      "id": 613,
+      "type": "state-assign",
+      "nextActivity": 621,
+      "state": {
+        "loader": {
+          "id": "none",
+          "displayName": "None"
+        },
+        "bundler": {
+          "id": "webpack",
+          "displayName": "Webpack"
+        },
+        "build": {
+          "options": {
+            "server": "dev",
+            "extractCss": "prod",
+            "coverage": "dev"
+          }
+        },
+        "unitTestRunner": [{
+          "id": "jest",
+          "displayName": "Jest"
+        }, {
+          "id": "karma",
+          "displayName": "Karma"
+        }],
+        "testFramework": {
+          "id": "jasmine",
+          "displayName": "Jasmine"
+        },
+        "integrationTestRunner": {
+          "id": "protractor",
+          "displayName": "Protractor"
+        }
+      }
+    },
+    {
+      "id": 620,
+      "type": "input-select",
+      "nextActivity": 630,
       "question": "What platform are you targeting?",
       "stateProperty": "platform",
       "options": [
@@ -147,9 +248,34 @@
       ]
     },
     {
-      "id": 7,
+      "id": 621,
       "type": "input-select",
-      "nextActivity": 8,
+      "nextActivity": 630,
+      "question": "What platform are you targeting?",
+      "stateProperty": "platform",
+      "options": [
+        {
+          "displayName": "Web",
+          "description": "The default web platform setup.",
+          "value": {
+            "id": "web",
+            "displayName": "Web"
+          }
+        },
+        {
+          "displayName": "ASP.NET Core",
+          "description": "A powerful, patterns-based way to build dynamic websites with .NET.",
+          "value": {
+            "id": "aspnetcore",
+            "displayName": "ASP.NET Core"
+          }
+        }
+      ]
+    },
+    {
+      "id": 630,
+      "type": "input-select",
+      "nextActivity": 640,
       "question": "What transpiler would you like to use?",
       "stateProperty": "transpiler",
       "options": [
@@ -174,9 +300,9 @@
       ]
     },
     {
-      "id": 8,
+      "id": 640,
       "type": "input-select",
-      "nextActivity": 9,
+      "nextActivity": 650,
       "question": "How would you like to setup your template?",
       "stateProperty": "markupProcessor",
       "options": [
@@ -210,9 +336,9 @@
       ]
     },
     {
-      "id": 9,
+      "id": 650,
       "type": "input-select",
-      "nextActivity": 10,
+      "nextActivity": 660,
       "question": "What css processor would you like to use?",
       "stateProperty": "cssProcessor",
       "options": [
@@ -264,9 +390,24 @@
       ]
     },
     {
-      "id": 10,
+      "type": "branch-switch",
+      "id": 660,
+      "stateProperty": "bundler",
+      "branches": [
+        {
+          "case": "cli",
+          "nextActivity": 670
+        },
+        {
+          "case": "webpack",
+          "nextActivity": 680
+        }
+      ]
+    },
+    {
+      "id": 670,
       "type": "input-select",
-      "nextActivity": 11,
+      "nextActivity": 700,
       "question": "Would you like to configure unit testing?",
       "stateProperty": "unitTestRunner",
       "options": [
@@ -289,24 +430,93 @@
       ]
     },
     {
-      "id": 11,
+      "id": 680,
+      "type": "input-multiselect",
+      "nextActivity": 681,
+      "question": "Which unit test runners would you like to use?",
+      "stateProperty": "unitTestRunner",
+      "options": [
+        {
+          "displayName": "None",
+          "description": "Skip testing. My code is always perfect anyway.",
+          "value": {
+            "id": "none",
+            "displayName": "None"
+          }
+        },
+        {
+          "displayName": "Karma",
+          "description": "Configure your app with Karma and Jasmine",
+          "value": {
+            "id": "karma",
+            "displayName": "Karma"
+          }
+        },
+        {
+          "displayName": "Jest",
+          "description": "Configure your app with Jest and Jasmine",
+          "value": {
+            "id": "jest",
+            "displayName": "Jest"
+          }
+        }
+      ]
+    },
+    {
+      "id": 681,
+      "type": "input-select",
+      "nextActivity": 700,
+      "question": "Would you like to configure integration testing?",
+      "stateProperty": "integrationTestRunner",
+      "options": [
+        {
+          "displayName": "Protractor",
+          "description": "Configure your app with Protractor",
+          "value": {
+            "id": "protractor",
+            "displayName": "Protractor"
+          }
+        },
+        {
+          "displayName": "No",
+          "description": "Skip testing. My code is always perfect anyway.",
+          "value": {
+            "id": "none",
+            "displayName": "None"
+          }
+        }
+      ]
+    },
+    {
+      "id": 700,
       "type": "branch-switch",
       "stateProperty": "platform",
       "branches": [
         {
           "case": "aspnetcore",
-          "nextActivity": 14
+          "nextActivity": 800
         },
         {
           "case": "default",
-          "nextActivity": 12
+          "nextActivity": 900
         }
       ]
     },
     {
-      "id": 12,
+      "id": 800,
+      "type": "state-assign",
+      "nextActivity": 900,
+      "state": {
+        "editor": {
+          "id": "visualstudio",
+          "displayName": "Visual Studio"
+        }
+      }
+    },
+    {
+      "id": 900,
       "type": "input-select",
-      "nextActivity": 15,
+      "nextActivity": 1000,
       "question": "What is your default code editor?",
       "stateProperty": "editor",
       "options": [
@@ -353,42 +563,19 @@
       ]
     },
     {
-      "id": 13,
-      "type": "state-assign",
-      "nextActivity": 15,
-      "state": {
-        "transpiler": {
-          "id": "typescript",
-          "displayName": "TypeScript",
-          "fileExtension": ".ts"
-        }
-      }
-    },
-    {
-      "id": 14,
-      "type": "state-assign",
-      "nextActivity": 15,
-      "state": {
-        "editor": {
-          "id": "visualstudio",
-          "displayName": "Visual Studio"
-        }
-      }
-    },
-    {
-      "id": 15,
       "type": "project-create",
-      "nextActivity": 16,
-      "restartActivity": 17
+      "id": 1000,
+      "nextActivity": 1100,
+      "restartActivity": 1200
     },
     {
-      "id": 16,
+      "id": 1100,
       "type": "project-install"
     },
     {
-      "id": 17,
+      "id": 1200,
       "type": "state-assign",
-      "nextActivity": 1,
+      "nextActivity": 100,
       "state": {
         "name": null
       }
