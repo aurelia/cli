@@ -1,5 +1,5 @@
 {
-  "name": "test",
+  "name": "karma",
   "description": "Runs Karma and reports the results.",
   "flags": [
     {
