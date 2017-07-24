@@ -3,6 +3,7 @@ import * as webpack from 'webpack';
 import * as Server from 'webpack-dev-server';
 import * as project from '../aurelia.json';
 import {CLIOptions, reportWebpackReadiness} from 'aurelia-cli';
+import build from './build';
 
 function run(done) {
   // https://webpack.github.io/docs/webpack-dev-server.html
@@ -18,10 +19,10 @@ function run(done) {
     stats: {
       colors: require('supports-color')
     }
-  };
+  } as any;
 
   if (!CLIOptions.hasFlag('watch')) {
-    opts.watch = false;
+    opts.lazy = true;
   }
 
   if (project.platform.hmr || CLIOptions.hasFlag('hmr')) {
@@ -34,8 +35,16 @@ function run(done) {
 
   server.listen(opts.port, opts.host, function(err) {
     if (err) throw err;
-    reportWebpackReadiness(opts);
-    done();
+
+    if (opts.lazy) {
+      build(() => {
+        reportWebpackReadiness(opts);
+        done();
+      });
+    } else {
+      reportWebpackReadiness(opts);
+      done();
+    }
   });
 }
 
