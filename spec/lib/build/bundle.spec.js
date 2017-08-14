@@ -3,6 +3,7 @@
 const BundlerMock = require('../../mocks/bundler');
 const Bundle = require('../../../lib/build/bundle').Bundle;
 const CLIOptionsMock = require('../../mocks/cli-options');
+const DependencyDescription = require('../../../lib/build/dependency-description').DependencyDescription;
 
 describe('the Bundle module', () => {
   let sut;
@@ -118,11 +119,16 @@ describe('the Bundle module', () => {
       return true;
     });
     bundler.configureDependency.and.callFake(dep => {
-      return Promise.resolve({
-        loaderConfig: {
-          name: dep.name || dep
-        }
-      });
+      let depName = dep.name || dep;
+      let description = new DependencyDescription(depName);
+
+      description.loaderConfig = {
+        name: depName,
+        path: '../node_modules/' + depName,
+        main: 'index.js'
+      };
+
+      return Promise.resolve(description);
     });
 
     let config = {
@@ -211,10 +217,12 @@ describe('the Bundle module', () => {
     let configuredDependencies = [];
     bundler.configureDependency.and.callFake(dep => {
       let depName = dep.name || dep;
-      let description = {
-        loaderConfig: {
-          name: depName
-        }
+
+      let description = new DependencyDescription(depName);
+      description.loaderConfig = {
+        name: depName,
+        path: '../node_modules/' + depName,
+        main: 'index.js'
       };
 
       return new Promise(resolve => {
@@ -262,11 +270,12 @@ describe('the Bundle module', () => {
   it('add dependencies in the same order as they were entered to prevent a wrong module load order', done => {
     let bundler = new BundlerMock();
     bundler.configureDependency.and.callFake(dep => {
-      return Promise.resolve({
-        loaderConfig: {
-          name: dep.name || dep
-        }
-      });
+      let description = new DependencyDescription(dep.name || dep);
+      description.loaderConfig = {
+        name: dep.name || dep
+      };
+
+      return Promise.resolve(description);
     });
     bundler.itemIncludedInBuild.and.callFake((dep) => true);
 
