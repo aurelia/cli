@@ -1,3 +1,25 @@
+<a name="0.31.0"></a>
+# [0.31.0](https://github.com/aurelia/cli/compare/0.30.1...0.31.0) (2017-08-18)
+
+
+### Bug Fixes
+
+* **bundle:** support both Uglify v3 and v2. ([7b606ab](https://github.com/aurelia/cli/commit/7b606ab)), closes [#636](https://github.com/aurelia/cli/issues/636)
+* **bundle:** support quoteless script src attribute ([ffafbc9](https://github.com/aurelia/cli/commit/ffafbc9)), closes [#639](https://github.com/aurelia/cli/issues/639)
+* **bundler:** don't trace dependencies which have no main file ([a2cf32b](https://github.com/aurelia/cli/commit/a2cf32b)), closes [/github.com/aurelia/cli/issues/435#issuecomment-293850306](https://github.com//github.com/aurelia/cli/issues/435/issues/issuecomment-293850306)
+* **dependencies:** update gulp-sass version ([75d331e](https://github.com/aurelia/cli/commit/75d331e))
+* **dependencies:** update karma-chrome-launcher ([6719a2d](https://github.com/aurelia/cli/commit/6719a2d))
+* **importer:** prevent duplicate dist ([a22dc3d](https://github.com/aurelia/cli/commit/a22dc3d))
+* **systemjs-bundling:** include dependency name in bundle config ([d36f2ae](https://github.com/aurelia/cli/commit/d36f2ae)), closes [aurelia/cli#676](https://github.com/aurelia/cli/issues/676)
+
+
+### Features
+
+* **all:** add webpack ([2c08625](https://github.com/aurelia/cli/commit/2c08625))
+* **sourcemaps:** inlcude sourcemaps in karma configuration ([ebd79e8](https://github.com/aurelia/cli/commit/ebd79e8)), closes [aurelia/cli#420](https://github.com/aurelia/cli/issues/420)
+
+
+
 <a name="0.30.1"></a>
 ## [0.30.1](https://github.com/aurelia/cli/compare/0.30.0...v0.30.1) (2017-06-28)
 
