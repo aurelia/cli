@@ -1,3 +1,13 @@
+<a name="0.31.1"></a>
+## [0.31.1](https://github.com/aurelia/cli/compare/0.31.0...0.31.1) (2017-08-19)
+
+
+### Bug Fixes
+
+* **webpack:** explicitly load the webpack typings ([2357a62](https://github.com/aurelia/cli/commit/2357a62))
+
+
+
 <a name="0.31.0"></a>
 # [0.31.0](https://github.com/aurelia/cli/compare/0.30.1...0.31.0) (2017-08-18)
 
