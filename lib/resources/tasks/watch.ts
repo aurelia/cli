@@ -26,21 +26,28 @@ if (typeof project.build.copyFiles === 'object') {
 
 let watch = (callback?) => {
   watchCallback = callback || watchCallback;
-  return gulpWatch(
-    Object.keys(watches),
-    {
-      read: false, // performance optimization: do not read actual file contents
-      verbose: true
-    },
-    (vinyl) => {
-      if (vinyl.path && vinyl.cwd && vinyl.path.startsWith(vinyl.cwd)) {
-        let pathToAdd = vinyl.path.substr(vinyl.cwd.length + 1);
-        log(`Watcher: Adding path ${pathToAdd} to pending build changes...`);
-        pendingRefreshPaths.push(pathToAdd);
-        refresh();
-      }
-    });
+
+  const watchPaths = Object.keys(watches);
+
+  for(let i = 0; i < watchPaths.length; i++) {
+    gulpWatch(
+      watchPaths[i],
+      {
+        read: false, // performance optimization: do not read actual file contents
+        verbose: true
+      },
+      (vinyl) => processChange(vinyl));
+  }
 };
+
+let processChange = (vinyl) => {
+  if (vinyl.path && vinyl.cwd && vinyl.path.startsWith(vinyl.cwd)) {
+    let pathToAdd = vinyl.path.substr(vinyl.cwd.length + 1);
+    log(`Watcher: Adding path ${pathToAdd} to pending build changes...`);
+    pendingRefreshPaths.push(pathToAdd);
+    refresh();
+  }
+}
 
 let refresh = debounce(() => {
   if (isBuilding) {
