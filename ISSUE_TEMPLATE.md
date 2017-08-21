@@ -47,17 +47,14 @@ all | Chrome XX | Firefox XX | Edge XX | IE XX | Safari XX | Mobile Chrome XX | 
 * **Language:**
 all | TypeScript X.X | ESNext
 
+* **Loader/bundler:**
+all | Webpack | SystemJS | RequireJS
 
 **Current behavior:**
 
-
-**Expected/desired behavior:**
+* **What is the expected behavior?**
 <!--
 If the current behavior is a bug, please provide the steps to reproduce.
 -->
-
-
-* **What is the expected behavior?**
-
 
 * **What is the motivation / use case for changing the behavior?**
