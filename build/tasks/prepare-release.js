@@ -26,7 +26,7 @@ gulp.task('prepare-release', function(callback){
     'lint',
     'bump-version',
     'changelog',
-    'update-dependenciesjs',
+    'update-cli-dependenciesjs',
     callback
   );
 });

@@ -3,13 +3,21 @@ const latestVersion = require('latest-version');
 const fs = require('fs');
 const path = require('path');
 
-gulp.task('update-dependenciesjs', function() {
-  let dependenciesJSONFile = path.resolve('./lib/dependencies.json');
-  let deps = require(dependenciesJSONFile);
-  let p = Promise.resolve();
-  let lookup = Object.keys(deps).filter(x => x.startsWith('aurelia-'));
+gulp.task('update-cli-dependenciesjs', function(done) {
+  let deps = getDepsJSON();
+  updateCLIVersion(deps);
 
-  // for all aurelia- libs, lookup the latest version and update the json file
+  return write(deps).then(() => done());
+});
+
+// this task goes through ./lib/dependencies.json and updates all libs
+// to use the latest version
+gulp.task('update-all-dependenciesjs', function() {
+  let deps = getDepsJSON();
+  let p = Promise.resolve();
+  let lookup = Object.keys(deps);
+
+  // for all entries in dependencies.json, lookup the latest version and update the json file
   for (let i = 0; i < lookup.length; i++) {
     p = p.then(() => {
       return latestVersion(lookup[i])
@@ -23,20 +31,29 @@ gulp.task('update-dependenciesjs', function() {
   // when all versions are looked up, write the dependencies.json file to disk
   return p
   .then(() => updateCLIVersion(deps))
-  .then(() => {
-    return new Promise((resolve, reject) => {
-      fs.writeFile(dependenciesJSONFile, JSON.stringify(deps, null, 2), function(err) {
-        if (err) {
-          reject(err);
-          return console.log(err);
-        }
+  .then(() => write(deps));
+});
 
-        console.log('dependencies.json was updated');
-        resolve();
-      });
+function getDepsJSON() {
+  let dependenciesJSONFile = path.resolve('./lib/dependencies.json');
+  return require(dependenciesJSONFile);
+}
+
+function write(deps) {
+  return new Promise((resolve, reject) => {
+    let dependenciesJSONFile = path.resolve('./lib/dependencies.json');
+
+    fs.writeFile(dependenciesJSONFile, JSON.stringify(deps, null, 2), function(err) {
+      if (err) {
+        reject(err);
+        return console.log(err);
+      }
+
+      console.log('dependencies.json was updated');
+      resolve();
     });
   });
-});
+}
 
 function updateCLIVersion(deps) {
   let pJSON = require('../../package.json');
