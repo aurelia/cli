@@ -14,11 +14,15 @@ const coverage = buildOptions.isApplicable('coverage');
 const config = webpackConfig({
   production, server, extractCss, coverage
 });
-const compiler = webpack(config);
+const compiler = webpack(<any>config);
 
 function buildWebpack(done) {
-  compiler.run(onBuild);
-  compiler.plugin('done', () => done());
+  if (CLIOptions.hasFlag('watch')) {
+    compiler.watch({}, onBuild);
+  } else {
+    compiler.run(onBuild);
+    compiler.plugin('done', () => done());
+  }
 }
 
 function onBuild(err, stats) {
