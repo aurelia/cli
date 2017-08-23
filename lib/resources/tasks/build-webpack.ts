@@ -2,6 +2,8 @@ import * as webpackConfig from '../../webpack.config';
 import * as webpack from 'webpack';
 import * as project from '../aurelia.json';
 import {CLIOptions, Configuration} from 'aurelia-cli';
+import * as gulp from 'gulp';
+import configureEnvironment from './environment';
 
 const buildOptions = new Configuration(project.build.options);
 const production = CLIOptions.getEnvironment() === 'prod';
@@ -14,7 +16,7 @@ const config = webpackConfig({
 });
 const compiler = webpack(config);
 
-function build(done) {
+function buildWebpack(done) {
   compiler.run(onBuild);
   compiler.plugin('done', () => done());
 }
@@ -29,7 +31,13 @@ function onBuild(err, stats) {
   }
 }
 
+const build = gulp.series(
+  configureEnvironment,
+  buildWebpack
+);
+
 export {
   config,
+  buildWebpack,
   build as default
 };
