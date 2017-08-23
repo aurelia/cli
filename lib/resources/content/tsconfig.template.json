@@ -1,6 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    // @if bundler.id='cli'
     "sourceMap": true,
     "target": "es5",
     "module": "amd",
@@ -11,8 +12,22 @@
     "experimentalDecorators": true,
     "allowJs": true,
     "moduleResolution": "node",
-    "lib": ["es2017", "dom"],
-    "skipLibCheck": true
+    "lib": ["es2017", "dom"]
+    // @endif
+    // @if bundler.id='webpack'
+    "target": "es5",
+    "module": "esnext",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "sourceRoot": "src",
+    "allowJs": true,
+    "baseUrl": "src",
+    "skipLibCheck": true,
+    "lib": [
+      "es2017", "dom"
+    ]
+    // @endif
   },
   "exclude": [
     "node_modules",

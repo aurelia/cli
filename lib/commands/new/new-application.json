@@ -201,7 +201,7 @@
           "options": {
             "server": "dev",
             "extractCss": "prod",
-            "coverage": "dev"
+            "coverage": false
           }
         },
         "unitTestRunner": [{

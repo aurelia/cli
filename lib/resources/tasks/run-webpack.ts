@@ -1,11 +1,13 @@
 import {config} from './build';
+import configureEnvironment from './environment';
 import * as webpack from 'webpack';
 import * as Server from 'webpack-dev-server';
 import * as project from '../aurelia.json';
 import {CLIOptions, reportWebpackReadiness} from 'aurelia-cli';
-import build from './build';
+import * as gulp from 'gulp';
+import {buildWebpack} from './build';
 
-function run(done) {
+function runWebpack(done) {
   // https://webpack.github.io/docs/webpack-dev-server.html
   let opts = {
     host: 'localhost',
@@ -37,7 +39,7 @@ function run(done) {
     if (err) throw err;
 
     if (opts.lazy) {
-      build(() => {
+      buildWebpack(() => {
         reportWebpackReadiness(opts);
         done();
       });
@@ -47,5 +49,10 @@ function run(done) {
     }
   });
 }
+
+const run = gulp.series(
+  configureEnvironment,
+  runWebpack
+);
 
 export { run as default };
