@@ -11,13 +11,9 @@
     "experimentalDecorators": true,
     "allowJs": true,
     "moduleResolution": "node",
-    "lib": ["es2017", "dom"]
+    "lib": ["es2017", "dom"],
+    "skipLibCheck": true
   },
-  // @if bundler.id='webpack'
-  "files":[
-    "./node_modules/@types/webpack/index.d.ts"
-  ],
-  // @endif
   "exclude": [
     "node_modules",
     "aurelia_project"
