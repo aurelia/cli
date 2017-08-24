@@ -7,7 +7,7 @@ gulp.task('update-cli-dependenciesjs', function(done) {
   let deps = getDepsJSON();
   updateCLIVersion(deps);
 
-  return write(deps).then(() => done());
+  write(deps).then(() => done());
 });
 
 // this task goes through ./lib/dependencies.json and updates all libs
