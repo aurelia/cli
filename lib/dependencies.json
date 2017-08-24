@@ -39,6 +39,7 @@
   "cross-env": "5.0.1",
   "css-loader": "0.28.4",
   "debounce": "^1.0.2",
+  "del": "^3.0.0",
   "event-stream": "^3.3.3",
   "expose-loader": "0.7.3",
   "extract-text-webpack-plugin": "3.0.0",

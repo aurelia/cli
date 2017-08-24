@@ -4,6 +4,7 @@ import * as project from '../aurelia.json';
 import {CLIOptions, Configuration} from 'aurelia-cli';
 import * as gulp from 'gulp';
 import configureEnvironment from './environment';
+import * as del from 'del';
 
 const buildOptions = new Configuration(project.build.options);
 const production = CLIOptions.getEnvironment() === 'prod';
@@ -35,7 +36,12 @@ function onBuild(err, stats) {
   }
 }
 
+function clearDist() {
+  return del([config.output.path]);
+}
+
 const build = gulp.series(
+  clearDist,
   configureEnvironment,
   buildWebpack
 );
