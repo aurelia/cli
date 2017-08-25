@@ -15,10 +15,10 @@ describe('aurelia skeleton app', function() {
   });
 
   it('should load the page and display the initial page title', async () => {
-    await expect(poSkeleton.getCurrentPageTitle()).toBe('Aurelia Navigation Skeleton');
+    await expect(await poSkeleton.getCurrentPageTitle()).toBe('Aurelia Navigation Skeleton');
   });
 
   it('should display greeting', async () => {
-    await expect(poWelcome.getGreeting()).toBe('Hello World!');
+    await expect(await poWelcome.getGreeting()).toBe('Hello World!');
   });
 });
