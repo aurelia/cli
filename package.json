@@ -1,6 +1,6 @@
 {
   "name": "aurelia-cli",
-  "version": "0.31.1",
+  "version": "0.31.2",
   "description": "The command line tooling for Aurelia.",
   "keywords": [
     "aurelia",

@@ -1,3 +1,24 @@
+<a name="0.31.2"></a>
+## [0.31.2](https://github.com/aurelia/cli/compare/0.31.1...0.31.2) (2017-08-25)
+
+
+### Bug Fixes
+
+* **deps:** update esprima to 4.0.0 ([48d2a48](https://github.com/aurelia/cli/commit/48d2a48))
+* **favicon:** resolve favicon error in firefox ([01a5bb6](https://github.com/aurelia/cli/commit/01a5bb6))
+* **jest:** resolve babel-jest error ([3cfd956](https://github.com/aurelia/cli/commit/3cfd956))
+* **loader:** rev should be applied to bundle for systemjs ([691eec8](https://github.com/aurelia/cli/commit/691eec8))
+* **watch:** resolve issue where changes are not detected ([9146da2](https://github.com/aurelia/cli/commit/9146da2))
+* **watch:** support array of source files ([22a257e](https://github.com/aurelia/cli/commit/22a257e))
+* **webpack:** clean dist folder before build ([053ad98](https://github.com/aurelia/cli/commit/053ad98))
+* **webpack:** copy environment file on build ([b9c76e5](https://github.com/aurelia/cli/commit/b9c76e5))
+* **webpack:** enable sourcemaps by default ([0525dca](https://github.com/aurelia/cli/commit/0525dca))
+* **webpack:** pass env to webpack correctly ([4880c19](https://github.com/aurelia/cli/commit/4880c19))
+* **webpack:** resolve typings issues ([efcbc27](https://github.com/aurelia/cli/commit/efcbc27))
+* **webpack:** support au build --watch ([4d31ce7](https://github.com/aurelia/cli/commit/4d31ce7))
+
+
+
 <a name="0.31.1"></a>
 ## [0.31.1](https://github.com/aurelia/cli/compare/0.31.0...0.31.1) (2017-08-19)
 
