@@ -7,7 +7,7 @@
   "aspnet-webpack": "^2.0.1",
   "aurelia-animator-css": "^1.0.2",
   "aurelia-bootstrapper": "^2.1.1",
-  "aurelia-cli": "^0.31.2",
+  "aurelia-cli": "^0.31.3",
   "aurelia-loader-nodejs": "^1.0.1",
   "aurelia-pal-nodejs": "1.0.0-beta.2.0.0",
   "aurelia-protractor-plugin": "^1.0.5",

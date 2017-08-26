@@ -1,3 +1,14 @@
+<a name="0.31.3"></a>
+## [0.31.3](https://github.com/aurelia/cli/compare/0.31.2...0.31.3) (2017-08-26)
+
+
+### Bug Fixes
+
+* **protractor:** typescript errors when not using jest typings ([1ee7b91](https://github.com/aurelia/cli/commit/1ee7b91))
+* **webpack:** remove comma from arguments ([666d7c0](https://github.com/aurelia/cli/commit/666d7c0))
+
+
+
 <a name="0.31.2"></a>
 ## [0.31.2](https://github.com/aurelia/cli/compare/0.31.1...0.31.2) (2017-08-25)
 
