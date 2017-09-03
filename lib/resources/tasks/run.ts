@@ -12,8 +12,8 @@ let serve = gulp.series(
     browserSync({
       online: false,
       open: false,
-      port: 9000,
-      logLevel: 'silent',
+      port: project.serve.localPort,
+      logLevel: project.serve.logLevel,
       server: {
         baseDir: [project.platform.baseDir],
         middleware: [historyApiFallback(), function(req, res, next) {
