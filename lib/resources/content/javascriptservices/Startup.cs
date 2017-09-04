@@ -13,7 +13,7 @@ namespace WebApplicationBasic
 {
     public class Startup
     {
-        
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -34,9 +34,13 @@ namespace WebApplicationBasic
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-
-                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions {
-                    HotModuleReplacement = true
+                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
+                {
+                  HotModuleReplacement = true, 
+                  ConfigFile="webpack.netcore.config.js",
+                  HotModuleReplacementClientOptions = new Dictionary<string,string>{
+                    {"reload", "true"}
+                  }
                 });
             }
             else
