@@ -6,6 +6,7 @@ describe('The ResourceInclusion module', () => {
   let sut;
   let container;
   let pkg;
+  let project;
 
   beforeEach(() => {
     mockfs = require('mock-fs');
@@ -19,7 +20,16 @@ describe('The ResourceInclusion module', () => {
       path: '../node_modules/some-package'
     };
 
+    project = {
+      model: {
+        paths: {
+          root: 'src'
+        }
+      }
+    };
+
     container.registerInstance('package', pkg);
+    container.registerInstance('project', project);
     container.registerAlias(FakeUI, UI);
 
     ResourceInclusion = require('../../../../lib/importer/services/resource-inclusion');
@@ -31,7 +41,7 @@ describe('The ResourceInclusion module', () => {
         'some-package': {
           dist: {
             'test.css': 'body { background-color: red }',
-            output: {
+            css: {
               'test.css': 'body { background-color: red }'
             }
           }
@@ -41,30 +51,21 @@ describe('The ResourceInclusion module', () => {
   });
 
   describe('getResources', () => {
-    it('returns resource paths from package root', (done) => {
-      sut.getResources('?(dist|build|lib|css|style|styles)/*.css')
+    it('returns resources directly under package path (dist folder)', (done) => {
+      pkg.path = '../node_modules/some-package/dist';
+      sut.getResources('*.css')
       .then(result => {
-        expect(result[0]).toBe('dist/test.css');
+        expect(result[0]).toBe('test.css');
         done();
       })
       .catch(e => done.fail());
     });
 
-    it('removes duplicate dist', (done) => {
+    it('supports deeper folder structure', (done) => {
       pkg.path = '../node_modules/some-package/dist';
       sut.getResources('?(dist|build|lib|css|style|styles)/*.css')
       .then(result => {
-        expect(result[0]).toBe('test.css');
-        done();
-      })
-      .catch(e => done.fail());
-    });
-
-    it('removes duplicate dist (deeper folder structure)', (done) => {
-      pkg.path = '../node_modules/some-package/dist/output';
-      sut.getResources('?(dist|build|lib|css|style|styles)/*.css')
-      .then(result => {
-        expect(result[0]).toBe('test.css');
+        expect(result[0]).toBe('css/test.css');
         done();
       })
       .catch(e => done.fail());
