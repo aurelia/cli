@@ -78,6 +78,7 @@
   "karma-typescript-preprocessor": "^0.2.1",
   "minimatch": "^3.0.2",
   "node-sass": "4.5.3",
+  "nps": "^5.7.1",
   "nps-utils": "1.2.0",
   "opn": "^5.1.0",
   "protractor": "^5.1.2",
