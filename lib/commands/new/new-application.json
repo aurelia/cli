@@ -38,6 +38,12 @@
           "id": "web",
           "displayName": "Web"
         },
+        "targets": [
+          {
+            "id": "web",
+            "displayName": "Web"
+          }
+        ],
         "loader": {
           "id": "require",
           "displayName": "RequireJS"
@@ -95,9 +101,17 @@
         },
         {
           "case": "custom",
-          "nextActivity": 600
+          "nextActivity": 410
         }
       ]
+    },
+    {
+      "type": "state-assign",
+      "id": 410,
+      "nextActivity": 600,
+      "state": {
+        "targets": null
+      }
     },
     {
       "type": "state-assign",
@@ -223,10 +237,10 @@
     },
     {
       "id": 620,
-      "type": "input-select",
+      "type": "input-multiselect",
       "nextActivity": 630,
-      "question": "What platform are you targeting?",
-      "stateProperty": "platform",
+      "question": "What platforms are you targeting?",
+      "stateProperty": "targets",
       "options": [
         {
           "displayName": "Web",
@@ -239,10 +253,17 @@
         {
           "displayName": "ASP.NET Core",
           "description": "A powerful, patterns-based way to build dynamic websites with .NET.",
-          "flag": "here",
           "value": {
             "id": "aspnetcore",
             "displayName": "ASP.NET Core"
+          }
+        },
+        {
+          "displayName": "Cordova",
+          "description": "A platform for mobile devices.",
+          "value": {
+            "id": "cordova",
+            "displayName": "Cordova"
           }
         }
       ]
