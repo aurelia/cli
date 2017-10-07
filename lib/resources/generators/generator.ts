@@ -37,7 +37,7 @@ export default class ${className}Generator {
         let className = this.project.makeClassName(name);
 
         this.project.elements.add(
-          ProjectItem.text(\`\${fileName}.js\`, this.generateSource(className))
+          ProjectItem.text(\`\${fileName}.ts\`, this.generateSource(className))
         );
 
         return this.project.commitChanges()
