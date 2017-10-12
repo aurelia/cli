@@ -12,6 +12,7 @@ var paths = {
   root: appRoot,
   source: appRoot + '**/*.js',
   doc:'./doc',
+  specs: 'spec/**/*.js',
   packageName: pkg.name
 };
 
