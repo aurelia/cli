@@ -75,13 +75,18 @@ The Aurelia CLI supports a bunch of different technology and during `au new` you
 
 Webpack is a bundler whereas SystemJS and RequireJS are module loaders. Since bundles load much more quickly in the browser than individual files, the CLI will use its own internal bundler when you choose for the SystemJS or RequireJS module loader. If you choose to use Webpack then you typically don't need a module loader.
 
-Webpack is a very powerful module bundler. Setting up Webpack from scratch could be a very daunting task. Luckily the Aurelia CLI sets this up for you based on the technology you select during `au new`. Because there is no module loader when you choose for Webpack, all modules that your application needs have to be bundled by Webpack. Sometimes you will need to help the bundler out by using `PLATFORM.moduleName()` calls for module references in your code.  
+Webpack is a very powerful module bundler. Setting up Webpack from scratch could be a very daunting task though. Luckily the Aurelia CLI sets Webpack up for you based on the technology that you select during `au new`. Because there is no module loader when you choose for Webpack, all modules that your application needs have to be bundled by Webpack. Sometimes you will need to help the bundler out by using `PLATFORM.moduleName()` calls for module references in your code.  
 
 Webpack is growing in popularity and there is a wealth of loaders, plugins, and documentation available for it.
 
-SystemJS is a "Dynamic ES module loader". When you choose for SystemJS during `au new` you're also getting the Aurelia CLI Bundler. This is a powerful combination that bundles your application but you can also load modules at runtime that are not in the bundle. SystemJS is actively being developed, and often goes through (large) changes in order to stay in sync with the WhatWG Loader specification.
+SystemJS is a "Dynamic ES module loader". When you choose for SystemJS during `au new` you're also getting the Aurelia CLI Bundler. This is a powerful combination that bundles your application, but also allows you to load modules at runtime that are not in the bundle. SystemJS is actively being developed as it tries to stay in sync with the WhatWG Loader specification.
 
-RequireJS has been around for a long time. As opposed to SystemJS it is done and no huge changes are made, which makes it a little bit more stable than SystemJS. With either module loader (RequireJS, SystemJS) you will be using the Aurelia CLI Bundler. Both SystemJS and RequireJS support loader plugins, such as `text`, `json` and `svg`. The bundle configuration is in the same format for both module loaders. 
+RequireJS has been around for a long time. As opposed to SystemJS it is done and no large changes are made, which makes it a little bit more stable than SystemJS. With either module loader (RequireJS, SystemJS) you will be using the Aurelia CLI Bundler. Both SystemJS and RequireJS support loader plugins, such as `text`, `json` and `svg`. The bundle configuration is in the same format for both module loaders. 
+
+Resources:
+- http://requirejs.org/
+- https://github.com/systemjs/systemjs/
+- https://webpack.github.io/
 
 ## [What if I forget this stuff?](aurelia-doc://section/10/version/1.0.0)
 
