@@ -329,6 +329,22 @@ Sometimes you can't get a library to work with the module loading system. That's
   </source-code>
 </code-listing>
 
+You may want to prepend or append scripts based on the active environment. That's entirely possible through the following syntax:
+
+<code-listing heading="Prepend/append per environment">
+  <source-code lang="JavaScript">
+    {
+      "name": "vendor-bundle.js",
+      "prepend": [{
+		 "path": "scripts/require.js",
+		 "env": "stage & prod"
+	  }]
+    }
+  </source-code>
+</code-listing>
+
+The above configuration would prepend the `scripts/require.js` file only for the `stage` and `prod` environments.
+
 ### A Very Stubborn Legacy Library With Plugins
 
 Some legacy libraries may support plugins which you also want included in your bundle. In some cases these plugins depend on a global object defined by the main library, so it is important that the plugins exist later in the bundle than the main library scripts. These plugins can go in the `append` section, which works exactly the same as the `prepend` section but the scripts are appended to the end of the bundle, after all other items.  Like the `prepend` section all items are relative to the project folder, not the `src`.
