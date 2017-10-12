@@ -1,14 +1,28 @@
 To install JavascriptServices, add the Microsoft.AspNetCore.SpaServices package to your project via "dotnet add package Microsoft.AspNetCore.SpaServices".
 
-Afterwards, open the Startup.cs file and go to the Configure() method. In this method add the following code to use the webpack middleware:
+Afterwards, open the Startup.cs file and add the following "using" statement at the top of the file:
 
-app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions {
-    HotModuleReplacement = true
-});
+"using Microsoft.AspNetCore.SpaServices.Webpack;"
 
-You may need to add "using Microsoft.AspNetCore.SpaServices.Webpack;" if it isn't done by your editor automatically.
 
-When that's done, in the same Configure() method, make sure that ASP.NET Core serves static files and map the Spa fallback route as follows:
+Then move on to the Configure() method. Make sure that this method contains the following code, and add missing parts accordingly:
+
+if (env.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+    app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
+    {
+      HotModuleReplacement = true, 
+      ConfigFile="webpack.netcore.config.js",
+      HotModuleReplacementClientOptions = new Dictionary<string,string>{
+        {"reload", "true"}
+      }
+    });
+}
+else
+{
+    app.UseExceptionHandler("/Home/Error");
+}
 
 app.UseStaticFiles();
 
