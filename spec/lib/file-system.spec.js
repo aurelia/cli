@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 const ERROR_CODES = {
   ENOENT: 'ENOENT',
@@ -8,18 +8,16 @@ const ERROR_CODES = {
 describe('The file-system module', () => {
   let mockfs;
   let path;
-  let mkdirp;
   let fs;
 
   let readDir;
   let readFile;
   let writeDir;
   let writeFile;
-  
+
   beforeEach(() => {
     mockfs = require('mock-fs');
     path = require('path');
-    mkdirp = require('../../lib/mkdirp');
     fs = require('../../lib/file-system');
 
     readDir = 'read';
@@ -41,7 +39,7 @@ describe('The file-system module', () => {
 
     mockfs(config);
   });
-  
+
   afterEach(() => {
     mockfs.restore();
   });
@@ -73,7 +71,7 @@ describe('The file-system module', () => {
       }).catch(e => {
         expect(e.code).toBe(ERROR_CODES.ENOENT);
       }).then(done);
-    })
+    });
   });
 
   describe('The readdir() function', () => {
@@ -153,7 +151,7 @@ describe('The file-system module', () => {
   describe('The writeFile() function', () => {
     it('creates a new file', done => {
       fs.writeFile(writeFile.path, writeFile.content).then(() => {
-        return fs.readFile(writeFile.path)
+        return fs.readFile(writeFile.path);
       }).then(content => {
         expect(content).toBe(writeFile.content);
         done();

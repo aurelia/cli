@@ -203,9 +203,9 @@ describe('the Bundle module', () => {
   });
 
   it('getBundledFiles returns all files of all includes', () => {
-    let aFile = {path:'a.js'};
-    let bFile = {path:'b.js'};
-    let cFile = {path:'c.js'};
+    let aFile = {path: 'a.js'};
+    let bFile = {path: 'b.js'};
+    let cFile = {path: 'c.js'};
 
     sut.includes = [{
       getAllFiles: () => [aFile, bFile]
@@ -217,9 +217,9 @@ describe('the Bundle module', () => {
   });
 
   it('getBundledFiles returns unique files of all includes', () => {
-    let aFile = {path:'a.js'};
-    let bFile = {path:'b.js'};
-    let cFile = {path:'c.js'};
+    let aFile = {path: 'a.js'};
+    let bFile = {path: 'b.js'};
+    let cFile = {path: 'c.js'};
 
     sut.includes = [{
       getAllFiles: () => [aFile, bFile]

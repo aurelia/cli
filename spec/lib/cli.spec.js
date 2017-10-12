@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 describe('The cli', () => {
   let fs;
   let path;
@@ -23,8 +23,8 @@ describe('The cli', () => {
     const fsConfig = {};
     fsConfig[dir] = {};
     fsConfig['package.json'] = {};
-    
-    mockfs(fsConfig);    
+
+    mockfs(fsConfig);
   });
 
   afterEach(() => {
@@ -40,8 +40,8 @@ describe('The cli', () => {
 
     it('resolves to nothing', done => {
       cli._establishProject({})
-        .then(project => {
-          expect(project).not.toBeDefined();
+        .then(proj => {
+          expect(proj).not.toBeDefined();
         })
         .catch(fail).then(done);
     });
@@ -51,10 +51,10 @@ describe('The cli', () => {
         .then(() => cli._establishProject({
           runningLocally: true
         }))
-        .then(project => {
+        .then(proj => {
           expect(Project.establish)
             .toHaveBeenCalledWith(cli.ui, path.join(process.cwd()));
-          expect(project).toBe(project);
+          expect(proj).toBe(proj);
         })
         .catch(fail).then(done);
     });
@@ -73,7 +73,7 @@ describe('The cli', () => {
         .catch(done);
     });
 
-    it(`logs 'No Aurelia project found.'`, done => {
+    it('logs \'No Aurelia project found.\'', done => {
       spyOn(cli.ui, 'log');
       cli._establishProject({
         runningLocally: true
@@ -112,7 +112,7 @@ describe('The cli', () => {
         beforeEach(() => {
           mockfs({
             'package.json': '{"version": "1.0.0"}'
-          })
+          });
           spyOn(cli.ui, 'log')
             .and.callFake(() => new Promise(resolve => resolve()));
         });
@@ -176,7 +176,7 @@ describe('The cli', () => {
         execute: () => {}
       };
       const args = {};
-      spyOn(cli, '_establishProject').and.returnValue(new Promise(resolve => 
+      spyOn(cli, '_establishProject').and.returnValue(new Promise(resolve =>
         resolve(project)
       ));
       spyOn(command, 'execute').and.returnValue(new Promise(resolve => resolve({})));
@@ -204,7 +204,7 @@ describe('The cli', () => {
         execute: () => {}
       };
       const args = {};
-      spyOn(cli, '_establishProject').and.returnValue(new Promise(resolve => 
+      spyOn(cli, '_establishProject').and.returnValue(new Promise(resolve =>
         resolve(project)
       ));
       spyOn(command, 'execute').and.returnValue(new Promise(resolve => resolve({})));
