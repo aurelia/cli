@@ -1,5 +1,5 @@
 import * as jest from 'jest-cli';
-import gutil from 'gulp-util';
+import * as gutil from 'gulp-util';
 import through2 from 'through2';
 import * as path from 'path';
 import * as packageJson from '../../package.json';
