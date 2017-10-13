@@ -4,7 +4,14 @@
   "rules": {
     "strict": ["error", "global"],
     "no-console": 0,
-    "no-inner-declarations": 0
+    "no-inner-declarations": 0,
+    "comma-dangle": ["error", {
+      "arrays": "never",
+      "objects": "never",
+      "imports": "never",
+      "exports": "never",
+      "functions": "never"
+    }]
   },
   "parserOptions": {
     "sourceType": "script"
