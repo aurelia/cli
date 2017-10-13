@@ -4,7 +4,6 @@ Afterwards, open the Startup.cs file and add the following "using" statement at 
 
 "using Microsoft.AspNetCore.SpaServices.Webpack;"
 
-
 Then move on to the Configure() method. Make sure that this method contains the following code, and add missing parts accordingly:
 
 if (env.IsDevelopment())
@@ -36,5 +35,13 @@ app.UseMvc(routes =>
         name: "spa-fallback",
         defaults: new { controller = "Home", action = "Index" });
 });
+
+
+Then, in the ConfigureServices method, make sure that the application uses Mvc:
+
+public void ConfigureServices(IServiceCollection services)
+{
+  services.ConfigureMvc();
+}
 
 That's it for the Startup.cs file.
