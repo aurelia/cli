@@ -9,25 +9,20 @@ import * as project from '../aurelia.json';
 import {CLIOptions, build} from 'aurelia-cli';
 import * as eventStream from 'event-stream';
 
-function configureEnvironment() {
-  let env = CLIOptions.getEnvironment();
-
-  return gulp.src(`aurelia_project/environments/${env}.ts`)
-    .pipe(changedInPlace({firstPass:true}))
-    .pipe(rename('environment.ts'))
-    .pipe(gulp.dest(project.paths.root));
-}
-
 var typescriptCompiler = typescriptCompiler || null;
 
 function buildTypeScript() {
+  let env = CLIOptions.getEnvironment();
+
   typescriptCompiler = ts.createProject('tsconfig.json', {
     typescript: require('typescript')
   });
 
   let dts = gulp.src(project.transpiler.dtsSource);
 
-  let src = gulp.src(project.transpiler.source)
+  let src = gulp.src(`aurelia_project/environments/${env}.ts`)
+    .pipe(rename(`../../${project.paths.root}/environment.ts`))
+    .pipe(gulp.src(project.transpiler.source, { passthrough: true }))
     .pipe(changedInPlace({firstPass: true}));
 
   return eventStream.merge(dts, src)
@@ -39,6 +34,5 @@ function buildTypeScript() {
 }
 
 export default gulp.series(
-  configureEnvironment,
   buildTypeScript
 );
