@@ -41,7 +41,7 @@ Then, in the ConfigureServices method, make sure that the application uses Mvc:
 
 public void ConfigureServices(IServiceCollection services)
 {
-  services.ConfigureMvc();
+  services.AddMvc();
 }
 
 That's it for the Startup.cs file.
