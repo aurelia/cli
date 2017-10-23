@@ -1,3 +1,32 @@
+<a name="0.32.0"></a>
+# [0.32.0](https://github.com/aurelia/cli/compare/0.31.3...0.32.0) (2017-10-23)
+
+
+### Bug Fixes
+
+* **bundle:** exclude source-maps when applicable ([d94629f](https://github.com/aurelia/cli/commit/d94629f))
+* **cli:** add VSCode Chrome Debugger to RequireJS/SystemJS ([3f4efd9](https://github.com/aurelia/cli/commit/3f4efd9))
+* **generator-ts:** use .ts ending in template ([c10061f](https://github.com/aurelia/cli/commit/c10061f))
+* **importer:** search for resources from package dist ([71ad598](https://github.com/aurelia/cli/commit/71ad598))
+* **importer:** throw clear unsupported error for webpack projects ([5b23897](https://github.com/aurelia/cli/commit/5b23897))
+* **javascriptservices:** update for .net core 2.0 ([f41af63](https://github.com/aurelia/cli/commit/f41af63))
+* **jsconfig:** only create jsconfig for babel+vscode ([173898c](https://github.com/aurelia/cli/commit/173898c))
+* **npm script:** add required dependency to start npm task ([de33698](https://github.com/aurelia/cli/commit/de33698))
+* **tasks:** copy lint task to scaffolded app ([e16c216](https://github.com/aurelia/cli/commit/e16c216))
+* **webpack:** add tslint config ([668b2fb](https://github.com/aurelia/cli/commit/668b2fb))
+* **webpack:** linux case sensitivity ([2b2d3ce](https://github.com/aurelia/cli/commit/2b2d3ce))
+* **webpack:** uglify by default for production builds ([0732294](https://github.com/aurelia/cli/commit/0732294))
+
+
+### Features
+
+* **cli:** add `au config` command ([5cd16f6](https://github.com/aurelia/cli/commit/5cd16f6)), closes [aurelia/cli#629](https://github.com/aurelia/cli/issues/629)
+* **source-maps:** bundling improvements ([abeba3d](https://github.com/aurelia/cli/commit/abeba3d)), closes [aurelia/cli#659](https://github.com/aurelia/cli/issues/659) [aurelia/cli#624](https://github.com/aurelia/cli/issues/624)
+* **tasks:** add lint tasks ([596442a](https://github.com/aurelia/cli/commit/596442a))
+* **yarn:** use yarn to install deps if possible ([460887e](https://github.com/aurelia/cli/commit/460887e))
+
+
+
 <a name="0.31.3"></a>
 ## [0.31.3](https://github.com/aurelia/cli/compare/0.31.2...0.31.3) (2017-08-26)
 
