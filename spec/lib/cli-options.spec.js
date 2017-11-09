@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 describe('The cli-options', () => {
   let cliOptions;
 
@@ -9,12 +9,12 @@ describe('The cli-options', () => {
   describe('The CLIOptions', () => {
     it('gets the right task name', () => {
       const paths = [
-        "C:\\some\path to\\project\\aurelia_project\\tasks\\",
-        "/some/path to/project/aurelia_project/tasks/"
+        'C:\\some\path to\\project\\aurelia_project\\tasks\\',
+        '/some/path to/project/aurelia_project/tasks/'
       ];
       const files = {
-        "run.ts": "run",
-        "run.js": "run"
+        'run.ts': 'run',
+        'run.js': 'run'
       };
       for (let path of paths) {
         for (let file of Object.keys(files)) {

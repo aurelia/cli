@@ -1,0 +1,23 @@
+Take a look at Views/Home/Index.cshtml and make sure that it contains the following parts:
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div aurelia-app="main">Loading...</div>
+
+@section scripts {
+<environment names="Development">
+   <script type="text/javascript" src="~/dist/vendor.bundle.js" asp-append-version="true"></script>
+   <script type="text/javascript" src="~/dist/app.bundle.js" asp-append-version="true"></script>
+ </environment>
+<environment names="Production">
+   <script type="text/javascript" asp-src-include="~/dist/common.*.bundle.js" asp-append-version="true"></script>
+ </environment>
+ <environment names="Staging, Production">
+   <script type="text/javascript" asp-src-include="~/dist/vendor.*.bundle.js" asp-append-version="true"></script>
+   <script type="text/javascript" asp-src-include="~/dist/app.*.bundle.js" asp-append-version="true"></script>
+ </environment>
+}
+
+That's it for Index.cshtml

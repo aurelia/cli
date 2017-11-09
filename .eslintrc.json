@@ -1,8 +1,22 @@
 {
   "extends": "./node_modules/aurelia-tools/.eslintrc.json",
+  "parser": "babel-eslint",
   "rules": {
-    "strict": 0,
+    "strict": ["error", "global"],
     "no-console": 0,
-    "no-inner-declarations": 0
+    "no-inner-declarations": 0,
+    "comma-dangle": ["error", {
+      "arrays": "never",
+      "objects": "never",
+      "imports": "never",
+      "exports": "never",
+      "functions": "never"
+    }]
+  },
+  "parserOptions": {
+    "sourceType": "script"
+  },
+  "env": {
+    "node": true
   }
 }

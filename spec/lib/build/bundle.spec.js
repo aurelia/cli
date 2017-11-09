@@ -203,13 +203,31 @@ describe('the Bundle module', () => {
   });
 
   it('getBundledFiles returns all files of all includes', () => {
+    let aFile = {path: 'a.js'};
+    let bFile = {path: 'b.js'};
+    let cFile = {path: 'c.js'};
+
     sut.includes = [{
-      getAllFiles: () => ['a.js', 'b.js']
+      getAllFiles: () => [aFile, bFile]
     }, {
-      getAllFiles: () => ['c.js']
+      getAllFiles: () => [cFile]
     }];
 
-    expect(sut.getBundledFiles()).toEqual(['a.js', 'b.js', 'c.js']);
+    expect(sut.getBundledFiles()).toEqual([aFile, bFile, cFile]);
+  });
+
+  it('getBundledFiles returns unique files of all includes', () => {
+    let aFile = {path: 'a.js'};
+    let bFile = {path: 'b.js'};
+    let cFile = {path: 'c.js'};
+
+    sut.includes = [{
+      getAllFiles: () => [aFile, bFile]
+    }, {
+      getAllFiles: () => [cFile, cFile]
+    }];
+
+    expect(sut.getBundledFiles()).toEqual([aFile, bFile, cFile]);
   });
 
   it('configures dependencies in the same order as they were entered to prevent a wrong module load order', done => {

@@ -20,7 +20,7 @@ describe('The project module', () => {
     Project = require('../../lib/project').Project;
 
     mockfs();
-    
+
     project = new Project(ui, '', {
       paths: { },
       transpiler: {
