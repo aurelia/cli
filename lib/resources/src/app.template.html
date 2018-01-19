@@ -1,0 +1,22 @@
+<template>
+  <!-- @if features.navigation!='navigation' -->
+  <h1>${message}</h1>
+  <!-- @endif -->
+  <!-- @if bundler.id!='webpack' -->
+    <!-- @if features.bootstrap='bootstrap' -->
+    <require from="bootstrap/css/bootstrap.css"></require>
+    <!-- @endif -->
+    <!-- @if features.fontAwesome='fontAwesome' -->
+    <require from="font-awesome.css"></require>
+    <!-- @endif -->
+  <!-- @endif -->
+  <!-- @if features.navigation='navigation' -->
+  <require from="<!-- @if bundler.id='webpack' -->./<!-- @endif -->nav-bar.html"></require>
+
+  <nav-bar router.bind="router"></nav-bar>
+
+  <div class="page-host">
+    <router-view></router-view>
+  </div>
+  <!-- @endif -->
+</template>
