@@ -1,20 +1,10 @@
 ---
-{
-  "name": "CLI: Webpack",
-  "culture": "en-US",
-  "description": "Webpack and the Aurelia CLI.",
-  "engines" : { "aurelia-doc" : "^1.0.0" },
-  "author": {
-    "name": "Jeroen Vinke",
-  	"url": "http://jeroenvinke.nl"
-  },
-  "contributors": [],
-  "translators": [],
-  "keywords": ["CLI", "Webpack", "Bundler"]
-}
+name: Webpack
+description: Webpack and the Aurelia CLI.
+author: Jeroen Vinke (http://jeroenvinke.nl)
 ---
 
-## [Introduction](aurelia-doc://section/1/version/1.0.0)
+## Introduction
 The Aurelia CLI fully supports Webpack. When you create a new project by running `au new` you can either choose for the Aurelia CLI bundler or you can choose for Webpack. The information in this document is specifically for people using the Webpack bundler.
 
 The Aurelia CLI will generate a `webpack.config.js` based on the technology that you select during `au new`. Like SASS more than LESS? Jest more than Karma? The Aurelia CLI can configure `webpack.config.js` just how you like it.
@@ -26,12 +16,12 @@ If you would like to learn more about Webpack, take a look at the following reso
 - https://blog.madewithenvy.com/getting-started-with-webpack-2-ed2b86c68783
 - https://webpack.js.org/configuration/
 
-## [Deploying Your App](aurelia-doc://section/2/version/1.0.0)
+## Deploying Your App
 When your application is done, the next step is to deploy it. First you will want to create a production build with `au build --env prod`. Depending on whether you use ASP.NET Core or not, the build output will end up in the `dist` folder or the `wwwroot/dist` folder.
 
 If you're not using ASP.NET core then everything you need to deploy can be found in the dist folder. Just copy this to the webserver and you'll be good to go. For ASP.NET Core however you'll want to do a production build (`au build --env prod`) and then deploy the ASP.NET Core application. Details can be found in the [Microsoft Docs](https://docs.microsoft.com/en-us/aspnet/core/publishing/?tabs=aspnetcore2x).
 
-## [Build options](aurelia-doc://section/3/version/1.0.0)
+## Build options
 When you look in the `webpack.config.js` you'll see that it exports a function:
 
 ```
@@ -56,12 +46,12 @@ The build and run tasks passes in these parameters. Most of these settings are d
 
 One is missing though: `production`. The environment (whether it's a production build or not) is determined from the `--env` flag. `au build` creates a development build, while `au build --env prod` creates production build.
 
-## [Installing 3rd party dependencies](aurelia-doc://section/4/version/1.0.0)
+## [Installing 3rd party dependencies
 Webpack is a powerful and smart bundler, which means that you often don't need to configure a 3rd party dependency.  And if you do then there's a good chance that someone has done it before, so Google is your friend here. 
 
 Check out the [Webpack documentation](https://webpack.js.org/concepts/) for more info on the `webpack.config.js`.
 
-## [Unit Testing](aurelia-doc://section/5/version/1.0.0)
+## Unit Testing
 Depending on what you've selected during `au new` you will have the possibility to run one of the following test runners:
 
 - Jest

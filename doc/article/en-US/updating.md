@@ -1,20 +1,10 @@
 ---
-{
-  "name": "CLI: Updating",
-  "culture": "en-US",
-  "description": "The process of updating the Aurelia CLI.",
-  "engines" : { "aurelia-doc" : "^1.0.0" },
-  "author": {
-    "name": "Jeroen Vinke",
-  	"url": "http://jeroenvinke.nl"
-  },
-  "contributors": [],
-  "translators": [],
-  "keywords": ["CLI", "Updating", "Update"]
-}
+name: Updating
+description: The process of updating the Aurelia CLI.
+author: Jeroen Vinke (http://jeroenvinke.nl)
 ---
 
-## [Updating the Aurelia CLI](aurelia-doc://section/1/version/1.0.0)
+## Updating the Aurelia CLI
 
 There are a few steps involved to update the Aurelia CLI to a newer version. In this chapter these steps will be explained.
 

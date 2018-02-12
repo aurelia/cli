@@ -1,20 +1,10 @@
 ---
-{
-  "name": "CLI: Tasks",
-  "culture": "en-US",
-  "description": "Introduction of the Aurelia CLI.",
-  "engines" : { "aurelia-doc" : "^1.0.0" },
-  "author": {
-    "name": "Jeroen Vinke",
-  	"url": "http://jeroenvinke.nl"
-  },
-  "contributors": [],
-  "translators": [],
-  "keywords": ["CLI", "Gulp", "Tasks"]
-}
+name: Gulp Tasks
+description: Gulp tasks using the Aurelia CLI.
+author: Jeroen Vinke (http://jeroenvinke.nl)
 ---
 
-## [Introduction](aurelia-doc://section/1/version/1.0.0)
+## Introduction
 
 The Aurelia CLI allows you to execute Gulp tasks, and a few gulp tasks are provided out of the box that get you started. For any new project you need a task to build, run and test the application, so the CLI provides these tasks for you. These tasks can be found in the `aurelia_project/tasks` directory.
 
@@ -22,7 +12,7 @@ Gulp tasks in a CLI application are plain Gulp v4 tasks. Gulp v4 brings gulp.ser
 
 Typescript is entirely supported to be used in Gulp tasks. As is ES2017. The language you use in Gulp tasks is equivalent to the language in your source code and is determined from the `transpiler` object in `aurelia.json`.
 
-## [Task execution](aurelia-doc://section/2/version/1.0.0)
+## Task execution
 A task can be executed with the `au` command. `au build` would execute the Gulp task that's exported from `aurelia_project/tasks/build.js`, and `au test` executes the task that's in `aurelia_project/tasks/test.js`.
 
 What's good to know is that the Aurelia CLI executes the task that's exported as default, which means that you can export multiple tasks: 
@@ -38,13 +28,13 @@ What's good to know is that the Aurelia CLI executes the task that's exported as
 
 When you execute the above task using the `au` command, `task1` will be executed.
 
-## [Creating a new task](aurelia-doc://section/3/version/1.0.0)
+## Creating a new task
 Cool thing about the task runner of the CLI is that you can create your own tasks as well, and run them using the `au` command. 
 
 Just create a new `.js` or `.ts` file in the `aurelia_project/tasks` directory and export a function from that file.
 
 
-## [Task metadata](aurelia-doc://section/4/version/1.0.0)
+## Task metadata
 The `au help` command not only shows standard Aurelia CLI commands, it also lists tasks, but only those that have defined what we call "task metadata". This metadata can be found in a `.json` file that has the same name as a task. 
 
 For example, the `build.js` task could have a `build.json` file with the following structure:
