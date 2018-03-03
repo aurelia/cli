@@ -3,6 +3,8 @@ const latestVersion = require('latest-version');
 const fs = require('fs');
 const path = require('path');
 
+const ignore = ['text', 'gulp', 'extract-text-webpack-plugin'];
+
 gulp.task('update-cli-dependenciesjs', function(done) {
   let deps = getDepsJSON();
   updateCLIVersion(deps);
@@ -15,14 +17,14 @@ gulp.task('update-cli-dependenciesjs', function(done) {
 gulp.task('update-all-dependenciesjs', function() {
   let deps = getDepsJSON();
   let p = Promise.resolve();
-  let lookup = Object.keys(deps);
+  let lookup = Object.keys(deps).filter(x => !ignore.contains(x));
 
   // for all entries in dependencies.json, lookup the latest version and update the json file
   for (let i = 0; i < lookup.length; i++) {
     p = p.then(() => {
       return latestVersion(lookup[i])
       .then(ver => {
-        console.log('Latest version of ' + lookup[i] + ' is: ' + ver);
+        console.log(`Latest version of ${lookup[i]} (currently ${deps[lookup[i]]}) is: ${ver}`);
         deps[lookup[i]] = '^' + ver;
       });
     });

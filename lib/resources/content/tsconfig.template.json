@@ -22,6 +22,7 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "sourceRoot": "src",
+    "sourceMap": true,
     "allowJs": true,
     "baseUrl": "src",
     "skipLibCheck": true,
