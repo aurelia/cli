@@ -13,7 +13,7 @@
     "allowJs": true,
     "moduleResolution": "node",
     "lib": ["es2017", "dom"],
-    "baseUrl": "src",
+    "baseUrl": "src"
     // @endif
     // @if bundler.id='webpack'
     "target": "es5",
