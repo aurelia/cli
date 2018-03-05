@@ -5,7 +5,8 @@ import * as project from '../aurelia.json';
 export default function lint() {
   return gulp.src([project.transpiler.source])
     .pipe(tslint({
-      tslint: require("tslint")
+      tslint: require("tslint"),
+      formatter: 'prose'
     }))
-    .pipe(tslint.report("prose"));
+    .pipe(tslint.report());
 }
