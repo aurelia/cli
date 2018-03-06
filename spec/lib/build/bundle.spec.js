@@ -202,6 +202,16 @@ describe('the Bundle module', () => {
     expect(sut.getBundledModuleIds()).toEqual(['a', 'b', 'c']);
   });
 
+  it('getBundledModuleIds returns sorts module ids', () => {
+    sut.includes = [{
+      getAllModuleIds: () => ['d', 'b']
+    }, {
+      getAllModuleIds: () => ['b', 'a']
+    }];
+
+    expect(sut.getBundledModuleIds()).toEqual(['a', 'b', 'd']);
+  });
+
   it('getBundledFiles returns all files of all includes', () => {
     let aFile = {path: 'a.js'};
     let bFile = {path: 'b.js'};

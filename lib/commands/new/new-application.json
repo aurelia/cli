@@ -22,10 +22,13 @@
           "displayName": "None",
           "fileExtension": ".css"
         },
-        "unitTestRunner": {
+        "unitTestRunner": [{
+          "id": "jest",
+          "displayName": "Jest"
+        }, {
           "id": "karma",
           "displayName": "Karma"
-        },
+        }],
         "testFramework": {
           "id": "jasmine",
           "displayName": "Jasmine"
@@ -39,12 +42,23 @@
           "displayName": "Web"
         },
         "loader": {
-          "id": "require",
-          "displayName": "RequireJS"
+          "id": "none",
+          "displayName": "None"
         },
         "bundler": {
-          "id": "cli",
-          "displayName": "Aurelia-CLI"
+          "id": "webpack",
+          "displayName": "Webpack"
+        },
+        "build": {
+          "options": {
+            "server": "dev",
+            "extractCss": "prod",
+            "coverage": false
+          }
+        },
+        "integrationTestRunner": {
+          "id": "none",
+          "displayName": "None"
         }
       }
     },
@@ -65,12 +79,12 @@
       "options": [
         {
           "displayName": "Default ESNext",
-          "description": "A basic web-oriented setup with Babel and RequireJS for modern JavaScript development.",
+          "description": "A basic web-oriented setup with Babel and Webpack for modern JavaScript development.",
           "value": "default-esnext"
         },
         {
           "displayName": "Default TypeScript",
-          "description": "A basic web-oriented setup with TypeScript and RequireJS for modern JavaScript development.",
+          "description": "A basic web-oriented setup with TypeScript and Webpack for modern JavaScript development.",
           "value": "default-typescript"
         },
         {
