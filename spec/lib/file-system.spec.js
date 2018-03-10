@@ -122,6 +122,13 @@ describe('The file-system module', () => {
       }).catch(fail).then(done);
     });
 
+    it('returns a promise resolving to raw buffer of the files content when encoding is null', done => {
+      fs.readFile(readFile.path, null).then(buf => {
+        expect(Buffer.isBuffer(buf)).toBe(true);
+        expect(buf.toString('utf8')).toBe(readFile.content);
+      }).catch(fail).then(done);
+    });
+
     it('rejects with ENOENT error', done => {
       fs.readFile(writeFile.path).then(() => {
         fail('expected promise to be rejected');
@@ -136,6 +143,12 @@ describe('The file-system module', () => {
     it('returns the files content', () => {
       expect(fs.readFileSync(readFile.path))
         .toBe(readFile.content);
+    });
+
+    it('returns raw buffer of files content when encoding is null', () => {
+      let buf = fs.readFileSync(readFile.path, null);
+      expect(Buffer.isBuffer(buf)).toBe(true);
+      expect(buf.toString('utf8')).toBe(readFile.content);
     });
 
     it('throws an ENOENT error', () => {
