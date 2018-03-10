@@ -38,6 +38,7 @@
     "esprima": "^4.0.0",
     "glob": "^7.1.1",
     "gulp": "^4.0.0",
+    "htmlparser2": "^3.9.2",
     "npm-which": "^3.0.1",
     "opn": "^5.0.0",
     "preprocess": "^3.1.0",

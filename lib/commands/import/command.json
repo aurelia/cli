@@ -1,10 +1,4 @@
 {
   "name": "import",
-  "description": "Configures a package in aurelia.json",
-  "parameters": [
-    {
-      "name": "packages",
-      "description": "Package names, separated by spaces"
-    }
-  ]
+  "description": "'au import' has been removed. You don't need to import anymore, dependencies are traced automatically."
 }

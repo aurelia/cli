@@ -1,7 +1,5 @@
 {
   "g":"generate",
-  "i":"install",
   "h":"help",
-  "u":"uninstall",
   "n":"new"
 }
