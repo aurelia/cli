@@ -1,3 +1,30 @@
+<a name="0.33.0"></a>
+# [0.33.0](https://github.com/aurelia/cli/compare/0.32.0...0.33.0) (2018-03-16)
+
+
+### Bug Fixes
+
+* **bundle:** sort bundle files by path ([77697b1](https://github.com/aurelia/cli/commit/77697b1))
+* **dependencies:** add jest-matchers for karma tests using webpack ([83c8bcf](https://github.com/aurelia/cli/commit/83c8bcf))
+* **gitignore:** track vscode workspace files ([14f9bdd](https://github.com/aurelia/cli/commit/14f9bdd))
+* **importer:** support scoped packages ([859df5b](https://github.com/aurelia/cli/commit/859df5b))
+* **javascriptservices:** update configuration to set public path for static resources ([21e8a27](https://github.com/aurelia/cli/commit/21e8a27)), closes [#741](https://github.com/aurelia/cli/issues/741)
+* **jest:** update aurelia-pal-nodejs ([578f400](https://github.com/aurelia/cli/commit/578f400))
+* **rjs-ts:** add baseUrl to tsconfig ([ac020a1](https://github.com/aurelia/cli/commit/ac020a1))
+
+
+### Features
+
+* **build:** add support for external modules ([fc5f197](https://github.com/aurelia/cli/commit/fc5f197)), closes [#802](https://github.com/aurelia/cli/issues/802)
+* **bundle:** sort module ids ([5ed65ce](https://github.com/aurelia/cli/commit/5ed65ce))
+* **cli-bundler:** add --open flag ([23fc079](https://github.com/aurelia/cli/commit/23fc079))
+* **new:** switch default to webpack ([15b1f1f](https://github.com/aurelia/cli/commit/15b1f1f))
+* **vscode:** karma debug profile ([9911d4d](https://github.com/aurelia/cli/commit/9911d4d))
+* **webpack:** add analyze flag to enable webpack bundle analyzer ([6ac3260](https://github.com/aurelia/cli/commit/6ac3260))
+* **webpack:** update to webpack 4 ([5838e15](https://github.com/aurelia/cli/commit/5838e15))
+
+
+
 <a name="0.32.0"></a>
 # [0.32.0](https://github.com/aurelia/cli/compare/0.31.3...0.32.0) (2017-10-23)
 

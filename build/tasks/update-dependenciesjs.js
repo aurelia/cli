@@ -17,7 +17,7 @@ gulp.task('update-cli-dependenciesjs', function(done) {
 gulp.task('update-all-dependenciesjs', function() {
   let deps = getDepsJSON();
   let p = Promise.resolve();
-  let lookup = Object.keys(deps).filter(x => !ignore.contains(x));
+  let lookup = Object.keys(deps).filter(x => !ignore.includes(x));
 
   // for all entries in dependencies.json, lookup the latest version and update the json file
   for (let i = 0; i < lookup.length; i++) {
