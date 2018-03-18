@@ -393,11 +393,11 @@
           }
         },
         {
-          "displayName": "Post CSS",
+          "displayName": "PostCSS",
           "description": "A tool for transforming CSS with JavaScript.",
           "value": {
             "id": "postcss",
-            "displayName": "Post CSS",
+            "displayName": "PostCSS",
             "fileExtension": ".css"
           }
         }
