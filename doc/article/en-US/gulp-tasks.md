@@ -1,7 +1,7 @@
 ---
 name: Gulp Tasks
 description: Gulp tasks using the Aurelia CLI.
-author: Jeroen Vinke (http://jeroenvinke.nl)
+author: Jeroen Vinke (https://jeroenvinke.nl)
 ---
 
 ## Introduction

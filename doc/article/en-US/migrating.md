@@ -1,10 +1,10 @@
 ---
 name: Migrating
 description: Introduction of the Aurelia CLI.
-author: Jeroen Vinke (http://jeroenvinke.nl)
+author: Jeroen Vinke (https://jeroenvinke.nl)
 ---
 
-# Aurelia-CLI Bundler to Webpack
+## Aurelia-CLI Bundler to Webpack
 
 There are differences between the Aurelia CLI bundler and the Webpack bundler. When you are migrating an existing application from the integrated bundler to Webpack there are a few things to keep in mind.
 

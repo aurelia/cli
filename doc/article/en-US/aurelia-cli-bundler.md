@@ -1,7 +1,7 @@
 ---
 name: Aurelia CLI Bundler
 description: In depth guide to the integrated Aurelia CLI Bundler.
-author: Jeroen Vinke (http://jeroenvinke.nl)
+author: Jeroen Vinke (https://jeroenvinke.nl)
 ---
 
 ## Introduction
@@ -573,4 +573,3 @@ That should make it work at runtime, but if you use Typescript it's going to tel
 </code-listing>
 
 You might have to restart your editor to see the effect of these changes.
-

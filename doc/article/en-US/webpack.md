@@ -1,7 +1,7 @@
 ---
 name: Webpack
 description: Webpack and the Aurelia CLI.
-author: Jeroen Vinke (http://jeroenvinke.nl)
+author: Jeroen Vinke (https://jeroenvinke.nl)
 ---
 
 ## Introduction
@@ -46,7 +46,7 @@ The build and run tasks passes in these parameters. Most of these settings are d
 
 One is missing though: `production`. The environment (whether it's a production build or not) is determined from the `--env` flag. `au build` creates a development build, while `au build --env prod` creates production build.
 
-## [Installing 3rd party dependencies
+## Installing 3rd party dependencies
 Webpack is a powerful and smart bundler, which means that you often don't need to configure a 3rd party dependency.  And if you do then there's a good chance that someone has done it before, so Google is your friend here. 
 
 Check out the [Webpack documentation](https://webpack.js.org/concepts/) for more info on the `webpack.config.js`.

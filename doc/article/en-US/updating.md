@@ -1,7 +1,7 @@
 ---
 name: Updating
 description: The process of updating the Aurelia CLI.
-author: Jeroen Vinke (http://jeroenvinke.nl)
+author: Jeroen Vinke (https://jeroenvinke.nl)
 ---
 
 ## Updating the Aurelia CLI
