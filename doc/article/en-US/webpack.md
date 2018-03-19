@@ -63,3 +63,6 @@ Jest can be launched using `au jest` or `au jest --watch` if you would like to d
 Similarly, Karma can be started using `au karma` or `au karma --watch`. 
 
 However, Protractor is a bit different. It has to be started through `nps`, so make sure that you've installed that globally (`npm install nps -g`). Afterwards, run `nps e2e` to start Protractor.
+
+## ASP.NET Core
+When developing an ASP.NET Core application you will want to set the `ASPNETCORE_ENVIRONMENT` environment variable. Detailed instructions can be found on the [Microsoft Docs](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/environments#setting-the-environment).
