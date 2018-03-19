@@ -46,7 +46,7 @@
   "extract-text-webpack-plugin": "next",
   "file-loader": "^1.1.11",
   "gulp": "github:gulpjs/gulp#4.0",
-  "gulp-babel": "^8.0.0-beta.2",
+  "gulp-babel": "^7.0.1",
   "gulp-changed-in-place": "^2.3.0",
   "gulp-eslint": "^4.0.2",
   "gulp-htmlmin": "^4.0.0",
