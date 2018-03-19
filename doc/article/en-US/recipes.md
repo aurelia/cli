@@ -1,5 +1,5 @@
 ---
-name: Recipes
+name: Recipes & known issues
 description: In this section you can find examples of particular setups, known issues and possible workarounds
 author: Jeroen Vinke (https://jeroenvinke.nl)
 ---
@@ -29,3 +29,6 @@ In order to resolve this you can open up the `aurelia_project/tasks/watch.js` (o
 </code-listing>
 
 More information on this problem be found in [this issue](https://github.com/floatdrop/gulp-watch/issues/174).
+
+## NPM uninstalling packages
+If you're on NPM 5.6.0 (`npm -v`) then you might experience strange behavior when you're trying to install a package (using `npm install`). This should be resolved with version 5.7.0 of NPM.
