@@ -140,7 +140,7 @@ describe('The cli', () => {
         resolve(project);
       }));
       spyOn(cli.container, 'registerInstance');
-      spyOn(cli, 'createCommand').and.returnValue({ execute: () => {} });
+      spyOn(cli, 'createCommand').and.returnValue(Promise.resolve({ execute: () => {} }));
 
       cli.run()
         .then(() => {
@@ -153,7 +153,7 @@ describe('The cli', () => {
         resolve(project);
       }));
       spyOn(cli.container, 'registerInstance');
-      spyOn(cli, 'createCommand').and.returnValue({ execute: () => {} });
+      spyOn(cli, 'createCommand').and.returnValue(Promise.resolve({ execute: () => {} }));
 
       cli.run().then(() => {
         expect(cli.container.registerInstance)
@@ -164,7 +164,7 @@ describe('The cli', () => {
     it('creates the command', done => {
       const command = 'run';
       const args = {};
-      spyOn(cli, 'createCommand').and.returnValue({ execute: () => {} });
+      spyOn(cli, 'createCommand').and.returnValue(Promise.resolve({ execute: () => {} }));
 
       cli.run(command, args).then(() => {
         expect(cli.createCommand).toHaveBeenCalledWith(command, args);
@@ -173,17 +173,31 @@ describe('The cli', () => {
 
     it('executes the command', done => {
       const command = {
-        execute: () => {}
+        execute: jasmine.createSpy('execute').and.returnValue(Promise.resolve({}))
       };
       const args = {};
-      spyOn(cli, '_establishProject').and.returnValue(new Promise(resolve =>
-        resolve(project)
-      ));
-      spyOn(command, 'execute').and.returnValue(new Promise(resolve => resolve({})));
-      spyOn(cli, 'createCommand').and.returnValue(command);
+      spyOn(cli, '_establishProject').and.returnValue(Promise.resolve(project));
+      spyOn(cli, 'createCommand').and.returnValue(Promise.resolve(command));
 
       cli.run('run', args).then(() => {
         expect(command.execute).toHaveBeenCalledWith(args);
+      }).catch(fail).then(done);
+    });
+
+    it('fails gracefully when Aurelia-CLI is ran from a root folder (non-project directory)', done => {
+      cli.options.runningLocally = true;
+      const command = {
+        execute: jasmine.createSpy('execute').and.returnValue(Promise.resolve({}))
+      };
+      const args = {};
+      spyOn(cli, '_establishProject').and.returnValue(Promise.resolve(null)); // no project could be found
+      spyOn(cli, 'createCommand').and.returnValue(Promise.resolve(command));
+      const errorSpy = spyOn(cli.logger, 'error');
+
+      cli.run('', args).then(() => {
+        expect(command.execute).not.toHaveBeenCalledWith(args);
+        expect(errorSpy).toHaveBeenCalled();
+        expect(errorSpy.calls.first().args[0]).toContain('It appears that the Aurelia CLI is running locally');
       }).catch(fail).then(done);
     });
   });
@@ -192,7 +206,7 @@ describe('The cli', () => {
     it('creates the command', done => {
       const command = 'config';
       const args = {};
-      spyOn(cli, 'createCommand').and.returnValue({ execute: () => {} });
+      spyOn(cli, 'createCommand').and.returnValue(Promise.resolve({ execute: () => {} }));
 
       cli.run(command, args).then(() => {
         expect(cli.createCommand).toHaveBeenCalledWith(command, args);
@@ -201,14 +215,13 @@ describe('The cli', () => {
 
     it('executes the command', done => {
       const command = {
-        execute: () => {}
+        execute: jasmine.createSpy('execute').and.returnValue(Promise.resolve({}))
       };
       const args = {};
       spyOn(cli, '_establishProject').and.returnValue(new Promise(resolve =>
         resolve(project)
       ));
-      spyOn(command, 'execute').and.returnValue(new Promise(resolve => resolve({})));
-      spyOn(cli, 'createCommand').and.returnValue(command);
+      spyOn(cli, 'createCommand').and.returnValue(Promise.resolve(command));
 
       cli.run('config', args).then(() => {
         expect(command.execute).toHaveBeenCalledWith(args);
