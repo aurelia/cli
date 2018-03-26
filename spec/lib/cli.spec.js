@@ -149,9 +149,12 @@ describe('The cli', () => {
     });
 
     it('registers the project instance', done => {
+      cli.options.runningLocally = true;
+
       spyOn(cli, '_establishProject').and.returnValue(new Promise(resolve => {
         resolve(project);
       }));
+
       spyOn(cli.container, 'registerInstance');
       spyOn(cli, 'createCommand').and.returnValue(Promise.resolve({ execute: () => {} }));
 
