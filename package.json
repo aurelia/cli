@@ -37,8 +37,7 @@
     "npm-which": "^3.0.1",
     "preprocess": "^3.1.0",
     "rfc6902": "^1.2.2",
-    "semver": "^5.3.0",
-    "uglify-es": "^3.3.9"
+    "semver": "^5.3.0"
   },
   "devDependencies": {
     "aurelia-tools": "^0.2.4",
