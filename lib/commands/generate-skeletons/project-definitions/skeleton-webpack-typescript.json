@@ -1,0 +1,56 @@
+{
+  "name": "skeleton-webpack-typescript",
+  "type": "project:application",
+  "bundler": {
+    "id": "webpack",
+    "displayName": "Webpack"
+  },
+  "build": {
+    "options": {
+      "server": "dev",
+      "extractCss": "prod",
+      "coverage": false
+    }
+  },
+  "platform": {
+    "id": "web",
+    "displayName": "Web"
+  },
+  "loader": {
+    "id": "none",
+    "displayName": "None"
+  },
+  "transpiler": {
+    "id": "typescript",
+    "displayName": "TypeScript",
+    "fileExtension": ".ts"
+  },
+  "markupProcessor": {
+    "id": "minimum",
+    "displayName": "Minimal Minification",
+    "fileExtension": ".html"
+  },
+  "cssProcessor": {
+    "id": "none",
+    "displayName": "None",
+    "fileExtension": ".css"
+  },
+  "editor": {
+    "id": "vscode",
+    "displayName": "Visual Studio Code"
+  },
+  "unitTestRunners": [
+    {
+      "id": "jest",
+      "displayName": "Jest"
+    },
+    {
+      "id": "karma",
+      "displayName": "Karma"
+    }
+  ],
+  "integrationTestRunner": {
+    "id": "protractor",
+    "displayName": "Protractor"
+  }
+}

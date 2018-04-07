@@ -1,0 +1,11 @@
+{
+  "name": "generate-projects",
+  "description": "Generates skeleton applications in the current directory.",
+  "flags": [
+    {
+      "name": "definitions",
+      "description": "optionally provide a folder which contains project definition json files",
+      "type": "string"
+    }
+  ]
+}
