@@ -20,7 +20,8 @@ function runWebpack(done) {
     open: project.platform.open,
     stats: {
       colors: require('supports-color')
-    }
+    },
+    https: config.devServer.https
   } as any;
 
   if (!CLIOptions.hasFlag('watch')) {
