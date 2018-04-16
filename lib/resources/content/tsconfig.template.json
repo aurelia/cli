@@ -31,11 +31,7 @@
     ]
     // @endif
   },
-  "exclude": [
-    "node_modules",
-    "aurelia_project"
-  ],
-  "filesGlob": [
+  "include": [
     "./src/**/*.ts",
     "./test/**/*.ts",
     "./custom_typings/**/*.d.ts"
