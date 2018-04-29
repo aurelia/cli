@@ -9,7 +9,7 @@ let karma = done => {
   new Karma({
     configFile: path.join(__dirname, '/../../karma.conf.js'),
     singleRun: !CLIOptions.hasFlag('watch')
-  }, done).start();
+  }, (err) => { done(); if (err) { process.exit(err); } }).start();
 };
 
 let unit;
