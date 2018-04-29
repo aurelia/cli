@@ -16,6 +16,31 @@ If you would like to learn more about Webpack, take a look at the following reso
 - https://blog.madewithenvy.com/getting-started-with-webpack-2-ed2b86c68783
 - https://webpack.js.org/configuration/
 
+## Running the application
+> Info
+> This section does not apply for JavascriptServices
+
+Running an Aurelia-CLI Webpack application is simple: `au run --watch` and you're on your way. But it's good to be aware of other flags that can be supplied to the `au run` command. `au --help` shows you all supported flags, but there are a couple that we would like to highlight.
+
+If you're interested in Hot Module Reload, you can use the `--hmr` flag (e.g. `au run --watch --hmr`) to launch in Hot Module Reload mode. Another cool one is `au run --analyze` which opens up the Webpack Bundler Analyzer, giving you a nice visualization of the bundle contents.
+
+Let's now take a look at the `platform` section in `aurelia.json`:
+
+<code-listing heading="Platform options">
+  <source-code lang="JavaScript">
+  "platform": {
+    "id": "web",
+    "displayName": "Web",
+    "port": 8080,
+    "hmr": false,
+    "open": false,
+    "output": "dist"
+  },
+  </source-code>
+</code-listing>
+
+Here you can find default settings for `au run` and `au build`. If you always run in Hot Module Reload mode, you can set `hmr` to `true` and you don't need to supply the `--hmr` flag any longer. Enabling the `open` option will cause the browser to navigate to the site after Webpack has finished bundling. The `output` option is used in the `webpack.config.js` file to determine where to output all the assets. If you're looking to change the default port that `au run` uses, you can change the `port` option in this section.
+
 ## Deploying Your App
 When your application is done, the next step is to deploy it. First you will want to create a production build with `au build --env prod`. Depending on whether you use ASP.NET Core or not, the build output will end up in the `dist` folder or the `wwwroot/dist` folder.
 
