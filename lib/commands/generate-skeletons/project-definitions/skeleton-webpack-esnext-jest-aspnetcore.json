@@ -1,5 +1,5 @@
 {
-  "name": "skeleton-webpack-typescript-aspnetcore",
+  "name": "skeleton-webpack-esnext-jest-aspnetcore",
   "type": "project:application",
   "bundler": {
     "id": "webpack",
@@ -21,9 +21,9 @@
     "displayName": "None"
   },
   "transpiler": {
-    "id": "typescript",
-    "displayName": "TypeScript",
-    "fileExtension": ".ts"
+    "id": "babel",
+    "displayName": "Babel",
+    "fileExtension": ".js"
   },
   "markupProcessor": {
     "id": "minimum",
@@ -39,18 +39,15 @@
     "id": "vscode",
     "displayName": "Visual Studio Code"
   },
-  "unitTestRunners": [
-    {
-      "id": "jest",
-      "displayName": "Jest"
-    },
-    {
-      "id": "karma",
-      "displayName": "Karma"
-    }
-  ],
+  "unitTestRunner": {
+    "id": "jest",
+    "displayName": "Jest"
+  },
   "integrationTestRunner": {
     "id": "protractor",
     "displayName": "Protractor"
+  },
+  "features": {
+    "navigation": "navigation"
   }
 }

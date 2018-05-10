@@ -1,24 +1,17 @@
 {
-  "name": "skeleton-webpack-typescript",
+  "name": "skeleton-requirejs-typescript-karma-aspnetcore",
   "type": "project:application",
   "bundler": {
-    "id": "webpack",
-    "displayName": "Webpack"
-  },
-  "build": {
-    "options": {
-      "server": "dev",
-      "extractCss": "prod",
-      "coverage": false
-    }
+    "id": "cli",
+    "displayName": "Aurelia-CLI"
   },
   "platform": {
-    "id": "web",
-    "displayName": "Web"
+    "id": "aspnetcore",
+    "displayName": "ASP.NET Core"
   },
   "loader": {
-    "id": "none",
-    "displayName": "None"
+    "id": "require",
+    "displayName": "RequireJS"
   },
   "transpiler": {
     "id": "typescript",
@@ -39,18 +32,15 @@
     "id": "vscode",
     "displayName": "Visual Studio Code"
   },
-  "unitTestRunners": [
-    {
-      "id": "jest",
-      "displayName": "Jest"
-    },
-    {
-      "id": "karma",
-      "displayName": "Karma"
-    }
-  ],
+  "unitTestRunner": {
+    "id": "karma",
+    "displayName": "Karma"
+  },
   "integrationTestRunner": {
     "id": "protractor",
     "displayName": "Protractor"
+  },
+  "features": {
+    "navigation": "navigation"
   }
 }

@@ -12,7 +12,7 @@ describe('The StateAssign module', () => {
       nextActivity: 15,
       state: {
         name: 'my-app',
-        unitTestRunners: ['karma', 'jest']
+        unitTestRunner: 'jest'
       }
     });
     let next = jasmine.createSpy('next');
@@ -24,7 +24,7 @@ describe('The StateAssign module', () => {
     sut.execute.call(stateassign, context);
 
     expect(context.state.name).toBe('my-app');
-    expect(context.state.unitTestRunners).toEqual(['karma', 'jest']);
+    expect(context.state.unitTestRunner).toEqual('jest');
     expect(next).toHaveBeenCalledWith(15);
   });
 });

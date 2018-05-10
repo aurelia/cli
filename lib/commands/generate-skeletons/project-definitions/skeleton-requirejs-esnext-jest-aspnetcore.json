@@ -1,5 +1,5 @@
 {
-  "name": "skeleton-systemjs-typescript-aspnetcore",
+  "name": "skeleton-requirejs-esnext-jest-aspnetcore",
   "type": "project:application",
   "bundler": {
     "id": "cli",
@@ -10,13 +10,13 @@
     "displayName": "ASP.NET Core"
   },
   "loader": {
-    "id": "system",
-    "displayName": "SystemJS"
+    "id": "require",
+    "displayName": "RequireJS"
   },
   "transpiler": {
-    "id": "typescript",
-    "displayName": "TypeScript",
-    "fileExtension": ".ts"
+    "id": "babel",
+    "displayName": "Babel",
+    "fileExtension": ".js"
   },
   "markupProcessor": {
     "id": "minimum",
@@ -37,18 +37,15 @@
     "id": "vscode",
     "displayName": "Visual Studio Code"
   },
-  "unitTestRunners": [
-    {
-      "id": "jest",
-      "displayName": "Jest"
-    },
-    {
-      "id": "karma",
-      "displayName": "Karma"
-    }
-  ],
+  "unitTestRunner": {
+    "id": "jest",
+    "displayName": "Jest"
+  },
   "integrationTestRunner": {
     "id": "protractor",
     "displayName": "Protractor"
+  },
+  "features": {
+    "navigation": "navigation"
   }
 }

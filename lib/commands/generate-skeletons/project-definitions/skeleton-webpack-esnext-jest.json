@@ -1,17 +1,24 @@
 {
-  "name": "skeleton-systemjs-esnext-aspnetcore",
+  "name": "skeleton-webpack-esnext-jest",
   "type": "project:application",
   "bundler": {
-    "id": "cli",
-    "displayName": "Aurelia-CLI"
+    "id": "webpack",
+    "displayName": "Webpack"
+  },
+  "build": {
+    "options": {
+      "server": "dev",
+      "extractCss": "prod",
+      "coverage": false
+    }
   },
   "platform": {
-    "id": "aspnetcore",
-    "displayName": "ASP.NET Core"
+    "id": "web",
+    "displayName": "Web"
   },
   "loader": {
-    "id": "system",
-    "displayName": "SystemJS"
+    "id": "none",
+    "displayName": "None"
   },
   "transpiler": {
     "id": "babel",
@@ -28,27 +35,19 @@
     "displayName": "None",
     "fileExtension": ".css"
   },
-  "jsonProcessor": {
-    "id": "none",
-    "displayName": "None",
-    "fileExtension": ".json"
-  },
   "editor": {
     "id": "vscode",
     "displayName": "Visual Studio Code"
   },
-  "unitTestRunners": [
-    {
-      "id": "jest",
-      "displayName": "Jest"
-    },
-    {
-      "id": "karma",
-      "displayName": "Karma"
-    }
-  ],
+  "unitTestRunner": {
+    "id": "jest",
+    "displayName": "Jest"
+  },
   "integrationTestRunner": {
     "id": "protractor",
     "displayName": "Protractor"
+  },
+  "features": {
+    "navigation": "navigation"
   }
 }

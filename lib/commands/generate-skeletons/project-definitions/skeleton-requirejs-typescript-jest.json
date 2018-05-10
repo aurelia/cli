@@ -1,0 +1,51 @@
+{
+  "name": "skeleton-requirejs-typescript-jest",
+  "type": "project:application",
+  "bundler": {
+    "id": "cli",
+    "displayName": "Aurelia-CLI"
+  },
+  "platform": {
+    "id": "web",
+    "displayName": "Web"
+  },
+  "loader": {
+    "id": "require",
+    "displayName": "RequireJS"
+  },
+  "transpiler": {
+    "id": "typescript",
+    "displayName": "TypeScript",
+    "fileExtension": ".ts"
+  },
+  "markupProcessor": {
+    "id": "minimum",
+    "displayName": "Minimal Minification",
+    "fileExtension": ".html"
+  },
+  "cssProcessor": {
+    "id": "none",
+    "displayName": "None",
+    "fileExtension": ".css"
+  },
+  "jsonProcessor": {
+    "id": "none",
+    "displayName": "None",
+    "fileExtension": ".json"
+  },
+  "editor": {
+    "id": "vscode",
+    "displayName": "Visual Studio Code"
+  },
+  "unitTestRunner": {
+    "id": "jest",
+    "displayName": "Jest"
+  },
+  "integrationTestRunner": {
+    "id": "protractor",
+    "displayName": "Protractor"
+  },
+  "features": {
+    "navigation": "navigation"
+  }
+}

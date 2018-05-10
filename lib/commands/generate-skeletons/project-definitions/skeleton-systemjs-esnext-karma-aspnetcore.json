@@ -1,0 +1,46 @@
+{
+  "name": "skeleton-systemjs-esnext-karma-aspnetcore",
+  "type": "project:application",
+  "bundler": {
+    "id": "cli",
+    "displayName": "Aurelia-CLI"
+  },
+  "platform": {
+    "id": "aspnetcore",
+    "displayName": "ASP.NET Core"
+  },
+  "loader": {
+    "id": "system",
+    "displayName": "SystemJS"
+  },
+  "transpiler": {
+    "id": "babel",
+    "displayName": "Babel",
+    "fileExtension": ".js"
+  },
+  "markupProcessor": {
+    "id": "minimum",
+    "displayName": "Minimal Minification",
+    "fileExtension": ".html"
+  },
+  "cssProcessor": {
+    "id": "none",
+    "displayName": "None",
+    "fileExtension": ".css"
+  },
+  "editor": {
+    "id": "vscode",
+    "displayName": "Visual Studio Code"
+  },
+  "unitTestRunner": {
+    "id": "karma",
+    "displayName": "Karma"
+  },
+  "integrationTestRunner": {
+    "id": "protractor",
+    "displayName": "Protractor"
+  },
+  "features": {
+    "navigation": "navigation"
+  }
+}

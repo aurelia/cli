@@ -17,11 +17,13 @@ export class Welcome {
 
   public submit() {
     this.previousValue = this.fullName;
+    // eslint-disable-next-line no-alert
     alert(`Welcome, ${this.fullName}!`);
   }
 
   public canDeactivate(): boolean | undefined {
     if (this.fullName !== this.previousValue) {
+      // eslint-disable-next-line no-alert
       return confirm('Are you sure you want to leave?');
     }
   }

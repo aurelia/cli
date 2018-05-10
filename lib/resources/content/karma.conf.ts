@@ -2,7 +2,7 @@
 const path = require('path');
 const project = require('./aurelia_project/aurelia.json');
 const tsconfig = require('./tsconfig.json');
-const karmaConfig = project.unitTestRunners.find(x => x.id === 'karma');
+const karmaConfig = project.unitTestRunner;
 
 let testSrc = [
   { pattern: karmaConfig.source, included: false },

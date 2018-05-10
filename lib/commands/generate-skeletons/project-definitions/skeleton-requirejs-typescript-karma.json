@@ -1,5 +1,5 @@
 {
-  "name": "skeleton-requirejs-esnext",
+  "name": "skeleton-requirejs-typescript-karma",
   "type": "project:application",
   "bundler": {
     "id": "cli",
@@ -14,9 +14,9 @@
     "displayName": "RequireJS"
   },
   "transpiler": {
-    "id": "babel",
-    "displayName": "Babel",
-    "fileExtension": ".js"
+    "id": "typescript",
+    "displayName": "TypeScript",
+    "fileExtension": ".ts"
   },
   "markupProcessor": {
     "id": "minimum",
@@ -28,27 +28,19 @@
     "displayName": "None",
     "fileExtension": ".css"
   },
-  "jsonProcessor": {
-    "id": "none",
-    "displayName": "None",
-    "fileExtension": ".json"
-  },
   "editor": {
     "id": "vscode",
     "displayName": "Visual Studio Code"
   },
-  "unitTestRunners": [
-    {
-      "id": "jest",
-      "displayName": "Jest"
-    },
-    {
-      "id": "karma",
-      "displayName": "Karma"
-    }
-  ],
+  "unitTestRunner": {
+    "id": "karma",
+    "displayName": "Karma"
+  },
   "integrationTestRunner": {
     "id": "protractor",
     "displayName": "Protractor"
+  },
+  "features": {
+    "navigation": "navigation"
   }
 }
