@@ -133,6 +133,11 @@
       "stateProperty": "loaderBundler",
       "options": [
         {
+          "displayName": "Webpack",
+          "description": "A powerful bundler",
+          "value": "webpack"
+        },
+        {
           "displayName": "RequireJS",
           "description": "A file and module loader for JavaScript.",
           "value": "requirejs"
@@ -141,11 +146,6 @@
           "displayName": "SystemJS",
           "description": "Dynamic ES module loader",
           "value": "systemjs"
-        },
-        {
-          "displayName": "Webpack",
-          "description": "A powerful bundler",
-          "value": "webpack"
         }
       ]
     },
