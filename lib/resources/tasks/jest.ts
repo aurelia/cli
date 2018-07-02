@@ -12,7 +12,7 @@ export default (cb) => {
     Object.assign(options, { watch: true});
   }
 
-  jest.runCLI(options, [path.resolve(__dirname, '../../')], (result) => {
+  jest.runCLI(options, [path.resolve(__dirname, '../../')]).then((result) => {
     if(result.numFailedTests || result.numFailedTestSuites) {
       cb(new gutil.PluginError('gulp-jest', { message: 'Tests Failed' }));
     } else {
