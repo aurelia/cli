@@ -43,7 +43,7 @@
   "del": "^3.0.0",
   "event-stream": "^3.3.4",
   "expose-loader": "^0.7.5",
-  "extract-text-webpack-plugin": "next",
+  "mini-css-extract-plugin": "^0.4.1",
   "file-loader": "^1.1.11",
   "gulp": "github:gulpjs/gulp#4.0",
   "gulp-babel": "^7.0.1",
