@@ -1,0 +1,4 @@
+{
+  "name": "protractor",
+  "description": "Runs Protractor and reports the results. Start the application before running this task."
+}
