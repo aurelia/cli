@@ -22,7 +22,7 @@
           "displayName": "None",
           "fileExtension": ".css"
         },
-        "unitTestRunner": [{
+        "unitTestRunners": [{
           "id": "jest",
           "displayName": "Jest"
         }, {
@@ -218,7 +218,7 @@
             "coverage": false
           }
         },
-        "unitTestRunner": [{
+        "unitTestRunners": [{
           "id": "jest",
           "displayName": "Jest"
         }, {
@@ -448,7 +448,7 @@
       "type": "input-multiselect",
       "nextActivity": 681,
       "question": "Which unit test runners would you like to use?",
-      "stateProperty": "unitTestRunner",
+      "stateProperty": "unitTestRunners",
       "options": [
         {
           "displayName": "None",

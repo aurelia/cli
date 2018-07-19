@@ -2,9 +2,10 @@
 const path = require('path');
 const project = require('./aurelia_project/aurelia.json');
 const tsconfig = require('./tsconfig.json');
+const karmaConfig = project.unitTestRunners.find(x => x.id === 'karma');
 
 let testSrc = [
-  { pattern: project.unitTestRunner.source, included: false },
+  { pattern: karmaConfig.source, included: false },
   'test/aurelia-karma.js'
 ];
 
@@ -26,7 +27,7 @@ module.exports = function(config) {
     files: files,
     exclude: [],
     preprocessors: {
-      [project.unitTestRunner.source]: [project.transpiler.id],
+      [karmaConfig.source]: [project.transpiler.id],
       [appSrc]: ['sourcemap']
     },
     typescriptPreprocessor: {
