@@ -18,7 +18,7 @@ class AuRunDoesNotThrowCommandLineErrors extends Test {
     if (message.toLowerCase().indexOf('error') > -1) {
       this.executeCommand.stop();
       this.fail();
-    } else if (isApplicationAvailableMessage(message)) {
+    } else if (message.indexOf('Compiled successfully') > -1) {
       this.success();
       this.executeCommand.stop();
     }
@@ -55,6 +55,7 @@ class AuRunWatchPicksUpFileChanges extends Test {
     super('au run --watch picks up file changes');
 
     this.fileToChange = fileToChange || path.join('src', 'app.html');
+    this.watchingForFileChangeNotification = false;
   }
 
   changeFile() {
@@ -86,9 +87,13 @@ class AuRunWatchPicksUpFileChanges extends Test {
       setTimeout(() => this.changeFile(), 1000);
     }
 
-    if (message.indexOf('to pending build changes') > -1) {
-      this.success();
-      this.executeCommand.stop();
+    if (message.indexOf('Compiled successfully.') > -1) {
+      if (this.watchingForFileChangeNotification) {
+        this.success();
+        this.executeCommand.stop();
+      } else {
+        this.watchingForFileChangeNotification = true;
+      }
     }
   }
 
@@ -155,11 +160,11 @@ class AuRunRendersPage extends Test {
 }
 
 function isApplicationAvailableMessage(msg) {
-  return msg.indexOf('Application Available At: http://localhost') > -1;
+  return msg.indexOf('Project is running at http://localhost') > -1;
 }
 
 function getURL(msg) {
-  const regex = /Application Available At: (.*)/;
+  const regex = /Project is running at (.*)/;
   const match = regex.exec(msg);
   return match[1];
 }
@@ -167,7 +172,7 @@ function getURL(msg) {
 module.exports = {
   AuRunDoesNotThrowCommandLineErrors,
   AuRunLaunchesServer,
+  AuRunWatchPicksUpFileChanges,
   AuRunAppLaunchesWithoutJavascriptErrors,
-  AuRunRendersPage,
-  AuRunWatchPicksUpFileChanges
+  AuRunRendersPage
 };

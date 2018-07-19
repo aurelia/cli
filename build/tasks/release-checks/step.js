@@ -1,7 +1,9 @@
 'use strict';
+const LogManager = require('aurelia-logging');
 
 module.exports = class Step {
   constructor(title) {
+    this.logger = LogManager.getLogger(title);
     this.title = title;
   }
 

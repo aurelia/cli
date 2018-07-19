@@ -5,3 +5,4 @@ bower_components
 .DS_STORE
 *.swp
 .blog
+release-checks-results

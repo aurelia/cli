@@ -1,98 +1,85 @@
 'use strict';
 const gulp = require('gulp');
-const fs = require('fs');
 const path = require('path');
-const ConsoleUI = require('../../lib/ui').ConsoleUI;
-const Runner = require('./release-checks/runner');
+const SuiteRunner = require('./release-checks/suite-runner');
 const LogManager = require('aurelia-logging');
-const Logger = require('../../lib/logger').Logger;
-const testSuites = require('./release-checks/test-suites');
 const Utils = require('../../lib/build/utils');
-const ui = new ConsoleUI();
-const logger = LogManager.getLogger('Release-Check');
+const ConsoleUI = require('../../lib/ui').ConsoleUI;
+const MessageHistoryLogger = require('./release-checks/message-history-logger').MessageHistoryLogger;
+const MatchingTestSuiteSelector = require('./release-checks/matching-test-suite-selector');
+const Reporter = require('./release-checks/reporter');
+const del = require('del');
 
-gulp.task('release-check', function(done) {
-  const currentDir = process.cwd();
-  LogManager.addAppender(new Logger(new ConsoleUI()));
-  LogManager.setLevel('info');
+let ui = new ConsoleUI();
+let logger;
+let msgHistoryLogger;
+let originalDir = process.cwd();
+let resultOutputFolder = path.join(originalDir, 'release-checks-results');
 
-  // ui.question('Which project directory contains all the projects to test?')
-  // .then(dir => {
-  //   if (!fs.existsSync(dir)) {
-  //     throw new Error('The path does not exist');
-  //   }
-  const dir = '/home/jeroen/Development/Aurelia/Apps/testapps';
+gulp.task('release-check', ['empty-release-checks-results-folder'], function(done) {
+  configureLogging();
 
-  matchTestSuites(dir)
+  const reporter = new Reporter();
+  const selector = new MatchingTestSuiteSelector();
+
+  return selector.execute()
   .then(suites => {
-    Utils.runSequentially(
+    return Utils.runSequentially(
       suites,
       suite => {
         logger.info(`Executing ${suite.title}`);
 
         const context = {
           suite: suite,
-          workingDirectory: path.join(dir, suite.title)
+          resultOutputFolder: path.join(resultOutputFolder, suite.title),
+          workingDirectory: suite.dir
         };
-        const runner = new Runner(context);
+        const suiteRunner = new SuiteRunner(context, reporter);
 
-        return runner.run()
-        .then(() => {
-          process.chdir(currentDir);
-          console.log('Finished test suite ' + suite.title);
+        return suiteRunner.run()
+        .then(steps => {
+          return writeLog(context.resultOutputFolder, 'log-full.txt')
+          .then(() => steps);
         })
         .catch(e => {
-          process.chdir(currentDir);
-          console.log('failed to run test suite ' + suite.title);
-          console.log(e);
+          logger.error(e);
           throw e;
         });
-      })
-    .then(steps => {
-      console.log('Finished all test suites');
-      done();
+      }
+    )
+    .then(testSuitesResults => {
+      if (testSuitesResults.length > 1) {
+        console.log('---------------------------');
+        console.log('---------------------------');
+        console.log('--------SUMMARY-----------');
+        console.log('---------------------------');
+        console.log('---------------------------');
+  
+        for (const result of testSuitesResults) {
+          reporter.logSummary(result.suite, result.steps);
+        }
+      }
+
+      return writeLog(resultOutputFolder, 'summary.txt');
     });
   });
-
-  // });
 });
 
-function matchTestSuites(dir) {
-  // list all subdirectories in the provided directory
-  // try and match the names of those directories to the title of a test suite
-  const isDirectory = source => fs.lstatSync(source).isDirectory();
-  const directories = fs.readdirSync(dir).map(name => path.join(dir, name)).filter(isDirectory);
-  const suites = [];
-
-  for (const directoryPath of directories) {
-    const directoryName = path.basename(directoryPath);
-    const suite = testSuites.find(x => x.title === directoryName);
-    if (suite) {
-      suites.push(suite);
-    }
-  }
-
-  if (suites.length === 0) {
-    throw new Error('Could not match the name of any subdirectory to a test suite');
-  }
-
-  let formatted = '';
-  for (const match of suites) {
-    formatted = `${formatted}\r\n - ${match.title}`;
-  }
-
-  return ui.question(`Found test suites for:\r\n\ ${formatted}\r\n\r\n Would you like to run these?`, [{
-    displayName: 'go ahead'
-  }, {
-    displayName: 'stop'
-  }])
-  .then(answer => {
-    if (answer === 'stop') {
-      throw new Error('stopped');
-    }
-
-    return suites;
-  });
+function writeLog(dir, name) {
+  const filePath = path.join(dir, name);
+  return msgHistoryLogger.writeToDisk(filePath)
+  .then(() => msgHistoryLogger.clearHistory());
 }
 
-// /home/jeroen/Development/Aurelia/Apps/testapps/skeleton-requirejs-esnext
+function configureLogging() {
+  msgHistoryLogger = new MessageHistoryLogger(ui);
+  LogManager.addAppender(msgHistoryLogger);
+  LogManager.setLevel('debug');
+  logger = LogManager.getLogger('Release-Check');
+}
+
+gulp.task('empty-release-checks-results-folder', (done) => {
+  return del([
+    resultOutputFolder + '/**/*'
+  ]);
+});
