@@ -444,19 +444,19 @@
       "stateProperty": "integrationTestRunner",
       "options": [
         {
-          "displayName": "Protractor",
-          "description": "Configure your app with Protractor",
-          "value": {
-            "id": "protractor",
-            "displayName": "Protractor"
-          }
-        },
-        {
           "displayName": "No",
           "description": "Skip testing. My code is always perfect anyway.",
           "value": {
             "id": "none",
             "displayName": "None"
+          }
+        },
+        {
+          "displayName": "Protractor",
+          "description": "Configure your app with Protractor",
+          "value": {
+            "id": "protractor",
+            "displayName": "Protractor"
           }
         }
       ]
