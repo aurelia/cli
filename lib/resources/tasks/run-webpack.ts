@@ -5,7 +5,6 @@ import * as Server from 'webpack-dev-server';
 import * as project from '../aurelia.json';
 import {CLIOptions, reportWebpackReadiness} from 'aurelia-cli';
 import * as gulp from 'gulp';
-import {buildWebpack} from './build';
 
 function runWebpack(done) {
   // https://webpack.github.io/docs/webpack-dev-server.html
@@ -24,10 +23,6 @@ function runWebpack(done) {
     https: config.devServer.https
   } as any;
 
-  if (!CLIOptions.hasFlag('watch')) {
-    opts.lazy = true;
-  }
-
   if (project.platform.hmr || CLIOptions.hasFlag('hmr')) {
     config.plugins.push(new webpack.HotModuleReplacementPlugin());
     config.entry.app.unshift(`webpack-dev-server/client?http://${opts.host}:${opts.port}/`, 'webpack/hot/dev-server');
@@ -39,15 +34,8 @@ function runWebpack(done) {
   server.listen(opts.port, opts.host, function(err) {
     if (err) throw err;
 
-    if (opts.lazy) {
-      buildWebpack(() => {
-        reportWebpackReadiness(opts);
-        done();
-      });
-    } else {
-      reportWebpackReadiness(opts);
-      done();
-    }
+    reportWebpackReadiness(opts);
+    done();
   });
 }
 

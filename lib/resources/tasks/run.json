@@ -8,11 +8,6 @@
       "type": "string"
     },
     {
-      "name": "watch",
-      "description": "Watches source files for changes and refreshes the app automatically.",
-      "type": "boolean"
-    },
-    {
       "name": "open",
       "description": "Open the default browser at the application location.",
       "type": "boolean"

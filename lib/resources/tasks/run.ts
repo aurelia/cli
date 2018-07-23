@@ -40,15 +40,9 @@ function reload() {
   browserSync.reload();
 }
 
-let run;
-
-if (CLIOptions.hasFlag('watch')) {
-  run = gulp.series(
-    serve,
-    done => { watch(reload); done(); }
-  );
-} else {
-  run = serve;
-}
+let run = gulp.series(
+  serve,
+  done => { watch(reload); done(); }
+);
 
 export default run;
