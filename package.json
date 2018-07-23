@@ -33,7 +33,7 @@
     "aurelia-polyfills": "^1.0.0",
     "esprima": "^4.0.0",
     "glob": "^7.1.1",
-    "npm": "^5.6.0",
+    "npm": "^6.1.0",
     "npm-which": "^3.0.1",
     "preprocess": "^3.1.0",
     "rfc6902": "^1.2.2",
