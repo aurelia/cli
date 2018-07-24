@@ -39,7 +39,8 @@
     },
     {
       "id": "karma",
-      "displayName": "Karma"
+      "displayName": "Karma",
+      "source": "test/unit/**/*.ts"
     }
   ],
   "integrationTestRunner": {

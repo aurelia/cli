@@ -6,6 +6,7 @@ const karmaConfig = project.unitTestRunners.find(x => x.id === 'karma');
 
 let testSrc = [
   { pattern: karmaConfig.source, included: false },
+  { pattern: 'test/setup.ts', included: false },
   'test/aurelia-karma.js'
 ];
 
@@ -28,6 +29,7 @@ module.exports = function(config) {
     exclude: [],
     preprocessors: {
       [karmaConfig.source]: [project.transpiler.id],
+      'test/setup.ts': [project.transpiler.id],
       [appSrc]: ['sourcemap']
     },
     typescriptPreprocessor: {
