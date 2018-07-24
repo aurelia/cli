@@ -12,7 +12,7 @@ The Aurelia CLI is the official command line tool for Aurelia. It can be used to
 
 The CLI itself has a couple of prerequisites that you must install first:
 
-* Install NodeJS version 4.x or above.
+* Install Node.js version 4.x or above. For Webpack projects, install Node.js 8.9.0 or higher.
     * You can [download it here](https://nodejs.org/en/).
 * Install a Git Client
     * Here's [a nice GUI client](https://desktop.github.com).

@@ -16,6 +16,9 @@ If you would like to learn more about Webpack, take a look at the following reso
 - https://blog.madewithenvy.com/getting-started-with-webpack-2-ed2b86c68783
 - https://webpack.js.org/configuration/
 
+> Info
+> Webpack projects that are generated using the Aurelia-CLI require a (relatively) high version of Node.js (>= 6.9.0 <7.0.0 || >= 8.9.0). Some Webpack 4 plugins (such as `mini-css-extract-plugin`) need this in order to work correctly.
+
 ## Running the application
 > Info
 > This section does not apply for JavascriptServices
