@@ -17,9 +17,8 @@ You can read documentation on the cli [here](http://aurelia.io/docs/build-system
 2. Go into the cli directory: `cd cli`
 3. Run `npm install`
 4. Link the cli with: `npm link`
-5. Still in the cli directory, run `npm install gulp@^4.0.0 babel-polyfill babel-register typescript`
-6. Create a new project with `au new` or use an existing project. The linked CLI will be used to create the project.
-7. In the project directory, run `npm link aurelia-cli`. The linked CLI will then be used for `au` commands such as `au run`
+7. Create a new project with `au new` or use an existing project. The linked CLI will be used to create the project.
+8. In the project directory, run `npm link aurelia-cli`. The linked CLI will then be used for `au` commands such as `au run`
 
 ## Running the Tests
 
