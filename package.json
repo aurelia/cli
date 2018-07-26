@@ -33,7 +33,7 @@
     "aurelia-polyfills": "^1.0.0",
     "esprima": "^4.0.0",
     "glob": "^7.1.1",
-    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp": "^4.0.0",
     "npm": "^6.1.0",
     "npm-which": "^3.0.1",
     "preprocess": "^3.1.0",
