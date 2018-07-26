@@ -39,10 +39,10 @@
     "preprocess": "^3.1.0",
     "rfc6902": "^1.2.2",
     "semver": "^5.3.0",
-    "typescript": "^1.0.0 | ^2.0.0 | ^3.0.0",
+    "typescript": "^1.0.0 || ^2.0.0 || ^3.0.0",
     "opn": "^5.0.0",
-    "babel-register": "^6.0.0 | ^7.0.0 | ^8.0.0",
-    "babel-polyfill": "^6.0.0 | ^7.0.0 | ^8.0.0"
+    "babel-register": "^6.0.0 || ^7.0.0 || ^8.0.0",
+    "babel-polyfill": "^6.0.0 || ^7.0.0 || ^8.0.0"
   },
   "devDependencies": {
     "aurelia-tools": "^0.2.4",
