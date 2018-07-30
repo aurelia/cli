@@ -3,7 +3,6 @@
 let OriginalCLIOptions = require('../../lib/cli-options').CLIOptions;
 
 module.exports = class CLIOptionsMock {
-
   constructor() {
     this.originalFns = {};
   }

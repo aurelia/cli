@@ -147,8 +147,7 @@ describe('the Bundle module', () => {
         }
       ]
     };
-    Bundle.create(bundler, config)
-    .then((bundle) => {
+    Bundle.create(bundler, config).then((bundle) => {
       sut = bundle;
       expect(sut.includes.length).toBe(2);
       expect(sut.includes.find(x => x.description.loaderConfig.name === 'my-dev-plugin')).toBeFalsy();
@@ -166,8 +165,7 @@ describe('the Bundle module', () => {
       transform: spy2
     }];
 
-    sut.transform()
-    .then(() => {
+    sut.transform().then(() => {
       expect(spy1).toHaveBeenCalled();
       expect(spy2).toHaveBeenCalled();
       done();
@@ -184,8 +182,7 @@ describe('the Bundle module', () => {
       transform: spy2
     }];
 
-    sut.transform()
-    .then(() => {
+    sut.transform().then(() => {
       expect(spy1).not.toHaveBeenCalled();
       expect(spy2).not.toHaveBeenCalled();
       done();
@@ -284,8 +281,7 @@ describe('the Bundle module', () => {
       ]
     };
 
-    Bundle.create(bundler, config)
-    .then((bundle) => {
+    Bundle.create(bundler, config).then((bundle) => {
       expect(configuredDependencies[0]).toBe('foo');
       expect(configuredDependencies[1]).toBe('my-large-plugin');
       expect(configuredDependencies[2]).toBe('my-other-plugin');
@@ -343,8 +339,7 @@ describe('the Bundle module', () => {
       });
     };
 
-    Bundle.create(bundler, config)
-    .then((bundle) => {
+    Bundle.create(bundler, config).then((bundle) => {
       expect(bundle.includes[0].description.loaderConfig.name).toBe('foo');
       expect(bundle.includes[1].description.loaderConfig.name).toBe('my-large-plugin');
       expect(bundle.includes[2].description.loaderConfig.name).toBe('my-other-plugin');

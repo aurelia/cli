@@ -53,22 +53,18 @@ describe('The ResourceInclusion module', () => {
   describe('getResources', () => {
     it('returns resources directly under package path (dist folder)', (done) => {
       pkg.path = '../node_modules/some-package/dist';
-      sut.getResources('*.css')
-      .then(result => {
+      sut.getResources('*.css').then(result => {
         expect(result[0]).toBe('test.css');
         done();
-      })
-      .catch(e => done.fail());
+      }).catch(e => done.fail());
     });
 
     it('supports deeper folder structure', (done) => {
       pkg.path = '../node_modules/some-package/dist';
-      sut.getResources('?(dist|build|lib|css|style|styles)/*.css')
-      .then(result => {
+      sut.getResources('?(dist|build|lib|css|style|styles)/*.css').then(result => {
         expect(result[0]).toBe('css/test.css');
         done();
-      })
-      .catch(e => done.fail());
+      }).catch(e => done.fail());
     });
   });
 

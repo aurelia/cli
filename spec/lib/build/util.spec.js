@@ -6,8 +6,7 @@ describe('the Utils.runSequentially function', () => {
   it('calls the callback function for all items', (d) => {
     let items = [{ name: 'first' }, { name: 'second' }];
     let cb = jasmine.createSpy('cb').and.returnValue(Promise.resolve());
-    Utils.runSequentially(items, cb)
-    .then(() => {
+    Utils.runSequentially(items, cb).then(() => {
       expect(cb.calls.count()).toBe(2);
       expect(cb.calls.argsFor(0)[0].name).toBe('first');
       expect(cb.calls.argsFor(1)[0].name).toBe('second');
@@ -26,8 +25,7 @@ describe('the Utils.runSequentially function', () => {
         }
       });
     });
-    Utils.runSequentially(items, cb)
-    .then(() => {
+    Utils.runSequentially(items, cb).then(() => {
       expect(cb.calls.argsFor(0)[0].name).toBe('first');
       expect(cb.calls.argsFor(1)[0].name).toBe('second');
       expect(cb.calls.argsFor(2)[0].name).toBe('third');
@@ -38,13 +36,13 @@ describe('the Utils.runSequentially function', () => {
   it('handles empty items array', (done) => {
     let items = [];
     Utils.runSequentially(items, () => {})
-    .catch(e => {
-      done.fail(e, '', 'expected no error');
-      throw e;
-    })
-    .then(() => {
-      done();
-    });
+      .catch(e => {
+        done.fail(e, '', 'expected no error');
+        throw e;
+      })
+      .then(() => {
+        done();
+      });
   });
 });
 

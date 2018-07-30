@@ -41,16 +41,14 @@ describe('The project-item module', () => {
         projectItem.name = 'resources';
         projectItem.parent = parent;
 
-        parent.create()
-        .then(() => {
+        parent.create().then(() => {
           projectItem.create(null, '.')
             .then(() => fs.readdir('src'))
             .then(files => {
               expect(files[0]).toBe('resources');
             })
             .then(done);
-        })
-        .catch(e => done.fail(e));
+        }).catch(e => done.fail(e));
       });
 
       it('creates a directory if it is missing', done => {
@@ -91,15 +89,13 @@ describe('The project-item module', () => {
         projectItem.children.push({ create: create3 });
 
         projectItem.name = 'cli-app';
-        projectItem.create(ui)
-        .then(() => {
+        projectItem.create(ui).then(() => {
           expect(calls[0]).toBe('create1');
           expect(calls[1]).toBe('create2');
           expect(calls[2]).toBe('create3');
 
           done();
-        })
-        .catch(e => done.fail(e));
+        }).catch(e => done.fail(e));
       });
     });
   });
@@ -160,12 +156,9 @@ describe('The project-item module', () => {
           content: '<html></html>'
         };
 
-        projectItem._write(file.path, '<html></html>', ui)
-        .then(() => {
+        projectItem._write(file.path, '<html></html>', ui).then(() => {
           expect(ui.question).toHaveBeenCalled();
-        })
-        .then(done)
-        .catch(e => done.fail(e));
+        }).then(done).catch(e => done.fail(e));
       });
 
       it('does not write file if user chooses not to replace the file', done => {
@@ -184,12 +177,9 @@ describe('The project-item module', () => {
           content: '<html></html>'
         };
 
-        projectItem._write(file.path, '<html></html>', ui)
-        .then(() => {
+        projectItem._write(file.path, '<html></html>', ui).then(() => {
           expect(fs.writeFile).not.toHaveBeenCalled();
-        })
-        .then(done)
-        .catch(e => done.fail(e));
+        }).then(done).catch(e => done.fail(e));
       });
     });
   });

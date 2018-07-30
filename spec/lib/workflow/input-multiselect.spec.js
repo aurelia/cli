@@ -42,8 +42,7 @@ describe('The InputMultiselect module', () => {
     // user selected all opptions
     ui.multiselect.and.returnValue(Promise.resolve(options));
 
-    sut.execute.call(definition, context)
-    .then(() => {
+    sut.execute.call(definition, context).then(() => {
       expect(context.state.unitTestRunner).toEqual(['jest', 'karma']);
 
       done();
@@ -72,8 +71,7 @@ describe('The InputMultiselect module', () => {
     // user selected all opptions
     ui.multiselect.and.returnValue(Promise.resolve(options));
 
-    sut.execute.call(definition, context)
-    .then(() => {
+    sut.execute.call(definition, context).then(() => {
       expect(next).toHaveBeenCalledWith(1170);
 
       done();
@@ -108,8 +106,7 @@ describe('The InputMultiselect module', () => {
     // user selected all opptions
     ui.multiselect.and.returnValue(Promise.resolve(options));
 
-    sut.execute.call(definition, context)
-    .then(() => {
+    sut.execute.call(definition, context).then(() => {
       expect(context.state.integrationTestRunner).toEqual(['protractor', 'karma']);
 
       done();

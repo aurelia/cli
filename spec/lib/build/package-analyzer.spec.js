@@ -38,13 +38,11 @@ describe('The PackageAnalyzer', () => {
       path: '../node_modules/my-package'
     };
 
-    sut.reverseEngineer(loaderConfig)
-    .then(description => {
+    sut.reverseEngineer(loaderConfig).then(description => {
       expect(description.source).toBe('npm');
       expect(description.loaderConfig).toBe(loaderConfig);
       done();
-    })
-    .catch(e => done.fail(e));
+    }).catch(e => done.fail(e));
   });
 
   it('sets source to custom when node_modules is not found in the path', done => {
@@ -59,13 +57,11 @@ describe('The PackageAnalyzer', () => {
       packageRoot: '../some-folder/my-package'
     };
 
-    sut.reverseEngineer(loaderConfig)
-    .then(description => {
+    sut.reverseEngineer(loaderConfig).then(description => {
       expect(description.source).toBe('custom');
       expect(description.loaderConfig).toBe(loaderConfig);
       done();
-    })
-    .catch(e => done.fail(e));
+    }).catch(e => done.fail(e));
   });
 
   it('creates description when there is no package.json', done => {
@@ -78,13 +74,11 @@ describe('The PackageAnalyzer', () => {
       packageRoot: '../some-folder/my-package'
     };
 
-    sut.reverseEngineer(loaderConfig)
-    .then(description => {
+    sut.reverseEngineer(loaderConfig).then(description => {
       expect(description.source).toBe('custom');
       expect(description.loaderConfig).toBe(loaderConfig);
       done();
-    })
-    .catch(e => done.fail(e));
+    }).catch(e => done.fail(e));
   });
 
   it('reads package.json as package metadata', done => {
@@ -99,12 +93,10 @@ describe('The PackageAnalyzer', () => {
       packageRoot: '../some-folder/my-package'
     };
 
-    sut.reverseEngineer(loaderConfig)
-    .then(description => {
+    sut.reverseEngineer(loaderConfig).then(description => {
       expect(description.metadata.name).toBe('my-package');
       done();
-    })
-    .catch(e => done.fail(e));
+    }).catch(e => done.fail(e));
   });
 
   it('analyze() reads package.json as package metadata', done => {
@@ -116,12 +108,10 @@ describe('The PackageAnalyzer', () => {
     fsConfig[project.paths.root] = {};
     mockfs(fsConfig);
 
-    sut.analyze('my-package')
-    .then(description => {
+    sut.analyze('my-package').then(description => {
       expect(description.metadata.name).toBe('my-package');
       done();
-    })
-    .catch(e => done.fail(e));
+    }).catch(e => done.fail(e));
   });
 
   it('analyze() determines loaderConfig', done => {
@@ -132,13 +122,11 @@ describe('The PackageAnalyzer', () => {
     fsConfig[project.paths.root] = {};
     mockfs(fsConfig);
 
-    sut.analyze('my-package')
-    .then(description => {
+    sut.analyze('my-package').then(description => {
       expect(description.loaderConfig.name).toBe('my-package');
       expect(description.loaderConfig.path).toBe(path.join('..', 'node_modules', 'my-package', 'index'));
       done();
-    })
-    .catch(e => done.fail(e));
+    }).catch(e => done.fail(e));
   });
 
   it('analyze() uses jspm.directories.dist and jspm.main path if available', done => {
@@ -150,13 +138,11 @@ describe('The PackageAnalyzer', () => {
     fsConfig[project.paths.root] = {};
     mockfs(fsConfig);
 
-    sut.analyze('my-package')
-    .then(description => {
+    sut.analyze('my-package').then(description => {
       expect(description.loaderConfig.name).toBe('my-package');
       expect(description.loaderConfig.path).toBe(path.join('..', 'node_modules', 'my-package', 'foobar', 'my-main'));
       done();
-    })
-    .catch(e => done.fail(e));
+    }).catch(e => done.fail(e));
   });
 
   it('infers index.js as main file where package.json has no main property', done => {
@@ -168,13 +154,11 @@ describe('The PackageAnalyzer', () => {
     fsConfig[project.paths.root] = {};
     mockfs(fsConfig);
 
-    sut.analyze('my-package')
-    .then(description => {
+    sut.analyze('my-package').then(description => {
       expect(description.loaderConfig.name).toBe('my-package');
       expect(description.loaderConfig.path).toBe(path.join('..', 'node_modules', 'my-package', 'index'));
       done();
-    })
-    .catch(e => done.fail(e));
+    }).catch(e => done.fail(e));
   });
 
   it('analyze() works when there is no package.json. Uses index.js as the main file', done => {
@@ -185,13 +169,11 @@ describe('The PackageAnalyzer', () => {
     fsConfig[project.paths.root] = {};
     mockfs(fsConfig);
 
-    sut.analyze('my-package')
-    .then(description => {
+    sut.analyze('my-package').then(description => {
       expect(description.loaderConfig.name).toBe('my-package');
       expect(description.loaderConfig.path).toBe(path.join('..', 'node_modules', 'my-package', 'index'));
       done();
-    })
-    .catch(e => done.fail(e));
+    }).catch(e => done.fail(e));
   });
 
   it('analyze() throws error when main file does not exist', done => {
@@ -204,10 +186,10 @@ describe('The PackageAnalyzer', () => {
     let p = path.resolve(path.join('node_modules', 'my-package', 'foo.js'));
 
     sut.analyze('my-package')
-    .then(() => done.fail('should have thrown an exception'))
-    .catch(e => {
-      expect(e.message).toBe(`The "my-package" package references a main file that does not exist: ${p}`);
-      done();
-    });
+      .then(() => done.fail('should have thrown an exception'))
+      .catch(e => {
+        expect(e.message).toBe(`The "my-package" package references a main file that does not exist: ${p}`);
+        done();
+      });
   });
 });

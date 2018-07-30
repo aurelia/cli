@@ -31,8 +31,7 @@ describe('The InputText module', () => {
     // user selected karma
     ui.ensureAnswer.and.returnValue(Promise.resolve('my-app'));
 
-    sut.execute.call(definition, context)
-    .then(() => {
+    sut.execute.call(definition, context).then(() => {
       expect(context.state.name).toBe('my-app');
       expect(next).toHaveBeenCalledWith(1170);
 
