@@ -17,6 +17,8 @@
     "au": "bin/aurelia-cli.js"
   },
   "scripts": {
+    "lint": "gulp lint",
+    "pretest": "npm run lint",
     "test": "jasmine",
     "test:watch": "nodemon -x 'npm test'"
   },
