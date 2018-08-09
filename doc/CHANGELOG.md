@@ -1,3 +1,38 @@
+<a name="0.34.0"></a>
+# [0.34.0](https://github.com/aurelia/cli/compare/0.33.1...0.34.0) (2018-08-09)
+
+
+### Bug Fixes
+
+* **bundler:** fix compatibility with source-map >= v0.6 ([681a77d](https://github.com/aurelia/cli/commit/681a77d)), closes [#870](https://github.com/aurelia/cli/issues/870)
+* **cli:** default bundler is webpack, so move to position 1 ([d0ff2ee](https://github.com/aurelia/cli/commit/d0ff2ee))
+* **cli:** display meanful error when not installed locally ([71893be](https://github.com/aurelia/cli/commit/71893be))
+* **cli:** fail gracefully when installed in parent folder ([9407c87](https://github.com/aurelia/cli/commit/9407c87))
+* **cli:** no longer clear the terminal ([9644da8](https://github.com/aurelia/cli/commit/9644da8))
+* **cli build:** reassign global.define.amd after assigning karma override function ([9eee46f](https://github.com/aurelia/cli/commit/9eee46f)), closes [#71](https://github.com/aurelia/cli/issues/71)
+* **importer:** support nodejs module default main file "index.js" when "main" is missing in package.json ([e050868](https://github.com/aurelia/cli/commit/e050868)), closes [#831](https://github.com/aurelia/cli/issues/831)
+* **install:** leave yarn/npm up to the user ([cce5070](https://github.com/aurelia/cli/commit/cce5070))
+* **jest:** update usage of jest.runCli ([66799c0](https://github.com/aurelia/cli/commit/66799c0)), closes [#896](https://github.com/aurelia/cli/issues/896)
+* **npm:** update internal npm ([987cc68](https://github.com/aurelia/cli/commit/987cc68))
+* **package-scripts:** fix test.lint.fix task ([76816e9](https://github.com/aurelia/cli/commit/76816e9))
+* **package.json:** added missing deps ([54f14be](https://github.com/aurelia/cli/commit/54f14be))
+* **requirejs/systemjs:** fix duplicate index.html ([8bac73d](https://github.com/aurelia/cli/commit/8bac73d))
+* enforce single aurelia-binding in webpack bundle ([911b3d7](https://github.com/aurelia/cli/commit/911b3d7))
+* fix binary file copy on favicon.ico ([f7941f4](https://github.com/aurelia/cli/commit/f7941f4)), closes [#688](https://github.com/aurelia/cli/issues/688)
+* **run-webpack.ts:** copy the https property from devServer to opts ([118e441](https://github.com/aurelia/cli/commit/118e441))
+* **stylus:** don't stop watch on error ([4ad96fd](https://github.com/aurelia/cli/commit/4ad96fd))
+* **tsconfig.template.json:** fix incorrect files glob ([ca0ab4b](https://github.com/aurelia/cli/commit/ca0ab4b))
+* **webpack:** remove json loader from webpack config ([0ef0b84](https://github.com/aurelia/cli/commit/0ef0b84)), closes [#860](https://github.com/aurelia/cli/issues/860)
+
+
+### Features
+
+* **requirejs/systemjs:** add protractor and jest support ([4648877](https://github.com/aurelia/cli/commit/4648877))
+* check duplicated packages in webpack ([bd69e5e](https://github.com/aurelia/cli/commit/bd69e5e)), closes [aurelia/binding#702](https://github.com/aurelia/binding/issues/702)
+* use terser to replace uglifyjs for better es6 support ([588ce58](https://github.com/aurelia/cli/commit/588ce58)), closes [#883](https://github.com/aurelia/cli/issues/883) [#490](https://github.com/aurelia/cli/issues/490) [#864](https://github.com/aurelia/cli/issues/864)
+
+
+
 <a name="0.33.0"></a>
 # [0.33.0](https://github.com/aurelia/cli/compare/0.32.0...0.33.0) (2018-03-16)
 
