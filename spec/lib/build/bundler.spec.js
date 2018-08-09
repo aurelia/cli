@@ -1,5 +1,6 @@
 'use strict';
 
+const path = require('path');
 const Bundler = require('../../../lib/build/bundler').Bundler;
 const PackageAnalyzer = require('../../mocks/package-analyzer');
 const CLIOptionsMock = require('../../mocks/cli-options');
@@ -619,6 +620,220 @@ describe('the Bundler module', () => {
       })
       .catch(e => done.fail(e));
   });
+
+  it('build supports onRequiringModule to ignore module', done => {
+    let project = {
+      paths: {
+        root: 'src',
+        foo: 'bar'
+      },
+      build: { loader: {} }
+    };
+
+    let bundler = new Bundler(project, analyzer);
+
+    bundler.items = [
+      {
+        transform: jasmine.createSpy('transform1')
+          .and.returnValues(['f/bar', 'lorem', 'foo/lo'], undefined)
+      },
+      {
+        transform: jasmine.createSpy('transform2')
+          .and.returnValues(['foo', 'had'], undefined)
+      }
+    ];
+
+    let bundle = {
+      getRawBundledModuleIds: () => ['had', 'f/bar/index'],
+      addAlias: jasmine.createSpy('addAlias')
+    };
+
+    bundler.bundles = [bundle];
+
+    bundler.addNpmResource = jasmine.createSpy('addNpmResource')
+      .and.returnValue(Promise.resolve());
+
+    bundler.build({
+      onRequiringModule: function(moduleId) {
+        if (moduleId === 'lorem') return false;
+      }
+    })
+      .then(() => {
+        expect(bundler.addNpmResource).toHaveBeenCalledTimes(2);
+        expect(bundler.addNpmResource.calls.argsFor(0)).toEqual(['foo']);
+        expect(bundler.addNpmResource.calls.argsFor(1)).toEqual(['foo/lo']);
+
+        expect(bundle.addAlias).toHaveBeenCalledTimes(1);
+        expect(bundle.addAlias).toHaveBeenCalledWith('f/bar', 'f/bar/index');
+        done();
+      })
+      .catch(e => done.fail(e));
+  });
+
+  it('build supports onRequiringModule to replace deps', done => {
+    let project = {
+      paths: {
+        root: 'src',
+        foo: 'bar'
+      },
+      build: { loader: {} }
+    };
+
+    let bundler = new Bundler(project, analyzer);
+
+    bundler.items = [
+      {
+        transform: jasmine.createSpy('transform1')
+          .and.returnValues(['f/bar', 'lorem', 'foo/lo'], undefined)
+      },
+      {
+        transform: jasmine.createSpy('transform2')
+          .and.returnValues(['foo', 'had'], undefined)
+      }
+    ];
+
+    let bundle = {
+      getRawBundledModuleIds: () => ['had', 'f/bar/index'],
+      addAlias: jasmine.createSpy('addAlias')
+    };
+
+    bundler.bundles = [bundle];
+
+    bundler.addNpmResource = jasmine.createSpy('addNpmResource')
+      .and.returnValue(Promise.resolve());
+
+    bundler.build({
+      onRequiringModule: function(moduleId) {
+        if (moduleId === 'lorem') {
+          return new Promise(resolve => {
+            setTimeout(() => resolve(['lorem-a', 'lorem-b']), 50);
+          });
+        }
+      }
+    })
+      .then(() => {
+        expect(bundler.addNpmResource).toHaveBeenCalledTimes(4);
+        expect(bundler.addNpmResource.calls.argsFor(0)).toEqual(['foo']);
+        expect(bundler.addNpmResource.calls.argsFor(1)).toEqual(['foo/lo']);
+        expect(bundler.addNpmResource.calls.argsFor(2)).toEqual(['lorem-a']);
+        expect(bundler.addNpmResource.calls.argsFor(3)).toEqual(['lorem-b']);
+
+        expect(bundle.addAlias).toHaveBeenCalledTimes(1);
+        expect(bundle.addAlias).toHaveBeenCalledWith('f/bar', 'f/bar/index');
+        done();
+      })
+      .catch(e => done.fail(e));
+  });
+
+  it('build supports onRequiringModule to provide implementation', done => {
+    let project = {
+      paths: {
+        root: 'src',
+        foo: 'bar'
+      },
+      build: { loader: {} }
+    };
+
+    let bundler = new Bundler(project, analyzer);
+
+    bundler.items = [
+      {
+        transform: jasmine.createSpy('transform1')
+          .and.returnValues(['f/bar', 'lorem', 'foo/lo'], undefined)
+      },
+      {
+        transform: jasmine.createSpy('transform2')
+          .and.returnValues(['foo', 'had'], undefined)
+      }
+    ];
+
+    let bundle = {
+      getRawBundledModuleIds: () => ['had', 'f/bar/index'],
+      addAlias: jasmine.createSpy('addAlias')
+    };
+
+    bundler.bundles = [bundle];
+
+    bundler.addFile = jasmine.createSpy('addFile').and.returnValue(null);
+
+    bundler.addNpmResource = jasmine.createSpy('addNpmResource')
+      .and.returnValue(Promise.resolve());
+
+    bundler.build({
+      onRequiringModule: function(moduleId) {
+        if (moduleId === 'lorem') return "define(['lorem-a', 'lorem-b'], function() {return 1;});";
+      }
+    })
+      .then(() => {
+        expect(bundler.addNpmResource).toHaveBeenCalledTimes(2);
+        expect(bundler.addNpmResource.calls.argsFor(0)).toEqual(['foo']);
+        expect(bundler.addNpmResource.calls.argsFor(1)).toEqual(['foo/lo']);
+
+        expect(bundler.addFile).toHaveBeenCalledTimes(1);
+        expect(bundler.addFile).toHaveBeenCalledWith({
+          path: path.resolve('src', 'lorem.js'),
+          contents: "define(['lorem-a', 'lorem-b'], function() {return 1;});"
+        });
+
+        expect(bundle.addAlias).toHaveBeenCalledTimes(1);
+        expect(bundle.addAlias).toHaveBeenCalledWith('f/bar', 'f/bar/index');
+        done();
+      })
+      .catch(e => done.fail(e));
+  });
+
+  it('build swallows onRequiringModule exception', done => {
+    let project = {
+      paths: {
+        root: 'src',
+        foo: 'bar'
+      },
+      build: { loader: {} }
+    };
+
+    let bundler = new Bundler(project, analyzer);
+
+    bundler.items = [
+      {
+        transform: jasmine.createSpy('transform1')
+          .and.returnValues(['f/bar', 'lorem', 'foo/lo'], undefined)
+      },
+      {
+        transform: jasmine.createSpy('transform2')
+          .and.returnValues(['foo', 'had'], undefined)
+      }
+    ];
+
+    let bundle = {
+      getRawBundledModuleIds: () => ['had', 'f/bar/index'],
+      addAlias: jasmine.createSpy('addAlias')
+    };
+
+    bundler.bundles = [bundle];
+
+    bundler.addNpmResource = jasmine.createSpy('addNpmResource')
+      .and.returnValue(Promise.resolve());
+
+    bundler.build({
+      onRequiringModule: function(moduleId) {
+        if (moduleId === 'lorem') {
+          throw new Error('panic!');
+        }
+      }
+    })
+      .then(() => {
+        expect(bundler.addNpmResource).toHaveBeenCalledTimes(3);
+        expect(bundler.addNpmResource.calls.argsFor(0)).toEqual(['foo']);
+        expect(bundler.addNpmResource.calls.argsFor(1)).toEqual(['foo/lo']);
+        expect(bundler.addNpmResource.calls.argsFor(2)).toEqual(['lorem']);
+
+        expect(bundle.addAlias).toHaveBeenCalledTimes(1);
+        expect(bundle.addAlias).toHaveBeenCalledWith('f/bar', 'f/bar/index');
+        done();
+      })
+      .catch(e => done.fail(e));
+  });
+
 
   afterEach(() => {
     cliOptionsMock.detach();
