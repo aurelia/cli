@@ -463,6 +463,40 @@ exports.t = t;
       .toBe('(function(root) {define("foo/foo", ["bar"], function() {  return (function() {var Foo = "Foo";return root.Foo = Foo;  }).apply(root, arguments);});}(this));');
   });
 
+  it('transforms npm package legacy js file with per package wrapShim', () => {
+    let file = {
+      path: path.resolve(cwd, 'node_modules/foo/foo.js'),
+      contents: 'var Foo = "Foo";'
+    };
+
+    let bs = new BundledSource(bundler, file);
+    bs._getProjectRoot = () => 'src';
+    bs.includedBy = {
+      includedBy: {
+        description: {
+          name: 'foo',
+          mainId: 'foo/foo',
+          loaderConfig: {
+            name: 'foo',
+            path: '../node_modules/foo',
+            main: 'foo',
+            deps: ['bar'],
+            'exports': 'Foo',
+            wrapShim: true
+          }
+        }
+      }
+    };
+    bs._getLoaderPlugins = () => [];
+    bs._getLoaderConfig = () => ({paths: {}});
+
+    let deps = bs.transform();
+    expect(deps).toEqual(['bar']);
+    expect(bs.requiresTransform).toBe(false);
+    expect(bs.contents.replace(/\r|\n/g, ''))
+      .toBe('(function(root) {define("foo/foo", ["bar"], function() {  return (function() {var Foo = "Foo";return root.Foo = Foo;  }).apply(root, arguments);});}(this));');
+  });
+
   it('transforms npm package legacy js file with wrapShim but no exports', () => {
     let file = {
       path: path.resolve(cwd, 'node_modules/foo/foo.js'),
