@@ -174,6 +174,28 @@ describe('The PackageAnalyzer', () => {
       .catch(e => done.fail(e));
   });
 
+  it('sets source to custom when node_modules is found in the path, but packageRoot is set', done => {
+    // setup mock package.json
+    const fsConfig = {};
+    fsConfig[path.join('node_modules/my-package', 'package.json')] = '{ }';
+    fsConfig[path.join('node_modules/my-package', 'index.js')] = 'some content';
+    mockfs(fsConfig);
+
+    let loaderConfig = {
+      name: 'my-package',
+      path: '../node_modules/my-package',
+      packageRoot: '../node_modules/my-package'
+    };
+
+    sut.reverseEngineer(loaderConfig)
+      .then(description => {
+        expect(description.source).toBe('custom');
+        expect(description.loaderConfig).toEqual(Object.assign({main: 'index'}, loaderConfig));
+        done();
+      })
+      .catch(e => done.fail(e));
+  });
+
   it('sets source to custom when node_modules is not found in the path, and packageRoot is missing', done => {
     // setup mock package.json
     const fsConfig = {};
