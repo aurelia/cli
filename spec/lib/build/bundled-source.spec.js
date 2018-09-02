@@ -296,6 +296,37 @@ exports.t = t;
       .toBe("define('foo/dist/cjs/lo',['require','exports','module'],function (require, exports, module) {});");
   });
 
+  it('transforms npm package json file', () => {
+    let file = {
+      path: path.resolve(cwd, 'node_modules/foo/bar/lo.json'),
+      contents: '{"a":1}'
+    };
+
+    let bs = new BundledSource(bundler, file);
+    bs._getProjectRoot = () => 'src';
+    bs.includedBy = {
+      includedBy: {
+        description: {
+          name: 'foo',
+          mainId: 'foo/index',
+          loaderConfig: {
+            name: 'foo',
+            path: '../node_modules/foo',
+            main: 'index'
+          }
+        }
+      }
+    };
+    bs._getLoaderPlugins = () => [];
+    bs._getLoaderConfig = () => ({paths: {}});
+
+    let deps = bs.transform();
+    expect(deps).toBeUndefined();
+    expect(bs.requiresTransform).toBe(false);
+    expect(bs.contents)
+      .toBe('define(\'foo/bar/lo.json\',[],function(){return JSON.parse("{\\\"a\\\":1}");});');
+  });
+
   it('transforms npm package non-js file', () => {
     let file = {
       path: path.resolve(cwd, 'node_modules/foo/bar/lo.html'),
