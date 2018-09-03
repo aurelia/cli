@@ -33,6 +33,7 @@
     "aurelia-dependency-injection": "^1.0.0",
     "aurelia-logging": "^1.2.0",
     "aurelia-polyfills": "^1.0.0",
+    "babel-plugin-transform-es2015-modules-amd": "^6.24.1",
     "babel-polyfill": "^6.0.0 || ^7.0.0 || ^8.0.0",
     "babel-register": "^6.0.0 || ^7.0.0 || ^8.0.0",
     "esprima": "^4.0.0",

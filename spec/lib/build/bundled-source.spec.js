@@ -202,6 +202,39 @@ exports.t = t;
       .toBe("define('foo/bar/lo',['require','exports','module','./t'],function (require, exports, module) {var t = require('./t');exports.t = t;});");
   });
 
+  it('transforms npm package js file in native es module format', () => {
+    let file = {
+      path: path.resolve(cwd, 'node_modules/foo/bar/lo.js'),
+      contents: `
+import t from './t';
+export {t};
+`
+    };
+
+    let bs = new BundledSource(bundler, file);
+    bs._getProjectRoot = () => 'src';
+    bs.includedBy = {
+      includedBy: {
+        description: {
+          name: 'foo',
+          mainId: 'foo/index',
+          loaderConfig: {
+            name: 'foo',
+            path: '../node_modules/foo',
+            main: 'index'
+          }
+        }
+      }
+    };
+    bs._getLoaderPlugins = () => [];
+    bs._getLoaderConfig = () => ({paths: {}});
+
+    let deps = bs.transform();
+    expect(deps).toEqual(['foo/bar/t']);
+    expect(bs.requiresTransform).toBe(false);
+    // assume babel did right job for bs.contents
+  });
+
   it('transforms npm package js file with named AMD module', () => {
     let file = {
       path: path.resolve(cwd, 'node_modules/foo/index.js'),
