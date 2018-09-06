@@ -65,7 +65,8 @@ describe('the BundledSource module', () => {
             name: 'foo',
             path: '../node_modules/foo',
             main: 'index'
-          }
+          },
+          browserReplacement: () => undefined
         }
       }
     };
@@ -90,7 +91,8 @@ describe('the BundledSource module', () => {
             name: 'foo',
             path: '../node_modules/foo',
             main: 'index'
-          }
+          },
+          browserReplacement: () => undefined
         }
       }
     };
@@ -188,7 +190,8 @@ exports.t = t;
             name: 'foo',
             path: '../node_modules/foo',
             main: 'index'
-          }
+          },
+          browserReplacement: () => undefined
         }
       }
     };
@@ -222,7 +225,8 @@ export {t};
             name: 'foo',
             path: '../node_modules/foo',
             main: 'index'
-          }
+          },
+          browserReplacement: () => undefined
         }
       }
     };
@@ -252,7 +256,8 @@ export {t};
             name: 'foo',
             path: '../node_modules/foo',
             main: 'index'
-          }
+          },
+          browserReplacement: () => undefined
         }
       }
     };
@@ -283,7 +288,8 @@ export {t};
             name: 'foo',
             path: '../node_modules/foo',
             main: 'index'
-          }
+          },
+          browserReplacement: () => undefined
         }
       }
     };
@@ -315,7 +321,8 @@ export {t};
             name: 'foo',
             path: '../node_modules/foo',
             main: 'dist/cjs/index'
-          }
+          },
+          browserReplacement: () => undefined
         }
       }
     };
@@ -346,7 +353,8 @@ export {t};
             name: 'foo',
             path: '../node_modules/foo',
             main: 'index'
-          }
+          },
+          browserReplacement: () => undefined
         }
       }
     };
@@ -377,7 +385,8 @@ export {t};
             name: 'foo',
             path: '../node_modules/foo',
             main: 'index'
-          }
+          },
+          browserReplacement: () => undefined
         }
       }
     };
@@ -413,7 +422,8 @@ export {t};
             main: 'foo',
             deps: ['bar'],
             'exports': 'Foo'
-          }
+          },
+          browserReplacement: () => undefined
         }
       }
     };
@@ -480,7 +490,8 @@ export {t};
             path: '../node_modules/foo',
             main: 'foo',
             deps: ['bar']
-          }
+          },
+          browserReplacement: () => undefined
         }
       }
     };
@@ -513,7 +524,8 @@ export {t};
             main: 'foo',
             deps: ['bar'],
             'exports': 'Foo'
-          }
+          },
+          browserReplacement: () => undefined
         }
       }
     };
@@ -547,7 +559,8 @@ export {t};
             deps: ['bar'],
             'exports': 'Foo',
             wrapShim: true
-          }
+          },
+          browserReplacement: () => undefined
         }
       }
     };
@@ -579,7 +592,8 @@ export {t};
             path: '../node_modules/foo',
             main: 'foo',
             deps: ['bar']
-          }
+          },
+          browserReplacement: () => undefined
         }
       }
     };
@@ -591,5 +605,74 @@ export {t};
     expect(bs.requiresTransform).toBe(false);
     expect(bs.contents.replace(/\r|\n/g, ''))
       .toBe('(function(root) {define("foo/foo", ["bar"], function() {  return (function() {var Foo = "Foo";  }).apply(root, arguments);});}(this));');
+  });
+
+  it('transforms npm package js file with browser replacement dep', () => {
+    let file = {
+      path: path.resolve(cwd, 'node_modules/foo/index.js'),
+      contents: "require('module-a'); require(\"module-b\"); require('./bar/'); require('prebid.js'); require('./server/only.js/');"
+    };
+
+    let bs = new BundledSource(bundler, file);
+    bs._getProjectRoot = () => 'src';
+    bs.includedBy = {
+      includedBy: {
+        description: {
+          name: 'foo',
+          mainId: 'foo/index',
+          loaderConfig: {
+            name: 'foo',
+            path: '../node_modules/foo',
+            main: 'index'
+          },
+          browserReplacement: () => ({
+            'module-a': false,
+            'module-b': './shims/module/b',
+            './server/only': './shims/server-only'
+          })
+        }
+      }
+    };
+    bs._getLoaderPlugins = () => [];
+    bs._getLoaderConfig = () => ({paths: {}});
+
+    let deps = bs.transform();
+    expect(deps).toEqual(['__ignore__', 'foo/shims/module/b', 'foo/bar', 'prebid.js', 'foo/shims/server-only']);
+    expect(bs.requiresTransform).toBe(false);
+    expect(bs.contents.replace(/\r|\n/g, ''))
+      .toBe("define('foo/index',['require','exports','module','__ignore__','./shims/module/b','./bar','prebid.js','./shims/server-only'],function (require, exports, module) {require('__ignore__'); require('./shims/module/b'); require('./bar'); require('prebid.js'); require('./shims/server-only');});");
+  });
+
+  it('transforms clears up deps with ".js" and "/" ending', () => {
+    let file = {
+      path: path.resolve(cwd, 'node_modules/foo/index.js'),
+      contents: "require('pack-name.js'); require('@pack/name.js'); require('pack-name.js/foo.js'); require('@pack/name.js/foo.js'); require('./bar.js/');"
+    };
+
+    let bs = new BundledSource(bundler, file);
+    bs._getProjectRoot = () => 'src';
+    bs.includedBy = {
+      includedBy: {
+        description: {
+          name: 'foo',
+          mainId: 'foo/index',
+          loaderConfig: {
+            name: 'foo',
+            path: '../node_modules/foo',
+            main: 'index'
+          },
+          browserReplacement: () => undefined
+        }
+      }
+    };
+    bs._getLoaderPlugins = () => [];
+    bs._getLoaderConfig = () => ({paths: {}});
+    bs._getUseCache = () => undefined;
+
+    let deps = bs.transform();
+    expect(deps).toEqual(['pack-name.js', '@pack/name.js', 'pack-name.js/foo', '@pack/name.js/foo', 'foo/bar']);
+    expect(bs.requiresTransform).toBe(false);
+    expect(bs.contents.replace(/\r|\n/g, ''))
+      .toBe("define('foo/index',['require','exports','module','pack-name.js','@pack/name.js','pack-name.js/foo','@pack/name.js/foo','./bar'],function (require, exports, module) {require('pack-name.js'); require('@pack/name.js'); require('pack-name.js/foo'); require('@pack/name.js/foo'); require('./bar');});");
   });
 });

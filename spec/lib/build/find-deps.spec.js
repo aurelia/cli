@@ -337,6 +337,15 @@ exports.MyComp = MyComp;
       expect(findJsDeps('src/foo.js', 'a();')).toEqual(['./foo.html']);
       expect(findDeps('src/foo.js', 'a();')).toEqual(['./foo.html']);
     });
+
+    it('remove inner defined modules', () => {
+      let file = `
+define('M', function() {});
+define('N', [], function() {});
+define('another', ['M', 'N', 'a', 'b'], function() {});
+      `;
+      expect(findJsDeps('src/foo.js', file)).toEqual(['a', 'b']);
+    });
   });
 
   describe('findHtmlDeps', () => {

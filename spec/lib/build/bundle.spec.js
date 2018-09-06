@@ -202,7 +202,7 @@ describe('the Bundle module', () => {
     }).catch(e => done.fail(e));
   });
 
-  it('getBundledModuleIds returns unique module ids, plus nodeIdCompat aliases', () => {
+  it('getBundledModuleIds returns unique module ids', () => {
     sut.includes = [{
       getAllModuleIds: () => ['a', 'b']
     }, {
@@ -210,7 +210,7 @@ describe('the Bundle module', () => {
     }];
 
     expect(Array.from(sut.getRawBundledModuleIds()).sort()).toEqual(['a', 'b', 'c.html']);
-    expect(sut.getBundledModuleIds()).toEqual(['a', 'a.js', 'b', 'b.js', 'text!c.html']);
+    expect(sut.getBundledModuleIds()).toEqual(['a', 'b', 'text!c.html']);
   });
 
   it('getBundledModuleIds returns sorts module ids', () => {
@@ -221,7 +221,7 @@ describe('the Bundle module', () => {
     }];
 
     expect(Array.from(sut.getRawBundledModuleIds()).sort()).toEqual(['a', 'b', 'd']);
-    expect(sut.getBundledModuleIds()).toEqual(['a', 'a.js', 'b', 'b.js', 'd', 'd.js']);
+    expect(sut.getBundledModuleIds()).toEqual(['a', 'b', 'd']);
   });
 
   it('getBundledModuleIds returns sorts module ids, and added aliases', () => {
@@ -236,8 +236,7 @@ describe('the Bundle module', () => {
 
     expect(Array.from(sut.getRawBundledModuleIds()).sort()).toEqual(['a', 'b', 'd', 'foo/a', 'foo/b']);
     expect(sut.getBundledModuleIds()).toEqual([
-      'a', 'a.js', 'b', 'b.js', 'd', 'd.js',
-      'foo/a', 'foo/a.js', 'foo/b', 'foo/b.js'
+      'a', 'b', 'd', 'foo/a', 'foo/b'
     ]);
   });
 
