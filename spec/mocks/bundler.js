@@ -20,7 +20,7 @@ module.exports = class Bundler {
     this.project = new ProjectMock();
     this.loaderOptions = {
       type: 'require',
-      plugins: [new LoaderPlugin(this, {
+      plugins: [new LoaderPlugin('require', {
         name: 'text',
         extensions: ['.html', '.css']
       })]

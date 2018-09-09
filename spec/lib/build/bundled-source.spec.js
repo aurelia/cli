@@ -365,7 +365,7 @@ export {t};
     expect(deps).toBeUndefined();
     expect(bs.requiresTransform).toBe(false);
     expect(bs.contents)
-      .toBe('define(\'foo/bar/lo.json\',[],function(){return JSON.parse("{\\\"a\\\":1}");});');
+      .toBe('define(\'foo/bar/lo.json\',[],function(){return JSON.parse("{\\\"a\\\":1}");});\ndefine(\'json!foo/bar/lo.json\',[\'foo/bar/lo.json\'],function(m){return m;});\n');
   });
 
   it('transforms npm package non-js file', () => {
