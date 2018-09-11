@@ -25,5 +25,6 @@ module.exports = class Bundler {
         extensions: ['.html', '.css']
       })]
     };
+    this.environment = 'dev';
   }
 };

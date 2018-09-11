@@ -2,6 +2,7 @@
 const path = require('path');
 const BundlerMock = require('../../mocks/bundler');
 const BundledSource = require('../../../lib/build/bundled-source').BundledSource;
+const Utils = require('../../../lib/build/utils');
 
 const cwd = process.cwd();
 
@@ -116,6 +117,7 @@ describe('the BundledSource module', () => {
         b8: 'foo/bar'
       }
     });
+    bs._getUseCache = () => undefined;
 
     let deps = bs.transform();
     expect(deps).toEqual(['lo/rem', 'foo.html']); // relative dep is ignored
@@ -140,6 +142,7 @@ describe('the BundledSource module', () => {
         shared: '../../shared'
       }
     });
+    bs._getUseCache = () => undefined;
 
     let deps = bs.transform();
     expect(deps).toEqual(['lo/rem']); // relative dep is ignored
@@ -147,7 +150,6 @@ describe('the BundledSource module', () => {
     expect(bs.contents).toBe("define('__dot_dot__/__dot_dot__/shared/bar/loo',['./a', 'lo/rem'], function(a,r){});");
     expect(bundler.configTargetBundle.addAlias).toHaveBeenCalledWith('shared/bar/loo', '__dot_dot__/__dot_dot__/shared/bar/loo');
   });
-
 
   it('transforms local non-js file', () => {
     let file = {
@@ -162,6 +164,7 @@ describe('the BundledSource module', () => {
       transform: (moduleId, modulePath, contents) => `define('${moduleId}',function(){return '${contents}';});`
     }];
     bs._getLoaderConfig = () => ({paths: {}});
+    bs._getUseCache = () => undefined;
 
     let deps = bs.transform();
     expect(deps).toEqual(['lo/rem.css']);
@@ -197,6 +200,7 @@ exports.t = t;
     };
     bs._getLoaderPlugins = () => [];
     bs._getLoaderConfig = () => ({paths: {}});
+    bs._getUseCache = () => undefined;
 
     let deps = bs.transform();
     expect(deps).toEqual(['foo/bar/t']);
@@ -232,6 +236,7 @@ export {t};
     };
     bs._getLoaderPlugins = () => [];
     bs._getLoaderConfig = () => ({paths: {}});
+    bs._getUseCache = () => undefined;
 
     let deps = bs.transform();
     expect(deps).toEqual(['foo/bar/t']);
@@ -263,6 +268,7 @@ export {t};
     };
     bs._getLoaderPlugins = () => [];
     bs._getLoaderConfig = () => ({paths: {}});
+    bs._getUseCache = () => undefined;
 
     let deps = bs.transform();
     expect(deps).toEqual(['a', 'b']);
@@ -295,6 +301,7 @@ export {t};
     };
     bs._getLoaderPlugins = () => [];
     bs._getLoaderConfig = () => ({paths: {}});
+    bs._getUseCache = () => undefined;
 
     let deps = bs.transform();
     expect(deps).toEqual(['a', 'b', 'c']);
@@ -328,6 +335,7 @@ export {t};
     };
     bs._getLoaderPlugins = () => [];
     bs._getLoaderConfig = () => ({paths: {}});
+    bs._getUseCache = () => undefined;
 
     let deps = bs.transform();
     expect(deps).toBeUndefined();
@@ -360,6 +368,7 @@ export {t};
     };
     bs._getLoaderPlugins = () => [];
     bs._getLoaderConfig = () => ({paths: {}});
+    bs._getUseCache = () => undefined;
 
     let deps = bs.transform();
     expect(deps).toBeUndefined();
@@ -395,6 +404,7 @@ export {t};
       transform: (moduleId, modulePath, contents) => `define('${moduleId}',function(){return '${contents}';});`
     }];
     bs._getLoaderConfig = () => ({paths: {}});
+    bs._getUseCache = () => undefined;
 
     let deps = bs.transform();
     expect(deps).toEqual(['foo/bar/a.css']);
@@ -429,6 +439,7 @@ export {t};
     };
     bs._getLoaderPlugins = () => [];
     bs._getLoaderConfig = () => ({paths: {}});
+    bs._getUseCache = () => undefined;
 
     let deps = bs.transform();
     expect(deps).toEqual(['bar']);
@@ -497,6 +508,7 @@ export {t};
     };
     bs._getLoaderPlugins = () => [];
     bs._getLoaderConfig = () => ({paths: {}});
+    bs._getUseCache = () => undefined;
 
     let deps = bs.transform();
     expect(deps).toEqual(['bar']);
@@ -531,6 +543,7 @@ export {t};
     };
     bs._getLoaderPlugins = () => [];
     bs._getLoaderConfig = () => ({paths: {}, wrapShim: true});
+    bs._getUseCache = () => undefined;
 
     let deps = bs.transform();
     expect(deps).toEqual(['bar']);
@@ -566,6 +579,7 @@ export {t};
     };
     bs._getLoaderPlugins = () => [];
     bs._getLoaderConfig = () => ({paths: {}});
+    bs._getUseCache = () => undefined;
 
     let deps = bs.transform();
     expect(deps).toEqual(['bar']);
@@ -599,6 +613,7 @@ export {t};
     };
     bs._getLoaderPlugins = () => [];
     bs._getLoaderConfig = () => ({paths: {}, wrapShim: true});
+    bs._getUseCache = () => undefined;
 
     let deps = bs.transform();
     expect(deps).toEqual(['bar']);
@@ -635,6 +650,7 @@ export {t};
     };
     bs._getLoaderPlugins = () => [];
     bs._getLoaderConfig = () => ({paths: {}});
+    bs._getUseCache = () => undefined;
 
     let deps = bs.transform();
     expect(deps).toEqual(['__ignore__', 'foo/shims/module/b', 'foo/bar', 'prebid.js', 'foo/shims/server-only']);
@@ -674,5 +690,106 @@ export {t};
     expect(bs.requiresTransform).toBe(false);
     expect(bs.contents.replace(/\r|\n/g, ''))
       .toBe("define('foo/index',['require','exports','module','pack-name.js','@pack/name.js','pack-name.js/foo','@pack/name.js/foo','./bar'],function (require, exports, module) {require('pack-name.js'); require('@pack/name.js'); require('pack-name.js/foo'); require('@pack/name.js/foo'); require('./bar');});");
+  });
+
+  describe('cache', () => {
+    let oldGetCache;
+    let oldSetCache;
+
+    beforeEach(() => {
+      oldGetCache = Utils.getCache;
+      oldSetCache = Utils.setCache;
+    });
+
+    afterEach(() => {
+      Utils.getCache = oldGetCache;
+      Utils.setCache = oldSetCache;
+    });
+
+    it('transform saves cache', () => {
+      let file = {
+        path: path.resolve(cwd, 'node_modules/foo/bar/lo.js'),
+        contents: "var t = require('./t');exports.t = t;"
+      };
+
+      Utils.getCache = jasmine.createSpy('getCache').and.returnValue(undefined);
+      Utils.setCache = jasmine.createSpy('setCache');
+
+      let bs = new BundledSource(bundler, file);
+      bs._getProjectRoot = () => 'src';
+      bs.includedBy = {
+        includedBy: {
+          description: {
+            name: 'foo',
+            mainId: 'foo/index',
+            loaderConfig: {
+              name: 'foo',
+              path: '../node_modules/foo',
+              main: 'index'
+            },
+            browserReplacement: () => undefined
+          }
+        }
+      };
+      bs._getLoaderPlugins = () => [];
+      bs._getLoaderConfig = () => ({paths: {}});
+      bs._getUseCache = () => true;
+
+      let deps = bs.transform();
+      let contents = "define('foo/bar/lo',['require','exports','module','./t'],function (require, exports, module) {var t = require('./t');exports.t = t;});";
+      expect(deps).toEqual(['foo/bar/t']);
+      expect(bs.requiresTransform).toBe(false);
+      expect(bs.contents.replace(/\r|\n/g, ''))
+        .toBe(contents);
+
+      expect(Utils.getCache).toHaveBeenCalled();
+      expect(Utils.setCache).toHaveBeenCalled();
+      expect(Utils.setCache.calls.argsFor(0)[1].deps).toEqual(['./t']);
+      expect(Utils.setCache.calls.argsFor(0)[1].contents.replace(/\r|\n/g, '')).toBe(contents);
+    });
+
+    it('transform uses cache', () => {
+      let file = {
+        path: path.resolve(cwd, 'node_modules/foo/bar/lo.js'),
+        contents: "var t = require('./t');exports.t = t;"
+      };
+
+      let contents = "define('foo/bar/lo',['require','exports','module','./t'],function (require, exports, module) {var t = require('./t');exports.t = t;});";
+
+      Utils.getCache = jasmine.createSpy('getCache').and.returnValue({
+        deps: ['./t'],
+        contents
+      });
+      Utils.setCache = jasmine.createSpy('setCache');
+
+      let bs = new BundledSource(bundler, file);
+      bs._getProjectRoot = () => 'src';
+      bs.includedBy = {
+        includedBy: {
+          description: {
+            name: 'foo',
+            mainId: 'foo/index',
+            loaderConfig: {
+              name: 'foo',
+              path: '../node_modules/foo',
+              main: 'index'
+            },
+            browserReplacement: () => undefined
+          }
+        }
+      };
+      bs._getLoaderPlugins = () => [];
+      bs._getLoaderConfig = () => ({paths: {}});
+      bs._getUseCache = () => true;
+
+      let deps = bs.transform();
+      expect(deps).toEqual(['foo/bar/t']);
+      expect(bs.requiresTransform).toBe(false);
+      expect(bs.contents.replace(/\r|\n/g, ''))
+        .toBe(contents);
+
+      expect(Utils.getCache).toHaveBeenCalled();
+      expect(Utils.setCache).not.toHaveBeenCalled();
+    });
   });
 });

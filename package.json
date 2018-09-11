@@ -36,6 +36,7 @@
     "babel-plugin-transform-es2015-modules-amd": "^6.24.1",
     "babel-polyfill": "^6.0.0 || ^7.0.0 || ^8.0.0",
     "babel-register": "^6.0.0 || ^7.0.0 || ^8.0.0",
+    "del": "^3.0.0",
     "esprima": "^4.0.0",
     "glob": "^7.1.1",
     "gulp": "^4.0.0",
