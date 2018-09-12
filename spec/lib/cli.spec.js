@@ -23,7 +23,6 @@ describe('The cli', () => {
     const fsConfig = {};
     fsConfig[dir] = {};
     fsConfig['package.json'] = {};
-
     mockfs(fsConfig);
   });
 
