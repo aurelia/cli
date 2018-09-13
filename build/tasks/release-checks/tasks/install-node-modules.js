@@ -21,6 +21,6 @@ module.exports = class InstallNodeModules extends Task {
 
     let yarn = new Yarn();
 
-    return yarn.install([], { cwd: context.workingDirectory });
+    return yarn.install([], context.workingDirectory );
   }
 };

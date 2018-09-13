@@ -39,7 +39,7 @@ module.exports = class InstallLatestAureliaCLI extends Task {
 
       let yarn = new Yarn();
 
-      const yarnPath = yarn.getYarnPath(context.workingDirectory);
+      const yarnPath = yarn.getExecutablePath(context.workingDirectory);
 
       const command = new ExecuteCommand(yarnPath, ['add', forkUrl, '-D'], (msg) => this.onOutput(msg));
       return new StepRunner(command).run();
