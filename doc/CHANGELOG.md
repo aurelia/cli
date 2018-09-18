@@ -1,3 +1,19 @@
+<a name="0.35.0"></a>
+# [0.35.0](https://github.com/aurelia/cli/compare/0.34.0...0.35.0) (2018-09-18)
+
+
+### Bug Fixes
+
+* fix environment check (--env or NODE_ENV) ([c706c81](https://github.com/aurelia/cli/commit/c706c81)), closes [#912](https://github.com/aurelia/cli/issues/912)
+* fix regression on npm/yarn path when it has white space ([3641a92](https://github.com/aurelia/cli/commit/3641a92))
+
+
+### Features
+
+* upgrade to babel-preset-env ([1afe47f](https://github.com/aurelia/cli/commit/1afe47f)), closes [#754](https://github.com/aurelia/cli/issues/754) [#909](https://github.com/aurelia/cli/issues/909)
+
+
+
 <a name="0.34.0"></a>
 # [0.34.0](https://github.com/aurelia/cli/compare/0.33.1...0.34.0) (2018-08-09)
 
