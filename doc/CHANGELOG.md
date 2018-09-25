@@ -1,3 +1,13 @@
+<a name="0.35.1"></a>
+## [0.35.1](https://github.com/aurelia/cli/compare/0.35.0...0.35.1) (2018-09-25)
+
+
+### Bug Fixes
+
+* fix regression, panic on missing yarn ([ef39841](https://github.com/aurelia/cli/commit/ef39841))
+
+
+
 <a name="0.35.0"></a>
 # [0.35.0](https://github.com/aurelia/cli/compare/0.34.0...0.35.0) (2018-09-18)
 
