@@ -12,7 +12,7 @@ The Aurelia CLI is the official command line tool for Aurelia. It can be used to
 
 The CLI itself has a couple of prerequisites that you must install first:
 
-* Install Node.js version 4.x or above. For Webpack projects, install Node.js 8.9.0 or higher.
+* Install Node.js version 8.9.0 or above.
     * You can [download it here](https://nodejs.org/en/).
 * Install a Git Client
     * Here's [a nice GUI client](https://desktop.github.com).
@@ -27,8 +27,6 @@ npm install aurelia-cli -g
 > Info
 > Always run commands from a Bash prompt. Depending on your environment, you may need to use `sudo` when executing npm global installs.
 
-> Warning
-> While creating a new project doesn't require NPM 3, front-end development, in general, requires a flat-package structure, which is not available with NPM versions prior to 3. It is recommended that you update to NPM 3, which will be able to manage this structural requirement. You can check your NPM version with `npm -v`. If you need to update, run `npm install npm -g`.
 
 ## Creating A New Aurelia Project
 
@@ -41,11 +39,11 @@ Once the dependencies are installed, your project is ready to go.
 
 ## Running Your Aurelia App
 
-From inside your project folder, simply execute `au run`. This will build your app, creating all bundles in the process. It will start a minimal web server and serve your application. If you would like to develop, with auto-refresh of the browser, simply specify the `--watch` flag like this: `au run --watch`. If you have chosen to use ASP.NET Core and Webpack, you will want to use the `dotnet run` command instead of `au run`.
+From inside your project folder, simply execute `au run`. This will build your app, creating all bundles in the process. It will start a minimal web server and serve your application. The dev web server by default auto-refreshes your browser when source code changes. If you have chosen to use ASP.NET Core and Webpack, you will want to use the `dotnet run` command instead of `au run`.
 
 ## Environments
 
-The CLI build system understands that you might run your code in different environments. By default, you are set up with three: `dev`, `stage` and `prod`. You can use the `--env` flag to specify what environment you want to run under. For example: `au run --env prod --watch`.
+The CLI build system understands that you might run your code in different environments. By default, you are set up with three: `dev`, `stage` and `prod`. You can use the `--env` flag to specify what environment you want to run under. For example: `au run --env prod`.
 
 When you do a build the `src/environment.js` or `src/environment.ts` file will be overwritten by either the `dev.js`, `stage.js` or `prod.js` file from the `aurelia_project/environments` directory.
 
@@ -55,29 +53,58 @@ Aurelia CLI apps always run in bundled mode, even during development. To build y
 
 ## Generators
 
-Executing `au generate <resource>` runs a generator to scaffold out typical Aurelia constructs. Options for *resource* are: element, attribute, value-converter, binding-behavior, task and generator. That's right...there's a generator generator so you can write your own. Ex. `au generate element`
+Executing `au generate <resource>` runs a generator to scaffold out typical Aurelia constructs. Options for *resource* are: `element`, `attribute`, `value-converter`, `binding-behavior`, `task` and `generator`.
+
+For example `au generate element my-awesome-element` generates `src/resources/my-awesome-element.js` or `my-awesome-element.ts`.
+
+> Info: name-in-kebab-case
+> By Aurelia convention, we use [kebab case](https://en.wikipedia.org/wiki/Letter_case#Special_case_styles) on name of any new `element`, `attribute`, `value-converter`, or `binding-behavior`.
+
+There's also a `generator` generator so you can create your own, `au generate generator`.
 
 ## Aurelia.json
-In the `aurelia_project` directory there is a file called `aurelia.json`. This file is a centralized file containing all settings you might need for your gulp tasks and configuration files. Since it's in a JSON format, it's easy to import from Node.js. The aurelia.json file is meant to be used by your tooling, not your application. 
+In the `aurelia_project` directory there is a file called `aurelia.json`. This file is the centralized settings for all the gulp tasks like build and test. We will show you more details of this file when talking about various customization.
 
-## Webpack vs SystemJS vs RequireJS
-When creating a new project using the Aurelia CLI you are presented with a wizard to select a module loader, bundler, CSS preprocessor and more. But what's the difference between Webpack, the Aurelia CLI bundler (RequireJS and SystemJS)?
+## Webpack vs Built-in Bundler
 
-Webpack is a bundler whereas SystemJS and RequireJS are module loaders. Since a bundle of files loads more quickly in the browser than individual files, the CLI will use its own internal bundler when you decide to use the SystemJS or RequireJS module loader. If you choose to use Webpack then you typically don't need a module loader.
+When creating a new project using the Aurelia CLI, you are presented with a wizard to select a bundler, a module loader, CSS preprocessor and more.
 
-Webpack is a very powerful module bundler. Setting up Webpack from scratch could be a very daunting task though. Luckily the Aurelia CLI takes care of setting up a Webpack configuration for you, you just have to answer some questions when running the `au new` command. Since there is no module loader when you choose for Webpack, all modules that your application needs have to be bundled by Webpack. Sometimes you will need to help the bundler out by using `PLATFORM.moduleName()` calls for module references in your code. Webpack is growing in popularity and there is a wealth of loaders, plugins, and documentation available for it.
+On top of all choices, you first need to choose a bundler: either Webpack (the default bundler), or CLI's built-in bundler (the alternative bundler).
 
-SystemJS is a "Dynamic ES module loader". When you choose for SystemJS during `au new` you're also getting the Aurelia CLI Bundler. This is a powerful combination that bundles your application, but also allows you to load modules at runtime that are not in the bundle. SystemJS is actively being developed as it tries to stay in sync with the WhatWG Loader specification.
+### Webpack
 
-RequireJS has been around for a long time. As opposed to SystemJS it is done and no large changes are made, which makes it a little bit more stable than SystemJS. With either module loader (RequireJS, SystemJS) you will be using the Aurelia CLI Bundler. Both SystemJS and RequireJS support loader plugins, such as `text`, `json` and `svg`. The bundle configuration is in the same format for both module loaders.
+Webpack is the default choice for both ESNext and TypeScript applications.
 
-If you're unsure what to choose then Webpack is a good choice. If you like type-safe programming languages, you'll want to go for Typescript. If not, go for Babel (ESNext).
+Webpack is a bundler with built-in module loader. If you choose to use Webpack then you don't need a separate module loader. Webpack is powerful and popular, but it could be a daunting task to set up Webpack from scratch. Aurelia CLI generates a battle-tested Webpack configuration file for your app, provides a solid base for further customization if you ever need to.
+
+> Warning
+> To ensure your code work nicely with Webpack, you need to use `PLATFORM.moduleName('someModule')` calls for module references. Read more in [Webpack section](/docs/cli/webpack).
+
+### CLI's Built-in Bundler
+
+Aurelia CLI ships with an in-house made bundler providing similar capability of Webpack but with much simpler configuration. If you have no experience on Webpack, we recommend to use the built-in bundler.
+
+The built-in bundler is paired with module loader RequireJS or SystemJS.
+
+* RequireJS has been around for very long time, it's the reference module loader for AMD module format. Comparing to SystemJS, it is considered bit more mature and stable, but with less features.
+* SystemJS is a "Dynamic ES module loader", the most versatile module loader in JavaScript world, supporting AMD/CommonJS/UMD or Native ESNext module format. This gives you most freedom at runtime.
+
+Choose RequireJS if you don't need or not sure about SystemJS's capability.
+
+> Info
+> The built-in bundler supports any npm packages in CommonJS (Node.js default), AMD, UMD or Native ES Module format.
+
+Previous version of the built-in bundler requires user to manually maintain dependencies configuration in `aurelia.json`. But now we got a totally new bundler written from scratch, we call it auto-tracing. As the name implies, it tracks dependencies automatically without explicit configuration. You rarely need to touch `aurelia.json` for dependency management.
+
+If you migrate an app from old CLI bundler to latest CLI bundler, most apps should still work without modifying `aurelia.json`. If your app failed to work with latest CLI bundler, please read [migration guide](/docs/cli/migrating). If you still have trouble, ask a question on [Aurelia Discourse forum](https://discourse.aurelia.io/) or create an issue on [our github repo](https://github.com/aurelia/cli/issues), we will help you out.
+
+Read [CLI bundler chapter](/docs/cli/cli-bundler) for more details.
 
 Please refer to the following websites for more information on Webpack, RequireJS and SystemJS.
-- http://requirejs.org/
-- https://github.com/systemjs/systemjs/
 - https://webpack.github.io/
+- https://requirejs.org/
+- https://github.com/systemjs/systemjs/
 
-## What if I forget this stuff?
+## What if I need help?
 
-If you need your memory refreshed as to what the available options are, at any time you can execute `au help`. If you aren't sure what version of the CLI you are running, you can run `au -v`;
+Run `au help`, or you can reach us on [Aurelia Discourse forum](https://discourse.aurelia.io/). If you aren't sure what version of the CLI you are running, you can run `au -v`;

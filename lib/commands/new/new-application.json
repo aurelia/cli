@@ -89,7 +89,7 @@
         },
         {
           "displayName": "Custom",
-          "description": "Select loaders (requirejs/systemjs), bundlers (cli/webpack), transpilers, CSS pre-processors and more.",
+          "description": "Select bundlers (built-in or webpack), loaders (requirejs or systemjs), transpilers, CSS pre-processors and more.",
           "value": "custom"
         }
       ]
@@ -134,17 +134,17 @@
       "options": [
         {
           "displayName": "Webpack",
-          "description": "A powerful bundler",
+          "description": "A powerful and popular bundler for JavaScript",
           "value": "webpack"
         },
         {
-          "displayName": "RequireJS",
-          "description": "A file and module loader for JavaScript.",
+          "displayName": "CLI's built-in bundler with RequireJS",
+          "description": "RequireJS is a mature and stable module loader for JavaScript.",
           "value": "requirejs"
         },
         {
-          "displayName": "SystemJS",
-          "description": "Dynamic ES module loader",
+          "displayName": "CLI's built-in bundler with SystemJS",
+          "description": "SystemJS is Dynamic ES module loader, the most versatile module loader for JavaScript",
           "value": "systemjs"
         }
       ]
