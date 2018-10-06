@@ -11,6 +11,11 @@
       "name": "open",
       "description": "Open the default browser at the application location.",
       "type": "boolean"
+    },
+    {
+      "name": "auto-install",
+      "description": "auto install missing npm package using npm or yarn (set by aurelia.json packageManager, or existence of yarn.lock file).",
+      "type": "boolean"
     }
   ]
 }

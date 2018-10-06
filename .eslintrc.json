@@ -5,6 +5,7 @@
     "strict": ["error", "global"],
     "no-console": 0,
     "no-inner-declarations": 0,
+    "no-undef": 2,
     "comma-dangle": ["error", {
       "arrays": "never",
       "objects": "never",
@@ -20,6 +21,8 @@
     }
   },
   "env": {
-    "node": true
+    "node": true,
+    "es6": true,
+    "jasmine": true
   }
 }

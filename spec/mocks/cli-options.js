@@ -5,6 +5,10 @@ let OriginalCLIOptions = require('../../lib/cli-options').CLIOptions;
 module.exports = class CLIOptionsMock {
   constructor() {
     this.originalFns = {};
+    if (!OriginalCLIOptions.instance) {
+      // eslint-disable-next-line no-unused-vars
+      let instance = new OriginalCLIOptions();
+    }
   }
 
   attach() {

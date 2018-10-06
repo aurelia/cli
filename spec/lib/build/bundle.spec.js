@@ -4,10 +4,47 @@ const BundlerMock = require('../../mocks/bundler');
 const Bundle = require('../../../lib/build/bundle').Bundle;
 const CLIOptionsMock = require('../../mocks/cli-options');
 const DependencyDescription = require('../../../lib/build/dependency-description').DependencyDescription;
+const SourceInclusion = require('../../../lib/build/source-inclusion').SourceInclusion;
+const DependencyInclusion = require('../../../lib/build/dependency-inclusion').DependencyInclusion;
+const path = require('path');
+const minimatch = require('minimatch');
 
 describe('the Bundle module', () => {
   let sut;
   let cliOptionsMock;
+  let originalAddAllMatchingResources;
+  let originalTraceResource;
+
+  beforeAll(() => {
+    originalAddAllMatchingResources = SourceInclusion.prototype.addAllMatchingResources;
+    originalTraceResource = DependencyInclusion.prototype.traceResource;
+
+    SourceInclusion.prototype.addAllMatchingResources = function() {
+      return Promise.resolve();
+    };
+
+    DependencyInclusion.prototype.traceResource = function(resource) {
+      // mock up resolved
+      let resolved = resource;
+      if (path.extname(resolved)) resolved += '.js';
+
+      let covered = this.bundle.includes.find(inclusion =>
+        inclusion.includedBy === this &&
+        minimatch(resolved, inclusion.pattern)
+      );
+
+      if (covered) {
+        return Promise.resolve();
+      }
+
+      return this._tracePattern(resolved);
+    };
+  });
+
+  afterAll(() => {
+    SourceInclusion.prototype.addAllMatchingResources = originalAddAllMatchingResources;
+    DependencyInclusion.prototype.traceResource = originalTraceResource;
+  });
 
   beforeEach(() => {
     cliOptionsMock = new CLIOptionsMock();
@@ -125,7 +162,7 @@ describe('the Bundle module', () => {
       description.loaderConfig = {
         name: depName,
         path: '../node_modules/' + depName,
-        main: 'index.js'
+        main: 'index'
       };
 
       return Promise.resolve(description);
@@ -144,47 +181,23 @@ describe('the Bundle module', () => {
           name: 'my-dev-plugin',
           main: 'index',
           path: '../node_modules/my-plugin/'
+        },
+        // ignore dep config with main:false
+        {
+          name: 'my-plugin2',
+          main: false,
+          path: '../node_modules/my-plugin2/'
         }
       ]
     };
     Bundle.create(bundler, config).then((bundle) => {
       sut = bundle;
-      expect(sut.includes.length).toBe(2);
-      expect(sut.includes.find(x => x.description.loaderConfig.name === 'my-dev-plugin')).toBeFalsy();
-      done();
-    }).catch(e => done.fail(e));
-  });
-
-  it('transforms all includes when build is required', (done) => {
-    sut.requiresBuild = true;
-    let spy1 = jasmine.createSpy('spy1').and.returnValue(Promise.resolve());
-    let spy2 = jasmine.createSpy('spy2').and.returnValue(Promise.resolve());
-    sut.includes = [{
-      transform: spy1
-    }, {
-      transform: spy2
-    }];
-
-    sut.transform().then(() => {
-      expect(spy1).toHaveBeenCalled();
-      expect(spy2).toHaveBeenCalled();
-      done();
-    }).catch(e => done.fail(e));
-  });
-
-  it('does not transforms includes when build is not required', (done) => {
-    sut.requiresBuild = false;
-    let spy1 = jasmine.createSpy('spy1').and.returnValue(Promise.resolve());
-    let spy2 = jasmine.createSpy('spy2').and.returnValue(Promise.resolve());
-    sut.includes = [{
-      transform: spy1
-    }, {
-      transform: spy2
-    }];
-
-    sut.transform().then(() => {
-      expect(spy1).not.toHaveBeenCalled();
-      expect(spy2).not.toHaveBeenCalled();
+      // 2 dependency-inclusion
+      // 2 source-inclusion (2 main files)
+      expect(sut.includes.length).toBe(4);
+      expect(sut.includes.find(x =>
+        x.description && x.description.loaderConfig.name === 'my-dev-plugin')
+      ).toBeFalsy();
       done();
     }).catch(e => done.fail(e));
   });
@@ -193,10 +206,11 @@ describe('the Bundle module', () => {
     sut.includes = [{
       getAllModuleIds: () => ['a', 'b']
     }, {
-      getAllModuleIds: () => ['b', 'c']
+      getAllModuleIds: () => ['b', 'c.html']
     }];
 
-    expect(sut.getBundledModuleIds()).toEqual(['a', 'b', 'c']);
+    expect(Array.from(sut.getRawBundledModuleIds()).sort()).toEqual(['a', 'b', 'c.html']);
+    expect(sut.getBundledModuleIds()).toEqual(['a', 'b', 'text!c.html']);
   });
 
   it('getBundledModuleIds returns sorts module ids', () => {
@@ -206,7 +220,24 @@ describe('the Bundle module', () => {
       getAllModuleIds: () => ['b', 'a']
     }];
 
+    expect(Array.from(sut.getRawBundledModuleIds()).sort()).toEqual(['a', 'b', 'd']);
     expect(sut.getBundledModuleIds()).toEqual(['a', 'b', 'd']);
+  });
+
+  it('getBundledModuleIds returns sorts module ids, and added aliases', () => {
+    sut.includes = [{
+      getAllModuleIds: () => ['d', 'b']
+    }, {
+      getAllModuleIds: () => ['b', 'a']
+    }];
+
+    sut.addAlias('foo/a', 'a');
+    sut.addAlias('foo/b', 'b');
+
+    expect(Array.from(sut.getRawBundledModuleIds()).sort()).toEqual(['a', 'b', 'd', 'foo/a', 'foo/b']);
+    expect(sut.getBundledModuleIds()).toEqual([
+      'a', 'b', 'd', 'foo/a', 'foo/b'
+    ]);
   });
 
   it('getBundledFiles returns all files of all includes', () => {
@@ -247,7 +278,7 @@ describe('the Bundle module', () => {
       description.loaderConfig = {
         name: depName,
         path: '../node_modules/' + depName,
-        main: 'index.js'
+        main: 'index'
       };
 
       return new Promise(resolve => {

@@ -60,3 +60,18 @@ describe('the Utils.createSrcFileRegex function', () => {
     expect('<script src=scripts/app-bundle.js></script>'.match(Utils.createSrcFileRegex('scripts', 'vendor-bundle'))).toBeFalsy();
   });
 });
+
+describe('the Utils.moduleIdWithPlugin function', () => {
+  it('generates requirejs style module id', () => {
+    expect(Utils.moduleIdWithPlugin('foo/bar', 'plugin', 'require')).toBe('plugin!foo/bar');
+  });
+
+  it('generates systemjs style module id', () => {
+    expect(Utils.moduleIdWithPlugin('foo/bar', 'plugin', 'system')).toBe('foo/bar!plugin');
+  });
+
+  it('complains unknown type', () => {
+    expect(() => Utils.moduleIdWithPlugin('foo/bar', 'plugin', 'unknown')).toThrow();
+  });
+});
+

@@ -1,10 +1,4 @@
 {
   "name": "install",
-  "description": "Installs and configures a package in aurelia.json",
-  "parameters": [
-    {
-      "name": "packages",
-      "description": "Package names, separated by spaces. Versioning is supported (jquery@3.0.0)"
-    }
-  ]
+  "description": "'au install' has been removed, dependencies are traced automatically. Just use npm or yarn to install package."
 }
