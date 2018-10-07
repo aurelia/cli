@@ -288,7 +288,7 @@ Note both `<require from="bootstrap/css/bootstrap.min.css"></require>` and `<req
 
 ## Materialize CSS v1
 
-`npm install jquery materialize-css@next` or `yarn add jquery materialize-css@next`
+`npm install jquery materialize-css` or `yarn add jquery materialize-css`
 
 <code-listing heading="app${context.language.fileExtension}">
   <source-code lang="JavaScript">
