@@ -1,3 +1,33 @@
+<a name="1.0.0-beta.1"></a>
+# [1.0.0-beta.1](https://github.com/aurelia/cli/compare/0.35.1...1.0.0-beta.1) (2018-10-08)
+
+
+### Bug Fixes
+
+* fix exception on "au new" when running directly in root directory ([8037eef](https://github.com/aurelia/cli/commit/8037eef))
+
+
+### Features
+
+* **bundler:** auto tracing for requirejs/systemjs ([c4ce02c](https://github.com/aurelia/cli/commit/c4ce02c)), closes [#831](https://github.com/aurelia/cli/issues/831) [#853](https://github.com/aurelia/cli/issues/853) [#842](https://github.com/aurelia/cli/issues/842) [#831](https://github.com/aurelia/cli/issues/831)
+* **bundler:** build.options.cache turn on tracing cache and transpile cache ([15af83f](https://github.com/aurelia/cli/commit/15af83f))
+* **bundler:** fully support package.json browser field ([5bb81d4](https://github.com/aurelia/cli/commit/5bb81d4)), closes [#579](https://github.com/aurelia/cli/issues/579) [#581](https://github.com/aurelia/cli/issues/581)
+* **bundler:** stub core Node.js modules just like browserify and webpack ([19aafee](https://github.com/aurelia/cli/commit/19aafee))
+* **bundler:** support both 'json!f.json' and 'f.json' module id. ([ea005fe](https://github.com/aurelia/cli/commit/ea005fe))
+* **bundler:** support Node.js direct json loading require("foo.json") ([8fa8800](https://github.com/aurelia/cli/commit/8fa8800))
+* **bundler:** support npm package shipped in native es module ([1669a6f](https://github.com/aurelia/cli/commit/1669a6f)), closes [#872](https://github.com/aurelia/cli/issues/872)
+* **bundler:** support onRequiringModule(moduleId) callback ([fd49eb1](https://github.com/aurelia/cli/commit/fd49eb1))
+* **bundler:** support per package wrapShim setting on dependency config ([3c796ac](https://github.com/aurelia/cli/commit/3c796ac))
+* **bundler:** use package.json "module" (es module format) over "main" ([a3bc63a](https://github.com/aurelia/cli/commit/a3bc63a))
+
+
+### BREAKING CHANGES
+
+* **bundler:** require minor user code change to support non-js main, like "main": "font-awesome.css"
+* **bundler:** remove support of undocumented "main": false, replace with generic "lazyMain": true. But this is handled transparently without breaking user's existing app.
+
+
+
 <a name="0.35.1"></a>
 ## [0.35.1](https://github.com/aurelia/cli/compare/0.35.0...0.35.1) (2018-09-25)
 
