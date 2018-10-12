@@ -480,6 +480,25 @@ describe('The PackageAnalyzer', () => {
       .catch(e => done.fail(e));
   });
 
+  it('infers index.js as main file where package.json has malformed main property', done => {
+    // setup mock package.json
+    const fsConfig = {};
+    let json = '{ "name": "my-package", "main": ["some.js"] }';
+    fsConfig[path.join('node_modules/my-package', 'package.json')] = json;
+    fsConfig[path.join('node_modules/my-package', 'index.js')] = 'some-content';
+    fsConfig[project.paths.root] = {};
+    mockfs(fsConfig);
+
+    sut.analyze('my-package')
+      .then(description => {
+        expect(description.loaderConfig.name).toBe('my-package');
+        expect(description.loaderConfig.path).toBe(path.join('..', 'node_modules', 'my-package'));
+        expect(description.loaderConfig.main).toBe('index');
+        done();
+      })
+      .catch(e => done.fail(e));
+  });
+
   it('analyze() rejects when there is no package.json.', done => {
     // setup mock package.json
     const fsConfig = {};
