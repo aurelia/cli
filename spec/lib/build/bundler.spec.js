@@ -8,11 +8,17 @@ const CLIOptionsMock = require('../../mocks/cli-options');
 describe('the Bundler module', () => {
   let analyzer;
   let cliOptionsMock;
+  let mockfs;
 
   beforeEach(() => {
+    mockfs = require('mock-fs');
     analyzer = new PackageAnalyzer();
     cliOptionsMock = new CLIOptionsMock();
     cliOptionsMock.attach();
+  });
+
+  afterEach(() => {
+    mockfs.restore();
   });
 
   it('uses paths.root from aurelia.json in the loaderConfig as baseUrl', () => {
@@ -171,7 +177,52 @@ describe('the Bundler module', () => {
       });
   });
 
-  it('addNpmResource traces npm package', done => {
+  it('addMissingDep traces local missing file', done => {
+    let project = {
+      paths: {
+        root: 'src',
+        foo: 'bar'
+      },
+      build: { loader: {} }
+    };
+
+    const fsConfig = {};
+    fsConfig['src/lorem/lo.yaml'] = 'a: 1';
+    mockfs(fsConfig);
+
+    analyzer.analyze = nodeId => Promise.resolve({
+      name: nodeId,
+      loaderConfig: {
+        name: nodeId,
+        path: `../node_modules/${nodeId}`,
+        main: 'index'
+      }
+    });
+
+    let bundler = new Bundler(project, analyzer);
+    bundler.addFile = jasmine.createSpy('addFile').and.returnValue(null);
+
+    let depInclusion = {};
+
+    bundler.configTargetBundle = {
+      addDependency: jasmine.createSpy('addDependency')
+        .and.returnValue(Promise.resolve(depInclusion))
+    };
+
+    bundler.addMissingDep('lorem/lo.yaml')
+      .then(() => {
+        expect(bundler.configTargetBundle.addDependency)
+          .not.toHaveBeenCalled();
+        expect(bundler.addFile).toHaveBeenCalledWith({
+          path: path.resolve('src/lorem/lo.yaml'),
+          contents: 'a: 1'
+        });
+        done();
+      })
+      .catch(e => done.fail(e));
+  });
+
+  it('addMissingDep traces npm package', done => {
     let project = {
       paths: {
         root: 'src',
@@ -198,7 +249,7 @@ describe('the Bundler module', () => {
         .and.returnValue(Promise.resolve(depInclusion))
     };
 
-    bundler.addNpmResource('lorem')
+    bundler.addMissingDep('lorem')
       .then(() => {
         expect(bundler.configTargetBundle.addDependency)
           .toHaveBeenCalled();
@@ -216,7 +267,7 @@ describe('the Bundler module', () => {
       .catch(e => done.fail(e));
   });
 
-  it('addNpmResource traces npm package and additional js', done => {
+  it('addMissingDep traces npm package and additional js', done => {
     let project = {
       paths: {
         root: 'src',
@@ -245,7 +296,7 @@ describe('the Bundler module', () => {
         .and.returnValue(Promise.resolve(depInclusion))
     };
 
-    bundler.addNpmResource('lorem/foo/bar')
+    bundler.addMissingDep('lorem/foo/bar')
       .then(() => {
         expect(bundler.configTargetBundle.addDependency)
           .toHaveBeenCalled();
@@ -267,7 +318,7 @@ describe('the Bundler module', () => {
       .catch(e => done.fail(e));
   });
 
-  it('addNpmResource traces npm package and additional other resource', done => {
+  it('addMissingDep traces npm package and additional other resource', done => {
     let project = {
       paths: {
         root: 'src',
@@ -296,7 +347,7 @@ describe('the Bundler module', () => {
         .and.returnValue(Promise.resolve(depInclusion))
     };
 
-    bundler.addNpmResource('lorem/foo/bar.css')
+    bundler.addMissingDep('lorem/foo/bar.css')
       .then(() => {
         expect(bundler.configTargetBundle.addDependency)
           .toHaveBeenCalled();
@@ -318,7 +369,7 @@ describe('the Bundler module', () => {
       .catch(e => done.fail(e));
   });
 
-  it('addNpmResource traces scoped npm package', done => {
+  it('addMissingDep traces scoped npm package', done => {
     let project = {
       paths: {
         root: 'src',
@@ -345,7 +396,7 @@ describe('the Bundler module', () => {
         .and.returnValue(Promise.resolve(depInclusion))
     };
 
-    bundler.addNpmResource('@scope/lorem')
+    bundler.addMissingDep('@scope/lorem')
       .then(() => {
         expect(bundler.configTargetBundle.addDependency)
           .toHaveBeenCalled();
@@ -363,7 +414,7 @@ describe('the Bundler module', () => {
       .catch(e => done.fail(e));
   });
 
-  it('addNpmResource traces scoped npm package and additional js', done => {
+  it('addMissingDep traces scoped npm package and additional js', done => {
     let project = {
       paths: {
         root: 'src',
@@ -392,7 +443,7 @@ describe('the Bundler module', () => {
         .and.returnValue(Promise.resolve(depInclusion))
     };
 
-    bundler.addNpmResource('@scope/lorem/foo/bar')
+    bundler.addMissingDep('@scope/lorem/foo/bar')
       .then(() => {
         expect(bundler.configTargetBundle.addDependency)
           .toHaveBeenCalled();
@@ -414,7 +465,7 @@ describe('the Bundler module', () => {
       .catch(e => done.fail(e));
   });
 
-  it('addNpmResource traces scoped npm package and additional other resource', done => {
+  it('addMissingDep traces scoped npm package and additional other resource', done => {
     let project = {
       paths: {
         root: 'src',
@@ -443,7 +494,7 @@ describe('the Bundler module', () => {
         .and.returnValue(Promise.resolve(depInclusion))
     };
 
-    bundler.addNpmResource('@scope/lorem/foo/bar.css')
+    bundler.addMissingDep('@scope/lorem/foo/bar.css')
       .then(() => {
         expect(bundler.configTargetBundle.addDependency)
           .toHaveBeenCalled();
@@ -465,7 +516,7 @@ describe('the Bundler module', () => {
       .catch(e => done.fail(e));
   });
 
-  it('addNpmResource trace main of npm package', done => {
+  it('addMissingDep trace main of npm package', done => {
     let project = {
       paths: {
         root: 'src',
@@ -484,7 +535,7 @@ describe('the Bundler module', () => {
 
     bundler.getDependencyInclusions = () => [depInclusion];
 
-    bundler.addNpmResource('lorem')
+    bundler.addMissingDep('lorem')
       .then(() => {
         expect(depInclusion.traceMain).toHaveBeenCalled();
         done();
@@ -492,7 +543,7 @@ describe('the Bundler module', () => {
       .catch(e => done.fail(e));
   });
 
-  it('addNpmResource trace resource of npm package', done => {
+  it('addMissingDep trace resource of npm package', done => {
     let project = {
       paths: {
         root: 'src',
@@ -511,7 +562,7 @@ describe('the Bundler module', () => {
 
     bundler.getDependencyInclusions = () => [depInclusion];
 
-    bundler.addNpmResource('lorem/foo/bar')
+    bundler.addMissingDep('lorem/foo/bar')
       .then(() => {
         expect(depInclusion.traceResource).toHaveBeenCalled();
         expect(depInclusion.traceResource).toHaveBeenCalledWith('foo/bar');
@@ -520,7 +571,7 @@ describe('the Bundler module', () => {
       .catch(e => done.fail(e));
   });
 
-  it('addNpmResource trace main of scoped npm package', done => {
+  it('addMissingDep trace main of scoped npm package', done => {
     let project = {
       paths: {
         root: 'src',
@@ -539,7 +590,7 @@ describe('the Bundler module', () => {
 
     bundler.getDependencyInclusions = () => [depInclusion];
 
-    bundler.addNpmResource('@scope/lorem')
+    bundler.addMissingDep('@scope/lorem')
       .then(() => {
         expect(depInclusion.traceMain).toHaveBeenCalled();
         done();
@@ -547,7 +598,7 @@ describe('the Bundler module', () => {
       .catch(e => done.fail(e));
   });
 
-  it('addNpmResource trace resource of scoped npm package', done => {
+  it('addMissingDep trace resource of scoped npm package', done => {
     let project = {
       paths: {
         root: 'src',
@@ -566,7 +617,7 @@ describe('the Bundler module', () => {
 
     bundler.getDependencyInclusions = () => [depInclusion];
 
-    bundler.addNpmResource('@scope/lorem/foo/bar')
+    bundler.addMissingDep('@scope/lorem/foo/bar')
       .then(() => {
         expect(depInclusion.traceResource).toHaveBeenCalled();
         expect(depInclusion.traceResource).toHaveBeenCalledWith('foo/bar');
