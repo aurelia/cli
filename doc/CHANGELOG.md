@@ -1,3 +1,20 @@
+<a name="1.0.0-beta.2"></a>
+# [1.0.0-beta.2](https://github.com/aurelia/cli/compare/1.0.0-beta.1...1.0.0-beta.2) (2018-10-14)
+
+
+### Bug Fixes
+
+* fix html5 syntax ([09cbb63](https://github.com/aurelia/cli/commit/09cbb63)), closes [/github.com/aurelia/templating/pull/647#issuecomment-427989601](https://github.com//github.com/aurelia/templating/pull/647/issues/issuecomment-427989601)
+* **bundler:** be resilient on malformed main/module/browser fields in package.json ([3a2143c](https://github.com/aurelia/cli/commit/3a2143c)), closes [#934](https://github.com/aurelia/cli/issues/934)
+* **bundler:** fix a regression on missing yaml file for some users ([4387bff](https://github.com/aurelia/cli/commit/4387bff)), closes [#930](https://github.com/aurelia/cli/issues/930)
+
+
+### Features
+
+* upgrade to babel7 ([35946b3](https://github.com/aurelia/cli/commit/35946b3)), closes [#846](https://github.com/aurelia/cli/issues/846)
+
+
+
 <a name="1.0.0-beta.1"></a>
 # [1.0.0-beta.1](https://github.com/aurelia/cli/compare/0.35.1...1.0.0-beta.1) (2018-10-08)
 
