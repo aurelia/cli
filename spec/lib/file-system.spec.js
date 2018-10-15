@@ -44,6 +44,34 @@ describe('The file-system module', () => {
     mockfs.restore();
   });
 
+  describe('The isFile function', () => {
+    it('returns true for file', () => {
+      expect(fs.isFile(readFile.path)).toBeTruthy();
+    });
+
+    it('returns false for directory', () => {
+      expect(fs.isFile(readDir)).toBeFalsy();
+    });
+
+    it('returns false for non-existing file', () => {
+      expect(fs.isFile(path.join(readDir, 'non-existing'))).toBeFalsy();
+    });
+  });
+
+  describe('The isDirectory function', () => {
+    it('returns false for file', () => {
+      expect(fs.isDirectory(readFile.path)).toBeFalsy();
+    });
+
+    it('returns true for directory', () => {
+      expect(fs.isDirectory(readDir)).toBeTruthy();
+    });
+
+    it('returns false for non-existing file', () => {
+      expect(fs.isDirectory(path.join(readDir, 'non-existing'))).toBeFalsy();
+    });
+  });
+
   describe('The stat() function', () => {
     it('reads the stats for a directory', done => {
       fs.stat(readDir).then(stats => {

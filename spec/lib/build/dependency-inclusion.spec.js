@@ -314,6 +314,151 @@ describe('the DependencyInclusion module', () => {
       .catch(e => done.fail(e));
   });
 
+  it('traceResource at runtime add json resource to bundle', done => {
+    let bundle = {
+      bundler: bundler,
+      addAlias: jasmine.createSpy('addAlias'),
+      includes: [],
+      createMatcher: function(pattern) {
+        return new Minimatch(pattern, {
+          dot: true
+        });
+      }
+    };
+
+    let description = new DependencyDescription('my-package', 'npm');
+    description.loaderConfig = {
+      path: '../node_modules/my-package',
+      name: 'my-package',
+      main: 'index',
+      lazyMain: true
+    };
+
+    mockfs({
+      'node_modules/my-package/lib/foo.json': 'some-content'
+    });
+
+    let sut = new DependencyInclusion(bundle, description);
+    sut._getProjectRoot = () => 'src';
+    sut.traceResource('lib/foo')
+      .then(() => {
+        expect(bundle.includes.length).toBe(1);
+        expect(bundle.includes[0].pattern).toBe('../node_modules/my-package/lib/foo.json');
+        expect(bundle.addAlias).toHaveBeenCalledWith('my-package/lib/foo', 'my-package/lib/foo.json');
+        done();
+      })
+      .catch(e => done.fail(e));
+  });
+
+  it('traceResource at runtime add index resource to bundle', done => {
+    let bundle = {
+      bundler: bundler,
+      addAlias: jasmine.createSpy('addAlias'),
+      includes: [],
+      createMatcher: function(pattern) {
+        return new Minimatch(pattern, {
+          dot: true
+        });
+      }
+    };
+
+    let description = new DependencyDescription('my-package', 'npm');
+    description.loaderConfig = {
+      path: '../node_modules/my-package',
+      name: 'my-package',
+      main: 'index',
+      lazyMain: true
+    };
+
+    mockfs({
+      'node_modules/my-package/lib/foo/index.js': 'some-content'
+    });
+
+    let sut = new DependencyInclusion(bundle, description);
+    sut._getProjectRoot = () => 'src';
+    sut.traceResource('lib/foo')
+      .then(() => {
+        expect(bundle.includes.length).toBe(1);
+        expect(bundle.includes[0].pattern).toBe('../node_modules/my-package/lib/foo/index.js');
+        expect(bundle.addAlias).toHaveBeenCalledWith('my-package/lib/foo', 'my-package/lib/foo/index');
+        done();
+      })
+      .catch(e => done.fail(e));
+  });
+
+  it('traceResource at runtime add index.json resource to bundle', done => {
+    let bundle = {
+      bundler: bundler,
+      addAlias: jasmine.createSpy('addAlias'),
+      includes: [],
+      createMatcher: function(pattern) {
+        return new Minimatch(pattern, {
+          dot: true
+        });
+      }
+    };
+
+    let description = new DependencyDescription('my-package', 'npm');
+    description.loaderConfig = {
+      path: '../node_modules/my-package',
+      name: 'my-package',
+      main: 'index',
+      lazyMain: true
+    };
+
+    mockfs({
+      'node_modules/my-package/lib/foo/index.json': 'some-content'
+    });
+
+    let sut = new DependencyInclusion(bundle, description);
+    sut._getProjectRoot = () => 'src';
+    sut.traceResource('lib/foo')
+      .then(() => {
+        expect(bundle.includes.length).toBe(1);
+        expect(bundle.includes[0].pattern).toBe('../node_modules/my-package/lib/foo/index.json');
+        expect(bundle.addAlias).toHaveBeenCalledWith('my-package/lib/foo', 'my-package/lib/foo/index.json');
+        done();
+      })
+      .catch(e => done.fail(e));
+  });
+
+  it('traceResource at runtime add resource described by folder package.json to bundle', done => {
+    let bundle = {
+      bundler: bundler,
+      addAlias: jasmine.createSpy('addAlias'),
+      includes: [],
+      createMatcher: function(pattern) {
+        return new Minimatch(pattern, {
+          dot: true
+        });
+      }
+    };
+
+    let description = new DependencyDescription('my-package', 'npm');
+    description.loaderConfig = {
+      path: '../node_modules/my-package',
+      name: 'my-package',
+      main: 'index',
+      lazyMain: true
+    };
+
+    mockfs({
+      'node_modules/my-package/lib/foo/package.json': '{"main":"fmain","module":"fmodule"}',
+      'node_modules/my-package/lib/foo/fmodule.js': 'some-content'
+    });
+
+    let sut = new DependencyInclusion(bundle, description);
+    sut._getProjectRoot = () => 'src';
+    sut.traceResource('lib/foo')
+      .then(() => {
+        expect(bundle.includes.length).toBe(1);
+        expect(bundle.includes[0].pattern).toBe('../node_modules/my-package/lib/foo/fmodule.js');
+        expect(bundle.addAlias).toHaveBeenCalledWith('my-package/lib/foo', 'my-package/lib/foo/fmodule');
+        done();
+      })
+      .catch(e => done.fail(e));
+  });
+
   it('conventionalAliases removes common folder', done => {
     let bundle = {
       bundler: bundler,
