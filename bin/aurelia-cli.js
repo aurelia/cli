@@ -2,6 +2,15 @@
 'use strict';
 const resolve = require('../lib/resolve');
 
+const semver = require('semver');
+const nodeVersion = process.versions.node;
+if (semver.lt(nodeVersion, '8.9.0')) {
+  console.error(`You are running Node.js v${nodeVersion}.
+aurelia-cli requires Node.js v8.9.0 or above.
+Please upgrade to latest Node.js https://nodejs.org`);
+  process.exit(1);
+}
+
 process.title = 'aurelia';
 
 let originalBaseDir = process.cwd();
@@ -25,8 +34,8 @@ resolve('aurelia-cli', {
   let commandName = userArgs[0];
   let commandArgs = userArgs.slice(1);
 
-  cli.run(commandName, commandArgs).catch((error) => {
-      console.log(error);
-      process.exit(1);
+  cli.run(commandName, commandArgs).catch(err => {
+    console.log(err);
+    process.exit(1);
   });
 });
