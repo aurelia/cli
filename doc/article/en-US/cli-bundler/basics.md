@@ -18,7 +18,7 @@ To choose the built-in bundler, create an app with `au new appName`, choose `3. 
 If you would like to use ASP.NET Core, first begin by using Visual Studio to create your ASP.NET Core project. Select whatever options make the most sense based on your .NET project plans. After you have created the project, open a command line and change directory into your web project's project folder. This is the folder that contains the `.xproj` file. From within this folder, you can execute the following command `au new --here` which will setup Aurelia "here" inside this project folder. You will be prompted to choose the platform you want. Simply select "ASP.NET Core". Follow the prompts for the rest of the process, just like above.
 
 >Info
->Since Aurelia-CLI should be in charge of building your client side code, make sure before running the `new` command from **Aurelia-CLI** you add `<TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>` to your .xproj file inside the first `<PropertyGroup></PropertyGroup>` you find to stop Visual Studio from compiling the `.ts` files in your project. If you build your solution before doing this, Visual Studio will compile your `.ts` files breaking some of the **Aurelia-CLI** commands.
+>Since Aurelia-CLI should be in charge of building your client-side code, make sure before running the `new` command from **Aurelia-CLI** you add `<TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>` to your .xproj file inside the first `<PropertyGroup></PropertyGroup>` you find to stop Visual Studio from compiling the `.ts` files in your project. If you build your solution before doing this, Visual Studio will compile your `.ts` files breaking some of the **Aurelia-CLI** commands.
 
 When developing an ASP.NET Core application you will want to set the `ASPNETCORE_ENVIRONMENT` environment variable. Detailed instructions can be found on the [Microsoft Docs](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/environments#setting-the-environment).
 
@@ -65,7 +65,7 @@ Now, if you were to run `au build --env prod`, the output would contain build re
 
 ## Caching
 
-For new app, cache is turned on for dev and stage environments. If you want to turn on cache for all environments, change the setting to `"cache": true`.
+For a new app, the cache is turned on for dev and stage environments. If you want to turn on cache for all environments, change the setting to `"cache": true`.
 ```javascript
 "options": {
   "minify": "stage & prod",
@@ -76,11 +76,11 @@ For new app, cache is turned on for dev and stage environments. If you want to t
 ```
 
 The cache setting controls two caching behaviors to speed up consecutive builds.
-1. caches tracing result. This cache is centralized in OS temp directory, and shared among all apps using CLI bundler.
-2. for esnext app, `aurelia_project/tasks/transpile.js` caches babel transpiling result using `gulp-cache`. The transpiling cache is dedicated per app per environment, not shared with other apps.
+1. caches tracing result. This cache is centralized in OS temp directory and shared among all apps using CLI bundler.
+2. for an ESNext app, `aurelia_project/tasks/transpile.js` caches babel transpiling result using `gulp-cache`. The transpiling cache is dedicated per app per environment, not shared with other apps.
 
 > Info: No transpiling cache for TypeScript app
-> We have not find a way to get gulp-typescript working with gulp-cache.
+> We have not found a way to get gulp-typescript working with gulp-cache.
 
 To reset cache, run `au clear-cache`. This command clears up all caches created by either CLI bundler or gulp-cache. Note it clears caches of all CLI bundler apps, not just the app you are working on.
 
@@ -142,16 +142,16 @@ Just do `npm install <library>` (or `yarn add <library>`). CLI Bundler supports 
 Sometimes, you will encounter some JavaScript lib that doesn't support any module format. You would need manual configuration, read [dependency management](/docs/cli/cli-bundler/dependency-management) for more details.
 
 > Info: For Long Time CLI Bundler Users
-> `au import` and `au install` commands are deprecated. Latest CLI Bundler does almost everything automatically without need of explicit configuration in `aurelia_project/aurelia.json`.
+> `au import` and `au install` commands are deprecated. Latest CLI Bundler does almost everything automatically without the need of explicit configuration in `aurelia_project/aurelia.json`.
 
 > Info
 > UMD is a module format supports both CommonJS and AMD, falls back to global namespace when no module loader is available. Npm packages that designed to work in both Node.js and browser environments are normally shipped in this format.
 
 ## Copy Other Files (e.g. fonts)
 
-CLI Bundler auto bundles js/html/css files into AMD modules format. But it cannot help on other resources like font files and images which are required by css at runtime.
+CLI Bundler auto bundles JS/HTML/CSS files into AMD modules format. But it cannot help on other resources like font files and images which are required by CSS at runtime.
 
-Resources like fonts and images are not handled by JavaScript module loader, they need to be present at the url at runtime. So we need to copy the necessary font files and images to the right folder.
+Resources like fonts and images are not handled by JavaScript module loader, they need to be present at the URL at runtime. So we need to copy the necessary font files and images to the right folder.
 
 CLI has a built-in feature to facilitate this task. To copy files, we declare these files in the `copyFiles` property, after the `bundles` property in `aurelia_project/aurelia.json`.
 
@@ -172,7 +172,7 @@ The target folder of copyFiles matches the way you require font-awesome.css
 
 Remember to deploy `font-awesome/fonts` folder along with your JavaScript bundles to production.
 
-`copyFiles` also works on single file without using wild-card.
+`copyFiles` also works on a single file without using wild-card.
 
 ```javascript
 "copyFiles": {
@@ -183,7 +183,7 @@ Remember to deploy `font-awesome/fonts` folder along with your JavaScript bundle
 
 ## Setting the baseUrl
 
-Sometimes you may want to keep the scripts folder somewhere other than the default location, or move the index.html file a few folders up from the project root. In that case it is possible to set the `baseUrl` property so that the build system uses the correct paths and that bundles get loaded correctly in the browser. The `baseUrl` property should be set in both the `platform` object as well as the `build.targets` object:
+Sometimes you may want to keep the scripts folder somewhere other than the default location or move the index.html file a few folders up from the project root. In that case, it is possible to set the `baseUrl` property so that the build system uses the correct paths and that bundles get loaded correctly in the browser. The `baseUrl` property should be set in both the `platform` object as well as the `build.targets` object:
 
 <code-listing heading="baseUrl">
   <source-code lang="JavaScript">
@@ -218,7 +218,7 @@ The script tag for the bundle in `index.html` file needs to point to the modifie
 
 There are many ways to style components in Aurelia. The CLI sets up your project to only process styles inside your application's `src` folder. Those styles can then be imported into a view using Aurelia's `require` element.
 
-* If you aren't using any CSS preprocessor, you write css and then simply require it in the view like this:
+* If you aren't using any CSS preprocessor, you write CSS and then simply require it in the view like this:
 
 <code-listing heading="Requiring styles.css">
   <source-code lang="HTML">
@@ -228,7 +228,7 @@ There are many ways to style components in Aurelia. The CLI sets up your project
 
 For projects that use a CSS preprocessor (chosen from the `au new app-name` options):
 * Write your styles in the format you chose (styl, sass, less ...).
-* Require the style by `[filename].css` instead of `[filename].[extension]`. This is because, before CLI bundler sees the style file, it is transpiled by a gulp task into a css format file.
+* Require the style by `[filename].css` instead of `[filename].[extension]`. This is because, before CLI bundler sees the style file, it is transpiled by a gulp task into a CSS format file.
 
 > Info: Difference with Webpack
 > Webpack behaves differently, it controls the whole css compilation. With Webpack, you need `<require from="./styles.scss"></require>` if your source file is `styles.scss`.
@@ -289,7 +289,7 @@ These options can be found in the `"build"."options"` section of `aurelia.json`.
   </source-code>
 </code-listing>
 
-The Aurelia-CLI uses [terser (reincarnation of uglify-es)](https://github.com/fabiosantoscode/terser) for minification, so any option that terser supports (compatible with UglifyJS2 and uglify-es) is also supported by the Aurelia-CLI. With the above configuration, minification will occur for the `stage` and `prod` environments, but not for the `dev` environment. For the `stage` and `prod` environments, both the `indent_level` as well as the `max-line-len` option are passed to the minifier. The `default` key is optional, but allows you to reduce code duplication when multiple environments have similar options.
+The Aurelia-CLI uses [terser (reincarnation of uglify-es)](https://github.com/fabiosantoscode/terser) for minification, so any option that terser supports (compatible with UglifyJS2 and uglify-es) are also supported by the Aurelia-CLI. With the above configuration, minification will occur for the `stage` and `prod` environments, but not for the `dev` environment. For the `stage` and `prod` environments, both the `indent_level` as well as the `max-line-len` option are passed to the minifier. The `default` key is optional but allows you to reduce code duplication when multiple environments have similar options.
 
 ## Path mappings
 
