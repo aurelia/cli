@@ -229,10 +229,13 @@
           "id": "jasmine",
           "displayName": "Jasmine"
         },
-        "integrationTestRunner": {
+        "integrationTestRunner": [{
           "id": "protractor",
           "displayName": "Protractor"
-        }
+        }, {
+          "id": "cypress",
+          "displayName": "Cypress"
+        }]
       }
     },
     {
@@ -457,6 +460,14 @@
           "value": {
             "id": "protractor",
             "displayName": "Protractor"
+          }
+        },
+        {
+          "displayName": "Cypress",
+          "description": "Test your app with Cypress.io",
+          "value": {
+            "id": "cypress",
+            "displayName": "Cypress"
           }
         }
       ]
