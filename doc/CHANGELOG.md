@@ -1,3 +1,15 @@
+<a name="1.0.0-beta.3"></a>
+# [1.0.0](https://github.com/aurelia/cli/compare/1.0.0-beta.2...1.0.0-beta.3) (2018-10-17)
+
+
+### Bug Fixes
+
+* **bundler:** bypass a nasty terser compress bug by using fast-minify-mode ([7a37238](https://github.com/aurelia/cli/commit/7a37238)), closes [#928](https://github.com/aurelia/cli/issues/928)
+* **bundler:** support nodejs subfolder package.json ([eef51f0](https://github.com/aurelia/cli/commit/eef51f0))
+* **webpack:** use webpack4 hook that replaced deprecated plugin api ([8b5d732](https://github.com/aurelia/cli/commit/8b5d732)), closes [#923](https://github.com/aurelia/cli/issues/923)
+
+
+
 <a name="1.0.0-beta.2"></a>
 # [1.0.0-beta.2](https://github.com/aurelia/cli/compare/1.0.0-beta.1...1.0.0-beta.2) (2018-10-14)
 
