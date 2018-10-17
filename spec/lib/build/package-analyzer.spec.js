@@ -434,7 +434,7 @@ describe('The PackageAnalyzer', () => {
     sut.analyze('my-package')
       .then(description => {
         expect(description.loaderConfig.name).toBe('my-package');
-        expect(description.loaderConfig.path).toBe(path.join('..', 'node_modules', 'my-package'));
+        expect(description.loaderConfig.path).toBe('../node_modules/my-package');
         expect(description.loaderConfig.main).toBe('foo');
         done();
       })
@@ -473,7 +473,7 @@ describe('The PackageAnalyzer', () => {
     sut.analyze('my-package')
       .then(description => {
         expect(description.loaderConfig.name).toBe('my-package');
-        expect(description.loaderConfig.path).toBe(path.join('..', 'node_modules', 'my-package'));
+        expect(description.loaderConfig.path).toBe('../node_modules/my-package');
         expect(description.loaderConfig.main).toBe('index');
         done();
       })
@@ -492,7 +492,7 @@ describe('The PackageAnalyzer', () => {
     sut.analyze('my-package')
       .then(description => {
         expect(description.loaderConfig.name).toBe('my-package');
-        expect(description.loaderConfig.path).toBe(path.join('..', 'node_modules', 'my-package'));
+        expect(description.loaderConfig.path).toBe('../node_modules/my-package');
         expect(description.loaderConfig.main).toBe('index');
         done();
       })
@@ -524,7 +524,7 @@ describe('The PackageAnalyzer', () => {
     fsConfig[project.paths.root] = {};
     mockfs(fsConfig);
 
-    let p = path.resolve(path.join('node_modules', 'my-package', 'foo.js'));
+    let p = path.resolve('node_modules', 'my-package', 'foo.js');
 
     sut.analyze('my-package')
       .then(() => done.fail('should have thrown an exception'))

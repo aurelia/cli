@@ -4,6 +4,7 @@ const BundlerMock = require('../../mocks/bundler');
 const SourceInclusion = require('../../../lib/build/source-inclusion').SourceInclusion;
 const mockfs = require('mock-fs');
 const Minimatch = require('minimatch').Minimatch;
+const path = require('path');
 
 describe('the SourceInclusion module', () => {
   let bundler;
@@ -108,10 +109,10 @@ describe('the SourceInclusion module', () => {
     };
 
     let sut = new SourceInclusion(bundle, '../node_modules/foo/**/*.js');
-    sut._getProjectRoot = () => '/src';
+    sut._getProjectRoot = () => 'src';
     mockfs({
-      '/node_modules/foo/foo-bar.js': 'some-content',
-      '/node_modules/foo/fop/bar.js': 'some-content'
+      'node_modules/foo/foo-bar.js': 'some-content',
+      'node_modules/foo/fop/bar.js': 'some-content'
     });
 
     sut.addAllMatchingResources()
@@ -123,8 +124,8 @@ describe('the SourceInclusion module', () => {
         expect(arg0[1]).toEqual(sut);
         expect(arg1[1]).toEqual(sut);
 
-        expect(arg0[0].path).toEqual('/node_modules/foo/foo-bar.js');
-        expect(arg1[0].path).toEqual('/node_modules/foo/fop/bar.js');
+        expect(arg0[0].path).toEqual(path.resolve('node_modules/foo/foo-bar.js'));
+        expect(arg1[0].path).toEqual(path.resolve('node_modules/foo/fop/bar.js'));
         done();
       })
       .catch(e => done.fail(e));
