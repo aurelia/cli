@@ -69,7 +69,7 @@ In the `aurelia_project` directory there is a file called `aurelia.json`. This f
 
 When creating a new project using the Aurelia CLI, you are presented with a wizard to select a bundler, a module loader, CSS preprocessor and more.
 
-On top of all choices, you first need to choose a bundler: either Webpack (the default bundler), or CLI's built-in bundler (the alternative bundler).
+On top of all choices, you first need to choose a bundler: either Webpack (the default bundler) or CLI's built-in bundler (the alternative bundler).
 
 ### Webpack
 
@@ -82,11 +82,11 @@ Webpack is a bundler with built-in module loader. If you choose to use Webpack t
 
 ### CLI's Built-in Bundler
 
-Aurelia CLI ships with an in-house made bundler providing similar capability of Webpack but with much simpler configuration. If you have no experience on Webpack, we recommend to use the built-in bundler.
+Aurelia CLI ships with an in-house made bundler providing similar functionality of Webpack but with much simpler configuration. If you have no experience on Webpack, we recommend using the built-in bundler.
 
 The built-in bundler is paired with module loader RequireJS or SystemJS.
 
-* RequireJS has been around for very long time, it's the reference module loader for AMD module format. Comparing to SystemJS, it is considered bit more mature and stable, but with less features.
+* RequireJS has been around for a very long time, it's the reference module loader for AMD module format. Comparing to SystemJS, it is considered a bit more mature and stable, but with fewer features.
 * SystemJS is a "Dynamic ES module loader", the most versatile module loader in JavaScript world, supporting AMD/CommonJS/UMD or Native ESNext module format. This gives you most freedom at runtime.
 
 Choose RequireJS if you don't need or not sure about SystemJS's capability.
@@ -94,9 +94,9 @@ Choose RequireJS if you don't need or not sure about SystemJS's capability.
 > Info
 > The built-in bundler supports any npm packages in CommonJS (Node.js default), AMD, UMD or Native ES Module format.
 
-Previous version of the built-in bundler requires user to manually maintain dependencies configuration in `aurelia.json`. But now we got a totally new bundler written from scratch, we call it auto-tracing. As the name implies, it tracks dependencies automatically without explicit configuration. You rarely need to touch `aurelia.json` for dependency management.
+Previous versions of the built-in bundler required the user to manually maintain dependencies configuration in `aurelia.json`. But now we have a totally new bundler written from scratch, we call it auto-tracing. As the name implies, it tracks dependencies automatically without explicit configuration. You rarely need to touch `aurelia.json` for dependency management.
 
-If you migrate an app from old CLI bundler to latest CLI bundler, most apps should still work without modifying `aurelia.json`. If your app failed to work with latest CLI bundler, please read [migration guide](/docs/cli/migrating). If you still have trouble, ask a question on [Aurelia Discourse forum](https://discourse.aurelia.io/) or create an issue on [our github repo](https://github.com/aurelia/cli/issues), we will help you out.
+If you migrate an app from old CLI bundler to latest CLI bundler, most apps should still work without modifying `aurelia.json`. If your app failed to work with latest CLI bundler, please read [migration guide](/docs/cli/migrating). If you still have trouble, ask a question on [Aurelia Discourse forum](https://discourse.aurelia.io/) or create an issue on [our GitHub repo](https://github.com/aurelia/cli/issues), we will help you out.
 
 Read [CLI bundler chapter](/docs/cli/cli-bundler) for more details.
 

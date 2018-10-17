@@ -75,3 +75,16 @@ describe('the Utils.moduleIdWithPlugin function', () => {
   });
 });
 
+describe('the Utils.couldMissGulpPreprocess function', () => {
+  it('returns false for js/html/css files', () => {
+    expect(Utils.couldMissGulpPreprocess('foo/bar')).toBeFalsy();
+    expect(Utils.couldMissGulpPreprocess('foo/bar.js')).toBeFalsy();
+    expect(Utils.couldMissGulpPreprocess('foo/bar.html')).toBeFalsy();
+    expect(Utils.couldMissGulpPreprocess('bar.css')).toBeFalsy();
+  });
+
+  it('returns true for unknown file extension', () => {
+    expect(Utils.couldMissGulpPreprocess('foo/bar.json')).toBeTruthy();
+    expect(Utils.couldMissGulpPreprocess('foo/bar.yaml')).toBeTruthy();
+  });
+});
