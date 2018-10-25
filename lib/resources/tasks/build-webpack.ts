@@ -23,7 +23,7 @@ function buildWebpack(done) {
     compiler.watch({}, onBuild);
   } else {
     compiler.run(onBuild);
-    compiler.hooks.done.tap('AureliaCLI', done);
+    compiler.hooks.done.tap('done', () => done());
   }
 }
 
