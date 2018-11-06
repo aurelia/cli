@@ -328,44 +328,63 @@ describe('The PackageAnalyzer', () => {
       .catch(e => done.fail(e));
   });
 
-  it('analyze() reads package.json as package metadata, respect browser field over module/main', done => {
-    // setup mock package.json
-    const fsConfig = {};
-    fsConfig[path.join('node_modules/my-package', 'package.json')] = '{ "name": "my-package", "main": "index.js", "browser": "browser.js", "module": "module.js" }';
-    fsConfig[path.join('node_modules/my-package', 'index.js')] = 'some-content';
-    fsConfig[path.join('node_modules/my-package', 'browser.js')] = 'some-content';
-    fsConfig[project.paths.root] = {};
-    mockfs(fsConfig);
+  describe('analyze() reads package.json as package metadata -- "browser/module/main" fields analysis', () => {
+    let fsConfig;
+    let mockFileNames = ['index.js', 'browser.js', 'module.js'];
+    beforeEach(function __setup__mock_package_json() {
+      fsConfig = {};
+      for (const fileName of mockFileNames) {
+        fsConfig[path.join('node_modules/my-package', fileName)] = 'some-content';
+      };
+      fsConfig[project.paths.root] = {};
+    });
+      
+    it('respects browser field over module/main', done => {
+      fsConfig[path.join('node_modules/my-package', 'package.json')] = '{ "name": "my-package", "main": "index.js", "browser": "browser.js", "module": "module.js" }';
+      mockfs(fsConfig);
 
-    sut.analyze('my-package')
-      .then(description => {
-        expect(description.metadata.name).toBe('my-package');
-        expect(description.loaderConfig.path).toBe('../node_modules/my-package');
-        expect(description.loaderConfig.main).toBe('browser');
-        done();
-      })
-      .catch(e => done.fail(e));
+      sut.analyze('my-package')
+        .then(description => {
+          expect(description.metadata.name).toBe('my-package');
+          expect(description.loaderConfig.path).toBe('../node_modules/my-package');
+          expect(description.loaderConfig.main).toBe('browser');
+          done();
+        })
+        .catch(e => done.fail(e));
+    });
+
+    it('respects module field over main', done => {
+      fsConfig[path.join('node_modules/my-package', 'package.json')] = '{ "name": "my-package", "main": "index.js", "module": "module.js"}';
+      mockfs(fsConfig);
+
+      sut.analyze('my-package')
+        .then(description => {
+          expect(description.metadata.name).toBe('my-package');
+          expect(description.loaderConfig.path).toBe('../node_modules/my-package');
+          expect(description.loaderConfig.main).toBe('module');
+          done();
+        })
+        .catch(e => done.fail(e));
+    });
+
+    it('respects "module" field over "main", but ignore module with "aurelia-"', done => {
+      fsConfig[path.join('node_modules/my-package', 'package.json')] = '{ "name": "my-package", "main": "index.js", "module": "module.js"}';
+      const aureliaPkg = 'aurelia-binding';
+      for (const fileName of mockFileNames) {
+        fsConfig[path.join(`node_modules/${aureliaPkg}`, fileName)] = 'export const content';
+      }
+      fsConfig[path.join(`node_modules/${aureliaPkg}`, 'package.json')] = '"name": "aurelia-binding", "main": "index.js", "module": "module.js"';
+
+      sut.analyze('aurelia-binding')
+        .then(description => {
+          expect(description.metadata.name).toBe('aurelia-binding');
+          expect(description.loaderConfig.path).toBe(`../node_modules/${aureliaPkg}/index.js`);
+          expect(description.loaderConfig.main).toBe('main');
+          done();
+        })
+    });
   });
 
-  it('analyze() reads package.json as package metadata, respect module field over main', done => {
-    // setup mock package.json
-    const fsConfig = {};
-    fsConfig[path.join('node_modules/my-package', 'package.json')] = '{ "name": "my-package", "main": "index.js", "module": "module.js"}';
-    fsConfig[path.join('node_modules/my-package', 'index.js')] = 'some-content';
-    fsConfig[path.join('node_modules/my-package', 'browser.js')] = 'some-content';
-    fsConfig[path.join('node_modules/my-package', 'module.js')] = 'some-content';
-    fsConfig[project.paths.root] = {};
-    mockfs(fsConfig);
-
-    sut.analyze('my-package')
-      .then(description => {
-        expect(description.metadata.name).toBe('my-package');
-        expect(description.loaderConfig.path).toBe('../node_modules/my-package');
-        expect(description.loaderConfig.main).toBe('module');
-        done();
-      })
-      .catch(e => done.fail(e));
-  });
 
   it('analyze() supports parent node_modules folder', done => {
     // setup mock package.json
