@@ -330,15 +330,14 @@ describe('The PackageAnalyzer', () => {
 
   describe('analyze() reads package.json as package metadata -- "browser/module/main" fields analysis', () => {
     let fsConfig;
-    let mockFileNames = ['index.js', 'browser.js', 'module.js'];
-    beforeEach(function __setup__mock_package_json() {
+    beforeEach(function() {
       fsConfig = {};
-      for (const fileName of mockFileNames) {
-        fsConfig[path.join('node_modules/my-package', fileName)] = 'some-content';
-      };
+      fsConfig[path.join('node_modules/my-package', 'index.js')] = 'some-content';
+      fsConfig[path.join('node_modules/my-package', 'browser.js')] = 'some-content';
+      fsConfig[path.join('node_modules/my-package', 'module.js')] = 'some-content';
       fsConfig[project.paths.root] = {};
     });
-      
+
     it('respects browser field over module/main', done => {
       fsConfig[path.join('node_modules/my-package', 'package.json')] = '{ "name": "my-package", "main": "index.js", "browser": "browser.js", "module": "module.js" }';
       mockfs(fsConfig);
@@ -369,22 +368,39 @@ describe('The PackageAnalyzer', () => {
 
     it('respects "module" field over "main", but ignore module with "aurelia-"', done => {
       fsConfig[path.join('node_modules/my-package', 'package.json')] = '{ "name": "my-package", "main": "index.js", "module": "module.js"}';
-      const aureliaPkg = 'aurelia-binding';
-      for (const fileName of mockFileNames) {
-        fsConfig[path.join(`node_modules/${aureliaPkg}`, fileName)] = 'export const content';
-      }
-      fsConfig[path.join(`node_modules/${aureliaPkg}`, 'package.json')] = '"name": "aurelia-binding", "main": "index.js", "module": "module.js"';
 
-      sut.analyze('aurelia-binding')
-        .then(description => {
-          expect(description.metadata.name).toBe('aurelia-binding');
-          expect(description.loaderConfig.path).toBe(`../node_modules/${aureliaPkg}/index.js`);
-          expect(description.loaderConfig.main).toBe('main');
-          done();
-        })
+      fsConfig[path.join('node_modules/aurelia-binding', 'index.js')] = 'some-content';
+      fsConfig[path.join('node_modules/aurelia-binding', 'browser.js')] = 'some-content';
+      fsConfig[path.join('node_modules/aurelia-binding', 'module.js')] = 'some-content';
+      fsConfig[path.join('node_modules/aurelia-binding', 'aurelia-binding.js')] = 'export stuff';
+      fsConfig[path.join('node_modules/aurelia-binding', 'package.json')] = '{ "name": "aurelia-binding", "main": "aurelia-binding.js", "module": "module.js" }';
+
+      fsConfig[path.join('node_modules/aurelia_binding', 'index.js')] = 'some-content';
+      fsConfig[path.join('node_modules/aurelia_binding', 'browser.js')] = 'some-content';
+      fsConfig[path.join('node_modules/aurelia_binding', 'module.js')] = 'some-content';
+      fsConfig[path.join('node_modules/aurelia_binding', 'aurelia-binding.js')] = 'export stuff';
+      fsConfig[path.join('node_modules/aurelia_binding', 'package.json')] = '{ "name": "aurelia_binding", "main": "aurelia-binding.js", "module": "module.js" }';
+      mockfs(fsConfig);
+
+      Promise
+        .all([
+          sut.analyze('aurelia-binding')
+            .then(description => {
+              expect(description.metadata.name).toBe('aurelia-binding');
+              expect(description.loaderConfig.path).toBe('../node_modules/aurelia-binding');
+              expect(description.loaderConfig.main).toBe('aurelia-binding');
+            }),
+          sut.analyze('aurelia_binding')
+            .then(description => {
+              expect(description.metadata.name).toBe('aurelia_binding');
+              expect(description.loaderConfig.path).toBe('../node_modules/aurelia_binding');
+              expect(description.loaderConfig.main).toBe('module');
+            })
+        ])
+        .then(done)
+        .catch(done.fail);
     });
   });
-
 
   it('analyze() supports parent node_modules folder', done => {
     // setup mock package.json
