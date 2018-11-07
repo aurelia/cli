@@ -1,3 +1,14 @@
+<a name="1.0.0-beta.4"></a>
+# [1.0.0-beta.4](https://github.com/aurelia/cli/compare/1.0.0-beta.3...1.0.0-beta.4) (2018-11-07)
+
+
+### Bug Fixes
+
+* **package-analyzer:** ignore module field for 'aurelia-' packages ([00de202](https://github.com/aurelia/cli/commit/00de202))
+* **package-analyzer-test:** fix lint issues, adjust assertion ([abb0145](https://github.com/aurelia/cli/commit/abb0145))
+
+
+
 <a name="1.0.0-beta.3"></a>
 # [1.0.0](https://github.com/aurelia/cli/compare/1.0.0-beta.2...1.0.0-beta.3) (2018-10-17)
 
