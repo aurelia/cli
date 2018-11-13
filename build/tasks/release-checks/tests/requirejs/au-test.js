@@ -23,7 +23,7 @@ class AuTestRunsTests extends Test {
 }
 
 function isTestFinishedMessage(msg) {
-  return msg.indexOf('TOTAL: 1 SUCCESS') > -1;
+  return /TOTAL: (.*) SUCCESS/.test(msg);
 }
 
 module.exports = {

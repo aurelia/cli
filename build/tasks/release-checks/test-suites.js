@@ -11,10 +11,8 @@ const defaultAureliaCLIBundlerTests = [
   new tests.requirejs.AuRunWatchPicksUpFileChanges(),
   new tests.requirejs.AuRunAppLaunchesWithoutJavascriptErrors(),
   new tests.requirejs.AuRunRendersPage(),
-  new tests.requirejs.AuTestRunsTests(),
   new tests.requirejs.AuProtractorRunsTests(),
-  new tests.requirejs.AuLintFinishes(),
-  new tests.requirejs.AuJestRunsTests()
+  new tests.requirejs.AuLintFinishes()
 ];
 
 const defaultWebpackTests = [
@@ -26,8 +24,6 @@ const defaultWebpackTests = [
   new tests.webpack.AuRunRendersPage(),
   new tests.webpack.AuRunAppLaunchesWithoutJavascriptErrors(),
   new tests.webpack.AuRunWatchPicksUpFileChanges(),
-  new tests.webpack.AuKarmaRunsTests(),
-  new tests.webpack.AuJestRunsTests(),
   new tests.webpack.AuProtractorRunsTests()
 ];
 
@@ -44,38 +40,86 @@ const defaultAureliaCLIDotNetTests = [
   // new tests.requirejs.AuProtractorRunsTestsDotNet(),
   new tests.requirejs.AuBuildDoesNotThrowCommandLineErrors(),
   new tests.requirejs.AuBuildWatchPicksUpFileChanges(),
-  new tests.requirejs.AuTestRunsTests(),
-  new tests.requirejs.AuLintFinishes(),
-  new tests.requirejs.AuJestRunsTests()
+  new tests.requirejs.AuLintFinishes()
 ];
 
 module.exports = [
   {
     title: 'skeleton-requirejs-esnext',
-    steps: defaultAureliaCLIBundlerTests
+    steps: defaultAureliaCLIBundlerTests.concat([
+      new tests.requirejs.AuJestRunsTests()
+    ])
+  },
+  {
+    title: 'skeleton-requirejs-esnext-karma',
+    steps: defaultAureliaCLIBundlerTests.concat([
+      new tests.requirejs.AuTestRunsTests()
+    ])
   },
   {
     title: 'skeleton-requirejs-typescript',
-    steps: defaultAureliaCLIBundlerTests
+    steps: defaultAureliaCLIBundlerTests.concat([
+      new tests.requirejs.AuJestRunsTests()
+    ])
+  },
+  {
+    title: 'skeleton-requirejs-typescript-karma',
+    steps: defaultAureliaCLIBundlerTests.concat([
+      new tests.requirejs.AuTestRunsTests()
+    ])
   },
   {
     title: 'skeleton-systemjs-typescript',
-    steps: defaultAureliaCLIBundlerTests
+    steps: defaultAureliaCLIBundlerTests.concat([
+      new tests.requirejs.AuJestRunsTests()
+    ])
+  },
+  {
+    title: 'skeleton-systemjs-typescript-karma',
+    steps: defaultAureliaCLIBundlerTests.concat([
+      new tests.requirejs.AuTestRunsTests()
+    ])
   },
   {
     title: 'skeleton-systemjs-esnext',
-    steps: defaultAureliaCLIBundlerTests
+    steps: defaultAureliaCLIBundlerTests.concat([
+      new tests.requirejs.AuJestRunsTests()
+    ])
+  },
+  {
+    title: 'skeleton-systemjs-esnext-karma',
+    steps: defaultAureliaCLIBundlerTests.concat([
+      new tests.requirejs.AuTestRunsTests()
+    ])
   },
   {
     title: 'skeleton-webpack-esnext',
-    steps: defaultWebpackTests
+    steps: defaultWebpackTests.concat([
+      new tests.webpack.AuJestRunsTests()
+    ])
+  },
+  {
+    title: 'skeleton-webpack-esnext-karma',
+    steps: defaultWebpackTests.concat([
+      new tests.webpack.AuKarmaRunsTests()
+    ])
   },
   {
     title: 'skeleton-webpack-typescript',
-    steps: defaultWebpackTests
+    steps: defaultWebpackTests.concat([
+      new tests.webpack.AuJestRunsTests()
+    ])
+  },
+  {
+    title: 'skeleton-webpack-typescript-karma',
+    steps: defaultWebpackTests.concat([
+      new tests.webpack.AuKarmaRunsTests()
+    ])
   },
   {
     title: 'skeleton-requirejs-esnext-aspnetcore',
-    steps: defaultAureliaCLIDotNetTests
+    steps: defaultAureliaCLIDotNetTests.concat([
+      new tests.requirejs.AuJestRunsTests()
+    ])
   }
 ];
