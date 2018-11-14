@@ -28,6 +28,11 @@
     "displayName": "None",
     "fileExtension": ".css"
   },
+  "jsonProcessor": {
+    "id": "none",
+    "displayName": "None",
+    "fileExtension": ".json"
+  },
   "editor": {
     "id": "vscode",
     "displayName": "Visual Studio Code"
