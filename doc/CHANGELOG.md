@@ -1,3 +1,23 @@
+<a name="1.0.0-beta.5"></a>
+# [1.0.0-beta.5](https://github.com/aurelia/cli/compare/1.0.0-beta.4...1.0.0-beta.5) (2018-11-15)
+
+
+### Bug Fixes
+
+* **bundler:** fix unstable sorting for shim modules ([c702325](https://github.com/aurelia/cli/commit/c702325)), closes [#955](https://github.com/aurelia/cli/issues/955)
+* **bundler:** Revisions are inserted into platform.index for all bundles ([435557c](https://github.com/aurelia/cli/commit/435557c))
+* **generator:** fix babel syntax error when running "au generate" ([8eb19e7](https://github.com/aurelia/cli/commit/8eb19e7)), closes [#954](https://github.com/aurelia/cli/issues/954)
+* **webpack:** compile hook issue with output ([a9dd926](https://github.com/aurelia/cli/commit/a9dd926))
+* **webpack.config.template.js:** change webpack config to fix bundle duplication issue ([6996274](https://github.com/aurelia/cli/commit/6996274))
+
+
+### Features
+
+* **bundler:** bundle json files by default for app skeletons of cli bundler ([6b3c53e](https://github.com/aurelia/cli/commit/6b3c53e))
+* **esnext:** use babel polyfill to enable async/await syntax for esnext projects ([2fe31f5](https://github.com/aurelia/cli/commit/2fe31f5)), closes [#959](https://github.com/aurelia/cli/issues/959)
+
+
+
 <a name="1.0.0-beta.4"></a>
 # [1.0.0-beta.4](https://github.com/aurelia/cli/compare/1.0.0-beta.3...1.0.0-beta.4) (2018-11-07)
 
