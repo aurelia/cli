@@ -43,7 +43,7 @@ let html = `
     <unknown as-element="router-view" layout-view-model="lvm2" layout-view="lv2"></unknown>
   </template>
 `;
-let htmlDeps = ['./c.html', 'a/b', 'd/e.css', 'lv1', 'lv2', 'lvm2', 'v2', 'vm1', 'vm2'];
+let htmlDeps = ['a/b', 'lv1', 'lv2', 'lvm2', 'text!./c.html', 'text!d/e.css', 'v2', 'vm1', 'vm2'];
 
 let css = `
 @import 'other.css';
@@ -229,7 +229,7 @@ describe('find-deps', () => {
     _classCallCheck(this, MyComp);
   }) || _class);
   `;
-      expect(findJsDeps('my-comp.js', file).sort()).toEqual(['./b.css', 'a.css']);
+      expect(findJsDeps('my-comp.js', file).sort()).toEqual(['text!./b.css', 'text!a.css']);
     });
 
     it('find deps on useView', () => {
@@ -252,7 +252,7 @@ describe('find-deps', () => {
     _classCallCheck(this, MyComp);
   }) || _class);
   `;
-      expect(findJsDeps('my-comp.js', file)).toEqual(['./a.html']);
+      expect(findJsDeps('my-comp.js', file, 'system')).toEqual(['./a.html!text']);
     });
 
     it('find deps in inlineView html', () => {
@@ -274,7 +274,7 @@ describe('find-deps', () => {
     _classCallCheck(this, MyComp);
   }) || _class);
   `;
-      expect(findJsDeps('my-comp.js', file)).toEqual(['./a.css']);
+      expect(findJsDeps('my-comp.js', file)).toEqual(['text!./a.css']);
     });
 
     it('find deps in inlineView html for TypeScript compiled code', () => {
@@ -303,7 +303,7 @@ var MyComp = (function () {
 })();
 exports.MyComp = MyComp;
   `;
-      expect(findJsDeps('my-comp.js', file)).toEqual(['./a.css']);
+      expect(findJsDeps('my-comp.js', file)).toEqual(['text!./a.css']);
     });
 
     it('find deps in inlineView html, and additional deps', () => {
@@ -327,15 +327,15 @@ exports.MyComp = MyComp;
     _classCallCheck(this, MyComp);
   }) || _class);
   `;
-      expect(findJsDeps('my-comp.js', file).sort()).toEqual(['./a.css', './b.css', './c.css']);
+      expect(findJsDeps('my-comp.js', file).sort()).toEqual(['text!./a.css', 'text!./b.css', 'text!./c.css']);
     });
 
     it('find html file by aurelia view convention', () => {
       const fsConfig = {};
       fsConfig['src/foo.html'] = 'contents';
       mockfs(fsConfig);
-      expect(findJsDeps('src/foo.js', 'a();')).toEqual(['./foo.html']);
-      expect(findDeps('src/foo.js', 'a();')).toEqual(['./foo.html']);
+      expect(findJsDeps('src/foo.js', 'a();')).toEqual(['text!./foo.html']);
+      expect(findDeps('src/foo.js', 'a();')).toEqual(['text!./foo.html']);
     });
 
     it('remove inner defined modules', () => {

@@ -126,6 +126,55 @@ describe('the BundledSource module', () => {
     expect(bundler.configTargetBundle.addAlias).toHaveBeenCalledWith('b8/loo', 'foo/bar/loo');
   });
 
+  it('transforms local js file with css injection', () => {
+    let file = {
+      path: path.resolve(cwd, 'src/foo.js'),
+      contents: "define(['./foo.css', 'bar'], function(c,b){});"
+    };
+
+    let bs = new BundledSource(bundler, file);
+    bs._getProjectRoot = () => 'src';
+    bs._getLoaderPlugins = () => [];
+    bs._getLoaderConfig = () => ({
+      paths: {
+        root: 'src',
+        resources: 'resources'
+      }
+    });
+    bs._getUseCache = () => undefined;
+
+    let deps = bs.transform();
+    expect(deps).toEqual(['bar', '__inject_css__']); // relative dep is ignored
+    expect(bs.requiresTransform).toBe(false);
+    expect(bs.contents).toBe(`define('foo',['./foo.css', 'bar'], function(c,b){});
+define('foo.css',['__inject_css__','text!foo.css'],function(i,c){i(c,'_au_css:foo.css');});
+`);
+  });
+
+  it('transforms local js file with inlineView with css dep', () => {
+    let file = {
+      path: path.resolve(cwd, 'src/foo.js'),
+      contents: 'define([\'au\'], function(au){au.inlineView(\'<template><require from="foo.css"></require></template>\', [\'bar.css\', \'./a.css\']);});'
+    };
+
+    let bs = new BundledSource(bundler, file);
+    bs._getProjectRoot = () => 'src';
+    bs._getLoaderPlugins = () => [];
+    bs._getLoaderConfig = () => ({
+      paths: {
+        root: 'src',
+        resources: 'resources'
+      }
+    });
+    bs._getUseCache = () => undefined;
+
+    let deps = bs.transform();
+    expect(deps).toEqual(['au', 'bar.css', 'foo.css']); // relative dep is ignored, text! prefix is stripped
+    expect(bs.requiresTransform).toBe(false);
+    // doesn't call DOM.injectStyles for inlineView css
+    expect(bs.contents).toBe('define(\'foo\',[\'au\'], function(au){au.inlineView(\'<template><require from="foo.css"></require></template>\', [\'bar.css\', \'./a.css\']);});');
+  });
+
   it('transforms local js file above root level (src/)', () => {
     let file = {
       path: path.resolve(cwd, '../shared/bar/loo.js'),
