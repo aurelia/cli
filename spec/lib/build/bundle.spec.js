@@ -206,11 +206,11 @@ describe('the Bundle module', () => {
     sut.includes = [{
       getAllModuleIds: () => ['a', 'b']
     }, {
-      getAllModuleIds: () => ['b', 'c.html']
+      getAllModuleIds: () => ['b', 'c.html', 'd.json']
     }];
 
-    expect(Array.from(sut.getRawBundledModuleIds()).sort()).toEqual(['a', 'b', 'c.html']);
-    expect(sut.getBundledModuleIds()).toEqual(['a', 'b', 'text!c.html']);
+    expect(Array.from(sut.getRawBundledModuleIds()).sort()).toEqual(['a', 'b', 'c.html', 'd.json']);
+    expect(sut.getBundledModuleIds()).toEqual(['a', 'b', 'text!c.html', 'text!d.json', 'd.json', 'json!d.json']);
   });
 
   it('getBundledModuleIds returns sorts module ids', () => {

@@ -22,6 +22,11 @@
           "displayName": "None",
           "fileExtension": ".css"
         },
+        "jsonProcessor": {
+          "id": "none",
+          "displayName": "None",
+          "fileExtension": ".json"
+        },
         "unitTestRunners": [{
           "id": "jest",
           "displayName": "Jest"
