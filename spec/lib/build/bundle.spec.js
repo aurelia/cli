@@ -241,9 +241,9 @@ describe('the Bundle module', () => {
   });
 
   it('getBundledFiles returns all files of all includes', () => {
-    let aFile = {path: 'a.js'};
-    let bFile = {path: 'b.js'};
-    let cFile = {path: 'c.js'};
+    let aFile = {path: 'a.js', moduleId: 'a'};
+    let bFile = {path: 'b.js', moduleId: 'b'};
+    let cFile = {path: 'c.js', moduleId: 'c'};
 
     sut.includes = [{
       getAllFiles: () => [aFile, bFile]
@@ -255,9 +255,9 @@ describe('the Bundle module', () => {
   });
 
   it('getBundledFiles returns unique files of all includes', () => {
-    let aFile = {path: 'a.js'};
-    let bFile = {path: 'b.js'};
-    let cFile = {path: 'c.js'};
+    let aFile = {path: 'a.js', moduleId: 'a'};
+    let bFile = {path: 'b.js', moduleId: 'b'};
+    let cFile = {path: 'c.js', moduleId: 'c'};
 
     sut.includes = [{
       getAllFiles: () => [aFile, bFile]
@@ -266,6 +266,85 @@ describe('the Bundle module', () => {
     }];
 
     expect(sut.getBundledFiles()).toEqual([aFile, bFile, cFile]);
+  });
+
+  it('getBundledFiles sorts shim', () => {
+    let aFile = {
+      path: 'node_modules/a/dist/index',
+      moduleId: 'a/dist/index',
+      dependencyInclusion: {
+        description: {
+          name: 'a',
+          loaderConfig: {
+            deps: ['c']
+          }
+        }
+      }
+    };
+    let bFile = {path: 'b.js', moduleId: 'b'};
+    let cFile = {
+      path: 'node_modules/c/dist/index',
+      moduleId: 'c/dist/index',
+      dependencyInclusion: {
+        description: {
+          name: 'c',
+          loaderConfig: {}
+        }
+      }
+    };
+
+    sut.includes = [{
+      getAllFiles: () => [aFile, bFile]
+    }, {
+      getAllFiles: () => [cFile]
+    }];
+
+    expect(sut.getBundledFiles()).toEqual([cFile, aFile, bFile]);
+  });
+
+  it('getBundledFiles sorts deep shim', () => {
+    let aFile = {
+      path: 'node_modules/a/dist/index',
+      moduleId: 'a/dist/index',
+      dependencyInclusion: {
+        description: {
+          name: 'a',
+          loaderConfig: {
+            deps: ['b']
+          }
+        }
+      }
+    };
+    let bFile = {
+      path: 'node_modules/b/dist/index',
+      moduleId: 'b/dist/index',
+      dependencyInclusion: {
+        description: {
+          name: 'b',
+          loaderConfig: {
+            deps: ['c']
+          }
+        }
+      }
+    };
+    let cFile = {
+      path: 'node_modules/c/dist/index',
+      moduleId: 'c/dist/index',
+      dependencyInclusion: {
+        description: {
+          name: 'c',
+          loaderConfig: {}
+        }
+      }
+    };
+
+    sut.includes = [{
+      getAllFiles: () => [aFile, bFile]
+    }, {
+      getAllFiles: () => [cFile]
+    }];
+
+    expect(sut.getBundledFiles()).toEqual([cFile, bFile, aFile]);
   });
 
   it('configures dependencies in the same order as they were entered to prevent a wrong module load order', done => {
