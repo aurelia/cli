@@ -1,3 +1,14 @@
+<a name="1.0.0-beta.6"></a>
+# [1.0.0-beta.6](https://github.com/aurelia/cli/compare/1.0.0-beta.5...1.0.0-beta.6) (2018-11-19)
+
+
+### Bug Fixes
+
+* **bundler:** use topological sort to ensure shim order ([6721519](https://github.com/aurelia/cli/commit/6721519)), closes [#955](https://github.com/aurelia/cli/issues/955)
+* **webpack.config.template.js:** monorepo resolve root only ([a3fdc94](https://github.com/aurelia/cli/commit/a3fdc94))
+
+
+
 <a name="1.0.0-beta.5"></a>
 # [1.0.0-beta.5](https://github.com/aurelia/cli/compare/1.0.0-beta.4...1.0.0-beta.5) (2018-11-15)
 
