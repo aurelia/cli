@@ -559,12 +559,10 @@ describe('The PackageAnalyzer', () => {
     fsConfig[project.paths.root] = {};
     mockfs(fsConfig);
 
-    let p = path.resolve('node_modules', 'my-package', 'foo.js');
-
     sut.analyze('my-package')
       .then(() => done.fail('should have thrown an exception'))
       .catch(e => {
-        expect(e.message).toBe(`The "my-package" package references a main file that does not exist: ${p}`);
+        expect(e.message).toBe('The "my-package" package has no valid main file.');
         done();
       });
   });
