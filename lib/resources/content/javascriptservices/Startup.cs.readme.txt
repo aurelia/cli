@@ -1,4 +1,4 @@
-If you're not yet using ASP.NET Core 2.0 (or don't have the Microsoft.AspNetCore.All package installed) then you need to install JavascriptServices.
+If you're not yet using ASP.NET Core 2.1 (or don't have the Microsoft.AspNetCore.App package installed) then you need to install JavascriptServices.
 This can be done through the following command: "dotnet add package Microsoft.AspNetCore.SpaServices". 
 
 Afterwards, open the Startup.cs file and add the following "using" statement at the top of the file:
@@ -22,8 +22,10 @@ if (env.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
 }
 
+app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseMvc(routes =>
@@ -42,8 +44,9 @@ Then, in the ConfigureServices method, make sure that the application uses Mvc:
 
 public void ConfigureServices(IServiceCollection services)
 {
-  services.AddMvc();
+  services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 }
+
 
 That's it for the Startup.cs file.
 
@@ -51,7 +54,7 @@ If you're using Typescript then it's necessary to instruct Visual Studio not to 
 In this .csproj file you need to specify a TypeScriptToolsVersion and TypeScriptCompileBlocked like so:
 
 <PropertyGroup>
-  <TargetFramework>netcoreapp2.0</TargetFramework>
+  <TargetFramework>netcoreapp2.1</TargetFramework>
   <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
   <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
 </PropertyGroup>
