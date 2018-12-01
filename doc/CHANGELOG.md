@@ -1,3 +1,12 @@
+# [1.0.0-beta.7](https://github.com/aurelia/cli/compare/1.0.0-beta.6...1.0.0-beta.7)
+
+
+### Bug Fixes
+
+* fresh build of package-lock.json to remove malicious flatmap-stream ([9948864](https://github.com/aurelia/cli/commit/9948864))
+
+
+
 <a name="1.0.0-beta.6"></a>
 # [1.0.0-beta.6](https://github.com/aurelia/cli/compare/1.0.0-beta.5...1.0.0-beta.6) (2018-11-19)
 
