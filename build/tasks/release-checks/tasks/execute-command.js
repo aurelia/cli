@@ -30,13 +30,13 @@ module.exports = class ExecuteCommand extends Task {
     });
 
     this.proc.stdout.on('data', (data) => {
-      this.outputCallback(data.toString());
+      this.outputCallback(this.stripANSI(data.toString()));
     });
 
     this.proc.stderr.on('data', (data) => {
       if (!this.ignoreStdErr) {
-        this.outputCallback(data.toString());
-        this.errorCallback(data.toString());
+        this.outputCallback(this.stripANSI(data.toString()));
+        this.errorCallback(this.stripANSI(data.toString()));
       }
     });
 
@@ -45,6 +45,10 @@ module.exports = class ExecuteCommand extends Task {
     });
 
     return this.promise;
+  }
+
+  stripANSI(input) {
+    return input.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '');
   }
 
   executeAsNodeScript() {

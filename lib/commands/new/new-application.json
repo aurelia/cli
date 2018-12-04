@@ -67,7 +67,8 @@
             "id": "none",
             "displayName": "None"
           }
-        ]
+        ],
+        "createNPMScripts": false
       }
     },
     {

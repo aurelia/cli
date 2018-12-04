@@ -16,6 +16,11 @@
     "id": "web",
     "displayName": "Web"
   },
+  "jsonProcessor": {
+    "id": "none",
+    "displayName": "None",
+    "fileExtension": ".json"
+  },
   "loader": {
     "id": "none",
     "displayName": "None"

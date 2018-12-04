@@ -13,6 +13,11 @@
     "id": "require",
     "displayName": "RequireJS"
   },
+  "jsonProcessor": {
+    "id": "none",
+    "displayName": "None",
+    "fileExtension": ".json"
+  },
   "transpiler": {
     "id": "babel",
     "displayName": "Babel",
