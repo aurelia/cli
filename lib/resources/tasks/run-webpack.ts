@@ -23,9 +23,15 @@ function runWebpack(done) {
     https: config.devServer.https
   } as any;
 
+  // Add the webpack-dev-server client to the webpack entry point
+  // The path for the client to use such as `webpack-dev-server/client?http://${opts.host}:${opts.port}/` is not required
+  // The path used is derived from window.location in the browser and output.publicPath in the webpack.config.
   if (project.platform.hmr || CLIOptions.hasFlag('hmr')) {
     config.plugins.push(new webpack.HotModuleReplacementPlugin());
-    config.entry.app.unshift(`webpack-dev-server/client?http://${opts.host}:${opts.port}/`, 'webpack/hot/dev-server');
+    config.entry.app.unshift('webpack-dev-server/client', 'webpack/hot/dev-server');
+  } else {
+    // removed "<script src="/webpack-dev-server.js"></script>" from index.ejs in favour of this method
+    config.entry.app.unshift('webpack-dev-server/client');
   }
 
   const compiler = webpack(config);
