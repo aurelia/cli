@@ -16,6 +16,11 @@
     "id": "aspnetcore",
     "displayName": "ASP.NET Core"
   },
+  "jsonProcessor": {
+    "id": "none",
+    "displayName": "None",
+    "fileExtension": ".json"
+  },
   "loader": {
     "id": "none",
     "displayName": "None"

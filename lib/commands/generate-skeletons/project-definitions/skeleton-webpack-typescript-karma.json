@@ -12,6 +12,11 @@
       "coverage": false
     }
   },
+  "jsonProcessor": {
+    "id": "none",
+    "displayName": "None",
+    "fileExtension": ".json"
+  },
   "platform": {
     "id": "web",
     "displayName": "Web"

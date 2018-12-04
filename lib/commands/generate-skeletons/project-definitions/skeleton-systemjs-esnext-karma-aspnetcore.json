@@ -13,6 +13,11 @@
     "id": "system",
     "displayName": "SystemJS"
   },
+  "jsonProcessor": {
+    "id": "none",
+    "displayName": "None",
+    "fileExtension": ".json"
+  },
   "transpiler": {
     "id": "babel",
     "displayName": "Babel",

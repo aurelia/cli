@@ -12,6 +12,11 @@
       "coverage": false
     }
   },
+  "jsonProcessor": {
+    "id": "none",
+    "displayName": "None",
+    "fileExtension": ".json"
+  },
   "platform": {
     "id": "aspnetcore",
     "displayName": "ASP.NET Core"
