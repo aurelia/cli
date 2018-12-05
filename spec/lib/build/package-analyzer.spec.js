@@ -552,7 +552,7 @@ describe('The PackageAnalyzer', () => {
       });
   });
 
-  it('analyze() throws error when main file does not exist', done => {
+  it('analyze() falls back to default index.js when main file does not exist', done => {
     // setup mock package.json
     const fsConfig = {};
     fsConfig[path.join('node_modules', 'my-package', 'package.json')] = '{ "main": "foo.js" }';
@@ -560,10 +560,12 @@ describe('The PackageAnalyzer', () => {
     mockfs(fsConfig);
 
     sut.analyze('my-package')
-      .then(() => done.fail('should have thrown an exception'))
-      .catch(e => {
-        expect(e.message).toBe('The "my-package" package has no valid main file.');
+      .then(description => {
+        expect(description.loaderConfig.name).toBe('my-package');
+        expect(description.loaderConfig.path).toBe('../node_modules/my-package');
+        expect(description.loaderConfig.main).toBe('index');
         done();
-      });
+      })
+      .catch(e => done.fail(e));
   });
 });
