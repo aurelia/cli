@@ -84,14 +84,14 @@ describe('The config command - configuration', () => {
   it('gets the complete project without arguments', () => {
     let result = configuration.execute('get', '');
 
-    project = JSON.parse(result.substring(result.indexOf('\n')));
+    project = JSON.parse(result.slice(result.indexOf('\n')));
     expect(project).toEqual(projectControl);
   });
 
   it('gets a value', () => {
     let result = configuration.execute('get', 'top1');
 
-    project = JSON.parse(result.substring(result.indexOf('\n')));
+    project = JSON.parse(result.slice(result.indexOf('\n')));
     expect(project).toEqual(projectControl.top1);
   });
 

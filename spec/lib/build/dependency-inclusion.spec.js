@@ -23,8 +23,8 @@ describe('the DependencyInclusion module', () => {
     SourceInclusion.prototype.getAllModuleIds = function() {
       if (this.includedBy && !this.pattern.match(/\?|\{|\*/)) {
         // simple pattern
-        let id = this.includedBy.description.name + '/' + this.pattern.substr(this.includedBy.description.loaderConfig.path.length + 1).replace(/\\/g, '/');
-        if (id.endsWith('.js')) id = id.substr(0, id.length - 3);
+        let id = this.includedBy.description.name + '/' + this.pattern.slice(this.includedBy.description.loaderConfig.path.length + 1).replace(/\\/g, '/');
+        if (id.endsWith('.js')) id = id.slice(0, -3);
         return [id];
       }
       return [];
