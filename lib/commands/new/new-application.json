@@ -54,6 +54,10 @@
           "id": "webpack",
           "displayName": "Webpack"
         },
+        "httpProtocol": {
+          "id": "http1",
+          "displayName": "HTTP/1.1"
+        },
         "build": {
           "options": {
             "server": "dev",
@@ -206,7 +210,7 @@
     {
       "id": 613,
       "type": "state-assign",
-      "nextActivity": 621,
+      "nextActivity": 615,
       "state": {
         "loader": {
           "id": "none",
@@ -239,6 +243,31 @@
           "displayName": "Protractor"
         }
       }
+    },
+    {
+      "id": 615,
+      "type": "input-select",
+      "nextActivity": 621,
+      "question": "Which HTTP Protocol do you wish the outputted Webpack bundle to be optimised for?",
+      "stateProperty": "httpProtocol",
+      "options": [
+        {
+          "displayName": "HTTP/1.1",
+          "description": "The legacy HTTP/1.1 protocol, max 6 parallel requests/connections",
+          "value": {
+            "id": "http1",
+            "displayName": "HTTP/1.1"
+          }
+        },
+        {
+          "displayName": "HTTP/2",
+          "description": "The modern HTTP/2 Protocol, uses request multiplexing over a single connection",
+          "value": {
+            "id": "http2",
+            "displayName": "HTTP/2"
+          }
+        }
+      ]
     },
     {
       "id": 620,
