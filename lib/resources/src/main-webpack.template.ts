@@ -2,7 +2,7 @@
 // @if features.navigation='navigation'
 import '../styles/styles.css';
 // @endif
-// @if features.fontAwesome='fontAwesome'
+// @if features.font_awesome='font-awesome'
 // we want font-awesome to load as soon as possible to show the fa-spinner
 import 'font-awesome/css/font-awesome.css';
 // @endif

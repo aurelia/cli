@@ -80,8 +80,6 @@
   "karma-webpack": "^4.0.0-rc.3",
   "minimatch": "^3.0.4",
   "node-sass": "^4.9.3",
-  "nps": "^5.9.3",
-  "nps-utils": "^1.7.0",
   "opn": "^5.4.0",
   "plugin-error": "^1.0.1",
   "protractor": "^5.4.1",

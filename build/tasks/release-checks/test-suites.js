@@ -45,7 +45,7 @@ const defaultAureliaCLIDotNetTests = [
 
 module.exports = [
   {
-    title: 'skeleton-requirejs-esnext',
+    title: 'skeleton-requirejs-esnext-jest',
     steps: defaultAureliaCLIBundlerTests.concat([
       new tests.requirejs.AuJestRunsTests()
     ])
@@ -57,7 +57,7 @@ module.exports = [
     ])
   },
   {
-    title: 'skeleton-requirejs-typescript',
+    title: 'skeleton-requirejs-typescript-jest',
     steps: defaultAureliaCLIBundlerTests.concat([
       new tests.requirejs.AuJestRunsTests()
     ])
@@ -69,7 +69,7 @@ module.exports = [
     ])
   },
   {
-    title: 'skeleton-systemjs-typescript',
+    title: 'skeleton-systemjs-typescript-jest',
     steps: defaultAureliaCLIBundlerTests.concat([
       new tests.requirejs.AuJestRunsTests()
     ])
@@ -81,7 +81,7 @@ module.exports = [
     ])
   },
   {
-    title: 'skeleton-systemjs-esnext',
+    title: 'skeleton-systemjs-esnext-jest',
     steps: defaultAureliaCLIBundlerTests.concat([
       new tests.requirejs.AuJestRunsTests()
     ])
@@ -93,7 +93,7 @@ module.exports = [
     ])
   },
   {
-    title: 'skeleton-webpack-esnext',
+    title: 'skeleton-webpack-esnext-jest',
     steps: defaultWebpackTests.concat([
       new tests.webpack.AuJestRunsTests()
     ])
@@ -105,7 +105,7 @@ module.exports = [
     ])
   },
   {
-    title: 'skeleton-webpack-typescript',
+    title: 'skeleton-webpack-typescript-jest',
     steps: defaultWebpackTests.concat([
       new tests.webpack.AuJestRunsTests()
     ])
@@ -117,7 +117,13 @@ module.exports = [
     ])
   },
   {
-    title: 'skeleton-requirejs-esnext-aspnetcore',
+    title: 'skeleton-requirejs-esnext-jest-aspnetcore',
+    steps: defaultAureliaCLIDotNetTests.concat([
+      new tests.requirejs.AuJestRunsTests()
+    ])
+  },
+  {
+    title: 'skeleton-requirejs-esnext-karma-aspnetcore',
     steps: defaultAureliaCLIDotNetTests.concat([
       new tests.requirejs.AuJestRunsTests()
     ])
