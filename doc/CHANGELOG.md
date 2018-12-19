@@ -1,3 +1,20 @@
+# [1.0.0-beta.8](https://github.com/aurelia/cli/compare/1.0.0-beta7...1.0.0-beta.8) (2018-12-19)
+
+
+### Bug Fixes
+
+* **cli:** add typings for bluebird ([215c3e0](https://github.com/aurelia/cli/commit/215c3e0)), closes [#991](https://github.com/aurelia/cli/issues/991)
+* **cli:** add typings for bluebird ([0a629cd](https://github.com/aurelia/cli/commit/0a629cd)), closes [#991](https://github.com/aurelia/cli/issues/991)
+* **run-webpack.js run-webpack.ts index-webpack.ejs:** update run scripts, remove redundant entry in index template ([9b3c171](https://github.com/aurelia/cli/commit/9b3c171))
+* avoid early exist of "au new" ([be532fd](https://github.com/aurelia/cli/commit/be532fd)), closes [#977](https://github.com/aurelia/cli/issues/977)
+
+
+### Features
+
+* **webpack:** Improvements in CLI generated Webpack config ([2365331](https://github.com/aurelia/cli/commit/2365331))
+
+
+
 # [1.0.0-beta.7](https://github.com/aurelia/cli/compare/1.0.0-beta.6...1.0.0-beta.7)
 
 
