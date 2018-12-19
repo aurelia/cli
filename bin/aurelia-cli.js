@@ -13,6 +13,10 @@ Please upgrade to latest Node.js https://nodejs.org`);
 
 process.title = 'aurelia';
 
+const userArgs = process.argv.slice(2);
+const commandName = userArgs[0];
+const commandArgs = userArgs.slice(1);
+
 let originalBaseDir = process.cwd();
 
 resolve('aurelia-cli', {
@@ -20,7 +24,7 @@ resolve('aurelia-cli', {
 }, function(error, projectLocalCli) {
   let cli;
 
-  if (error) {
+  if (commandName === 'new' || error) {
     cli = new (require('../lib/index').CLI);
     cli.options.runningGlobally = true;
   } else {
@@ -29,10 +33,6 @@ resolve('aurelia-cli', {
   }
 
   cli.options.originalBaseDir = originalBaseDir;
-
-  let userArgs = process.argv.slice(2);
-  let commandName = userArgs[0];
-  let commandArgs = userArgs.slice(1);
 
   cli.run(commandName, commandArgs).catch(err => {
     console.log(err);

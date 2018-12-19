@@ -22,7 +22,7 @@ describe('The cli', () => {
     aureliaProject = 'aurelia_project';
     const fsConfig = {};
     fsConfig[dir] = {};
-    fsConfig['package.json'] = {};
+    fsConfig['package.json'] = '{"version": "1.0.0"}';
     mockfs(fsConfig);
   });
 
@@ -109,16 +109,13 @@ describe('The cli', () => {
     function getVersionSpec(command) {
       return () => {
         beforeEach(() => {
-          mockfs({
-            'package.json': '{"version": "1.0.0"}'
-          });
           spyOn(cli.ui, 'log')
             .and.callFake(() => new Promise(resolve => resolve()));
         });
 
         it('logs the cli version', () => {
           cli.run(command);
-          expect(cli.ui.log).toHaveBeenCalledWith('1.0.0');
+          expect(cli.ui.log).toHaveBeenCalledWith('Local aurelia-cli v1.0.0');
         });
 
         it('returns an empty promise', done => {
@@ -143,7 +140,7 @@ describe('The cli', () => {
 
       cli.run()
         .then(() => {
-          expect(cli._establishProject).toHaveBeenCalledWith(cli.options);
+          expect(cli._establishProject).toHaveBeenCalled();
         }).catch(fail).then(done);
     });
 
@@ -194,12 +191,13 @@ describe('The cli', () => {
       const args = {};
       spyOn(cli, '_establishProject').and.returnValue(Promise.resolve(null)); // no project could be found
       spyOn(cli, 'createCommand').and.returnValue(Promise.resolve(command));
-      const errorSpy = spyOn(cli.logger, 'error');
+      const errorSpy = spyOn(cli.ui, 'log');
 
       cli.run('', args).then(() => {
         expect(command.execute).not.toHaveBeenCalledWith(args);
-        expect(errorSpy).toHaveBeenCalled();
-        expect(errorSpy.calls.first().args[0]).toContain('It appears that the Aurelia CLI is running locally');
+        expect(errorSpy).toHaveBeenCalledTimes(2);
+        expect(errorSpy.calls.first().args[0]).toContain('Local aurelia-cli');
+        expect(errorSpy.calls.argsFor(1)[0]).toContain('It appears that the Aurelia CLI is running locally');
       }).catch(fail).then(done);
     });
   });
