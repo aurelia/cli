@@ -153,7 +153,7 @@
         },
         {
           "displayName": "CLI's built-in bundler with Alameda",
-          "description": "Alameda is a modern version of RequireJS using promises and native es6 features.",
+          "description": "Alameda is a modern version of RequireJS using promises and native es6 features (modern browsers only).",
           "value": "alameda"
         },
         {
