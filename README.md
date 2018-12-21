@@ -9,7 +9,7 @@ To keep up to date on [Aurelia](http://www.aurelia.io/), please visit and subscr
 
 ## Documentation
 
-You can read documentation on the cli [here](http://aurelia.io/docs/build-systems/aurelia-cli). If you would like to help improve this documentation, the source for the above can be found in the doc folder within the framework repository.
+You can read documentation on the cli [here](https://aurelia.io/docs/cli). If you would like to help improve this documentation, the source for the above can be found in the doc folder within the framework repository.
 
 ## Building
 
