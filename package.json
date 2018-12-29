@@ -57,6 +57,7 @@
     "preprocess": "^3.1.0",
     "querystring-es3": "1.0.0-0",
     "readable-stream": "^2.3.6",
+    "resolve": "^1.9.0",
     "rfc6902": "^3.0.1",
     "semver": "^5.5.1",
     "terser": "^3.10.0",

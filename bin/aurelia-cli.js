@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 'use strict';
-const resolve = require('../lib/resolve');
+const resolve = require('resolve');
 
 const semver = require('semver');
 const nodeVersion = process.versions.node;
