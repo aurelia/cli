@@ -1,3 +1,12 @@
+# [1.0.0-beta.9](https://github.com/aurelia/cli/compare/1.0.0-beta.8...1.0.0-beta.9) (2018-12-29)
+
+
+### Bug Fixes
+
+* **bundler:** fix stubbing on core Nodejs module "stream" ([1e36774](https://github.com/aurelia/cli/commit/1e36774))
+
+
+
 # [1.0.0-beta.8](https://github.com/aurelia/cli/compare/1.0.0-beta7...1.0.0-beta.8) (2018-12-19)
 
 
