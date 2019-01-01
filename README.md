@@ -11,6 +11,10 @@ To keep up to date on [Aurelia](http://www.aurelia.io/), please visit and subscr
 
 You can read documentation on the cli [here](https://aurelia.io/docs/cli). If you would like to help improve this documentation, the source for the above can be found in the doc folder within the framework repository.
 
+## Contributing
+
+Please see the [contributing guidelines](./CONTRIBUTING.md)
+
 ## Building
 
 1. Clone the aurelia-cli: `git clone https://github.com/aurelia/cli.git`
