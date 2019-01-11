@@ -104,7 +104,7 @@ describe('the BundledSource module', () => {
   it('transforms local js file', () => {
     let file = {
       path: path.resolve(cwd, 'src/foo/bar/loo.js'),
-      contents: "define(['./a', 'lo/rem', 'text!./loo.yaml', 'text!foo.html'], function(a,r){});"
+      contents: "define(['./a', 'lo/rem', 'text!./loo.yaml', 'text!foo.html', 'some/plugin!bar.html'], function(a,r){});"
     };
 
     let bs = new BundledSource(bundler, file);
@@ -120,9 +120,9 @@ describe('the BundledSource module', () => {
     bs._getUseCache = () => undefined;
 
     let deps = bs.transform();
-    expect(deps).toEqual(['lo/rem', 'foo/bar/loo.yaml', 'foo.html']); // relative dep is ignored
+    expect(deps.sort()).toEqual(['bar.html', 'foo.html', 'foo/bar/loo.yaml', 'lo/rem', 'some/plugin']); // relative dep is ignored
     expect(bs.requiresTransform).toBe(false);
-    expect(bs.contents).toBe("define('foo/bar/loo',['./a', 'lo/rem', 'text!./loo.yaml', 'text!foo.html'], function(a,r){});");
+    expect(bs.contents).toBe("define('foo/bar/loo',['./a', 'lo/rem', 'text!./loo.yaml', 'text!foo.html', 'some/plugin!bar.html'], function(a,r){});");
     expect(bundler.configTargetBundle.addAlias).toHaveBeenCalledWith('b8/loo', 'foo/bar/loo');
   });
 
