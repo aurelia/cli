@@ -152,6 +152,11 @@
           "value": "requirejs"
         },
         {
+          "displayName": "CLI's built-in bundler with Alameda",
+          "description": "Alameda is a modern version of RequireJS using promises and native es6 features (modern browsers only).",
+          "value": "alameda"
+        },
+        {
           "displayName": "CLI's built-in bundler with SystemJS",
           "description": "SystemJS is Dynamic ES module loader, the most versatile module loader for JavaScript",
           "value": "systemjs"
@@ -168,12 +173,16 @@
           "nextActivity": 611
         },
         {
-          "case": "systemjs",
+          "case": "alameda",
           "nextActivity": 612
         },
         {
-          "case": "webpack",
+          "case": "systemjs",
           "nextActivity": 613
+        },
+        {
+          "case": "webpack",
+          "nextActivity": 614
         }
       ]
     },
@@ -198,6 +207,21 @@
       "nextActivity": 620,
       "state": {
         "loader": {
+          "id": "alameda",
+          "displayName": "Alameda"
+        },
+        "bundler": {
+          "id": "cli",
+          "displayName": "Aurelia-CLI"
+        }
+      }
+    },
+    {
+      "id": 613,
+      "type": "state-assign",
+      "nextActivity": 620,
+      "state": {
+        "loader": {
           "id": "system",
           "displayName": "SystemJS"
         },
@@ -208,7 +232,7 @@
       }
     },
     {
-      "id": 613,
+      "id": 614,
       "type": "state-assign",
       "nextActivity": 615,
       "state": {
