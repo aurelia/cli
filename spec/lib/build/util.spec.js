@@ -1,5 +1,5 @@
 'use strict';
-
+const path = require('path');
 const Utils = require('../../../lib/build/utils');
 
 describe('the Utils.runSequentially function', () => {
@@ -86,5 +86,91 @@ describe('the Utils.couldMissGulpPreprocess function', () => {
   it('returns true for unknown file extension', () => {
     expect(Utils.couldMissGulpPreprocess('foo/bar.json')).toBeTruthy();
     expect(Utils.couldMissGulpPreprocess('foo/bar.yaml')).toBeTruthy();
+  });
+});
+
+describe('the Utils.nodejsLoad function', () => {
+  let mockfs;
+
+  beforeEach(() => {
+    mockfs = require('mock-fs');
+    const fsConfig = {};
+    mockfs(fsConfig);
+  });
+
+  afterEach(() => {
+    mockfs.restore();
+  });
+
+  it('load file first', () => {
+    const fsConfig = {};
+    fsConfig[path.join('foo', 'bar')] = 'bar';
+    fsConfig[path.join('foo', 'bar.js')] = 'js';
+    fsConfig[path.join('foo', 'bar.json')] = 'json';
+    mockfs(fsConfig);
+    expect(Utils.nodejsLoad(path.resolve('foo', 'bar'))).toBe(path.resolve('foo', 'bar'));
+  });
+
+  it('load .js file first', () => {
+    const fsConfig = {};
+    fsConfig[path.join('foo', 'bar.js')] = 'js';
+    fsConfig[path.join('foo', 'bar.json')] = 'json';
+    mockfs(fsConfig);
+    expect(Utils.nodejsLoad(path.resolve('foo', 'bar'))).toBe(path.resolve('foo', 'bar.js'));
+    expect(Utils.nodejsLoad(path.resolve('foo', 'bar.js'))).toBe(path.resolve('foo', 'bar.js'));
+    expect(Utils.nodejsLoad(path.resolve('foo', 'bar.json'))).toBe(path.resolve('foo', 'bar.json'));
+  });
+
+  it('load .json file', () => {
+    const fsConfig = {};
+    fsConfig[path.join('foo', 'bar.json')] = 'json';
+    mockfs(fsConfig);
+    expect(Utils.nodejsLoad(path.resolve('foo', 'bar'))).toBe(path.resolve('foo', 'bar.json'));
+    expect(Utils.nodejsLoad(path.resolve('foo', 'bar.json'))).toBe(path.resolve('foo', 'bar.json'));
+    expect(Utils.nodejsLoad(path.resolve('foo', 'bar.js'))).toBeUndefined();
+  });
+
+  it('load directory', () => {
+    const fsConfig = {};
+    fsConfig[path.join('foo', 'bar', 'index.js')] = 'bar/index';
+    fsConfig[path.join('foo', 'bar', 'index.json')] = 'bar/index.json';
+    mockfs(fsConfig);
+    expect(Utils.nodejsLoad(path.resolve('foo', 'bar'))).toBe(path.resolve('foo', 'bar', 'index.js'));
+  });
+
+  it('load directory .json', () => {
+    const fsConfig = {};
+    fsConfig[path.join('foo', 'bar', 'index.json')] = 'bar/index.json';
+    mockfs(fsConfig);
+    expect(Utils.nodejsLoad(path.resolve('foo', 'bar'))).toBe(path.resolve('foo', 'bar', 'index.json'));
+  });
+
+  it('load directory with package.json', () => {
+    const fsConfig = {};
+    fsConfig[path.join('foo', 'bar', 'package.json')] = '{"main": "lo.js"}';
+    fsConfig[path.join('foo', 'bar', 'lo.js')] = 'bar/lo.js';
+    mockfs(fsConfig);
+    expect(Utils.nodejsLoad(path.resolve('foo', 'bar'))).toBe(path.resolve('foo', 'bar', 'lo.js'));
+  });
+
+  it('load directory with package.json, case2', () => {
+    const fsConfig = {};
+    fsConfig[path.join('foo', 'bar', 'package.json')] = '{"main": "lo.js"}';
+    fsConfig[path.join('foo', 'bar', 'lo.js', 'index.js')] = 'bar/lo.js/index.js';
+    mockfs(fsConfig);
+    expect(Utils.nodejsLoad(path.resolve('foo', 'bar'))).toBe(path.resolve('foo', 'bar', 'lo.js', 'index.js'));
+  });
+});
+
+describe('the Utils.removeJsExtension function', () => {
+  it('keep other extension', () => {
+    expect(Utils.removeJsExtension('a.html')).toBe('a.html');
+    expect(Utils.removeJsExtension('c/d.css')).toBe('c/d.css');
+    expect(Utils.removeJsExtension('c/d.min')).toBe('c/d.min');
+  });
+  it('strips .js extension', () => {
+    expect(Utils.removeJsExtension('a.js')).toBe('a');
+    expect(Utils.removeJsExtension('c/d.js')).toBe('c/d');
+    expect(Utils.removeJsExtension('c/d.min.js')).toBe('c/d.min');
   });
 });
