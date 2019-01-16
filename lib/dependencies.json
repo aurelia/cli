@@ -66,6 +66,7 @@
   "jest": "^23.6.0",
   "jest-jasmine2": "^23.6.0",
   "jest-cli": "^23.6.0",
+  "jest-environment-jsdom-thirteen": "^0.0.2",
   "jest-matchers": "^20.0.3",
   "json-loader": "^0.5.7",
   "html-loader": "^0.5.5",
