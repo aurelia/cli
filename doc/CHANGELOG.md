@@ -1,3 +1,21 @@
+# [1.0.0-beta.10](https://github.com/aurelia/cli/compare/1.0.0-beta.9...1.0.0-beta.10) (2019-01-19)
+
+
+### Bug Fixes
+
+* **alameda:** Tests could not load files by path ([68b3ffa](https://github.com/aurelia/cli/commit/68b3ffa))
+* **bundler:** fix plugin prefix/subfix regex match ([f8266f3](https://github.com/aurelia/cli/commit/f8266f3))
+* **bundler:** tolerant missing main file, fix tracing on simple-line-icons ([9ad9eb5](https://github.com/aurelia/cli/commit/9ad9eb5))
+* **jasmine:** Updated aurelia-karma to get rid of deprecation error ([1fbe99a](https://github.com/aurelia/cli/commit/1fbe99a))
+
+
+### Features
+
+* **bundler:** support direct css import in js file ([2de02d2](https://github.com/aurelia/cli/commit/2de02d2))
+* **bundler:** support module resolution for lerna hoisting ([dabc8b9](https://github.com/aurelia/cli/commit/dabc8b9))
+
+
+
 # [1.0.0-beta.9](https://github.com/aurelia/cli/compare/1.0.0-beta.8...1.0.0-beta.9) (2018-12-29)
 
 
