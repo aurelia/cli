@@ -44,6 +44,7 @@ let html = `
   </template>
 `;
 let htmlDeps = ['a/b', 'lv1', 'lv2', 'lvm2', 'text!./c.html', 'text!d/e.css', 'v2', 'vm1', 'vm2'];
+let htmlDepsSystemJS = ['./c.html!text', 'a/b', 'd/e.css!text', 'lv1', 'lv2', 'lvm2', 'v2', 'vm1', 'vm2'];
 
 let css = `
 @import 'other.css';
@@ -335,7 +336,9 @@ exports.MyComp = MyComp;
       fsConfig['src/foo.html'] = 'contents';
       mockfs(fsConfig);
       expect(findJsDeps('src/foo.js', 'a();')).toEqual(['text!./foo.html']);
+      expect(findJsDeps('src/foo.js', 'a();', 'system')).toEqual(['./foo.html!text']);
       expect(findDeps('src/foo.js', 'a();')).toEqual(['text!./foo.html']);
+      expect(findDeps('src/foo.js', 'a();', 'system')).toEqual(['./foo.html!text']);
     });
 
     it('remove inner defined modules', () => {
@@ -352,6 +355,9 @@ define('another', ['M', 'N', 'a', 'b'], function() {});
     it('find all require deps', () => {
       expect(findHtmlDeps('ignore.html', html).sort())
         .toEqual(htmlDeps);
+
+      expect(findHtmlDeps('ignore.html', html, 'system').sort())
+        .toEqual(htmlDepsSystemJS);
     });
 
     it('silent at syntax error', () => {
@@ -372,8 +378,14 @@ define('another', ['M', 'N', 'a', 'b'], function() {});
       expect(findDeps('ignore.html', html).sort())
         .toEqual(htmlDeps);
 
+      expect(findDeps('ignore.html', html, 'system').sort())
+        .toEqual(htmlDepsSystemJS);
+
       expect(findDeps('IGNORE.HTM', html).sort())
         .toEqual(htmlDeps);
+
+      expect(findDeps('IGNORE.HTM', html, 'system').sort())
+        .toEqual(htmlDepsSystemJS);
     });
 
     it('passes other files', () => {
