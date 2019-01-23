@@ -1,3 +1,13 @@
+# [1.0.0-beta.11](https://github.com/aurelia/cli/compare/1.0.0-beta.10...1.0.0-beta.11) (2019-01-23)
+
+
+### Bug Fixes
+
+* **bundler:** fix conventional html view dependency with SystemJS ([ae249ca](https://github.com/aurelia/cli/commit/ae249ca)), closes [#1023](https://github.com/aurelia/cli/issues/1023)
+* **bundler:** tolerant js with missing ending semicolon ([90d247d](https://github.com/aurelia/cli/commit/90d247d)), closes [#1021](https://github.com/aurelia/cli/issues/1021)
+
+
+
 # [1.0.0-beta.10](https://github.com/aurelia/cli/compare/1.0.0-beta.9...1.0.0-beta.10) (2019-01-19)
 
 
