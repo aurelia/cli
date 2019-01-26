@@ -1,3 +1,12 @@
+# [1.0.0-beta.12](https://github.com/aurelia/cli/compare/1.0.0-beta.11...1.0.0-beta.12) (2019-01-26)
+
+
+### Features
+
+* **find-deps:** add build tracing for import elements ([0b9f740](https://github.com/aurelia/cli/commit/0b9f740))
+
+
+
 # [1.0.0-beta.11](https://github.com/aurelia/cli/compare/1.0.0-beta.10...1.0.0-beta.11) (2019-01-23)
 
 
