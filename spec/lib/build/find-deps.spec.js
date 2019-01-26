@@ -26,6 +26,7 @@ let html = `
   <template>
     <require from="a/b"></require>
     <require from="./c.html"></require>
+    <import from="./from-import.html"></import>
     <div>
       <p>
         <REQUIRE from="d/e.css"></REQUIRE>
@@ -43,8 +44,8 @@ let html = `
     <unknown as-element="router-view" layout-view-model="lvm2" layout-view="lv2"></unknown>
   </template>
 `;
-let htmlDeps = ['a/b', 'lv1', 'lv2', 'lvm2', 'text!./c.html', 'text!d/e.css', 'v2', 'vm1', 'vm2'];
-let htmlDepsSystemJS = ['./c.html!text', 'a/b', 'd/e.css!text', 'lv1', 'lv2', 'lvm2', 'v2', 'vm1', 'vm2'];
+let htmlDeps = ['a/b', 'lv1', 'lv2', 'lvm2', 'text!./c.html', 'text!./from-import.html', 'text!d/e.css', 'v2', 'vm1', 'vm2'];
+let htmlDepsSystemJS = ['./c.html!text', './from-import.html!text', 'a/b', 'd/e.css!text', 'lv1', 'lv2', 'lvm2', 'v2', 'vm1', 'vm2'];
 
 let css = `
 @import 'other.css';
