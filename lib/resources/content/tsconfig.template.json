@@ -12,7 +12,10 @@
     "experimentalDecorators": true,
     "allowJs": true,
     "moduleResolution": "node",
-    "lib": ["es2017", "dom"],
+    "lib": [
+      "es2017",
+      "dom"
+    ],
     "baseUrl": "src"
     // @endif
     // @if bundler.id='webpack'
@@ -27,7 +30,8 @@
     "baseUrl": "src",
     "skipLibCheck": true,
     "lib": [
-      "es2017", "dom"
+      "es2017",
+      "dom"
     ]
     // @endif
   },
@@ -36,6 +40,11 @@
     "./test/**/*.ts",
     "./custom_typings/**/*.d.ts"
   ],
+  // @if integrationTestRunner.id='cypress' && transpiler.id='typescript'
+  "exclude": [
+    "./test/e2e/**/*.ts"
+  ],
+  // @endif
   "atom": {
     "rewriteTsconfig": false
   }

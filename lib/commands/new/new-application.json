@@ -517,6 +517,14 @@
             "id": "protractor",
             "displayName": "Protractor"
           }
+        },
+        {
+          "displayName": "Cypress",
+          "description": "Configure your app with Cypress",
+          "value": {
+            "id": "cypress",
+            "displayName": "Cypress"
+          }
         }
       ]
     },
