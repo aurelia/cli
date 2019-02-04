@@ -31,3 +31,6 @@ node_modules
 /scripts
 /src/environment.js
 /src/environment.ts
+/dist
+/test/coverage-jest
+/test/coverage-karma
