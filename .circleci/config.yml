@@ -7,9 +7,7 @@ workflows:
   node-multi-build:
     jobs:
       - test_node_8
-      # mock-fs doesn't work in nodejs v10 right now
-      # https://github.com/tschaub/mock-fs/issues/238
-      # - test_node_10
+      - test_node_10
 
 version: 2
 jobs:
