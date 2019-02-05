@@ -24,7 +24,7 @@ class AuJestRunsTests extends Test {
 }
 
 function isTestFinishedMessage(msg) {
-  return msg.indexOf('1 passed, 1 total') > -1;
+  return /(.*) passed, (.*) total/.test(msg);
 }
 
 module.exports = {

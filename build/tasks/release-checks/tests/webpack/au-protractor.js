@@ -37,7 +37,7 @@ function isApplicationAvailableMessage(msg) {
 }
 
 function isProtractorCompletedMessage(msg) {
-  return msg.indexOf('2 specs, 0 failures') > -1;
+  return msg.indexOf('specs, 0 failures') > -1;
 }
 
 module.exports = {

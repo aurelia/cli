@@ -1,24 +1,17 @@
 {
-  "name": "skeleton-webpack-typescript-aspnetcore",
+  "name": "skeleton-requirejs-typescript-jest",
   "type": "project:application",
   "bundler": {
-    "id": "webpack",
-    "displayName": "Webpack"
-  },
-  "build": {
-    "options": {
-      "server": "dev",
-      "extractCss": "prod",
-      "coverage": false
-    }
+    "id": "cli",
+    "displayName": "Aurelia-CLI"
   },
   "platform": {
-    "id": "aspnetcore",
-    "displayName": "ASP.NET Core"
+    "id": "web",
+    "displayName": "Web"
   },
   "loader": {
-    "id": "none",
-    "displayName": "None"
+    "id": "require",
+    "displayName": "RequireJS"
   },
   "transpiler": {
     "id": "typescript",
@@ -35,22 +28,24 @@
     "displayName": "None",
     "fileExtension": ".css"
   },
+  "jsonProcessor": {
+    "id": "none",
+    "displayName": "None",
+    "fileExtension": ".json"
+  },
   "editor": {
     "id": "vscode",
     "displayName": "Visual Studio Code"
   },
-  "unitTestRunners": [
-    {
-      "id": "jest",
-      "displayName": "Jest"
-    },
-    {
-      "id": "karma",
-      "displayName": "Karma"
-    }
-  ],
+  "unitTestRunner": {
+    "id": "jest",
+    "displayName": "Jest"
+  },
   "integrationTestRunner": {
     "id": "protractor",
     "displayName": "Protractor"
+  },
+  "features": {
+    "navigation": "navigation"
   }
 }

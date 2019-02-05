@@ -1,5 +1,5 @@
 {
-  "name": "skeleton-webpack-typescript",
+  "name": "skeleton-webpack-esnext-karma-aspnetcore",
   "type": "project:application",
   "bundler": {
     "id": "webpack",
@@ -13,17 +13,22 @@
     }
   },
   "platform": {
-    "id": "web",
-    "displayName": "Web"
+    "id": "aspnetcore",
+    "displayName": "ASP.NET Core"
+  },
+  "jsonProcessor": {
+    "id": "none",
+    "displayName": "None",
+    "fileExtension": ".json"
   },
   "loader": {
     "id": "none",
     "displayName": "None"
   },
   "transpiler": {
-    "id": "typescript",
-    "displayName": "TypeScript",
-    "fileExtension": ".ts"
+    "id": "babel",
+    "displayName": "Babel",
+    "fileExtension": ".js"
   },
   "markupProcessor": {
     "id": "minimum",
@@ -39,18 +44,15 @@
     "id": "vscode",
     "displayName": "Visual Studio Code"
   },
-  "unitTestRunners": [
-    {
-      "id": "jest",
-      "displayName": "Jest"
-    },
-    {
-      "id": "karma",
-      "displayName": "Karma"
-    }
-  ],
+  "unitTestRunner": {
+    "id": "karma",
+    "displayName": "Karma"
+  },
   "integrationTestRunner": {
     "id": "protractor",
     "displayName": "Protractor"
+  },
+  "features": {
+    "navigation": "navigation"
   }
 }

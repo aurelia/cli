@@ -1,5 +1,5 @@
 {
-  "name": "skeleton-requirejs-typescript-aspnetcore",
+  "name": "skeleton-systemjs-typescript-karma-aspnetcore",
   "type": "project:application",
   "bundler": {
     "id": "cli",
@@ -10,8 +10,13 @@
     "displayName": "ASP.NET Core"
   },
   "loader": {
-    "id": "require",
-    "displayName": "RequireJS"
+    "id": "system",
+    "displayName": "SystemJS"
+  },
+  "jsonProcessor": {
+    "id": "none",
+    "displayName": "None",
+    "fileExtension": ".json"
   },
   "transpiler": {
     "id": "typescript",
@@ -28,27 +33,19 @@
     "displayName": "None",
     "fileExtension": ".css"
   },
-  "jsonProcessor": {
-    "id": "none",
-    "displayName": "None",
-    "fileExtension": ".json"
-  },
   "editor": {
     "id": "vscode",
     "displayName": "Visual Studio Code"
   },
-  "unitTestRunners": [
-    {
-      "id": "jest",
-      "displayName": "Jest"
-    },
-    {
-      "id": "karma",
-      "displayName": "Karma"
-    }
-  ],
+  "unitTestRunner": {
+    "id": "karma",
+    "displayName": "Karma"
+  },
   "integrationTestRunner": {
     "id": "protractor",
     "displayName": "Protractor"
+  },
+  "features": {
+    "navigation": "navigation"
   }
 }

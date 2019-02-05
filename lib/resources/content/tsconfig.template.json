@@ -21,7 +21,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "moduleResolution": "node",
-    "sourceRoot": "src",
+    // "sourceRoot": "src",
     "sourceMap": true,
     "allowJs": true,
     "baseUrl": "src",
