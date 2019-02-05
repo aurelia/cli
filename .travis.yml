@@ -5,6 +5,4 @@ os:
 language: node_js
 node_js:
   - "8"
-  # mock-fs doesn't work in nodejs v10 right now
-  # https://github.com/tschaub/mock-fs/issues/238
-  # - "10"
+  - "10"
