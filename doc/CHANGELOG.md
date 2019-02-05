@@ -1,3 +1,20 @@
+# [1.0.0-beta.13](https://github.com/aurelia/cli/compare/1.0.0-beta.12...1.0.0-beta.13) (2019-02-05)
+
+
+### Bug Fixes
+
+* **jest:** avoid aurelia-bindings v1+v2 conflict ([7863c29](https://github.com/aurelia/cli/commit/7863c29)), closes [#906](https://github.com/aurelia/cli/issues/906)
+* **webpack:** revert [#970](https://github.com/aurelia/cli/issues/970) to restore default webpack module resolution ([3c4d0d6](https://github.com/aurelia/cli/commit/3c4d0d6)), closes [#1037](https://github.com/aurelia/cli/issues/1037)
+
+
+### Features
+
+* **new-application:** add scaffolding feature for navigation skeleton ([ea4ce1a](https://github.com/aurelia/cli/commit/ea4ce1a))
+* **new-application:** add scaffolding feature for navigation skeleton ([b918ac3](https://github.com/aurelia/cli/commit/b918ac3))
+* **requirejs/systemjs:** add protractor and jest support ([148148c](https://github.com/aurelia/cli/commit/148148c))
+
+
+
 # [1.0.0-beta.12](https://github.com/aurelia/cli/compare/1.0.0-beta.11...1.0.0-beta.12) (2019-01-26)
 
 
