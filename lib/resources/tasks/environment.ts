@@ -12,16 +12,7 @@ function configureEnvironment() {
   return gulp.src(`aurelia_project/environments/${env}${project.transpiler.fileExtension}`)
     .pipe(rename(`environment${project.transpiler.fileExtension}`))
     .pipe(through.obj(function (file, enc, cb) {
-      // remove readonly attribute on destination file
-      const targetFile = `${project.paths.root}/${file.relative}`;
-      fs.stat(targetFile, function (err, stat) {
-        if (err) {
-          cb(null, file); // most likely, no such file yet
-        }
-        else {
-          fs.chmod(targetFile, stat.mode | 0o200, function () { cb(null, file); });
-        }
-      });
+      fs.unlink(`${project.paths.root}/${file.relative}`, function () { cb(null, file); });
     }))
     .pipe(gulp.dest(project.paths.root))
     .pipe(through.obj(function (file, enc,  cb) {
