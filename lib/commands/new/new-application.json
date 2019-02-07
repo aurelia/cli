@@ -79,7 +79,7 @@
       "type": "input-text",
       "id": 200,
       "nextActivity": 300,
-      "question": "Please enter a name for your new project below.",
+      "question": "Please enter a name for your new project:",
       "stateProperty": "name",
       "defaultValue": "aurelia-app"
     },
