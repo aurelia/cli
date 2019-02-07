@@ -43,7 +43,7 @@ describe('The InputSelect module', () => {
     ui.question.and.returnValue(Promise.resolve(options[1]));
 
     sut.execute.call(definition, context).then(() => {
-      expect(context.state.unitTestRunner).toBe('karma');
+      expect(context.state.unitTestRunner.value).toBe('karma');
       expect(next).toHaveBeenCalledWith(1170);
 
       done();
