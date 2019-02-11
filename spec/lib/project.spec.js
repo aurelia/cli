@@ -82,6 +82,33 @@ describe('The project module', () => {
         }).catch(fail).then(done);
     });
   });
+
+  it('The makeFileName() function', () => {
+    expect(project.makeFileName('Foo'), 'foo');
+    expect(project.makeFileName('foo'), 'foo');
+    expect(project.makeFileName('fooBar'), 'foo-bar');
+    expect(project.makeFileName('foo-bar'), 'foo-bar');
+    expect(project.makeFileName('FOO Bar'), 'foo-bar');
+    expect(project.makeFileName('_foo_bar_'), 'foo-bar');
+  });
+
+  it('The makeClassName() function', () => {
+    expect(project.makeClassName('Foo'), 'Foo');
+    expect(project.makeClassName('foo'), 'foo');
+    expect(project.makeClassName('fooBar'), 'FooBar');
+    expect(project.makeClassName('foo-bar'), 'FooBar');
+    expect(project.makeClassName('FOO Bar'), 'FooBar');
+    expect(project.makeClassName('_foo_bar_'), 'FooBar');
+  });
+
+  it('The makeFunctionName() function', () => {
+    expect(project.makeFunctionName('Foo'), 'foo');
+    expect(project.makeFunctionName('foo'), 'foo');
+    expect(project.makeFunctionName('fooBar'), 'fooBar');
+    expect(project.makeFunctionName('foo-bar'), 'fooBar');
+    expect(project.makeFunctionName('FOO Bar'), 'fooBar');
+    expect(project.makeFunctionName('_foo_bar_'), 'fooBar');
+  });
 });
 
 function hasProjectItem(locations, name, parent) {
