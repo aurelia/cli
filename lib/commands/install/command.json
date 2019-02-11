@@ -1,4 +1,0 @@
-{
-  "name": "install",
-  "description": "'au install' has been removed, dependencies are traced automatically. Just use npm or yarn to install package."
-}
