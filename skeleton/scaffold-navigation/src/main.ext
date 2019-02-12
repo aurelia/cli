@@ -1,0 +1,55 @@
+import '@babel/polyfill';
+import 'bootstrap';
+// @if feat.typescript
+import {Aurelia} from 'aurelia-framework';
+// @endif
+import environment from './environment';
+// @if feat.webpack
+import {PLATFORM} from 'aurelia-pal';
+// @endif
+
+export function configure(aurelia/* @if feat.typescript **: Aurelia/* @endif */) {
+  aurelia.use
+    .standardConfiguration()
+    // @if feat.webpack
+    .feature(PLATFORM.moduleName('resources/index'));
+    // @endif
+    // @if feat['cli-bundler']
+    .feature('resources');
+    // @endif
+
+  aurelia.use.developmentLogging(environment.debug ? 'debug' : 'warn');
+
+  if (environment.testing) {
+    // @if feat.webpack
+    aurelia.use.plugin(PLATFORM.moduleName('aurelia-testing'));
+    // @endif
+    // @if feat['cli-bundler']
+    aurelia.use.plugin('aurelia-testing');
+    // @endif
+  }
+
+  //Uncomment the line below to enable animation.
+  // @if feat.webpack
+  // aurelia.use.plugin(PLATFORM.moduleName('aurelia-animator-css'));
+  // @endif
+  // @if feat['cli-bundler']
+  // aurelia.use.plugin('aurelia-animator-css');
+  // @endif
+  //if the css animator is enabled, add swap-order="after" to all router-view elements
+
+  //Anyone wanting to use HTMLImports to load views, will need to install the following plugin.
+  // @if feat.webpack
+  // aurelia.use.plugin(PLATFORM.moduleName('aurelia-html-import-template-loader'));
+  // @endif
+  // @if feat['cli-bundler']
+  // aurelia.use.plugin('aurelia-html-import-template-loader');
+  // @endif
+
+  // @if feat.webpack
+  aurelia.start().then(() => aurelia.setRoot(PLATFORM.moduleName('app')));
+  // @endif
+  // @if feat['cli-bundler']
+  aurelia.start().then(() => aurelia.setRoot());
+  // @endif
+}

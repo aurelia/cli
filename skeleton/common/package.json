@@ -1,0 +1,30 @@
+{
+  "name": "/* @echo projectName */",
+  "description": "An Aurelia client application.",
+  "version": "0.1.0",
+  "repository": {
+    "type": "???",
+    "url": "???"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "aurelia-bootstrapper": "",
+    "aurelia-animator-css": ""
+  },
+  "devDependencies": {
+    "aurelia-cli": "",
+    "aurelia-testing": "",
+    "aurelia-tools": "",
+    "gulp": "",
+    "minimatch": "",
+    "through2": "",
+    "vinyl-fs": ""
+  },
+  "scripts": {
+    "build": "au build",
+    "start": "au run"
+  },
+  "engines": {
+    "node": ">=8.9.0"
+  }
+}

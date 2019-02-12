@@ -1,11 +1,8 @@
-'use strict';
-
 describe('The project module', () => {
   let mockfs;
   let path;
 
   let fs;
-  let ui;
 
   let Project;
   let project;
@@ -15,13 +12,12 @@ describe('The project module', () => {
     path = require('path');
 
     fs = require('../../lib/file-system');
-    ui = new (require('../../lib/ui').ConsoleUI)();
 
     Project = require('../../lib/project').Project;
 
     mockfs();
 
-    project = new Project(ui, '', {
+    project = new Project('', {
       paths: { },
       transpiler: {
         fileExtension: '.js'
@@ -42,7 +38,7 @@ describe('The project module', () => {
       }
     };
 
-    project = new Project(ui, '', model);
+    project = new Project('', model);
 
     expect(hasProjectItem(project.locations, 'src', null)).toBe(true);
     expect(hasProjectItem(project.locations, 'resources', 'src')).toBe(true);

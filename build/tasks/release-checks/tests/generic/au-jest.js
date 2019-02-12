@@ -1,10 +1,9 @@
-'use strict';
 const Test = require('../test');
 const ExecuteCommand = require('../../tasks/execute-command');
 
 class AuJestRunsTests extends Test {
   constructor() {
-    super('au jest runs tests');
+    super('au test runs jest tests');
   }
 
   onOutput(message) {
@@ -18,7 +17,7 @@ class AuJestRunsTests extends Test {
 
   execute() {
     // https://github.com/facebook/jest/issues/5064
-    this.executeCommand = new ExecuteCommand('au', ['jest'], (msg) => this.onOutput(msg), (msg) => this.onOutput(msg));
+    this.executeCommand = new ExecuteCommand('au', ['test'], (msg) => this.onOutput(msg), (msg) => this.onOutput(msg));
     return this.executeCommand.executeAsNodeScript();
   }
 }

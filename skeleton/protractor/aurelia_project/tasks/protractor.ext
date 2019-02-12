@@ -1,0 +1,27 @@
+// @if feat.babel
+import gulp from 'gulp';
+// @endif
+// @if feat.typescript
+import * as gulp from 'gulp';
+// @endif
+const {protractor, webdriver_update }  = require('gulp-protractor');
+
+gulp.task('webdriver_update', webdriver_update);
+
+gulp.task('protractor', (cb) => {
+  // @if feat.babel
+  gulp.src(['test/e2e/**/*.e2e.js'])
+  // @endif
+  // @if feat.typescript
+  gulp.src(['test/e2e/**/*.e2e.ts'])
+  // @endif
+    .pipe(protractor({configFile: 'test/protractor.conf.js'}))
+    .on('error', cb)
+    .on('end', cb);
+});
+
+// Setting up the test task
+export default gulp.series(
+  'webdriver_update',
+  'protractor'
+);

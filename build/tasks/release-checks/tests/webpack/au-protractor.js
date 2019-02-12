@@ -1,4 +1,3 @@
-'use strict';
 const Test = require('../test');
 const ExecuteCommand = require('../../tasks/execute-command');
 
@@ -27,7 +26,7 @@ class AuProtractorRunsTests extends Test {
   }
 
   execute() {
-    this.executeCommand = new ExecuteCommand('au', ['run', '--watch'], (msg) => this.onOutput(msg));
+    this.executeCommand = new ExecuteCommand('au', ['run'], (msg) => this.onOutput(msg));
     return this.executeCommand.executeAsNodeScript();
   }
 }

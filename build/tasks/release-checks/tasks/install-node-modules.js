@@ -1,4 +1,3 @@
-'use strict';
 const Task = require('./task');
 const Yarn = require('../../../../lib/package-managers/yarn').Yarn;
 const LogManager = require('aurelia-logging');
@@ -17,10 +16,9 @@ module.exports = class InstallNodeModules extends Task {
       return Promise.resolve();
     }
 
-    logger.debug('installing packages using yarn in ' + context.workingDirectory);
+    logger.debug('installing packages in ' + context.workingDirectory);
 
-    let yarn = new Yarn();
-
-    return yarn.install([], context.workingDirectory );
+    const yarn = new Yarn();
+    return yarn.install([], context.workingDirectory);
   }
 };

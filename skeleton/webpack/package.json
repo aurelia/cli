@@ -1,0 +1,74 @@
+{
+  "devDependencies": {
+    // @if feat['dotnet-core']
+    "aspnet-webpack": "",
+    "webpack-hot-middleware": "",
+    // @endif
+
+    // @if feat.babel
+    "babel-eslint": "",
+    "eslint": "",
+    "babel-loader": "",
+    "babel-plugin-istanbul": "",
+    "@babel/plugin-proposal-decorators": "",
+    "@babel/plugin-proposal-class-properties": "",
+    "@babel/preset-env": "",
+    "@babel/core": "",
+    "@babel/polyfill": "",
+    "@babel/register": "",
+    // @endif
+
+    // @if feat.typescript
+    "ts-loader": "",
+    "ts-node": "",
+    "@types/node": "",
+    "@types/lodash": "",
+    "@types/webpack": "",
+    "typescript": "",
+    // @endif
+
+    // @if feat.less
+    "less-loader": "",
+    "less": "",
+    // @endif
+
+    // @if feat['postcss-basic'] || feat['postcss-typical']
+    "postcss-loader": "",
+    "autoprefixer": "",
+    // @endif
+    // @if feat['postcss-typical']
+    "cssnano": "",
+    // @endif
+
+    // @if feat.sass
+    "sass-loader": "",
+    "node-sass": "",
+    // @endif
+
+    // @if feat.stylus
+    "stylus-loader": "",
+    "stylus": "",
+    // @endif
+
+    "gulp-rename": "",
+    "html-webpack-plugin": "",
+    "copy-webpack-plugin": "",
+    "mini-css-extract-plugin": "",
+    "aurelia-webpack-plugin": "",
+    "duplicate-package-checker-webpack-plugin": "",
+    "webpack": "",
+    "webpack-cli": "",
+    "webpack-dev-server": "",
+    "expose-loader": "",
+    "style-loader": "",
+    "url-loader": "",
+    "del": "",
+    "css-loader": "",
+    "file-loader": "",
+    "json-loader": "",
+    "html-loader": "",
+    "istanbul-instrumenter-loader": "",
+    "opn": "",
+    "webpack-bundle-analyzer": "",
+  }
+}

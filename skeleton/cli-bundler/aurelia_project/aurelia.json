@@ -1,0 +1,158 @@
+{
+  "transpiler": {
+    // @if feat.babel
+    "options": {
+      "plugins": [
+        ["@babel/plugin-transform-modules-amd", {"loose": true}]
+      ]
+    },
+    "source": "src/**/*.js",
+    // @endif
+
+    // @if feat.typescript
+    "dtsSource": ["./custom_typings/**/*.d.ts"],
+    "source": "src/**/*.ts",
+    // @endif
+  },
+  "markupProcessor": {
+    "source": "src/**/*.html"
+  },
+  "cssProcessor": {
+    // @if ! (feat.less || feat.sass || feat.stylus)
+    "source": "src/**/*.css"
+    // @endif
+
+    // @if feat.less
+    "source": "src/**/*.less"
+    // @endif
+
+    // @if feat.sass
+    "source": "src/**/*.scss"
+    // @endif
+
+    // @if feat.stylus
+    "source": "src/**/*.styl"
+    // @endif
+  },
+  "jsonProcessor": {
+    "source": "src/**/*.json"
+  },
+  // @if feat.karma
+  "unitTestRunner": {
+    // @if feat.babel
+    "source": "test/unit/**/*.js",
+    // @endif
+    // @if feat.typescript
+    "source": "test/unit/**/*.ts",
+    // @endif
+  },
+  "testFramework": {
+    "id": "jasmine"
+  },
+  // @endif
+  "platform": {
+    // @if feat.web
+    "port": 9000,
+    "index": "index.html",
+    "baseDir": ".",
+    "output": "scripts",
+    // @endif
+
+    // @if feat['dotnet-core']
+    "port": 5000,
+    "index": "wwwroot/index.html",
+    "baseDir": "./wwwroot",
+    "baseUrl": "scripts",
+    "output": "wwwroot/scripts",
+    // @endif
+  },
+  "build": {
+    "targets": [
+      // @if feat.web
+      {
+        "port": 9000,
+        "index": "index.html",
+        "baseDir": ".",
+        "output": "scripts"
+      },
+      // @endif
+
+      // @if feat['dotnet-core']
+      {
+        "port": 5000,
+        "index": "wwwroot/index.html",
+        "baseDir": "./wwwroot",
+        "baseUrl": "scripts",
+        "output": "wwwroot/scripts"
+      }
+      // @endif
+    ],
+    "options": {
+      "minify": "stage & prod",
+      "sourcemaps": "dev & stage",
+      "rev": false,
+      "cache": "dev & stage"
+    },
+    "bundles": [
+      {
+        "name": "app-bundle.js",
+        "source": [
+          "**/*.{js,json,css,html}"
+        ]
+      },
+      {
+        "name": "vendor-bundle.js",
+        "prepend": [
+          // @if feat.requirejs
+          "node_modules/requirejs/require.js"
+          // @endif
+          // @if feat.alameda
+          "node_modules/alameda/alameda.js"
+          // @endif
+          // @if feat.systemjs
+          "node_modules/systemjs/dist/system.js"
+          // @endif
+        ],
+        "dependencies": [
+          "aurelia-bootstrapper",
+          "aurelia-loader-default",
+          "aurelia-pal-browser",
+          {
+            "name": "aurelia-testing",
+            "env": "dev"
+          },
+          // @if feat.requirejs || feat.alameda
+          "text",
+          // @endif
+          // @if feat.systemjs
+          {
+            "name": "text",
+            "path": "../node_modules/systemjs-plugin-text",
+            "main": "text"
+          }
+          // @endif
+        ]
+      }
+    ],
+    "loader": {
+      // @if feat.requirejs || feat.alameda
+      "type": "require",
+      // @endif
+      // @if feat.systemjs
+      "type": "system",
+      // @endif
+      "configTarget": "vendor-bundle.js",
+      "includeBundleMetadataInConfig": "auto",
+      "plugins": [
+        {
+          "name": "text",
+          "extensions": [
+            ".html",
+            ".css"
+          ],
+          "stub": false
+        }
+      ]
+    }
+  }
+}
