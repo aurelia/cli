@@ -520,7 +520,7 @@
         },
         {
           "displayName": "Cypress",
-          "description": "Configure your app with Cypress",
+          "description": "Configure your app with Cypress. Please note: If you've chosen a Typescript setup Cypress will add webpack and ts-loader as a dependency due to limited availability of preprocessors at this point in time.",
           "value": {
             "id": "cypress",
             "displayName": "Cypress"
