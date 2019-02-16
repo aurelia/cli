@@ -17,6 +17,9 @@
       "dom"
     ],
     "baseUrl": "src"
+    // @if integrationTestRunner.id='cypress' && unitTestRunner.id='karma'
+    ,"types": ["jasmine"]
+    // @endif
     // @endif
     // @if bundler.id='webpack'
     "target": "es5",
