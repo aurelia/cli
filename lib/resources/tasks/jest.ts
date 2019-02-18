@@ -12,9 +12,9 @@ export default (cb) => {
     Object.assign(options, { watch: true});
   }
 
-  jest.runCLI(options, [path.resolve(__dirname, '../../')]).then((result) => {
-    if(result.numFailedTests || result.numFailedTestSuites) {
-      cb(new PluginError('gulp-jest', { message: 'Tests Failed' }));
+  jest.runCLI(options, [path.resolve(__dirname, '../../')]).then(({ results }) => {
+    if (results.numFailedTests || results.numFailedTestSuites) {
+      cb(new PluginError('jest-cli', { message: 'Tests Failed' }));
     } else {
       cb();
     }
