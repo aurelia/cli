@@ -1,34 +1,27 @@
 {
-  "name": "skeleton-webpack-typescript-karma-aspnetcore",
+  "name": "skeleton-alameda-esnext-karma-aspnetcore",
   "type": "project:application",
   "bundler": {
-    "id": "webpack",
-    "displayName": "Webpack"
-  },
-  "build": {
-    "options": {
-      "server": "dev",
-      "extractCss": "prod",
-      "coverage": false
-    }
-  },
-  "jsonProcessor": {
-    "id": "none",
-    "displayName": "None",
-    "fileExtension": ".json"
+    "id": "cli",
+    "displayName": "Aurelia-CLI"
   },
   "platform": {
     "id": "aspnetcore",
     "displayName": "ASP.NET Core"
   },
   "loader": {
+    "id": "alameda",
+    "displayName": "Alameda"
+  },
+  "jsonProcessor": {
     "id": "none",
-    "displayName": "None"
+    "displayName": "None",
+    "fileExtension": ".json"
   },
   "transpiler": {
-    "id": "typescript",
-    "displayName": "TypeScript",
-    "fileExtension": ".ts"
+    "id": "babel",
+    "displayName": "Babel",
+    "fileExtension": ".js"
   },
   "markupProcessor": {
     "id": "minimum",
@@ -54,9 +47,5 @@
   },
   "features": {
     "navigation": "navigation"
-  },
-  "httpProtocol": {
-    "id": "http1",
-    "displayName": "HTTP/1.1"
   }
 }

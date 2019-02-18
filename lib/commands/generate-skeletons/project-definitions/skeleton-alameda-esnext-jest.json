@@ -1,29 +1,17 @@
 {
-  "name": "skeleton-webpack-esnext-karma-aspnetcore",
+  "name": "skeleton-alameda-esnext-jest",
   "type": "project:application",
   "bundler": {
-    "id": "webpack",
-    "displayName": "Webpack"
-  },
-  "build": {
-    "options": {
-      "server": "dev",
-      "extractCss": "prod",
-      "coverage": false
-    }
+    "id": "cli",
+    "displayName": "Aurelia-CLI"
   },
   "platform": {
-    "id": "aspnetcore",
-    "displayName": "ASP.NET Core"
-  },
-  "jsonProcessor": {
-    "id": "none",
-    "displayName": "None",
-    "fileExtension": ".json"
+    "id": "web",
+    "displayName": "Web"
   },
   "loader": {
-    "id": "none",
-    "displayName": "None"
+    "id": "alameda",
+    "displayName": "Alameda"
   },
   "transpiler": {
     "id": "babel",
@@ -40,13 +28,18 @@
     "displayName": "None",
     "fileExtension": ".css"
   },
+  "jsonProcessor": {
+    "id": "none",
+    "displayName": "None",
+    "fileExtension": ".json"
+  },
   "editor": {
     "id": "vscode",
     "displayName": "Visual Studio Code"
   },
   "unitTestRunner": {
-    "id": "karma",
-    "displayName": "Karma"
+    "id": "jest",
+    "displayName": "Jest"
   },
   "integrationTestRunner": {
     "id": "protractor",
@@ -54,9 +47,5 @@
   },
   "features": {
     "navigation": "navigation"
-  },
-  "httpProtocol": {
-    "id": "http1",
-    "displayName": "HTTP/1.1"
   }
 }

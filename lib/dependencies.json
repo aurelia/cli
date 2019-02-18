@@ -1,5 +1,4 @@
 {
-  "@types/bluebird": "^3.5.24",
   "@types/jasmine": "^2.8.9",
   "@types/jest": "^23.3.5",
   "@types/lodash": "^4.14.117",
@@ -27,7 +26,6 @@
   "@babel/polyfill": "^7.0.0",
   "@babel/preset-env": "^7.1.0",
   "@babel/register": "^7.0.0",
-  "bluebird": "^3.5.2",
   "browser-sync": "^2.26.0",
   "clean-webpack-plugin": "^0.1.19",
   "connect-history-api-fallback": "^1.5.0",

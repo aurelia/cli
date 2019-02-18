@@ -1,3 +1,4 @@
+import '@babel/polyfill';
 import {Aurelia} from 'aurelia-framework'
 import environment from './environment';
 // @if features.bootstrap='bootstrap'

@@ -1,4 +1,5 @@
 /// <reference types="aurelia-loader-webpack/src/webpack-hot-interface"/>
+import '@babel/polyfill';
 // @if features.navigation='navigation'
 import '../styles/styles.css';
 // @endif
@@ -13,10 +14,6 @@ import 'bootstrap';
 import {Aurelia} from 'aurelia-framework'
 import environment from './environment';
 import {PLATFORM} from 'aurelia-pal';
-import * as Bluebird from 'bluebird';
-
-// remove out if you don't want a Promise polyfill (remove also from webpack.config.js)
-Bluebird.config({ warnings: { wForgottenReturn: false } });
 
 export function configure(aurelia: Aurelia) {
   aurelia.use

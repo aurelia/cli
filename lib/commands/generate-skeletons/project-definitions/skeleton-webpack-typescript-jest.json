@@ -49,5 +49,9 @@
   },
   "features": {
     "navigation": "navigation"
+  },
+  "httpProtocol": {
+    "id": "http1",
+    "displayName": "HTTP/1.1"
   }
 }
