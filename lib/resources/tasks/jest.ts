@@ -1,9 +1,7 @@
 import * as jest from 'jest-cli';
-import * as PluginError from 'plugin-error';
-import through2 from 'through2';
 import * as path from 'path';
 import * as packageJson from '../../package.json';
-import {CLIOptions} from 'aurelia-cli';
+import { CLIOptions } from 'aurelia-cli';
 
 export default (cb) => {
   let options = packageJson.jest;
@@ -14,7 +12,7 @@ export default (cb) => {
 
   jest.runCLI(options, [path.resolve(__dirname, '../../')]).then(({ results }) => {
     if (results.numFailedTests || results.numFailedTestSuites) {
-      cb(new PluginError('jest-cli', { message: 'Tests Failed' }));
+      cb('Tests Failed');
     } else {
       cb();
     }

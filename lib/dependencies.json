@@ -81,7 +81,6 @@
   "minimatch": "^3.0.4",
   "node-sass": "^4.9.3",
   "opn": "^5.4.0",
-  "plugin-error": "^1.0.1",
   "protractor": "^5.4.1",
   "requirejs": "^2.3.6",
   "sass-loader": "^7.1.0",
