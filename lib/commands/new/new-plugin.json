@@ -1,0 +1,540 @@
+{
+  "name": "New Aurelia Plugin",
+  "activities": [
+    {
+      "id": 100,
+      "type": "state-assign",
+      "nextActivity": 200,
+      "state": {
+        "type": "project:plugin",
+        "transpiler": {
+          "id": "babel",
+          "displayName": "Babel",
+          "fileExtension": ".js"
+        },
+        "markupProcessor": {
+          "id": "minimum",
+          "displayName": "Minimal Minification",
+          "fileExtension": ".html"
+        },
+        "cssProcessor": {
+          "id": "none",
+          "displayName": "None",
+          "fileExtension": ".css"
+        },
+        "jsonProcessor": {
+          "id": "none",
+          "displayName": "None",
+          "fileExtension": ".json"
+        },
+        "unitTestRunner": {
+          "id": "jest",
+          "displayName": "Jest"
+        },
+        "testFramework": {
+          "id": "jasmine",
+          "displayName": "Jasmine"
+        },
+        "editor": {
+          "id": "vscode",
+          "displayName": "Visual Studio Code"
+        },
+        "platform": {
+          "id": "web",
+          "displayName": "Web"
+        },
+        "loader": {
+          "id": "none",
+          "displayName": "None"
+        },
+        "bundler": {
+          "id": "webpack",
+          "displayName": "Webpack"
+        },
+        "httpProtocol": {
+          "id": "http1",
+          "displayName": "HTTP/1.1"
+        },
+        "build": {
+          "options": {
+            "server": "dev",
+            "extractCss": "prod",
+            "coverage": false
+          }
+        },
+        "integrationTestRunner": {
+          "id": "none",
+          "displayName": "None"
+        },
+        "features": [
+          {
+            "id": "none",
+            "displayName": "None"
+          }
+        ],
+        "createNPMScripts": false
+      }
+    },
+    {
+      "type": "input-text",
+      "id": 200,
+      "nextActivity": 300,
+      "question": "Please enter a name for your new plugin below.",
+      "stateProperty": "name",
+      "defaultValue": "aurelia-plugin"
+    },
+    {
+      "type": "input-select",
+      "id": 300,
+      "nextActivity": 400,
+      "question": "Would you like to use the default setup or customize your choices?",
+      "stateProperty": "defaultOrCustom",
+      "options": [
+        {
+          "displayName": "Default ESNext",
+          "description": "A basic web-oriented setup with Babel and Webpack for modern JavaScript development.",
+          "value": "default-esnext"
+        },
+        {
+          "displayName": "Default TypeScript",
+          "description": "A basic web-oriented setup with TypeScript and Webpack for modern JavaScript development.",
+          "value": "default-typescript"
+        },
+        {
+          "displayName": "Custom",
+          "description": "Select bundlers (built-in or webpack), loaders (requirejs or systemjs), transpilers, CSS pre-processors and more.",
+          "value": "custom"
+        }
+      ]
+    },
+    {
+      "type": "branch-switch",
+      "id": 400,
+      "stateProperty": "defaultOrCustom",
+      "branches": [
+        {
+          "case": "default-esnext",
+          "nextActivity": 1000
+        },
+        {
+          "case": "default-typescript",
+          "nextActivity": 500
+        },
+        {
+          "case": "custom",
+          "nextActivity": 600
+        }
+      ]
+    },
+    {
+      "type": "state-assign",
+      "id": 500,
+      "nextActivity": 1000,
+      "state": {
+        "transpiler": {
+          "id": "typescript",
+          "displayName": "TypeScript",
+          "fileExtension": ".ts"
+        }
+      }
+    },
+    {
+      "id": 600,
+      "type": "input-select",
+      "nextActivity": 610,
+      "question": "Which module loader / bundler would you like to use?",
+      "stateProperty": "loaderBundler",
+      "options": [
+        {
+          "displayName": "Webpack",
+          "description": "A powerful and popular bundler for JavaScript",
+          "value": "webpack"
+        },
+        {
+          "displayName": "CLI's built-in bundler with RequireJS",
+          "description": "RequireJS is a mature and stable module loader for JavaScript.",
+          "value": "requirejs"
+        },
+        {
+          "displayName": "CLI's built-in bundler with Alameda",
+          "description": "Alameda is a modern version of RequireJS using promises and native es6 features (modern browsers only).",
+          "value": "alameda"
+        },
+        {
+          "displayName": "CLI's built-in bundler with SystemJS",
+          "description": "SystemJS is Dynamic ES module loader, the most versatile module loader for JavaScript",
+          "value": "systemjs"
+        }
+      ]
+    },
+    {
+      "id": 610,
+      "type": "branch-switch",
+      "stateProperty": "loaderBundler",
+      "branches": [
+        {
+          "case": "requirejs",
+          "nextActivity": 611
+        },
+        {
+          "case": "alameda",
+          "nextActivity": 612
+        },
+        {
+          "case": "systemjs",
+          "nextActivity": 613
+        },
+        {
+          "case": "webpack",
+          "nextActivity": 614
+        }
+      ]
+    },
+    {
+      "id": 611,
+      "type": "state-assign",
+      "nextActivity": 630,
+      "state": {
+        "loader": {
+          "id": "require",
+          "displayName": "RequireJS"
+        },
+        "bundler": {
+          "id": "cli",
+          "displayName": "Aurelia-CLI"
+        }
+      }
+    },
+    {
+      "id": 612,
+      "type": "state-assign",
+      "nextActivity": 630,
+      "state": {
+        "loader": {
+          "id": "alameda",
+          "displayName": "Alameda"
+        },
+        "bundler": {
+          "id": "cli",
+          "displayName": "Aurelia-CLI"
+        }
+      }
+    },
+    {
+      "id": 613,
+      "type": "state-assign",
+      "nextActivity": 630,
+      "state": {
+        "loader": {
+          "id": "system",
+          "displayName": "SystemJS"
+        },
+        "bundler": {
+          "id": "cli",
+          "displayName": "Aurelia-CLI"
+        }
+      }
+    },
+    {
+      "id": 614,
+      "type": "state-assign",
+      "nextActivity": 615,
+      "state": {
+        "loader": {
+          "id": "none",
+          "displayName": "None"
+        },
+        "bundler": {
+          "id": "webpack",
+          "displayName": "Webpack"
+        },
+        "build": {
+          "options": {
+            "server": "dev",
+            "extractCss": "prod",
+            "coverage": false
+          }
+        },
+        "unitTestRunner": {
+          "id": "jest",
+          "displayName": "Jest"
+        },
+        "testFramework": {
+          "id": "jasmine",
+          "displayName": "Jasmine"
+        },
+        "integrationTestRunner": {
+          "id": "protractor",
+          "displayName": "Protractor"
+        }
+      }
+    },
+    {
+      "id": 615,
+      "type": "input-select",
+      "nextActivity": 630,
+      "question": "Which HTTP Protocol do you wish the outputted Webpack bundle to be optimised for?",
+      "stateProperty": "httpProtocol",
+      "options": [
+        {
+          "displayName": "HTTP/1.1",
+          "description": "The legacy HTTP/1.1 protocol, max 6 parallel requests/connections",
+          "value": {
+            "id": "http1",
+            "displayName": "HTTP/1.1"
+          }
+        },
+        {
+          "displayName": "HTTP/2",
+          "description": "The modern HTTP/2 Protocol, uses request multiplexing over a single connection",
+          "value": {
+            "id": "http2",
+            "displayName": "HTTP/2"
+          }
+        }
+      ]
+    },
+    {
+      "id": 630,
+      "type": "input-select",
+      "nextActivity": 640,
+      "question": "What transpiler would you like to use?",
+      "stateProperty": "transpiler",
+      "options": [
+        {
+          "displayName": "Babel",
+          "description": "An open source, standards-compliant ES2015 and ESNext transpiler.",
+          "value": {
+            "id": "babel",
+            "displayName": "Babel",
+            "fileExtension": ".js"
+          }
+        },
+        {
+          "displayName": "TypeScript",
+          "description": "An open source, ESNext superset that adds optional strong typing.",
+          "value": {
+            "id": "typescript",
+            "displayName": "TypeScript",
+            "fileExtension": ".ts"
+          }
+        }
+      ]
+    },
+    {
+      "id": 640,
+      "type": "input-select",
+      "nextActivity": 650,
+      "question": "How would you like to setup your template?",
+      "stateProperty": "markupProcessor",
+      "options": [
+        {
+          "displayName": "Default",
+          "description": "No markup processing.",
+          "value": {
+            "id": "none",
+            "displayName": "None",
+            "fileExtension": ".html"
+          }
+        },
+        {
+          "displayName": "Minimum Minification",
+          "description": "Removes comments and whitespace between block level elements such as div, blockquote, p, header, footer ...etc",
+          "value": {
+            "id": "minimum",
+            "displayName": "Minimal Minification",
+            "fileExtension": ".html"
+          }
+        },
+        {
+          "displayName": "Maximum Minification",
+          "description": "Removes comments, script & link element [type] attributes and all whitespace between all elements. Also remove attribute quotes where possible. Collapses boolean attributes.",
+          "value": {
+            "id": "maximum",
+            "displayName": "Maximum Minification",
+            "fileExtension": ".html"
+          }
+        }
+      ]
+    },
+    {
+      "id": 650,
+      "type": "input-select",
+      "nextActivity": 680,
+      "question": "What css processor would you like to use?",
+      "stateProperty": "cssProcessor",
+      "options": [
+        {
+          "displayName": "None",
+          "description": "Use standard CSS with no pre-processor.",
+          "value": {
+            "id": "none",
+            "displayName": "None",
+            "fileExtension": ".css"
+          }
+        },
+        {
+          "displayName": "Less",
+          "description": "Extends the CSS language, adding features that allow variables, mixins, functions and many other techniques.",
+          "value": {
+            "id": "less",
+            "displayName": "Less",
+            "fileExtension": ".less"
+          }
+        },
+        {
+          "displayName": "Sass",
+          "description": "A mature, stable, and powerful professional grade CSS extension.",
+          "value": {
+            "id": "sass",
+            "displayName": "Sass",
+            "fileExtension": ".scss"
+          }
+        },
+        {
+          "displayName": "Stylus",
+          "description": "Expressive, dynamic and robust CSS.",
+          "value": {
+            "id": "stylus",
+            "displayName": "Stylus",
+            "fileExtension": ".styl"
+          }
+        },
+        {
+          "displayName": "PostCSS",
+          "description": "A tool for transforming CSS with JavaScript.",
+          "value": {
+            "id": "postcss",
+            "displayName": "PostCSS",
+            "fileExtension": ".css"
+          }
+        }
+      ]
+    },
+    {
+      "id": 680,
+      "type": "input-select",
+      "nextActivity": 681,
+      "question": "Which unit test runner would you like to use?",
+      "stateProperty": "unitTestRunner",
+      "options": [
+        {
+          "displayName": "None",
+          "description": "Skip testing. My code is always perfect anyway.",
+          "value": {
+            "id": "none",
+            "displayName": "None"
+          }
+        },
+        {
+          "displayName": "Karma",
+          "description": "Configure your app with Karma and Jasmine",
+          "value": {
+            "id": "karma",
+            "displayName": "Karma"
+          }
+        },
+        {
+          "displayName": "Jest",
+          "description": "Configure your app with Jest",
+          "value": {
+            "id": "jest",
+            "displayName": "Jest"
+          }
+        }
+      ]
+    },
+    {
+      "id": 681,
+      "type": "input-select",
+      "nextActivity": 900,
+      "question": "Would you like to configure integration testing?",
+      "stateProperty": "integrationTestRunner",
+      "options": [
+        {
+          "displayName": "No",
+          "description": "Skip testing. My code is always perfect anyway.",
+          "value": {
+            "id": "none",
+            "displayName": "None"
+          }
+        },
+        {
+          "displayName": "Protractor",
+          "description": "Configure your app with Protractor",
+          "value": {
+            "id": "protractor",
+            "displayName": "Protractor"
+          }
+        }
+      ]
+    },
+    {
+      "id": 900,
+      "type": "input-select",
+      "nextActivity": 1000,
+      "question": "What is your default code editor?",
+      "stateProperty": "editor",
+      "options": [
+        {
+          "displayName": "Visual Studio Code",
+          "description": "Code editing. Redefined. Free. Open source. Runs everywhere.",
+          "value": {
+            "id": "vscode",
+            "displayName": "Visual Studio Code"
+          }
+        },
+        {
+          "displayName": "Atom",
+          "description": "A hackable text editor for the 21st Century.",
+          "value": {
+            "id": "atom",
+            "displayName": "Atom"
+          }
+        },
+        {
+          "displayName": "Sublime",
+          "description": "A sophisticated text editor for code, markup and prose.",
+          "value": {
+            "id": "sublime",
+            "displayName": "Sublime"
+          }
+        },
+        {
+          "displayName": "WebStorm",
+          "description": "A lightweight yet powerful IDE, perfectly equipped for complex client-side development.",
+          "value": {
+            "id": "webstorm",
+            "displayName": "WebStorm"
+          }
+        },
+        {
+          "displayName": "None of the Above",
+          "description": "Do not configure any editor-specific options.",
+          "value": {
+            "id": "none",
+            "displayName": "None"
+          }
+        }
+      ]
+    },
+    {
+      "type": "project-create",
+      "id": 1000,
+      "nextActivity": 1100,
+      "restartActivity": 1200
+    },
+    {
+      "id": 1100,
+      "type": "project-install"
+    },
+    {
+      "id": 1200,
+      "type": "state-assign",
+      "nextActivity": 100,
+      "state": {
+        "name": null
+      }
+    }
+  ]
+}

@@ -13,6 +13,10 @@
       "name": "here",
       "description": "Creates a new project with the current working directory as the root of the project instead of creating a new project folder.",
       "type": "boolean"
+    },
+    {
+      "name": "plugin",
+      "description": "Creates a new Aurelia plugin project."
     }
   ]
 }
