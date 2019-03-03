@@ -14,7 +14,11 @@ You can read documentation on the cli [here](https://aurelia.io/docs/cli). If yo
 
 ## Contributing
 
-Please see the [contributing guidelines](./CONTRIBUTING.md)
+Please see the [contributing guidelines](./CONTRIBUTING.md).
+
+## Providing new feature to app skeleton
+
+For contributors planning to provide some new feature to app skeleton, please see the [descriptive skeleton guide](./DESCRIPTIVE_SKELETON.md).
 
 ## Building
 
@@ -27,4 +31,8 @@ Please see the [contributing guidelines](./CONTRIBUTING.md)
 
 ## Running the Tests
 
-Run `npm test` to run the unit tests
+Run `npm test` to run the unit tests.
+
+## Release new aurelia-cli version
+
+Please see the [release instructions](./RELEASE_INSTRUCTIONS.md).
