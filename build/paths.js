@@ -5,7 +5,7 @@ var fs = require('fs');
 var emitter = require('events');
 emitter.defaultMaxListeners = 20;
 
-var appRoot = 'lib/';
+var appRoot = 'dist/lib/';
 var pkg = JSON.parse(fs.readFileSync('./package.json', 'utf-8'));
 
 var paths = {

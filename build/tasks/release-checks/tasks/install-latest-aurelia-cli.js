@@ -1,12 +1,12 @@
 'use strict';
 const Task = require('./task');
-const Yarn = require('../../../../lib/package-managers/yarn').Yarn;
+const Yarn = require('../../../../dist/lib/package-managers/yarn').Yarn;
 const LogManager = require('aurelia-logging');
 const logger = LogManager.getLogger('link-aurelia-cli');
 const StepRunner = require('../step-runner');
 const ExecuteCommand = require('./execute-command');
-const ConsoleUI = require('../../../../lib/ui').ConsoleUI;
-const CLIOptions = require('../../../../lib/cli-options').CLIOptions;
+const ConsoleUI = require('../../../../dist/lib/ui').ConsoleUI;
+const CLIOptions = require('../../../../dist/lib/cli-options').CLIOptions;
 const cliOptions = new CLIOptions();
 const ui = new ConsoleUI();
 

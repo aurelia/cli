@@ -21,9 +21,10 @@ Please see the [contributing guidelines](./CONTRIBUTING.md)
 1. Clone the aurelia-cli: `git clone https://github.com/aurelia/cli.git`
 2. Go into the cli directory: `cd cli`
 3. Run `npm install`
-4. Link the cli with: `npm link`
-7. Create a new project with `au new` or use an existing project. The linked CLI will be used to create the project.
-8. In the project directory, run `npm link aurelia-cli`. The linked CLI will then be used for `au` commands such as `au run`
+4. Run build `npm run build` 
+5. Link the cli with: `npm link`
+6. Create a new project with `au new` or use an existing project. The linked CLI will be used to create the project.
+7. In the project directory, run `npm link aurelia-cli`. The linked CLI will then be used for `au` commands such as `au run`
 
 ## Running the Tests
 

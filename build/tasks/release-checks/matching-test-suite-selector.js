@@ -2,7 +2,7 @@
 const testSuites = require('./test-suites');
 const LogManager = require('aurelia-logging');
 const logger = LogManager.getLogger('Release-Check');
-const CLIOptions = require('../../../lib/cli-options').CLIOptions;
+const CLIOptions = require('../../../dist/lib/cli-options').CLIOptions;
 const cliOptions = new CLIOptions();
 const fs = require('fs');
 const path = require('path');
@@ -12,7 +12,7 @@ Object.assign(cliOptions, {
   args: userArgs.slice(1)
 });
 
-const ConsoleUI = require('../../../lib/ui').ConsoleUI;
+const ConsoleUI = require('../../../dist/lib/ui').ConsoleUI;
 const ui = new ConsoleUI();
 
 module.exports = class MatchingTestSuiteSelector {

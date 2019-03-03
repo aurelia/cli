@@ -37,13 +37,13 @@ gulp.task('update-all-dependenciesjs', function() {
 });
 
 function getDepsJSON() {
-  let dependenciesJSONFile = path.resolve('./lib/dependencies.json');
+  let dependenciesJSONFile = path.resolve('./dist/lib/dependencies.json');
   return require(dependenciesJSONFile);
 }
 
 function write(deps) {
   return new Promise((resolve, reject) => {
-    let dependenciesJSONFile = path.resolve('./lib/dependencies.json');
+    let dependenciesJSONFile = path.resolve('./dist/lib/dependencies.json');
 
     fs.writeFile(dependenciesJSONFile, JSON.stringify(deps, null, 2), function(err) {
       if (err) {
