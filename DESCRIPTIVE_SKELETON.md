@@ -45,13 +45,13 @@ They will be merged together based on user selection.
 This is designed mainly for dotnet and `au new --here` when there is existing file in target folder.
 
 1. you can use suffix `__skip-if-exists`, `__append-if-exists`, `__ask-if-exists` on any file (not folder).
-2. you can fix write policy suffix with conditional suffix in any order, it's same to write `file.ext__skip-if-exists__if_babel` or `file.ext__if_babel__skip-if-exists`.
+2. you can mix write policy suffix with conditional suffix in any order, it's same to write `file.ext__skip-if-exists__if_babel` or `file.ext__if_babel__skip-if-exists`.
 3. you can provide an instructions file for any file with `__skip-if-exists`. If the file is skipped, the instructions will be printed out on screen, also be written to file `instructions.txt` in final app. For instance, `skeleton/dotnet-core/Views/Home/Index.cshtml__instructions` for `skeleton/dotnet-core/Views/Home/Index.cshtml__skip-if-exists`.
 
 ## Three special files
 
 There are three special files in `skeleton/`:
 
-1. `package.json` obviously, there are multiple `package.json` in various `skeleton/` sub-folders. They will be merged to together obviously. Recommended, if you leave dependency version as empty string `"aurelia-cli": ""`, cli will use `lib/dependencies.json` to fill up the version.
+1. `package.json` obviously, there are multiple `package.json` in various `skeleton/` sub-folders. They will be merged to together. Recommended, if you leave dependency version as empty string `"aurelia-cli": ""`, cli will use `lib/dependencies.json` to fill up the version.
 2. `aurelia_project/aurelia.json`, similar to above.
 3. `README.md` files, they are concatenated together.
