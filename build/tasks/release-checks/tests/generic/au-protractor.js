@@ -7,7 +7,8 @@ class AuProtractorRunsTests extends Test {
   }
 
   onProtractorOutput(message) {
-    console.log(message);
+    this.logger.debug(message);
+
     if (isProtractorCompletedMessage(message)) {
       this.success();
       this.executeCommand.stop();
@@ -37,7 +38,8 @@ class AuProtractorRunsTestsDotNet extends Test {
   }
 
   onProtractorOutput(message) {
-    console.log(message);
+    this.logger.debug(message);
+
     if (isProtractorCompletedMessage(message)) {
       this.success();
       this.executeCommand.stop();
@@ -62,7 +64,8 @@ class AuProtractorRunsTestsDotNet extends Test {
 }
 
 function isApplicationAvailableMessage(msg) {
-  return msg.indexOf('Application Available At: http://localhost') > -1;
+  return msg.indexOf('Application Available At: http://localhost') > -1 ||
+    msg.indexOf('Project is running at http://localhost') > -1;
 }
 
 function isProtractorCompletedMessage(msg) {

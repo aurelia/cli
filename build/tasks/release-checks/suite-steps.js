@@ -32,6 +32,18 @@ module.exports = function(suite) {
     );
   }
 
+  if (applicable(features, 'protractor')) {
+    steps.push(
+      new tests.generic.AuProtractorRunsTests()
+    );
+  }
+
+  if (applicable(features, 'cypress')) {
+    steps.push(
+      new tests.generic.AuCypressRunsTests()
+    );
+  }
+
   if (applicable(features, 'cli-bundler')) {
     steps.push(
       new tests.requirejs.AuBuildDoesNotThrowCommandLineErrors(),
@@ -43,18 +55,6 @@ module.exports = function(suite) {
       new tests.requirejs.AuRunRendersPage(),
       new tests.generic.AuLintFinishes()
     );
-
-    if (applicable(features, 'protractor')) {
-      steps.push(
-        new tests.requirejs.AuProtractorRunsTests()
-      );
-    }
-
-    if (applicable(features, 'cypress')) {
-      steps.push(
-        new tests.requirejs.AuCypressRunsTests()
-      );
-    }
   }
 
   if (applicable(features, 'webpack')) {
@@ -65,18 +65,6 @@ module.exports = function(suite) {
       new tests.webpack.AuRunAppLaunchesWithoutJavascriptErrors(),
       new tests.webpack.AuRunWatchPicksUpFileChanges()
     );
-
-    if (applicable(features, 'protractor')) {
-      steps.push(
-        new tests.webpack.AuProtractorRunsTests()
-      );
-    }
-
-    if (applicable(features, 'cypress')) {
-      steps.push(
-        new tests.webpack.AuCypressRunsTests()
-      );
-    }
   }
 
   // if (applicable(features, 'dotnet-core')) {
