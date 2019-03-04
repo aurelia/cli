@@ -8,5 +8,5 @@ node_js:
   - "10"
 
 install:
-  - npm install
+  - npm ci
   - npm run build
