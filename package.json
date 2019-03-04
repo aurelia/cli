@@ -20,7 +20,7 @@
     "node": ">=8.9.0"
   },
   "scripts": {
-    "build": "npm run build:ts & npm run build:dts & npm run build:copy-files",
+    "build": "npm run build:ts && npm run build:dts && npm run build:copy-files",
     "build:ts": "./node_modules/.bin/tsc --extendedDiagnostics",
     "build:ts:watch": "npm run build:ts -- --watch",
     "build:dts": "./node_modules/.bin/tsc -d --emitDeclarationOnly --allowJs false --extendedDiagnostics",
