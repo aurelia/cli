@@ -1,4 +1,4 @@
-# Unit tests
+## Unit tests
 
 Run `au test` (or `au karma`).
 
