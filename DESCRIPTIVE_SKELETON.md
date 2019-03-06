@@ -1,57 +1,59 @@
 # Descriptive Skeleton
 
-aurelia-cli's skeleton generation has been fully descriptive, it means you don't need to write explicit code for scaffolding.
+The aurelia-cli offers loads of features out of the box, such as webpack, http2, sass and more. In this document you can find information on how to add new features. Don't worry, it's as easy as moving files or templates into a directory, something we call "descriptive skeletons".
 
-To add a new feature to app skeleton, following these 3 steps.
+To add a new feature, follow these 3 steps.
 
-1. add a new question, or add new choice to an existing question, in `lib/workflow/questionnaire.js`.
-2. if new question is added, add it into `appFlow` at the bottom of `lib/workflow/select-features.js`. You may need to update its test code in `spec/lib/workflow/select-features.spec.js`.
-3. write descriptive skeleton in `skeleton/` folder.
+1. Add a new question to `au --new` or extend existing questions by adding new options. This can all be done in the file `lib/workflow/questionnaire.js`.
+2. New questions must be registered to `appFlow` in the `lib/workflow/select-features.js` file. You may need to update the test code in `spec/lib/workflow/select-features.spec.js`.
+3. Add source files or templates to the `skeleton/` folder. More information on how to do this can be found below.
 
-## Explanation on app features
+## Explanation on features
 
-All our "features" (webpack, or sass, or http2) are represented as simple string (`'webpack'`, `'sass'`, `'http2'`). There is no distinguish between them, no need with descriptive skeleton in place.
+All the "features" of the aurelia-cli (webpack, or sass, or http2) are represented as simple strings (`'webpack'`, `'sass'`, `'http2'`).
 
-## Explanation on the `skeleton/`
+## Explanation on the `skeleton/` folder
 
-The `skeleton/` folder is organized based on features.
+The `skeleton/` folder is organized in feature folders.
 
-1. `skeleton/common/` folder is special, it's included for every app.
-2. some features have their dedicated folder like `skeleton/cli-bundler/` and `skeleton/webpack/`. But not all features need a dedicated folder, it depends on how complex the feature is. It's your choice on whether to create a dedicated folder for a new feature.
-3. every sub-folder in `skeleton/` provides a partial app skeleton. Aurelia-cli will merge them all together to create the final app.
+1. The `skeleton/common/` folder is special, since it's included in every app.
+2. Some features have their dedicated folder like `skeleton/cli-bundler/` and `skeleton/webpack/`. Not all features need a dedicated folder though, it depends on how complex the feature is. It's your choice on whether to create a dedicated folder for a new feature or to use existing ones.
+3. Every sub-folder in the `skeleton/` folder provides a partial application skeleton. The aurelia-cli will merge them all together to create the final application.
 
-## Conditional files or contents
+## Conditional files, folders or contents
 
-There are few ways to conditionally include a file or part of the file.
+There are few ways to conditionally include a file or folder. This is done by giving files a specific, structured name. Files can be templates, allowing you to conditionally add parts to a file.
 
-1. we learnt from above, the sub-folder in `skeleton/` is the first condition applied on features.
-2. within the sub-folder, you can use suffix on any file, like `common/.babbelrc.js__if_babel`.
-3. similarly, you can apply suffix on any deep folder too, like `scaffold-minimum/test__if_karma_or_jest/`. Note the condition `karma_or_jest`, you can use `and`/`or`/`not` in the condition expression, the example will be translated as `karma || jest`.
-4. within any file, you can use [preprocess syntax](https://github.com/jsoverson/preprocess) to conditionally write part of the contents.
-5. one more convention, if you name a file with extname `.ext`, like `app.ext`, it will yield to `app.js` or `app.ts` depending on whether user chose TypeScript.
+Here are some tips:
 
-Simply enough? Have a look of the `skeleton/` folder, it's intuitive to follow.
+1. As described earlier, all files of features belong inside the `skeleton/` folder.
+2. Within the `skeleton/` folder, you can apply a suffix to any file name, such as `common/.babbelrc.js__if_babel`.
+3. Similarly, you can apply a suffix on any folder as well, such as `scaffold-minimum/test__if_karma_or_jest/`. Note the condition `karma_or_jest`. You can use `and`/`or`/`not` in the condition expression. The example will be interpreted as `karma || jest`.
+4. Within any file, you can use [preprocess syntax](https://github.com/jsoverson/preprocess) to add (or omit) parts of the file.
+5. When a file is given an extension of `.ext`, like `app.ext`, it will ultimately be translated into `app.js` or `app.ts` depending on whether user chose TypeScript.
 
-It's very flexible, for example, there are three folders within `skeleton/cli-bundler/aurelia_project/` folder:
+Need some examples? Have a look of the `skeleton/` folder, there are lots of features in there already.
+
+Because of the conventions described above, the scaffolding system is very flexible. For example, there are three folders within `skeleton/cli-bundler/aurelia_project/` folder:
 ```
 tasks/
 tasks__if_babel/
 tasks__if_typescript
 ```
-They will be merged together based on user selection.
+Folder contents will be merged together based on what options the user has selected.
 
 ## Write policy
 
-This is designed mainly for dotnet and `au new --here` when there is existing file in target folder.
+This is designed mainly for dotnet and `au new --here` when there is an existing file in the target folder.
 
-1. you can use suffix `__skip-if-exists`, `__append-if-exists`, `__ask-if-exists` on any file (not folder).
-2. you can mix write policy suffix with conditional suffix in any order, it's same to write `file.ext__skip-if-exists__if_babel` or `file.ext__if_babel__skip-if-exists`.
-3. you can provide an instructions file for any file with `__skip-if-exists`. If the file is skipped, the instructions will be printed out on screen, also be written to file `instructions.txt` in final app. For instance, `skeleton/dotnet-core/Views/Home/Index.cshtml__instructions` for `skeleton/dotnet-core/Views/Home/Index.cshtml__skip-if-exists`.
+1. You can use the suffix `__skip-if-exists`, `__append-if-exists`, `__ask-if-exists` on any file (not folder).
+2. You can mix write policy suffix with conditional suffix in any order. For example, `file.ext__skip-if-exists__if_babel` is equivalent to `file.ext__if_babel__skip-if-exists`.
+3. You can provide an instructions file for any file with `__skip-if-exists`. If the file is skipped, the instructions will be printed out on screen and will also be written to file `instructions.txt` in the final app. Some existing examples are `skeleton/dotnet-core/Views/Home/Index.cshtml__instructions` and `skeleton/dotnet-core/Views/Home/Index.cshtml__skip-if-exists`.
 
 ## Three special files
 
 There are three special files in `skeleton/`:
 
-1. `package.json` obviously, there are multiple `package.json` in various `skeleton/` sub-folders. They will be merged to together. Recommended, if you leave dependency version as empty string `"aurelia-cli": ""`, cli will use `lib/dependencies.json` to fill up the version.
-2. `aurelia_project/aurelia.json`, similar to above.
-3. `README.md` files, they are concatenated together.
+1. `package.json`: there are multiple `package.json` in various `skeleton/` sub-folders. They will be merged to together. The recommendation is to leave dependency versions as empty strings `"aurelia-cli": ""`. The CLI will use `lib/dependencies.json` to determine which version to use for the dependency.
+2. `aurelia_project/aurelia.json`: similarly to the `package.json` file, `aurelia.json` files will also be merged together.
+3. `README.md` files are concatenated together.
