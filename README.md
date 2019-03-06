@@ -18,7 +18,7 @@ Please see the [contributing guidelines](./CONTRIBUTING.md).
 
 ## Providing new feature to app skeleton
 
-For contributors planning to provide some new feature to app skeleton, please see the [descriptive skeleton guide](./DESCRIPTIVE_SKELETON.md).
+For contributors planning to add new features to the skeleton application, please see the [descriptive skeleton guide](./DESCRIPTIVE_SKELETON.md) guide.
 
 ## Building
 
