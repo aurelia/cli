@@ -2,7 +2,7 @@ For more information, go to https://aurelia.io/docs/cli/webpack
 
 ## Run dev app
 
-Run `au run`, then open `http://localhost:/* @if feat.web */8080/* @endif *//* @if feat['dotnet-core'] */5000/* @endif */
+Run `au run`, then open `http://localhost:/* @if feat.web */8080/* @endif *//* @if feat['dotnet-core'] */5000/* @endif */`
 
 To open browser automatically, do `au run --open`.
 
