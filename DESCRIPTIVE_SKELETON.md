@@ -4,7 +4,7 @@ The aurelia-cli offers loads of features out of the box, such as webpack, http2,
 
 To add a new feature, follow these 3 steps.
 
-1. Add a new question to `au --new` or extend existing questions by adding new options. This can all be done in the file `lib/workflow/questionnaire.js`.
+1. Add a new question to `au new` or extend existing questions by adding new options. This can all be done in the file `lib/workflow/questionnaire.js`.
 2. New questions must be registered to `appFlow` in the `lib/workflow/select-features.js` file. You may need to update the test code in `spec/lib/workflow/select-features.spec.js`.
 3. Add source files or templates to the `skeleton/` folder. More information on how to do this can be found below.
 
