@@ -15,6 +15,11 @@
       "type": "boolean"
     },
     {
+      "name": "plugin",
+      "description": "Creates a new Aurelia plugin project.",
+      "type": "boolean"
+    },
+    {
       "name": "unattended",
       "description": "Creates project in unattended mode. It will fail if there is any conflicting file in target folder.",
       "type": "boolean"

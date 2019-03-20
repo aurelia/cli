@@ -12,3 +12,12 @@ export default function processJson() {
   return gulp.src(project.jsonProcessor.source, {since: gulp.lastRun(processJson)})
     .pipe(build.bundle());
 }
+
+// @if feat.plugin
+export function pluginJson(dest) {
+  return function processPluginJson() {
+    return gulp.src(project.plugin.source.json)
+      .pipe(gulp.dest(dest));
+  };
+}
+// @endif

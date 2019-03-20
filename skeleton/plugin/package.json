@@ -1,0 +1,22 @@
+{
+  "description": "An Aurelia plugin project.",
+  "main": "dist/commonjs/index.js",
+  "module": "dist/native-modules/index.js",
+  "private": true,
+  "license": "UNLICENSED",
+  "scripts": {
+    "build": "au build-plugin",
+    "prepare": "npm run build",
+    // @if feat.karma || feat.jest
+    "pretest": "au lint",
+    "preversion": "au test",
+    // @endif
+
+  },
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "del": ""
+  }
+}
