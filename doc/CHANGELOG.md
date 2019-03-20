@@ -1,3 +1,39 @@
+# [1.0.0-beta.14](https://github.com/aurelia/cli/compare/1.0.0-beta.13...1.0.0-beta.14) (2019-03-20)
+
+
+### Bug Fixes
+
+* **bundler:** avoid unnecessary rewrite of index.html ([9faea2f](https://github.com/aurelia/cli/commit/9faea2f)), closes [#1049](https://github.com/aurelia/cli/issues/1049)
+* **bundler:** enable tracing @babel/polyfill ([1bef893](https://github.com/aurelia/cli/commit/1bef893))
+* **bundler:** improve compatibility with legacy libs that depends on jquery or momentjs ([cd079a0](https://github.com/aurelia/cli/commit/cd079a0))
+* **bundler:** improve compatibility with nodejs global var "global" ([02d1cd0](https://github.com/aurelia/cli/commit/02d1cd0))
+* **bundler:** isolate cache between systemjs and requirejs apps ([5466ceb](https://github.com/aurelia/cli/commit/5466ceb))
+* **bundler:** skip deps cleanup (remove .js) for UMD file ([a4731da](https://github.com/aurelia/cli/commit/a4731da)), closes [#1054](https://github.com/aurelia/cli/issues/1054)
+* **cypress task:** Return error when tests fail ([ea43b59](https://github.com/aurelia/cli/commit/ea43b59))
+* **cypress task:** Return error when tests fail ([7fa7e9e](https://github.com/aurelia/cli/commit/7fa7e9e)), closes [#1057](https://github.com/aurelia/cli/issues/1057)
+* **generate-skeletons:** add missing httpProtocal to project definitions ([bab0e39](https://github.com/aurelia/cli/commit/bab0e39))
+* **jest task:** Return error when tests fail ([bfbe072](https://github.com/aurelia/cli/commit/bfbe072)), closes [#1052](https://github.com/aurelia/cli/issues/1052)
+* **jest task:** Return error when tests fail ([830bda8](https://github.com/aurelia/cli/commit/830bda8))
+* **skeleton:** fix navigation scaffold with alameda ([9413239](https://github.com/aurelia/cli/commit/9413239))
+* **sourcemaps:** strip path from bundle sourcemap ([8601622](https://github.com/aurelia/cli/commit/8601622))
+* **webpack:** correctly exclude spec/test files from coverage report ([b2582f9](https://github.com/aurelia/cli/commit/b2582f9))
+
+
+### Features
+
+* **generate-skeletons:** add alameda to generate-skeletons ([0147567](https://github.com/aurelia/cli/commit/0147567))
+* **integration-test-runner:** Add Cypress ([4b5919a](https://github.com/aurelia/cli/commit/4b5919a))
+* **integration-test-runner:** Add Cypress ([77c6f60](https://github.com/aurelia/cli/commit/77c6f60))
+* **integration-test-runner:** Add Cypress ([1ece72e](https://github.com/aurelia/cli/commit/1ece72e))
+* **integration-test-runner:** Add Cypress ([f2eb6c5](https://github.com/aurelia/cli/commit/f2eb6c5))
+* **integration-test-runner:** Add Cypress ([21ac3db](https://github.com/aurelia/cli/commit/21ac3db))
+* **new-application:** fix format on log messages ([6d6fcea](https://github.com/aurelia/cli/commit/6d6fcea))
+* **test:** Add Cypress integration test runner ([cabe6ce](https://github.com/aurelia/cli/commit/cabe6ce)), closes [#943](https://github.com/aurelia/cli/issues/943)
+* **ui:** add Enquirer as UI lib ([f05da1a](https://github.com/aurelia/cli/commit/f05da1a))
+* unattended mode, descriptive skeleton ([0123c58](https://github.com/aurelia/cli/commit/0123c58))
+
+
+
 # [1.0.0-beta.13](https://github.com/aurelia/cli/compare/1.0.0-beta.12...1.0.0-beta.13) (2019-02-05)
 
 
