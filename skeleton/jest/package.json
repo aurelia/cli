@@ -1,0 +1,84 @@
+{
+  "devDependencies": {
+    "jest": "",
+    "jest-cli": "",
+    "aurelia-loader-nodejs": "",
+    "aurelia-pal-nodejs": "",
+
+    // @if feat.babel
+    "babel-jest": "",
+    // @endif
+
+    // @if feat.typescript
+    "ts-jest": "",
+    "@types/jest": "",
+    // @endif
+  },
+  "scripts": {
+    "test": "au test"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      // avoid aurelia-bindings v1+v2 conflict
+      "^aurelia-binding$": "<rootDir>/node_modules/aurelia-binding"
+    },
+    "modulePaths": [
+      "<rootDir>/src",
+      "<rootDir>/node_modules"
+    ],
+    "moduleFileExtensions": [
+      // @if feat.typescript
+      "ts",
+      // @endif
+      "js",
+      "json"
+    ],
+    "transform": {
+      // @if feat.babel
+      "^.+\\.js$": "babel-jest",
+      // @endif
+
+      // @if feat.typescript
+      "^.+\\.ts$": "ts-jest",
+      // @endif
+    },
+    // @if feat.babel
+    "testRegex": "\\.spec\\.js$",
+    // @endif
+
+    // @if feat.typescript
+    "testRegex": "\\.spec\\.(ts|js)$",
+    // @endif
+    "setupFiles": [
+      // @if feat.babel
+      "<rootDir>/test/jest-pretest.js",
+      // @endif
+
+      // @if feat.typescript
+      "<rootDir>/test/jest-pretest.ts",
+      // @endif
+    ],
+    "testEnvironment": "node",
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      // @if feat.babel
+      "src/**/*.js",
+      "!**/*.spec.js",
+      // @endif
+
+      // @if feat.typescript
+      "src/**/*.{js,ts}",
+      "!**/*.spec.{js,ts}",
+      // @endif
+      "!**/node_modules/**",
+      "!**/test/**"
+    ],
+    "coverageDirectory": "<rootDir>/test/coverage-jest",
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "text",
+      "html"
+    ]
+  }
+}

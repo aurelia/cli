@@ -1,0 +1,24 @@
+<template>
+  <require from="bootstrap/dist/css/bootstrap.min.css"></require>
+  <require from="font-awesome/css/font-awesome.min.css"></require>
+  <!-- @if feat['cli-bundler'] || !(feat.less || feat.sass || feat.stylus) -->
+  <require from="./styles.css"></require>
+  <!-- @endif -->
+  <!-- @if feat.webpack && feat.less -->
+  <require from="./styles.less"></require>
+  <!-- @endif -->
+  <!-- @if feat.webpack && feat.sass -->
+  <require from="./styles.scss"></require>
+  <!-- @endif -->
+  <!-- @if feat.webpack && feat.stylus -->
+  <require from="./styles.styl"></require>
+  <!-- @endif -->
+
+  <require from="./nav-bar.html"></require>
+
+  <nav-bar router.bind="router"></nav-bar>
+
+  <div class="page-host">
+    <router-view></router-view>
+  </div>
+</template>

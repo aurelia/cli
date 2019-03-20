@@ -1,4 +1,3 @@
-'use strict';
 const fd = require('../../../lib/build/find-deps');
 const findJsDeps = fd.findJsDeps;
 const findHtmlDeps = fd.findHtmlDeps;

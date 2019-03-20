@@ -1,4 +1,3 @@
-'use strict';
 const path = require('path');
 const BundlerMock = require('../../mocks/bundler');
 const BundledSource = require('../../../lib/build/bundled-source').BundledSource;

@@ -1,5 +1,3 @@
-'use strict';
-
 const LogManager = require('aurelia-logging');
 const logger = LogManager.getLogger('Runner');
 
@@ -7,20 +5,19 @@ module.exports = class Reporter {
   starting(context) {
     const suite = context.suite;
     logger.info('***********RUNNING SUITE************');
-    logger.info(`*** Suite: ${suite.title}`);
+    logger.info(`*** Suite: ${suite}`);
     logger.info(`*** Project: ${context.workingDirectory}`);
     logger.info('************************************');
   }
 
   finished(steps, context) {
     const suite = context.suite;
-
     this.logSummary(suite, steps);
   }
 
   logSummary(suite, steps) {
     logger.info('************* RESULT ***************');
-    logger.info(`*** Suite: ${suite.title}`);
+    logger.info(`*** Suite: ${suite}`);
     logger.info('************************************');
 
     logger.info('Executed tasks:');

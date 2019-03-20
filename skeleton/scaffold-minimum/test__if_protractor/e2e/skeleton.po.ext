@@ -1,0 +1,9 @@
+// @if feat.typescript
+import {browser, element, by, By, $, $$, ExpectedConditions} from 'aurelia-protractor-plugin/protractor';
+
+// @endif
+export class PageObjectSkeleton {
+  getCurrentPageTitle() {
+    return browser.getTitle();
+  }
+}

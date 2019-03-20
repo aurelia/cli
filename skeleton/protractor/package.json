@@ -1,0 +1,12 @@
+{
+  "devDependencies": {
+    // @if feat.typescript
+    "ts-node": "",
+    "@types/jasmine": "",
+    // @endif
+    "aurelia-protractor-plugin": "",
+    "protractor": "",
+    "gulp-protractor": "",
+    "wait-on": "",
+  }
+}

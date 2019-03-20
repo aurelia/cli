@@ -1,11 +1,8 @@
-'use strict';
-
 describe('The project module', () => {
   let mockfs;
   let path;
 
   let fs;
-  let ui;
 
   let Project;
   let project;
@@ -15,13 +12,12 @@ describe('The project module', () => {
     path = require('path');
 
     fs = require('../../lib/file-system');
-    ui = new (require('../../lib/ui').ConsoleUI)();
 
     Project = require('../../lib/project').Project;
 
     mockfs();
 
-    project = new Project(ui, '', {
+    project = new Project('', {
       paths: { },
       transpiler: {
         fileExtension: '.js'
@@ -42,7 +38,7 @@ describe('The project module', () => {
       }
     };
 
-    project = new Project(ui, '', model);
+    project = new Project('', model);
 
     expect(hasProjectItem(project.locations, 'src', null)).toBe(true);
     expect(hasProjectItem(project.locations, 'resources', 'src')).toBe(true);
@@ -81,6 +77,33 @@ describe('The project module', () => {
           expect(location).toBe(null);
         }).catch(fail).then(done);
     });
+  });
+
+  it('The makeFileName() function', () => {
+    expect(project.makeFileName('Foo'), 'foo');
+    expect(project.makeFileName('foo'), 'foo');
+    expect(project.makeFileName('fooBar'), 'foo-bar');
+    expect(project.makeFileName('foo-bar'), 'foo-bar');
+    expect(project.makeFileName('FOO Bar'), 'foo-bar');
+    expect(project.makeFileName('_foo_bar_'), 'foo-bar');
+  });
+
+  it('The makeClassName() function', () => {
+    expect(project.makeClassName('Foo'), 'Foo');
+    expect(project.makeClassName('foo'), 'foo');
+    expect(project.makeClassName('fooBar'), 'FooBar');
+    expect(project.makeClassName('foo-bar'), 'FooBar');
+    expect(project.makeClassName('FOO Bar'), 'FooBar');
+    expect(project.makeClassName('_foo_bar_'), 'FooBar');
+  });
+
+  it('The makeFunctionName() function', () => {
+    expect(project.makeFunctionName('Foo'), 'foo');
+    expect(project.makeFunctionName('foo'), 'foo');
+    expect(project.makeFunctionName('fooBar'), 'fooBar');
+    expect(project.makeFunctionName('foo-bar'), 'fooBar');
+    expect(project.makeFunctionName('FOO Bar'), 'fooBar');
+    expect(project.makeFunctionName('_foo_bar_'), 'fooBar');
   });
 });
 

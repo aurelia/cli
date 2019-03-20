@@ -1,0 +1,72 @@
+{
+  "devDependencies": {
+    // @if feat.requirejs
+    "requirejs": "",
+    // @endif
+    // @if feat.alameda
+    "alameda": "",
+    // @endif
+    // @if feat.requirejs || feat.alameda
+    "text": "",
+    // @endif
+    // @if feat.systemjs
+    "systemjs": "",
+    "systemjs-plugin-text": "",
+    // @endif
+
+    // @if feat.babel
+    "babel-eslint": "",
+    "@babel/plugin-proposal-decorators": "",
+    "@babel/plugin-proposal-class-properties": "",
+    "@babel/preset-env": "",
+    "@babel/core": "",
+    "@babel/polyfill": "",
+    "@babel/register": "",
+    "gulp-babel": "",
+    "gulp-cache": "",
+    "gulp-eslint": "",
+    // @endif
+
+    // @if feat.typescript
+    "gulp-typescript": "",
+    "gulp-tslint": "",
+    "merge2": "",
+    "tslint": "",
+    "typescript": "",
+    "@types/node": "",
+    // @endif
+
+    // @if feat.less
+    "gulp-less": "",
+    // @endif
+
+    // @if feat['postcss-basic'] || feat['postcss-typical']
+    "gulp-postcss": "",
+    "autoprefixer": "",
+    // @endif
+    // @if feat['postcss-typical']
+    "cssnano": "",
+    "postcss-url": "",
+    // @endif
+
+    // @if feat.sass
+    "gulp-sass": "",
+    // @endif
+
+    // @if feat.stylus
+    "gulp-stylus": "",
+    // @endif
+
+    // @if feat['htmlmin-min'] || feat['htmlmin-max']
+    "gulp-htmlmin": "",
+    // @endif
+
+    "browser-sync": "",
+    "connect-history-api-fallback": "",
+    "debounce": "",
+    "gulp-plumber": "",
+    "gulp-rename": "",
+    "gulp-notify": "",
+    "gulp-watch": "",
+  }
+}

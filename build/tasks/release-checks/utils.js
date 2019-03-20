@@ -1,4 +1,3 @@
-'use strict';
 const os = require('os');
 const childProcess = require('child_process');
 

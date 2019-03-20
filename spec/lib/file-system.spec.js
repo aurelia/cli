@@ -1,5 +1,3 @@
-'use strict';
-
 const ERROR_CODES = {
   ENOENT: 'ENOENT',
   EEXIST: 'EEXIST'
