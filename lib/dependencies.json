@@ -34,7 +34,7 @@
   "cssnano": "^4.1.10",
   "css-loader": "^1.0.0",
   "@cypress/webpack-preprocessor": "^4.0.3",
-  "cypress": "^3.1.5",
+  "cypress": "^3.2.0",
   "debounce": "^1.2.0",
   "del": "^3.0.0",
   "duplicate-package-checker-webpack-plugin": "^3.0.0",
