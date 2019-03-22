@@ -1,4 +1,4 @@
-Open at Views/Shared/_Layout.cshtml.readme.txt and make sure that it contains the following parts:
+Open at Views/Shared/_Layout.cshtml and make sure that it contains the following parts:
 
 <!DOCTYPE html>
 <html>
