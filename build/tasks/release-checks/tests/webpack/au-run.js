@@ -12,7 +12,7 @@ class AuRunDoesNotThrowCommandLineErrors extends Test {
   }
 
   onOutput(message) {
-    this.logger.debug(message);
+    this.debug(message);
 
     if (message.toLowerCase().indexOf('error') > -1) {
       this.executeCommand.stop();
@@ -35,7 +35,7 @@ class AuRunLaunchesServer extends Test {
   }
 
   onOutput(message) {
-    this.logger.debug(message);
+    this.debug(message);
 
     if (isApplicationAvailableMessage(message)) {
       this.success();
@@ -61,7 +61,7 @@ class AuRunWatchPicksUpFileChanges extends Test {
     return new Promise(resolve => {
       const fullPath = path.join(this.context.workingDirectory, this.fileToChange);
 
-      this.logger.debug(`changing file ${fullPath}`);
+      this.debug(`changing file ${fullPath}`);
 
       fs.readFile(fullPath, 'utf-8', (err, data) => {
         if (err) {
@@ -80,7 +80,7 @@ class AuRunWatchPicksUpFileChanges extends Test {
   }
 
   onOutput(message) {
-    this.logger.debug(message);
+    this.debug(message);
 
     if (isApplicationAvailableMessage(message)) {
       setTimeout(() => this.changeFile(), 1000);
@@ -110,7 +110,7 @@ class AuRunAppLaunchesWithoutJavascriptErrors extends Test {
   }
 
   onOutput(message) {
-    this.logger.debug(message);
+    this.debug(message);
 
     if (isApplicationAvailableMessage(message)) {
       const url = getURL(message);
@@ -137,7 +137,7 @@ class AuRunRendersPage extends Test {
   }
 
   onOutput(context, message) {
-    this.logger.debug(message);
+    this.debug(message);
 
     if (isApplicationAvailableMessage(message)) {
       const url = getURL(message);

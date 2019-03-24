@@ -3,7 +3,7 @@ import tslint from 'gulp-tslint';
 import * as project from '../aurelia.json';
 
 export default function lint() {
-  return gulp.src([project.transpiler.source])
+  return gulp.src(project.transpiler.source)
     .pipe(tslint({
       tslint: require("tslint"),
       formatter: 'prose'

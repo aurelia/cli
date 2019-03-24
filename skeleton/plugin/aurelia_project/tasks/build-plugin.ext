@@ -30,4 +30,5 @@ export default gulp.series(
     pluginJson('dist/commonjs'),
     buildPluginJavaScript('dist/commonjs', 'commonjs'),
   ),
+  () => console.log('Finish building Aurelia plugin to dist/commonjs and dist/native-modules')
 );
