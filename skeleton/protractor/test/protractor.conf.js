@@ -58,7 +58,6 @@ exports.config = {
 // @if feat.babel
     process.env.BABEL_TARGET = 'node';
     process.env.IN_PROTRACTOR = 'true';
-    require('@babel/polyfill');
     require('@babel/register');
 // @endif
 // @if feat.typescript
