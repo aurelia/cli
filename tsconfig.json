@@ -9,6 +9,6 @@
       "./lib/**/*"
   ],
   "exclude": [
-    "./lib/resources"
+    "./skeleton/**/*"
   ]
 }

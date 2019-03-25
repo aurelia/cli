@@ -21,10 +21,10 @@
   },
   "scripts": {
     "build": "npm run build:ts && npm run build:dts && npm run build:copy-files",
-    "build:ts": "./node_modules/.bin/tsc --extendedDiagnostics",
+    "build:ts": "./node_modules/.bin/tsc",
     "build:ts:watch": "npm run build:ts -- --watch",
-    "build:dts": "./node_modules/.bin/tsc -d --emitDeclarationOnly --allowJs false --extendedDiagnostics",
-    "build:copy-files": "./node_modules/.bin/copyfiles --verbose -e \"./lib/!(resources)/**/*.{js,ts}\" -e \"./lib/*.{js,ts}\" ./lib/**/* ./dist",
+    "build:dts": "./node_modules/.bin/tsc -d --emitDeclarationOnly --allowJs false",
+    "build:copy-files": "./node_modules/.bin/copyfiles -e ./skeleton/**/*.{js,ts} -e ./lib/**/*.{js,ts} ./lib/**/* ./skeleton/**/* ./dist",
     "lint": "gulp lint",
     "pretest": "npm run lint",
     "test": "jasmine",
