@@ -1,6 +1,6 @@
-const CLIOptions = require('../../../lib/cli-options').CLIOptions;
+const CLIOptions = require('../../../dist/lib/cli-options').CLIOptions;
 const cliOptions = new CLIOptions();
-const fs = require('../../../lib/file-system');
+const fs = require('../../../dist/lib/file-system');
 const path = require('path');
 
 let userArgs = process.argv.slice(2);
@@ -8,7 +8,7 @@ Object.assign(cliOptions, {
   args: userArgs.slice(1)
 });
 
-const ConsoleUI = require('../../../lib/ui').ConsoleUI;
+const ConsoleUI = require('../../../dist/lib/ui').ConsoleUI;
 const ui = new ConsoleUI();
 
 module.exports = class TestProjectsSelector {
