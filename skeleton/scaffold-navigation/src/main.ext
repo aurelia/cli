@@ -1,4 +1,7 @@
-import '@babel/polyfill';
+import 'core-js/stable';
+// @if feat.babel
+import 'regenerator-runtime/runtime';
+// @endif
 import 'bootstrap';
 // @if feat.typescript
 import {Aurelia} from 'aurelia-framework';

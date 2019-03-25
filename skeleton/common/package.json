@@ -15,10 +15,15 @@
     "aurelia-cli": "",
     "aurelia-testing": "",
     "aurelia-tools": "",
+    "core-js": "",
     "gulp": "",
     "minimatch": "",
     "through2": "",
-    "vinyl-fs": ""
+    "vinyl-fs": "",
+
+    // @if feat.babel
+    "regenerator-runtime": "",
+    // @endif
   },
   "scripts": {
     "build": "au build",
