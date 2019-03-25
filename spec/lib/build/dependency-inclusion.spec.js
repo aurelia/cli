@@ -1,4 +1,3 @@
-'use strict';
 const BundlerMock = require('../../mocks/bundler');
 const SourceInclusion = require('../../../lib/build/source-inclusion').SourceInclusion;
 const DependencyInclusion = require('../../../lib/build/dependency-inclusion').DependencyInclusion;

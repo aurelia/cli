@@ -1,0 +1,50 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    // @if feat['cli-bundler']
+    "module": "amd",
+    "declaration": false,
+    "noImplicitAny": false,
+    // @endif
+
+    // @if feat.webpack
+    "module": "esnext",
+    "skipLibCheck": true,
+    // @endif
+
+    // @if feat.cypress && feat.karma
+    "types": ["jasmine"],
+    // @endif
+
+    // @if feat.cypress && feat.jest && feat['cli-bundler']
+    "types": ["node", "jest"],
+    // @endif
+
+    // @if feat.protractor && feat.jest
+    "types": ["node", "jest"],
+    // @endif
+
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "target": "es5",
+    "lib": ["es2015", "dom"],
+    "moduleResolution": "node",
+    "allowJs": true,
+    "baseUrl": "src"
+  },
+  "include": [
+    "./src/**/*.ts",
+    "./test/**/*.ts",
+    "./custom_typings/**/*.d.ts"
+  ],
+  // @if feat.cypress
+  "exclude": [
+    "./test/e2e/**/*.ts"
+  ],
+  // @endif
+  "atom": {
+    "rewriteTsconfig": false
+  }
+}

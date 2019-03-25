@@ -1,21 +1,18 @@
-var gulp = require('gulp');
-var paths = require('../paths');
-var conventionalChangelog = require('gulp-conventional-changelog');
-var fs = require('fs');
-var bump = require('gulp-bump');
-var args = require('../args');
+const gulp = require('gulp');
+const conventionalChangelog = require('gulp-conventional-changelog');
+const bump = require('gulp-bump');
+const args = require('../args');
 
-gulp.task('bump-version', function(){
-  return gulp.src(['./package.json'])
-    .pipe(bump({type:args.bump })) //major|minor|patch|prerelease
+gulp.task('bump-version', function() {
+  return gulp.src('package.json')
+    .pipe(bump({type: args.bump })) //major|minor|patch|prerelease
     .pipe(gulp.dest('./'));
 });
 
-gulp.task('changelog', function () {
-  return gulp.src(paths.doc + '/CHANGELOG.md').pipe(conventionalChangelog({
-    preset: 'angular'
-  }))
-  .pipe(gulp.dest(paths.doc));
+gulp.task('changelog', function() {
+  return gulp.src('doc/CHANGELOG.md')
+    .pipe(conventionalChangelog({preset: 'angular'}))
+    .pipe(gulp.dest('doc'));
 });
 
 gulp.task('prepare-release', gulp.series(

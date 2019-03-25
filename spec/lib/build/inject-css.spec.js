@@ -1,4 +1,3 @@
-'use strict';
 const fixupCSSUrls = require('../../../lib/build/inject-css').fixupCSSUrls;
 
 // tests partly copied from

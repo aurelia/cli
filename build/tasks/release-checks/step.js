@@ -1,4 +1,3 @@
-'use strict';
 const LogManager = require('aurelia-logging');
 
 module.exports = class Step {

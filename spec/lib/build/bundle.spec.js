@@ -1,5 +1,3 @@
-'use strict';
-
 const BundlerMock = require('../../mocks/bundler');
 const Bundle = require('../../../lib/build/bundle').Bundle;
 const CLIOptionsMock = require('../../mocks/cli-options');

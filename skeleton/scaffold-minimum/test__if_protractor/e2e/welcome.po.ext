@@ -1,0 +1,9 @@
+// @if feat.typescript
+import {browser, element, by, By, $, $$, ExpectedConditions} from 'aurelia-protractor-plugin/protractor';
+
+// @endif
+export class PageObjectWelcome {
+  getGreeting() {
+    return element(by.tagName('h1')).getText();
+  }
+}
