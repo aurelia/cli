@@ -1,4 +1,3 @@
-'use strict';
 describe('The config command - util', () => {
   let mockfs;
   const CLIOptions = require('../../../../lib/cli-options').CLIOptions;

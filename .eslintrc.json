@@ -15,10 +15,7 @@
     }]
   },
   "parserOptions": {
-    "sourceType": "script",
-    "ecmaFeatures": {
-      "impliedStrict": false
-    }
+    "sourceType": "script"
   },
   "env": {
     "node": true,

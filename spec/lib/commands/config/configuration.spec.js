@@ -1,5 +1,3 @@
-'use strict';
-
 describe('The config command - configuration', () => {
   let mockfs;
 

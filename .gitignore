@@ -5,5 +5,7 @@ bower_components
 .DS_STORE
 *.swp
 .blog
-release-checks-results
 dist
+/release-checks-results
+/.nyc_output
+/coverage

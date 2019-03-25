@@ -4,7 +4,7 @@
   "flags": [
     {
       "name": "definitions",
-      "description": "optionally provide a folder which contains project definition json files",
+      "description": "optionally provide a file which contains project definitions",
       "type": "string"
     }
   ]

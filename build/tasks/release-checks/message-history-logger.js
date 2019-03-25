@@ -1,4 +1,3 @@
-'use strict';
 const fs = require('../../../dist/lib/file-system');
 
 exports.MessageHistoryLogger = class {

@@ -1,0 +1,23 @@
+{
+  "name": "/* @echo projectName */",
+  "type": "project:application",
+  "paths": {
+    "root": "src",
+    "resources": "resources",
+    "elements": "resources/elements",
+    "attributes": "resources/attributes",
+    "valueConverters": "resources/value-converters",
+    "bindingBehaviors": "resources/binding-behaviors"
+  },
+  "transpiler": {
+    // @if feat.babel
+    "id": "babel",
+    "fileExtension": ".js",
+    // @endif
+
+    // @if feat.typescript
+    "id": "typescript",
+    "fileExtension": ".ts",
+    // @endif
+  }
+}

@@ -1,4 +1,3 @@
-'use strict';
 const Task = require('./task');
 const LogManager = require('aurelia-logging');
 const logger = LogManager.getLogger('change-dir');

@@ -1,13 +1,10 @@
-'use strict';
 const Task = require('./task');
 const Yarn = require('../../../../dist/lib/package-managers/yarn').Yarn;
 const LogManager = require('aurelia-logging');
 const logger = LogManager.getLogger('link-aurelia-cli');
-const StepRunner = require('../step-runner');
-const ExecuteCommand = require('./execute-command');
-const ConsoleUI = require('../../../../dist/lib/ui').ConsoleUI;
 const CLIOptions = require('../../../../dist/lib/cli-options').CLIOptions;
 const cliOptions = new CLIOptions();
+const ConsoleUI = require('../../../../dist/lib/ui').ConsoleUI;
 const ui = new ConsoleUI();
 
 let userArgs = process.argv.slice(2);
@@ -24,25 +21,22 @@ module.exports = class InstallLatestAureliaCLI extends Task {
     this.logger.debug(message);
   }
 
-  determineURL() {
+  async determineURL() {
     if (cliOptions.hasFlag('latest-cli-url')) {
-      return Promise.resolve(cliOptions.getFlagValue('latest-cli-url'));
+      return cliOptions.getFlagValue('latest-cli-url');
     }
 
-    return ui.question('Git URL of Aurelia-CLI', 'https://github.com/aurelia/cli.git#master');
+    return await ui.question(
+      'Git URL of targeted Aurelia-CLI',
+      'aurelia/cli#master'
+    );
   }
 
-  execute(context) {
-    return this.determineURL()
-    .then(forkUrl => {
-      logger.debug('Install latest Aurelia-CLI (' + forkUrl + ') ' + context.workingDirectory);
+  async execute(context) {
+    const forkUrl = await this.determineURL();
+    logger.debug('Install latest Aurelia-CLI (' + forkUrl + ') ' + context.workingDirectory);
 
-      let yarn = new Yarn();
-
-      const yarnPath = yarn.getExecutablePath(context.workingDirectory);
-
-      const command = new ExecuteCommand(yarnPath, ['add', forkUrl, '-D'], (msg) => this.onOutput(msg));
-      return new StepRunner(command).run();
-    });
+    const yarn = new Yarn();
+    return yarn.install([forkUrl], context.workingDirectory);
   }
 };

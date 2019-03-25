@@ -1,6 +1,5 @@
-'use strict';
-
 const Utils = require('../../../dist/lib/build/utils');
+const suiteSteps = require('./suite-steps');
 const StepRunner = require('./step-runner');
 const fs = require('../../../dist/lib/file-system');
 
@@ -10,32 +9,22 @@ module.exports = class SuiteRunner {
     this.reporter = reporter;
   }
 
-  run() {
-    return fs.exists(this.context.resultOutputFolder)
-    .then(folderExists => {
-      if (!folderExists) {
-        return fs.mkdirp(this.context.resultOutputFolder);
-      }
-    })
-    .then(() => {
-      const suite = this.context.suite;
+  async run() {
+    if (!fs.existsSync(this.context.resultOutputFolder)) {
+      await fs.mkdirp(this.context.resultOutputFolder);
+    }
+    const {suite} = this.context;
 
-      this.reporter.starting(this.context);
+    this.reporter.starting(this.context);
 
-      return Utils.runSequentially(
-        suite.steps,
-        step => {
-          return Promise.resolve(new StepRunner(step, this.context).run())
-          .then(() => step);
-        }
-      )
-      .then(steps => {
-        this.reporter.finished(steps, this.context);
-        return {
-          steps: steps,
-          suite: suite
-        };
+    const steps = await Utils.runSequentially(suiteSteps(suite),
+      async(step) => {
+        const runner = new StepRunner(step, this.context);
+        await runner.run();
+        return step;
       });
-    });
+
+    this.reporter.finished(steps, this.context);
+    return {steps: steps, suite: suite};
   }
 };

@@ -1,4 +1,3 @@
-'use strict';
 describe('The cli', () => {
   let fs;
   let path;
@@ -52,7 +51,7 @@ describe('The cli', () => {
         }))
         .then(proj => {
           expect(Project.establish)
-            .toHaveBeenCalledWith(cli.ui, path.join(process.cwd()));
+            .toHaveBeenCalledWith(path.join(process.cwd()));
           expect(proj).toBe(proj);
         })
         .catch(fail).then(done);

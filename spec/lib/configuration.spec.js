@@ -1,5 +1,3 @@
-'use strict';
-
 const Configuration = require('../../lib/configuration').Configuration;
 const CLIOptionsMock = require('../mocks/cli-options');
 

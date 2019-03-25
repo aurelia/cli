@@ -1,0 +1,61 @@
+// @if feat.webpack
+import {PLATFORM} from 'aurelia-pal';
+// @endif
+// @if feat.typescript
+import {Router, RouterConfiguration} from 'aurelia-router';
+// @endif
+
+export class ChildRouter {
+  // @if feat.babel
+  heading = 'Child Router';
+
+  configureRouter(config, router) {
+  // @endif
+  // @if feat.typescript
+  public heading = 'Child Router';
+  public router: Router;
+
+  public configureRouter(config: RouterConfiguration, router: Router) {
+  // @endif
+    config.map([
+      {
+        route: ['', 'welcome'],
+        name: 'welcome',
+        // @if feat.webpack
+        moduleId: PLATFORM.moduleName('./welcome'),
+        // @endif
+        // @if feat['cli-bundler']
+        moduleId: './welcome',
+        // @endif
+        nav: true,
+        title: 'Welcome'
+      },
+      {
+        route: 'users',
+        name: 'users',
+        // @if feat.webpack
+        moduleId: PLATFORM.moduleName('./users'),
+        // @endif
+        // @if feat['cli-bundler']
+        moduleId: './users',
+        // @endif
+        nav: true,
+        title: 'Github Users'
+      },
+      {
+        route: 'child-router',
+        name: 'child-router',
+        // @if feat.webpack
+        moduleId: PLATFORM.moduleName('./child-router'),
+        // @endif
+        // @if feat['cli-bundler']
+        moduleId: './child-router',
+        // @endif
+        nav: true,
+        title: 'Child Router'
+      }
+    ]);
+
+    this.router = router;
+  }
+}

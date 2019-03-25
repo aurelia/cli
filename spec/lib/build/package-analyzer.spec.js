@@ -1,4 +1,3 @@
-'use strict';
 const path = require('path');
 const PackageAnalyzer = require('../../../lib/build/package-analyzer').PackageAnalyzer;
 
