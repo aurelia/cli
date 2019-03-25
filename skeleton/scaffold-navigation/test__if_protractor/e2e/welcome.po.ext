@@ -1,0 +1,54 @@
+// @if feat.typescript
+import {browser, element, by, By, $, $$, ExpectedConditions} from 'aurelia-protractor-plugin/protractor';
+
+// @endif
+export class PageObjectWelcome {
+  getGreeting() {
+    return element(by.tagName('h2')).getText();
+  }
+
+  setFirstname(value) {
+    // @if feat.babel
+    return element(by.valueBind('firstName')).clear().sendKeys(value);
+    // @endif
+    // @if feat.typescript
+    let firstName = element(by.valueBind('firstName'));
+    return firstName.clear().then(() => firstName.sendKeys(value));
+    // @endif
+  }
+
+  setLastname(value) {
+    // @if feat.babel
+    return element(by.valueBind('lastName')).clear().sendKeys(value);
+    // @endif
+    // @if feat.typescript
+    let lastName = element(by.valueBind('lastName'));
+    return lastName.clear().then(() => lastName.sendKeys(value));
+    // @endif
+  }
+
+  getFullnameElement() {
+    return element(by.css('.help-block'));
+  }
+
+  getFullname() {
+    return this.getFullnameElement().getText();
+  }
+
+  pressSubmitButton() {
+    return element(by.css('button[type="submit"]')).click();
+  }
+
+  async openAlertDialog() {
+    await this.pressSubmitButton();
+
+    await browser.wait(ExpectedConditions.alertIsPresent(), 5000);
+
+    try {
+      await browser.switchTo().alert().accept();
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+}

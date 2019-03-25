@@ -1,0 +1,7 @@
+// @if feat.typescript
+import {FrameworkConfiguration} from 'aurelia-framework';
+
+// @endif
+export function configure(config/* @if feat.typescript **: FrameworkConfiguration/* @endif */) {
+  //config.globalResources([]);
+}

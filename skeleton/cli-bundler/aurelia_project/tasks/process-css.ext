@@ -1,0 +1,80 @@
+import {build} from 'aurelia-cli';
+// @if feat.babel
+import gulp from 'gulp';
+import project from '../aurelia.json';
+// @if feat.less || feat.stylus
+import plumber from 'gulp-plumber';
+import notify from 'gulp-notify';
+// @endif
+// @if feat.less
+import less from 'gulp-less';
+// @endif
+// @if feat.sass
+import sass from 'gulp-sass';
+// @endif
+// @if feat.stylus
+import stylus from 'gulp-stylus';
+// @endif
+// @if feat['postcss-basic'] || feat['postcss-typical']
+import postcss from 'gulp-postcss';
+import autoprefixer from 'autoprefixer';
+// @endif
+// @if feat['postcss-typical']
+import cssnano from 'cssnano';
+import postcssUrl from 'postcss-url';
+// @endif
+// @endif
+// @if feat.typescript
+import * as gulp from 'gulp';
+import * as project from '../aurelia.json';
+// @if feat.less || feat.stylus
+import * as plumber from 'gulp-plumber';
+import * as notify from 'gulp-notify';
+// @endif
+// @if feat.less
+import * as less from 'gulp-less';
+// @endif
+// @if feat.sass
+import * as sass from 'gulp-sass';
+// @endif
+// @if feat.stylus
+import * as stylus from 'gulp-stylus';
+// @endif
+// @if feat['postcss-basic'] || feat['postcss-typical']
+import * as postcss from 'gulp-postcss';
+import * as autoprefixer from 'autoprefixer';
+// @endif
+// @if feat['postcss-typical']
+import * as cssnano from 'cssnano';
+import * as postcssUrl from 'postcss-url';
+// @endif
+// @endif
+
+export default function processCSS() {
+  return gulp.src(project.cssProcessor.source, {sourcemaps: true, since: gulp.lastRun(processCSS)})
+    // @if feat.less || feat.stylus
+    .pipe(plumber({ errorHandler: notify.onError('Error: <%= error.message %>') }))
+    // @endif
+    // @if feat.less
+    .pipe(less())
+    // @endif
+    // @if feat.sass
+    .pipe(sass().on('error', sass.logError))
+    // @endif
+    // @if feat.stylus
+    .pipe(stylus())
+    // @endif
+    // @if feat['postcss-basic']
+    .pipe(postcss([
+      autoprefixer({browsers: ['last 2 version']})
+    ]))
+    // @endif
+    // @if feat['postcss-typical']
+    .pipe(postcss([
+      autoprefixer({browsers: ['last 2 version']}),
+      postcssUrl({url: 'inline', encodeType: 'base64'}),
+      cssnano()
+    ]))
+    // @endif
+    .pipe(build.bundle());
+}

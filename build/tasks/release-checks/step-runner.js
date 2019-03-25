@@ -1,7 +1,6 @@
-'use strict';
-
 const LogManager = require('aurelia-logging');
 const logger = LogManager.getLogger('StepRunner');
+const c = require('ansi-colors');
 
 module.exports = class StepRunner {
   constructor(step, context = null) {
@@ -10,8 +9,7 @@ module.exports = class StepRunner {
   }
 
   run() {
-    logger.info(`Executing ${this.step.getTitle()}`);
-
+    logger.info(c.inverse(`Executing ${this.step.getTitle()}`));
     return this.step.execute(this.context);
   }
 };

@@ -1,0 +1,28 @@
+{
+  "name": "run",
+  "description": "Builds the application and serves up the assets via a local web server, watching files for changes as you work.",
+  "flags": [
+    {
+      "name": "env",
+      "description": "Sets the build environment.",
+      "type": "string"
+    },
+    {
+      "name": "open",
+      "description": "Open the default browser at the application location.",
+      "type": "boolean"
+    },
+    // @if feat.babel
+    {
+      "name": "auto-install",
+      "description": "auto install missing npm package using npm or yarn (set by aurelia.json packageManager, or existence of yarn.lock file).",
+      "type": "boolean"
+    },
+    // @endif
+    {
+      "name": "port",
+      "description": "Set port number of the dev server",
+      "type": "string"
+    }
+  ]
+}

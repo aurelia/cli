@@ -1,5 +1,3 @@
-'use strict';
-
 const path = require('path');
 const Bundler = require('../../../lib/build/bundler').Bundler;
 const PackageAnalyzer = require('../../mocks/package-analyzer');
