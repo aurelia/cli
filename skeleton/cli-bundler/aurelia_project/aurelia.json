@@ -10,7 +10,7 @@
     // @endif
 
     // @if feat.typescript
-    "dtsSource": ["./custom_typings/**/*.d.ts"],
+    "dtsSource": ["./types/**/*.d.ts"],
     "source": "src/**/*.ts",
     // @endif
   },

@@ -323,7 +323,7 @@ typescript-folder/foo.ts
             "displayName": "TypeScript",
             "fileExtension": ".ts",
             "dtsSource": [
-              "./custom_typings/**/*.d.ts"
+              "./types/**/*.d.ts"
             ],
             "source": "src/**/*.ts"
           },

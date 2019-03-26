@@ -37,7 +37,7 @@
   "include": [
     "./src/**/*.ts",
     "./test/**/*.ts",
-    "./custom_typings/**/*.d.ts"
+    "./types/**/*.d.ts"
   ],
   // @if feat.cypress
   "exclude": [
