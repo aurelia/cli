@@ -66,6 +66,7 @@
   "jest-jasmine2": "^23.6.0",
   "jest-cli": "^24.1.0",
   "jest-matchers": "^20.0.3",
+  "jest-transform-stub": "^2.0.0",
   "json-loader": "^0.5.7",
   "html-loader": "^0.5.5",
   "karma": "^3.0.0",
