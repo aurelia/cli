@@ -27,8 +27,8 @@
     "build:copy-files": "./node_modules/.bin/copyfiles -e ./skeleton/**/*.{js,ts} -e ./lib/**/*.{js,ts} ./lib/**/* ./skeleton/**/* ./dist",
     "lint": "gulp lint",
     "pretest": "npm run lint",
-    "test": "jasmine",
-    "coverage": "nyc jasmine",
+    "test": "./node_modules/.bin/jasmine-ts",
+    "coverage": "nyc ./node_modules/.bin/jasmine-ts",
     "test:watch": "nodemon -x 'npm test'"
   },
   "license": "MIT",
@@ -87,12 +87,14 @@
     "gulp-eslint": "^5.0.0",
     "jasmine": "^3.3.1",
     "jasmine-spec-reporter": "^4.2.1",
+    "jasmine-ts": "^0.3.0",
     "latest-version": "^4.0.0",
     "minimatch": "^3.0.4",
     "mock-fs": "^4.8.0",
     "nodemon": "^1.18.9",
     "nyc": "^13.3.0",
     "puppeteer": "^1.12.1",
+    "ts-node": "^8.0.3",
     "typescript": "^3.3.3333",
     "yargs": "^12.0.5"
   }

@@ -84,8 +84,10 @@ describe('The cli', () => {
   describe('The createHelpCommand() function', () => {
     it('gets the help command', () => {
       mockfs({
-        'lib/commands/help/command.js': 'module.exports = {}'
+        'lib/commands/help/command.js': 'module.exports = {}',
+        'lib/string.js': 'module.exports = {}'
       });
+
       spyOn(cli.container, 'get');
 
       cli.createHelpCommand();
