@@ -12,6 +12,8 @@ To change dev server port, do `au run --port 8888`.
 To install new npm packages automatically, do `au run --auto-install`
 // @endif
 
+// @if !feat.plugin
 ## Build for production
 
 Run `au build --env prod`.
+// @endif

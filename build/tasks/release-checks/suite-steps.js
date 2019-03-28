@@ -1,3 +1,4 @@
+const path = require('path');
 const tasks = require('./tasks/index');
 const tests = require('./tests/index');
 const applicable = require('../../../lib/workflow/applicable');
@@ -5,20 +6,25 @@ const applicable = require('../../../lib/workflow/applicable');
 module.exports = function(suite) {
   const features = suite.split('_');
   const ext = applicable(features, 'typescript') ? '.ts' : '.js';
+  const plugin = applicable(features, 'plugin');
 
   const steps = [
     new tasks.ChangeDirectory(),
     new tasks.InstallNodeModules(),
     new tasks.InstallLatestAureliaCLI(),
-    new tests.generic.AuGenerateAttributeTests(ext),
-    new tests.generic.AuGenerateComponentTests(ext),
-    new tests.generic.AuGenerateElementTests(ext),
-    new tests.generic.AuGenerateValueConverterTests(ext),
-    new tests.generic.AuGenerateBindingBehaviorTests(ext),
-    new tests.generic.AuGenerateTaskTests(ext),
-    new tests.generic.AuGenerateGeneratorTests(ext)
+    new tests.generic.AuGenerateAttributeTests(ext, plugin),
+    new tests.generic.AuGenerateElementTests(ext, plugin),
+    new tests.generic.AuGenerateValueConverterTests(ext, plugin),
+    new tests.generic.AuGenerateBindingBehaviorTests(ext, plugin),
+    new tests.generic.AuGenerateTaskTests(ext, plugin),
+    new tests.generic.AuGenerateGeneratorTests(ext, plugin)
   ];
 
+  if (!plugin) {
+    steps.push(new tests.generic.AuGenerateComponentTests(ext));
+  } else {
+    steps.push(new tests.plugin.AuBuildPluginDoesNotThrowCommandLineErrors());
+  }
 
   if (applicable(features, 'jest')) {
     steps.push(
@@ -47,10 +53,10 @@ module.exports = function(suite) {
   if (applicable(features, 'cli-bundler')) {
     steps.push(
       new tests.requirejs.AuBuildDoesNotThrowCommandLineErrors(),
-      new tests.requirejs.AuBuildWatchPicksUpFileChanges(),
+      new tests.requirejs.AuBuildWatchPicksUpFileChanges(plugin ? path.join('dev-app', 'app.html') : undefined),
       new tests.requirejs.AuRunDoesNotThrowCommandLineErrors(),
       new tests.requirejs.AuRunLaunchesServer(),
-      new tests.requirejs.AuRunWatchPicksUpFileChanges(),
+      new tests.requirejs.AuRunWatchPicksUpFileChanges(plugin ? path.join('dev-app', 'app.html') : undefined),
       new tests.requirejs.AuRunAppLaunchesWithoutJavascriptErrors(),
       new tests.requirejs.AuRunRendersPage(),
       new tests.generic.AuLintFinishes()

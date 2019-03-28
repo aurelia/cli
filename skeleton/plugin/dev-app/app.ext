@@ -1,0 +1,13 @@
+export class App {
+  // @if feat.babel
+  message = 'from Aurelia!';
+  // @endif
+  // @if feat.typescript
+  public message: string = 'from Aurelia!';
+  // @endif
+
+  clicked() {
+    // eslint-disable-next-line no-alert
+    alert('A primary button click or a touch');
+  }
+}

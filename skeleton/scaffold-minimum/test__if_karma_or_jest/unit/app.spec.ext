@@ -1,12 +1,20 @@
 import {bootstrap} from 'aurelia-bootstrapper';
 import {StageComponent} from 'aurelia-testing';
+// @if feat.webpack
+import {PLATFORM} from 'aurelia-pal';
+// @endif
 
 describe('Stage App Component', () => {
   let component;
 
   beforeEach(() => {
     component = StageComponent
+      // @if feat.webpack
+      .withResources(PLATFORM.moduleName('app'))
+      // @endif
+      // @if feat['cli-bundler']
       .withResources('app')
+      // @endif
       .inView('<app></app>');
   });
 

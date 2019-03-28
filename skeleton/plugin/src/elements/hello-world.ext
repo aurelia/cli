@@ -1,0 +1,10 @@
+import {bindable} from 'aurelia-framework';
+
+export class HelloWorld {
+  // @if feat.babel
+  @bindable message = '';
+  // @endif
+  // @if feat.typescript
+  @bindable public message: string = '';
+  // @endif
+}

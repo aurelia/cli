@@ -35,3 +35,22 @@ export default gulp.series(
   configureEnvironment,
   buildJavaScript
 );
+
+// @if feat.plugin
+export function buildPluginJavaScript(dest, format) {
+  return function processPluginJavaScript() {
+    let opts = {};
+    if (format === 'commonjs') {
+      opts = {
+        plugins: [
+          ['@babel/plugin-transform-modules-commonjs', {loose: true}]
+        ]
+      };
+    }
+    const transpile = babel(opts);
+    return gulp.src(project.plugin.source.js)
+      .pipe(transpile)
+      .pipe(gulp.dest(dest));
+  };
+}
+// @endif

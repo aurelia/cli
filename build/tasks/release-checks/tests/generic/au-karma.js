@@ -7,7 +7,7 @@ class AuKarmaRunsTests extends Test {
   }
 
   onOutput(message) {
-    this.logger.debug(message);
+    this.debug(message);
 
     if (isTestFinishedMessage(message)) {
       this.success();

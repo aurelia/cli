@@ -78,3 +78,36 @@ export default function processCSS() {
     // @endif
     .pipe(build.bundle());
 }
+
+// @if feat.plugin
+export function pluginCSS(dest) {
+  return function processPluginCSS() {
+    return gulp.src(project.plugin.source.css)
+      // @if feat.less || feat.stylus
+      .pipe(plumber({ errorHandler: notify.onError('Error: <%= error.message %>') }))
+      // @endif
+      // @if feat.less
+      .pipe(less())
+      // @endif
+      // @if feat.sass
+      .pipe(sass().on('error', sass.logError))
+      // @endif
+      // @if feat.stylus
+      .pipe(stylus())
+      // @endif
+      // @if feat['postcss-basic']
+      .pipe(postcss([
+        autoprefixer({browsers: ['last 2 version']})
+      ]))
+      // @endif
+      // @if feat['postcss-typical']
+      .pipe(postcss([
+        autoprefixer({browsers: ['last 2 version']}),
+        postcssUrl({url: 'inline', encodeType: 'base64'}),
+        cssnano()
+      ]))
+      // @endif
+      .pipe(gulp.dest(dest));
+  };
+}
+// @endif

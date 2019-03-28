@@ -11,7 +11,7 @@ class DotNetRunDoesNotThrowCommandLineErrors extends Test {
   }
 
   onOutput(message) {
-    this.logger.debug(message);
+    this.debug(message);
 
     if (message.toLowerCase().indexOf('error') > -1) {
       this.executeCommand.stop();
@@ -34,7 +34,7 @@ class DotNetRunLaunchesServer extends Test {
   }
 
   onOutput(message) {
-    this.logger.debug(message);
+    this.debug(message);
 
     if (isApplicationAvailableMessage(message)) {
       this.success();
@@ -54,7 +54,7 @@ class DotnetRunRendersPage extends Test {
   }
 
   onOutput(context, message) {
-    this.logger.debug(message);
+    this.debug(message);
 
     if (isApplicationAvailableMessage(message)) {
       const url = getURL(message);
@@ -81,7 +81,7 @@ class DotNetRunAppLaunchesWithoutJavascriptErrors extends Test {
   }
 
   onOutput(message) {
-    this.logger.debug(message);
+    this.debug(message);
 
     if (isApplicationAvailableMessage(message)) {
       const url = getURL(message);

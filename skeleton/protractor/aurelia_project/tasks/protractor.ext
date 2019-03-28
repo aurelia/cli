@@ -10,10 +10,10 @@ gulp.task('webdriver_update', webdriver_update);
 
 gulp.task('protractor', (cb) => {
   // @if feat.babel
-  gulp.src(['test/e2e/**/*.e2e.js'])
+  gulp.src('test/e2e/**/*.e2e.js')
   // @endif
   // @if feat.typescript
-  gulp.src(['test/e2e/**/*.e2e.ts'])
+  gulp.src('test/e2e/**/*.e2e.ts')
   // @endif
     .pipe(protractor({configFile: 'test/protractor.conf.js'}))
     .on('error', cb)

@@ -7,7 +7,7 @@ class AuProtractorRunsTests extends Test {
   }
 
   onProtractorOutput(message) {
-    this.logger.debug(message);
+    this.debug(message);
 
     if (isProtractorCompletedMessage(message)) {
       this.success();
@@ -17,7 +17,7 @@ class AuProtractorRunsTests extends Test {
   }
 
   onOutput(message) {
-    this.logger.debug(message);
+    this.debug(message);
 
     if (isApplicationAvailableMessage(message)) {
       this.protractorCommand = new ExecuteCommand('au', ['protractor'], (msg) => this.onProtractorOutput(msg));
@@ -38,7 +38,7 @@ class AuProtractorRunsTestsDotNet extends Test {
   }
 
   onProtractorOutput(message) {
-    this.logger.debug(message);
+    this.debug(message);
 
     if (isProtractorCompletedMessage(message)) {
       this.success();
@@ -48,7 +48,7 @@ class AuProtractorRunsTestsDotNet extends Test {
   }
 
   onOutput(message) {
-    this.logger.debug(message);
+    this.debug(message);
 
     if (message.indexOf('Now listening on: http://localhost:') > -1) {
       this.protractorCommand = new ExecuteCommand('au', ['protractor'], (msg) => this.onProtractorOutput(msg));

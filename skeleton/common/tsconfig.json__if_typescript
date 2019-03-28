@@ -36,6 +36,9 @@
   },
   "include": [
     "./src/**/*.ts",
+    // @if feat.plugin
+    "./dev-app/**/*.ts",
+    // @endif
     "./test/**/*.ts",
     "./types/**/*.d.ts"
   ],
