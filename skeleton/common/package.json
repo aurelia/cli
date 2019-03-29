@@ -25,6 +25,7 @@
     "minimatch": "",
     "through2": "",
     "vinyl-fs": "",
+    "promise-polyfill": "",
 
     // @if feat.babel
     "regenerator-runtime": "",

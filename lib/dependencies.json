@@ -82,6 +82,7 @@
   "opn": "^5.4.0",
   "postcss-loader": "^3.0.0",
   "postcss-url": "^8.0.0",
+  "promise-polyfill": "^8.1.0",
   "protractor": "^5.4.2",
   "regenerator-runtime": "0.13.2",
   "requirejs": "^2.3.6",
