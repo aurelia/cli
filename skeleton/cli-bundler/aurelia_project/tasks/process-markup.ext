@@ -39,3 +39,28 @@ export default function processMarkup() {
     // @endif
     .pipe(build.bundle());
 }
+
+// @if feat.plugin
+export function pluginMarkup(dest) {
+  return function processPluginMarkup() {
+    return gulp.src(project.plugin.source.html)
+      // @if feat['htmlmin-min'] || feat['htmlmin-max']
+      .pipe(htmlmin({
+          // @if feat['htmlmin-max']
+          collapseInlineTagWhitespace: true,
+          collapseBooleanAttributes: true,
+          removeAttributeQuotes: true,
+          removeScriptTypeAttributes: true,
+          removeStyleLinkTypeAttributes: true,
+          // @endif
+          removeComments: true,
+          collapseWhitespace: true,
+          minifyCSS: true,
+          minifyJS: true,
+          ignoreCustomFragments: [/\${.*?}/g] // ignore interpolation expressions
+      }))
+      // @endif
+      .pipe(gulp.dest(dest));
+  };
+}
+// @endif

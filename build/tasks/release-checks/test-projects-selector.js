@@ -2,6 +2,7 @@ const CLIOptions = require('../../../dist/lib/cli-options').CLIOptions;
 const cliOptions = new CLIOptions();
 const fs = require('../../../dist/lib/file-system');
 const path = require('path');
+const _ = require('lodash');
 
 let userArgs = process.argv.slice(2);
 Object.assign(cliOptions, {
@@ -37,7 +38,14 @@ module.exports = class TestProjectsSelector {
     let dirs = await this.getSubDirs(dir);
 
     if (dirs.length === 0) throw new Error('No subdirectory to test.');
-    if (!CLIOptions.hasFlag('all')) {
+
+    if (cliOptions.hasFlag('select')) {
+      const selectedFeatures = cliOptions.getFlagValue('select').split(',');
+      dirs = dirs.filter(d => {
+        const features = d.split('_');
+        return _.every(selectedFeatures, f => _.includes(features, f));
+      });
+    } else if (!cliOptions.hasFlag('all')) {
       dirs = await this.choose(dirs);
     }
 
@@ -49,7 +57,6 @@ module.exports = class TestProjectsSelector {
     options.unshift({displayName: 'All'});
 
     const answers = await ui.multiselect('Found test dirs.\r\nWhich would you like to run?', options);
-    console.log('answers', answers);
     return answers.includes('All') ? dirs : answers;
   }
 };

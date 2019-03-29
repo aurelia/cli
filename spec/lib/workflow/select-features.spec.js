@@ -57,7 +57,7 @@ describe('The selectFeatures for app project', () => {
     });
   });
 
-  describe('in interactive mode (very slow tests, due to delays for reliable results)', () => {
+  describe('in interactive mode', () => {
     it('gets default esnext features', async() => {
       const result = await selectFeatures(undefined, {}, [
         1  // default esnext app
@@ -74,7 +74,6 @@ describe('The selectFeatures for app project', () => {
       expect(result).toEqual(['webpack', 'http1', 'web', 'typescript', 'jest', 'vscode', 'scaffold-minimum']);
     });
 
-    // This is slow
     it('gets customised features', async() => {
       const result = await selectFeatures(undefined, {}, [
         3, // custom app
@@ -110,7 +109,7 @@ describe('The selectFeatures for app project', () => {
         3, // custom app
         2, // cli-bundler
         2, // alameda
-        1, // '' (web)
+        1, // web
         2, // typescript
         1, // no htmlmin
         2, // less
@@ -138,10 +137,10 @@ describe('The selectFeatures for app project', () => {
         3, // custom app
         1, // webpack
         1, // http1
-        1, // '' (web)
+        1, // web
         1, // babel
         1, // no htmlmin
-        1, // '' (css)
+        1, // css
         1, // no postcss
         1, // no unit test
         1, // no e2e test
@@ -181,5 +180,134 @@ describe('The selectFeatures for app project', () => {
 });
 
 describe('The selectFeatures for plugin project', () => {
-  // TODO
+  describe('in unattended mode', () => {
+    it('sets default esnext features', async() => {
+      const result = await selectFeatures(undefined, {unattended: true, plugin: true});
+      expect(result).toEqual(['plugin', 'cli-bundler', 'requirejs', 'web', 'babel', 'plugin-scaffold-minimum']);
+    });
+
+    it('sets features with overwrite on typescript', async() => {
+      const result = await selectFeatures(['typescript'], {unattended: true, plugin: true});
+      expect(result).toEqual(['plugin', 'cli-bundler', 'requirejs', 'web', 'typescript', 'plugin-scaffold-minimum']);
+    });
+
+    it('cannot overwrite bundler', async() => {
+      const result = await selectFeatures(['webpack'], {unattended: true, plugin: true});
+      expect(result).toEqual(['plugin', 'cli-bundler', 'requirejs', 'web', 'babel', 'plugin-scaffold-minimum']);
+    });
+
+    it('cannot overwrite loader', async() => {
+      const result = await selectFeatures(['systemjs'], {unattended: true, plugin: true});
+      expect(result).toEqual(['plugin', 'cli-bundler', 'requirejs', 'web', 'babel', 'plugin-scaffold-minimum']);
+    });
+
+    it('sets features with multiple overwrites', async() => {
+      const result = await selectFeatures([
+        'postcss-basic',
+        'sass',
+        'karma',
+        'htmlmin-min',
+        'vscode',
+        'scaffold-navigation', // this is ignore because not in plugin questionnaire
+        'plugin-scaffold-basic'
+      ], {unattended: true, plugin: true});
+      expect(result).toEqual([
+        'plugin',
+        'cli-bundler',
+        'requirejs',
+        'web',
+        'babel',
+        'htmlmin-min',
+        'sass',
+        'postcss-basic',
+        'karma',
+        'vscode',
+        'plugin-scaffold-basic'
+      ]);
+    });
+  });
+
+  describe('in interactive mode', () => {
+    it('gets default esnext features', async() => {
+      const result = await selectFeatures(undefined, {plugin: true}, [
+        1  // default esnext plugin
+      ]);
+
+      expect(result).toEqual(['plugin', 'cli-bundler', 'requirejs', 'web', 'babel', 'jest', 'vscode', 'plugin-scaffold-minimum']);
+    });
+
+    it('gets default typescript features', async() => {
+      const result = await selectFeatures(undefined, {plugin: true}, [
+        2  // default typescript plugin
+      ]);
+
+      expect(result).toEqual(['plugin', 'cli-bundler', 'requirejs', 'web', 'typescript', 'jest', 'vscode', 'plugin-scaffold-minimum']);
+    });
+
+    it('gets customised features', async() => {
+      const result = await selectFeatures(undefined, {plugin: true}, [
+        3, // custom app
+        1, // babel
+        2, // htmlmin-min
+        4, // stylus
+        3, // postcss-typical
+        2, // karma
+        1, // no editor
+        2  // plugin-scaffold-basic
+      ]);
+
+      expect(result).toEqual([
+        'plugin',
+        'cli-bundler',
+        'requirejs',
+        'web',
+        'babel',
+        'htmlmin-min',
+        'stylus',
+        'postcss-typical',
+        'karma',
+        'plugin-scaffold-basic'
+      ]);
+    });
+
+    it('gets all default customised features', async() => {
+      const result = await selectFeatures(undefined, {plugin: true}, [
+        3, // custom app
+        1, // babel
+        1, // no htmlmin
+        1, // css
+        1, // no postcss
+        1, // no unit test
+        1, // no editor
+        1  // plugin-scaffold-minimum
+      ]);
+
+      expect(result).toEqual(['plugin', 'cli-bundler', 'requirejs', 'web', 'babel', 'plugin-scaffold-minimum']);
+    });
+
+    it('gets customised features with overwrites that skips some questions', async() => {
+      const result = await selectFeatures(['stylus', 'karma'], {plugin: true}, [
+        // First workflow question is skipped
+        1, // babel
+        2, // htmlmin-min
+        3, // postcss-typical
+        2, // vscode
+        2  // plugin-scaffold-basic
+      ]);
+
+      expect(result).toEqual([
+        'plugin',
+        'cli-bundler',
+        'requirejs',
+        'web',
+        'babel',
+        'htmlmin-min',
+        'stylus',
+        'postcss-typical',
+        'karma',
+        'vscode',
+        'plugin-scaffold-basic'
+      ]);
+    });
+  });
 });

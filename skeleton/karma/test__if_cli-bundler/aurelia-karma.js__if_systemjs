@@ -23,11 +23,14 @@
     var originalDefine = global.define;
     global.define = function(name, deps, m) {
       if (typeof name === 'string') {
+        // alias from module "/base/root/name" to module "name"
         originalDefine('/base/' + root + '/' + name, [name], function (result) { return result; });
       }
 
+      // normal module define("name")
       return originalDefine(name, deps, m);
-    }
+    };
+    global.define.amd = originalDefine.amd;
   }
 
   function requireTests() {

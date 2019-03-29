@@ -36,8 +36,11 @@
   },
   "include": [
     "./src/**/*.ts",
+    // @if feat.plugin
+    "./dev-app/**/*.ts",
+    // @endif
     "./test/**/*.ts",
-    "./custom_typings/**/*.d.ts"
+    "./types/**/*.d.ts"
   ],
   // @if feat.cypress
   "exclude": [

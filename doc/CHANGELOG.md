@@ -1,3 +1,25 @@
+# [1.0.0-beta.15](https://github.com/aurelia/cli/compare/1.0.0-beta.14...1.0.0-beta.15) (2019-03-28)
+
+
+### Bug Fixes
+
+* **jest mock:** Add stub for static content ([9268d5c](https://github.com/aurelia/cli/commit/9268d5c))
+* **jest mock:** Add stub for static content ([7206f1d](https://github.com/aurelia/cli/commit/7206f1d))
+* **jest mock:** Add stub for static content ([473a540](https://github.com/aurelia/cli/commit/473a540))
+* **jest mock:** Add stub for static content ([f7cb875](https://github.com/aurelia/cli/commit/f7cb875))
+* **karam:** ensure the element under testing is traced by webpack ([d6bab9d](https://github.com/aurelia/cli/commit/d6bab9d))
+* **new-application:** add missing dep clean-webpack-plugin to dotnet-core+webpack app ([7534244](https://github.com/aurelia/cli/commit/7534244)), closes [#1072](https://github.com/aurelia/cli/issues/1072)
+
+
+### Features
+
+* **all:** use core-js v3 to replace deprecated @babel/polyfill ([990af96](https://github.com/aurelia/cli/commit/990af96)), closes [/babeljs.io/blog/2019/03/19/7.4.0#migration-from-core-js-2](https://github.com//babeljs.io/blog/2019/03/19/7.4.0/issues/migration-from-core-js-2)
+* scaffolding aurelia plugin project ([f5b2367](https://github.com/aurelia/cli/commit/f5b2367)), closes [#658](https://github.com/aurelia/cli/issues/658)
+* **generate-skeletons:** add plugin skeletons to "au generate-skeletons" ([245ce7e](https://github.com/aurelia/cli/commit/245ce7e))
+* **release-check:** add release-check on plugin projects ([05c5980](https://github.com/aurelia/cli/commit/05c5980))
+
+
+
 # [1.0.0-beta.14](https://github.com/aurelia/cli/compare/1.0.0-beta.13...1.0.0-beta.14) (2019-03-20)
 
 

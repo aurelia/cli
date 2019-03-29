@@ -6,36 +6,77 @@
         ["@babel/plugin-transform-modules-amd", {"loose": true}]
       ]
     },
-    "source": "src/**/*.js",
+
+    "source": [
+      // @if feat.plugin
+      "dev-app/**/*.js",
+      // @endif
+      "src/**/*.js"
+    ],
     // @endif
 
     // @if feat.typescript
-    "dtsSource": ["./custom_typings/**/*.d.ts"],
-    "source": "src/**/*.ts",
+    "dtsSource": ["./types/**/*.d.ts"],
+    "source": [
+      // @if feat.plugin
+      "dev-app/**/*.ts",
+      // @endif
+      "src/**/*.ts"
+    ],
     // @endif
   },
   "markupProcessor": {
-    "source": "src/**/*.html"
+    "source": [
+      // @if feat.plugin
+      "dev-app/**/*.html",
+      // @endif
+      "src/**/*.html"
+    ],
   },
   "cssProcessor": {
     // @if ! (feat.less || feat.sass || feat.stylus)
-    "source": "src/**/*.css"
+    "source": [
+      // @if feat.plugin
+      "dev-app/**/*.css",
+      // @endif
+      "src/**/*.css"
+    ],
     // @endif
 
     // @if feat.less
-    "source": "src/**/*.less"
+    "source": [
+      // @if feat.plugin
+      "dev-app/**/*.less",
+      // @endif
+      "src/**/*.less"
+    ],
     // @endif
 
     // @if feat.sass
-    "source": "src/**/*.scss"
+    "source": [
+      // @if feat.plugin
+      "dev-app/**/*.scss",
+      // @endif
+      "src/**/*.scss"
+    ],
     // @endif
 
     // @if feat.stylus
-    "source": "src/**/*.styl"
+    "source": [
+      // @if feat.plugin
+      "dev-app/**/*.styl",
+      // @endif
+      "src/**/*.styl"
+    ],
     // @endif
   },
   "jsonProcessor": {
-    "source": "src/**/*.json"
+    "source": [
+      // @if feat.plugin
+      "dev-app/**/*.json",
+      // @endif
+      "src/**/*.json"
+    ],
   },
   // @if feat.karma
   "unitTestRunner": {
