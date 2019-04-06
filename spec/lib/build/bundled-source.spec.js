@@ -295,7 +295,7 @@ export {t};
   it('transforms npm package js file with named AMD module', () => {
     let file = {
       path: path.resolve(cwd, 'node_modules/foo/index.js'),
-      contents: "define('M', ['a', 'b'], function(){});\n"
+      contents: "define('M', ['a', 'b'], function(){});"
     };
 
     let bs = new BundledSource(bundler, file);
@@ -321,8 +321,8 @@ export {t};
     let deps = bs.transform();
     expect(deps).toEqual(['a', 'b']);
     expect(bs.requiresTransform).toBe(false);
-    expect(bs.contents.replace(/\r|\n/g, ''))
-      .toBe("define('M', ['a', 'b'], function(){});define(\"foo/index\", [\"M\"], function(m){return m;});");
+    expect(bs.contents)
+      .toBe("define('M', ['a', 'b'], function(){});\n;define(\"foo/index\", [\"M\"], function(m){return m;});\n");
   });
 
   it('transforms npm package js file with more than one named AMD module', () => {
@@ -355,8 +355,8 @@ export {t};
     expect(deps).toEqual(['a', 'b', 'c']);
     expect(bs.requiresTransform).toBe(false);
     // the alias targets first named module 'M'
-    expect(bs.contents.replace(/\r|\n/g, ''))
-      .toBe("define('M', ['a', 'b'], function(){});define('N', ['c'], function(){});define(\"foo/index\", [\"M\"], function(m){return m;});");
+    expect(bs.contents)
+      .toBe("define('M', ['a', 'b'], function(){});define('N', ['c'], function(){});\n\n;define(\"foo/index\", [\"M\"], function(m){return m;});\n");
   });
 
   it('transforms npm package js file by force cjs wrapper', () => {
