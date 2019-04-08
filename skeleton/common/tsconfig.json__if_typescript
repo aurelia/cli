@@ -32,7 +32,11 @@
     "lib": ["es2015", "dom"],
     "moduleResolution": "node",
     "allowJs": true,
-    "baseUrl": "src"
+    "baseUrl": "src",
+
+    // @if feat.plugin
+    "paths": { "resources": [ "" ] },
+    // @endif
   },
   "include": [
     "./src/**/*.ts",
