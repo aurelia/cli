@@ -3,8 +3,16 @@
   "compilerOptions": {
     // @if feat['cli-bundler']
     "module": "amd",
-    "declaration": false,
     "noImplicitAny": false,
+
+    // @if feat.plugin
+    "declaration": true,
+    // @endif
+
+    // @if !feat.plugin
+    "declaration": false,
+    // @endif
+
     // @endif
 
     // @if feat.webpack
@@ -31,11 +39,15 @@
     "target": "es5",
     "lib": ["es2015", "dom"],
     "moduleResolution": "node",
-    "allowJs": true,
     "baseUrl": "src",
 
     // @if feat.plugin
     "paths": { "resources": [ "" ] },
+    "allowJs": false,
+    // @endif
+
+    // @if !feat.plugin
+    "allowJs": true,
     // @endif
   },
   "include": [
