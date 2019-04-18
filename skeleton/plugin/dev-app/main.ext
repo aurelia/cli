@@ -1,5 +1,6 @@
-import 'core-js/stable';
 // @if feat.babel
+// regenerator-runtime is to support async/await syntax in ESNext.
+// If you don't use async/await, you can remove regenerator-runtime.
 import 'regenerator-runtime/runtime';
 // @endif
 // @if feat.typescript

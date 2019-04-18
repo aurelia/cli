@@ -287,6 +287,7 @@ module.exports = ({ production, server, extractCss, coverage, analyze, karma } =
       $: 'jquery',
       jQuery: 'jquery',
     // @endif
+      'Promise': ['promise-polyfill', 'default']
     }),
     new ModuleDependenciesPlugin({
       'aurelia-testing': ['./compile-spy', './view-spy']

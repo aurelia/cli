@@ -144,6 +144,7 @@
       {
         "name": "vendor-bundle.js",
         "prepend": [
+          "node_modules/promise-polyfill/dist/polyfill.min.js",
           // @if feat.requirejs
           "node_modules/requirejs/require.js"
           // @endif
