@@ -39,6 +39,20 @@ const cssRules = [
   // @endif
 ];
 
+// @if feat.sass
+const sassRules = [
+  {
+    loader: "css-loader"
+  },
+  {
+     loader: "sass-loader", 
+     options: {
+       includePaths: ["node_modules"]
+     }
+  }
+];
+// @endif
+
 module.exports = ({ production, server, extractCss, coverage, analyze, karma } = {}) => ({
   resolve: {
     // @if feat.typescript
@@ -245,7 +259,10 @@ module.exports = ({ production, server, extractCss, coverage, analyze, karma } =
       // @if feat.sass
       {
         test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
+        use: extractCss ? [{
+          loader: MiniCssExtractPlugin.loader
+        }, ...sassRules
+        ]: ['style-loader', ...sassRules],
         issuer: /\.[tj]s$/i
       },
       {
