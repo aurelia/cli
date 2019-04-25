@@ -232,7 +232,10 @@ module.exports = ({ production, server, extractCss, coverage, analyze, karma } =
       // @if feat.less
       {
         test: /\.less$/i,
-        use: ['style-loader', 'css-loader', 'less-loader'],
+        use: extractCss ? [{
+          loader: MiniCssExtractPlugin.loader
+        }, ...cssRules, 'less-loader'
+        ]: ['style-loader', ...cssRules, 'less-loader'],
         issuer: /\.[tj]s$/i
       },
       {
@@ -244,7 +247,10 @@ module.exports = ({ production, server, extractCss, coverage, analyze, karma } =
       // @if feat.stylus
       {
         test: /\.styl$/i,
-        use: ['style-loader', 'css-loader', 'stylus-loader'],
+        use: extractCss ? [{
+          loader: MiniCssExtractPlugin.loader
+        }, ...cssRules, 'stylus-loader'
+        ]: ['style-loader', ...cssRules, 'stylus-loader'],
         issuer: /\.[tj]s$/i
       },
       {
