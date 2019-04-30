@@ -4,6 +4,6 @@ os:
   - osx
 language: node_js
 node_js:
-  - "8.9"
   - "8"
   - "10"
+  - "12"
