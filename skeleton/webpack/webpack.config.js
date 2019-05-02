@@ -42,7 +42,7 @@ const cssRules = [
 // @if feat.sass
 const sassRules = [
   {
-     loader: "sass-loader", 
+     loader: "sass-loader",
      options: {
        includePaths: ["node_modules"]
      }
@@ -282,7 +282,7 @@ module.exports = ({ production, server, extractCss, coverage, analyze, karma } =
       },
       // @endif
       // @if feat.typescript
-      { test: /\.ts$/, loader: "ts-loader" },
+      { test: /\.ts$/, loader: "ts-loader", options: { reportFiles: [ srcDir+'/**/*.ts'] }, include: srcDir },
       // @endif
       // embed small images and fonts as Data Urls and larger ones as files:
       { test: /\.(png|gif|jpg|cur)$/i, loader: 'url-loader', options: { limit: 8192 } },

@@ -68,7 +68,7 @@
   "jest-transform-stub": "^2.0.0",
   "json-loader": "^0.5.7",
   "html-loader": "^0.5.5",
-  "karma": "^3.0.0",
+  "karma": "^4.1.0",
   "karma-babel-preprocessor": "^8.0.0",
   "karma-chrome-launcher": "^2.2.0",
   "karma-coverage-istanbul-reporter": "^2.0.4",
