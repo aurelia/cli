@@ -1,0 +1,11 @@
+{
+  "name": "cypress",
+  "description": "Open Cypress to start developing tests. Start the application before running this task.",
+  "flags": [
+    {
+      "name": "run",
+      "description": "Perfom a testrun and reports the results.",
+      "type": "boolean"
+    }
+  ]
+}

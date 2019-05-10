@@ -1,0 +1,15 @@
+// @if feat.typescript
+import {FrameworkConfiguration} from 'aurelia-framework';
+// @endif
+import {PLATFORM} from 'aurelia-pal';
+
+export function configure(config/* @if feat.typescript **: FrameworkConfiguration/* @endif */) {
+  config.globalResources([
+    // @if feat['plugin-scaffold-basic']
+    PLATFORM.moduleName('./attributes/color'),
+    PLATFORM.moduleName('./value-converters/upcase'),
+    PLATFORM.moduleName('./binding-behaviors/primary-click'),
+    // @endif
+    PLATFORM.moduleName('./elements/hello-world')
+  ]);
+}

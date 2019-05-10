@@ -1,4 +1,3 @@
-'use strict';
 const Test = require('../test');
 const ExecuteCommand = require('../../tasks/execute-command');
 const path = require('path');
@@ -10,7 +9,7 @@ class AuBuildDoesNotThrowCommandLineErrors extends Test {
   }
 
   onOutput(message) {
-    this.logger.debug(message);
+    this.debug(message);
 
     if (message.toLowerCase().indexOf('error') > -1) {
       this.executeCommand.stop();
@@ -38,7 +37,7 @@ class AuBuildWatchPicksUpFileChanges extends Test {
     return new Promise(resolve => {
       const fullPath = path.join(this.context.workingDirectory, this.fileToChange);
 
-      this.logger.debug(`changing file ${fullPath}`);
+      this.debug(`changing file ${fullPath}`);
 
       fs.readFile(fullPath, 'utf-8', (err, data) => {
         if (err) {
@@ -57,7 +56,7 @@ class AuBuildWatchPicksUpFileChanges extends Test {
   }
 
   onOutput(message) {
-    this.logger.debug(message);
+    this.debug(message);
 
     if (isBuildCompletedMessage(message)) {
       setTimeout(() => this.changeFile(), 1000);

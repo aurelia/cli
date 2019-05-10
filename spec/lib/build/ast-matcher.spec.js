@@ -1,4 +1,3 @@
-'use strict';
 const esprima = require('esprima');
 
 const astm = require('../../../lib/build/ast-matcher');
@@ -214,7 +213,7 @@ describe('matcher built by astMatcher', () => {
 
   it('rejects unknown input', () => {
     let m = astMatcher('a(__str_foo)');
-    expect(() => m(new Buffer())).toThrow();
+    expect(() => m(Buffer.from('a("foo")'))).toThrow();
   });
 
   it('returns matches and matching nodes', () => {

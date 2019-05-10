@@ -1,4 +1,3 @@
-'use strict';
 const stubModule = require('../../../lib/build/stub-module');
 
 describe('StubCoreNodejsModule', () => {

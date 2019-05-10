@@ -13,6 +13,26 @@
       "name": "here",
       "description": "Creates a new project with the current working directory as the root of the project instead of creating a new project folder.",
       "type": "boolean"
+    },
+    {
+      "name": "plugin",
+      "description": "Creates a new Aurelia plugin project.",
+      "type": "boolean"
+    },
+    {
+      "name": "unattended",
+      "description": "Creates project in unattended mode. It will fail if there is any conflicting file in target folder.",
+      "type": "boolean"
+    },
+    {
+      "name": "select",
+      "description": "Preselect features (e.g. --select cli-bundler,alameda,karma). In unattended mode, these overwrite default-esnext selections. In interactive mode, some questions will be skipped because they are pre-answered.",
+      "type": "string"
+    },
+    {
+      "name": "install-deps",
+      "description": "Auto install dependencies using yarn or npm (e.g --install-deps yarn)",
+      "type": "string"
     }
   ]
 }

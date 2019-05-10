@@ -1,4 +1,3 @@
-'use strict';
 describe('The cli-options', () => {
   let cliOptions;
   let mockfs;

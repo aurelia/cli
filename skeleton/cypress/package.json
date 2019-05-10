@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    // @if feat.typescript
+    "@cypress/webpack-preprocessor": "",
+    "webpack": "",
+    "ts-loader": "",
+    // @endif
+    "cypress": ""
+  }
+}

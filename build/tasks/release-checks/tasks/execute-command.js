@@ -1,4 +1,3 @@
-'use strict';
 const Task = require('./task');
 const { killProc } = require('../utils');
 const { spawn } = require('child_process');

@@ -1,5 +1,3 @@
-'use strict';
-
 const Step = require('../step');
 
 module.exports = class Test extends Step {

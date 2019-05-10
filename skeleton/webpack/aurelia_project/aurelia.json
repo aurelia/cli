@@ -1,0 +1,23 @@
+{
+  "build": {
+    "options": {
+      "server": "dev",
+      "extractCss": "prod",
+      "coverage": false
+    }
+  },
+  "platform": {
+    "hmr": false,
+    "open": false,
+
+    // @if feat.web
+    "port": 8080,
+    "output": "dist",
+    // @endif
+
+    // @if feat['dotnet-core']
+    "port": 5000,
+    "output": "wwwroot/dist",
+    // @endif
+  }
+}

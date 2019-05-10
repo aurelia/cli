@@ -1,0 +1,12 @@
+import {inject} from 'aurelia-framework';
+
+@inject(Element)
+export class ColorCustomAttribute {
+  constructor(element) {
+    this.element = element;
+  }
+
+  valueChanged(newValue, oldValue) {
+    this.element.style.color = newValue;
+  }
+}

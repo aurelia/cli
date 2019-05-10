@@ -1,4 +1,3 @@
-'use strict';
 const Test = require('../test');
 const ExecuteCommand = require('../../tasks/execute-command');
 const CheckForJavascriptErrors = require('../../tasks/check-javascript-errors');
@@ -13,7 +12,7 @@ class AuRunDoesNotThrowCommandLineErrors extends Test {
   }
 
   onOutput(message) {
-    this.logger.debug(message);
+    this.debug(message);
 
     if (message.toLowerCase().indexOf('error') > -1) {
       this.executeCommand.stop();
@@ -25,7 +24,7 @@ class AuRunDoesNotThrowCommandLineErrors extends Test {
   }
 
   execute() {
-    this.executeCommand = new ExecuteCommand('au', ['run', '--watch'], (msg) => this.onOutput(msg));
+    this.executeCommand = new ExecuteCommand('au', ['run'], (msg) => this.onOutput(msg));
     return this.executeCommand.executeAsNodeScript();
   }
 }
@@ -36,7 +35,7 @@ class AuRunLaunchesServer extends Test {
   }
 
   onOutput(message) {
-    this.logger.debug(message);
+    this.debug(message);
 
     if (isApplicationAvailableMessage(message)) {
       this.success();
@@ -45,14 +44,14 @@ class AuRunLaunchesServer extends Test {
   }
 
   execute() {
-    this.executeCommand = new ExecuteCommand('au', ['run', '--watch'], (msg) => this.onOutput(msg));
+    this.executeCommand = new ExecuteCommand('au', ['run'], (msg) => this.onOutput(msg));
     return this.executeCommand.executeAsNodeScript();
   }
 }
 
 class AuRunWatchPicksUpFileChanges extends Test {
   constructor(fileToChange) {
-    super('au run --watch picks up file changes');
+    super('au run picks up file changes');
 
     this.fileToChange = fileToChange || path.join('src', 'app.html');
     this.watchingForFileChangeNotification = false;
@@ -62,7 +61,7 @@ class AuRunWatchPicksUpFileChanges extends Test {
     return new Promise(resolve => {
       const fullPath = path.join(this.context.workingDirectory, this.fileToChange);
 
-      this.logger.debug(`changing file ${fullPath}`);
+      this.debug(`changing file ${fullPath}`);
 
       fs.readFile(fullPath, 'utf-8', (err, data) => {
         if (err) {
@@ -81,7 +80,7 @@ class AuRunWatchPicksUpFileChanges extends Test {
   }
 
   onOutput(message) {
-    this.logger.debug(message);
+    this.debug(message);
 
     if (isApplicationAvailableMessage(message)) {
       setTimeout(() => this.changeFile(), 1000);
@@ -100,7 +99,7 @@ class AuRunWatchPicksUpFileChanges extends Test {
   execute(context) {
     this.context = context;
 
-    this.executeCommand = new ExecuteCommand('au', ['run', '--watch'], (msg) => this.onOutput(msg));
+    this.executeCommand = new ExecuteCommand('au', ['run'], (msg) => this.onOutput(msg));
     return this.executeCommand.executeAsNodeScript();
   }
 }
@@ -111,7 +110,7 @@ class AuRunAppLaunchesWithoutJavascriptErrors extends Test {
   }
 
   onOutput(message) {
-    this.logger.debug(message);
+    this.debug(message);
 
     if (isApplicationAvailableMessage(message)) {
       const url = getURL(message);
@@ -119,15 +118,15 @@ class AuRunAppLaunchesWithoutJavascriptErrors extends Test {
       const checkJavascriptErrorsTask = new CheckForJavascriptErrors(url);
 
       return new StepRunner(checkJavascriptErrorsTask).run()
-      .then(() => {
-        this.success();
-        this.executeCommand.stop();
-      });
+        .then(() => {
+          this.success();
+          this.executeCommand.stop();
+        });
     }
   }
 
   execute() {
-    this.executeCommand = new ExecuteCommand('au', ['run', '--watch'], (msg) => this.onOutput(msg));
+    this.executeCommand = new ExecuteCommand('au', ['run'], (msg) => this.onOutput(msg));
     return this.executeCommand.executeAsNodeScript();
   }
 }
@@ -138,7 +137,7 @@ class AuRunRendersPage extends Test {
   }
 
   onOutput(context, message) {
-    this.logger.debug(message);
+    this.debug(message);
 
     if (isApplicationAvailableMessage(message)) {
       const url = getURL(message);
@@ -146,15 +145,15 @@ class AuRunRendersPage extends Test {
       const screenshot = new TakeScreenShotOfPage(url, path.join(context.resultOutputFolder, 'screenshot-of-au-run.png'));
 
       return new StepRunner(screenshot).run()
-      .then(() => {
-        this.success();
-        this.executeCommand.stop();
-      });
+        .then(() => {
+          this.success();
+          this.executeCommand.stop();
+        });
     }
   }
 
   execute(context) {
-    this.executeCommand = new ExecuteCommand('au', ['run', '--watch'], (msg) => this.onOutput(context, msg));
+    this.executeCommand = new ExecuteCommand('au', ['run'], (msg) => this.onOutput(context, msg));
     return this.executeCommand.executeAsNodeScript();
   }
 }

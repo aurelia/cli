@@ -1,0 +1,41 @@
+// @if feat.babel
+// regenerator-runtime is to support async/await syntax in ESNext.
+// If you don't use async/await, you can remove regenerator-runtime.
+import 'regenerator-runtime/runtime';
+// @endif
+// @if feat.typescript
+import {Aurelia} from 'aurelia-framework'
+// @endif
+import environment from './environment';
+// @if feat.webpack
+import {PLATFORM} from 'aurelia-pal';
+// @endif
+
+export function configure(aurelia/* @if feat.typescript **: Aurelia/* @endif */) {
+  aurelia.use
+    .standardConfiguration()
+    // @if feat.webpack
+    .feature(PLATFORM.moduleName('resources/index'));
+    // @endif
+    // @if feat['cli-bundler']
+    .feature('resources');
+    // @endif
+
+  aurelia.use.developmentLogging(environment.debug ? 'debug' : 'warn');
+
+  if (environment.testing) {
+    // @if feat.webpack
+    aurelia.use.plugin(PLATFORM.moduleName('aurelia-testing'));
+    // @endif
+    // @if feat['cli-bundler']
+    aurelia.use.plugin('aurelia-testing');
+    // @endif
+  }
+
+  // @if feat.webpack
+  aurelia.start().then(() => aurelia.setRoot(PLATFORM.moduleName('app')));
+  // @endif
+  // @if feat['cli-bundler']
+  aurelia.start().then(() => aurelia.setRoot());
+  // @endif
+}

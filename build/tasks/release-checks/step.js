@@ -1,5 +1,5 @@
-'use strict';
 const LogManager = require('aurelia-logging');
+const _ = require('lodash');
 
 module.exports = class Step {
   constructor(title) {
@@ -13,5 +13,9 @@ module.exports = class Step {
 
   getTitle() {
     throw new Error('not implemented');
+  }
+
+  debug(message) {
+    this.logger.debug(_.trimEnd(message));
   }
 };

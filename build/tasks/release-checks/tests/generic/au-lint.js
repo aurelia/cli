@@ -1,4 +1,3 @@
-'use strict';
 const Test = require('../test');
 const ExecuteCommand = require('../../tasks/execute-command');
 
@@ -8,7 +7,7 @@ class AuLintFinishes extends Test {
   }
 
   onOutput(message) {
-    this.logger.debug(message);
+    this.debug(message);
 
     if (isTestFinishedMessage(message)) {
       this.success();
