@@ -1,0 +1,12 @@
+{
+  "include": [
+    "lib/**/*.js"
+  ],
+  "exclude": [
+    "lib/build/amodro-trace/lib/**/*.js"
+  ],
+  "reporter": [
+    "lcov",
+    "text"
+  ]
+}

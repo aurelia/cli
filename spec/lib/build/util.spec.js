@@ -1,4 +1,3 @@
-'use strict';
 const path = require('path');
 const Utils = require('../../../lib/build/utils');
 

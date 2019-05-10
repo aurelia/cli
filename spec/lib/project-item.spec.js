@@ -1,186 +1,68 @@
-'use strict';
-
 const path = require('path');
+const fs = require('../../lib/file-system');
+const mockfs = require('mock-fs');
+const {ProjectItem} = require('../../lib/project-item');
 
-describe('The project-item module', () => {
-  let mockfs;
-
-  let fs;
-  let ui;
-
-  let ProjectItem;
-  let projectItem;
-
-  beforeEach(() => {
-    mockfs = require('mock-fs');
-
-    fs = require('../../lib/file-system');
-    ui = new (require('../mocks/ui'));
-
-    ProjectItem = require('../../lib/project-item').ProjectItem;
-
-    mockfs();
+describe('The ProjectItem module', () => {
+  it('ProjectItem.text() captures text', () => {
+    const t = ProjectItem.text('file.js', 'lorem');
+    expect(t.name).toBe('file.js');
+    expect(t.text).toBe('lorem');
+    expect(t.isDirectory).toBe(false);
+    expect(() => t.add(ProjectItem.text('file2.js', 'lorem'))).toThrow();
   });
 
-  afterEach(() => {
-    mockfs.restore();
+  it('ProjectItem.directory() captures dir', () => {
+    const t = ProjectItem.directory('dir');
+    expect(t.name).toBe('dir');
+    expect(t.text).toBeUndefined();
+    expect(t.isDirectory).toBe(true);
+    const file = ProjectItem.text('file.js', 'lorem');
+    const folder = ProjectItem.directory('folder');
+    t.add(file).add(folder);
+    expect(t.children.length).toBe(2);
+    expect(t.children).toEqual([file, folder]);
   });
 
-  describe('The create() function', () => {
+  describe('Creates files', () => {
+    let folder;
     beforeEach(() => {
-      projectItem = new ProjectItem();
+      mockfs();
+      folder = ProjectItem.directory('folder');
+      folder.add(ProjectItem.text('file1.js', 'file1'));
+      folder.add(ProjectItem.text('file2.js', 'file2'));
+      folder.add(ProjectItem.directory('deepFolder').add(ProjectItem.text('file4.js', 'file4')));
     });
 
-    describe('isDirectory = true', () => {
-      beforeEach(() => {
-        projectItem.isDirectory = true;
-      });
-
-      it('takes parent directory into consideration', done => {
-        let parent = ProjectItem.directory('src');
-        projectItem.name = 'resources';
-        projectItem.parent = parent;
-
-        parent.create().then(() => {
-          projectItem.create(null, '.')
-            .then(() => fs.readdir('src'))
-            .then(files => {
-              expect(files[0]).toBe('resources');
-            })
-            .then(done);
-        }).catch(e => done.fail(e));
-      });
-
-      it('creates a directory if it is missing', done => {
-        projectItem.name = 'cli-app';
-        projectItem.create()
-          .then(() => fs.readdir(projectItem.name))
-          .then(files => {
-            expect(files).toBeDefined();
-          })
-          .then(done)
-          .catch(e => done.fail(e));
-      });
-
-      it('creates the children in sequence', done => {
-        let calls = [];
-
-        let create1 = jasmine.createSpy('create1').and.callFake(() => new Promise(r => {
-          setTimeout(() => {
-            calls.push('create1');
-            r();
-          }, 200);
-        }));
-        let create2 = jasmine.createSpy('create2').and.callFake(() => new Promise(r => {
-          setTimeout(() => {
-            calls.push('create2');
-            r();
-          }, 400);
-        }));
-        let create3 = jasmine.createSpy('create3').and.callFake(() => new Promise(r => {
-          setTimeout(() => {
-            calls.push('create3');
-            r();
-          }, 0);
-        }));
-
-        projectItem.children.push({ create: create1 });
-        projectItem.children.push({ create: create2 });
-        projectItem.children.push({ create: create3 });
-
-        projectItem.name = 'cli-app';
-        projectItem.create(ui).then(() => {
-          expect(calls[0]).toBe('create1');
-          expect(calls[1]).toBe('create2');
-          expect(calls[2]).toBe('create3');
-
-          done();
-        }).catch(e => done.fail(e));
-      });
-    });
-  });
-
-  describe('The _write() function', () => {
-    beforeEach(() => {
-      projectItem = new ProjectItem();
-    });
-    it('creates non-existing files', done => {
-      const file = {
-        path: 'index.html',
-        content: '<html></html>'
-      };
-
-      projectItem._write(file.path, file.content)
-        .then(() => fs.readFile(file.path))
-        .then(content => {
-          expect(content).toBe(file.content);
-        })
-        .then(done)
-        .catch(e => done.fail(e));
+    afterEach(() => {
+      mockfs.restore();
     });
 
-    describe('in `skip` strategy', () => {
-      beforeEach(() => {
-        projectItem._fileExistsStrategy = 'skip';
-      });
-
-      it('does not override an existing file', done => {
-        const file = {
-          path: 'index.html',
-          content: '<html></html>'
-        };
-
-        fs.writeFile(file.path, file.content)
-          .then(() => projectItem._write(file.path, 'evil'))
-          .then(() => fs.readFile(file.path))
-          .then(content => {
-            expect(content).toBe(file.content);
-          })
-          .then(done)
-          .catch(e => done.fail(e));
-      });
+    it('creates deep folders and files', async() => {
+      await folder.create('root');
+      expect(fs.readdirSync('.')).toEqual(['folder']);
+      expect(fs.readdirSync('folder').sort()).toEqual(['deepFolder', 'file1.js', 'file2.js']);
+      expect(fs.readFileSync(path.join('folder', 'file1.js'))).toBe('file1');
+      expect(fs.readFileSync(path.join('folder', 'file2.js'))).toBe('file2');
+      expect(fs.readdirSync(path.join('folder', 'deepFolder')).sort()).toEqual(['file4.js']);
+      expect(fs.readFileSync(path.join('folder', 'deepFolder', 'file4.js'))).toBe('file4');
     });
 
-    describe('in `ask` strategy', () => {
-      beforeEach(() => {
-        projectItem._fileExistsStrategy = 'ask';
+    it('Overwrites existing file', async() => {
+      mockfs({
+        'folder': {
+          'file1.js': 'oldfile1',
+          'file3.js': 'oldfile3'
+        }
       });
-
-      it('asks the user whether to replace the file or not if already present', done => {
-        let fsConfig = {};
-        fsConfig[path.resolve('./index.html')] = '<html></html>';
-        mockfs(fsConfig);
-
-        const file = {
-          path: path.resolve('./index.html'),
-          content: '<html></html>'
-        };
-
-        projectItem._write(file.path, '<html></html>', ui).then(() => {
-          expect(ui.question).toHaveBeenCalled();
-        }).then(done).catch(e => done.fail(e));
-      });
-
-      it('does not write file if user chooses not to replace the file', done => {
-        let fsConfig = {};
-        fsConfig[path.resolve('./index.html')] = '<html></html>';
-        mockfs(fsConfig);
-
-        spyOn(fs, 'writeFile');
-        // choose the first option (Keep it)
-        ui.question.and.callFake((question, answers) => {
-          return Promise.resolve(answers[0]);
-        });
-
-        const file = {
-          path: path.resolve('./index.html'),
-          content: '<html></html>'
-        };
-
-        projectItem._write(file.path, '<html></html>', ui).then(() => {
-          expect(fs.writeFile).not.toHaveBeenCalled();
-        }).then(done).catch(e => done.fail(e));
-      });
+      await folder.create('root');
+      expect(fs.readdirSync('.')).toEqual(['folder']);
+      expect(fs.readdirSync('folder').sort()).toEqual(['deepFolder', 'file1.js', 'file2.js', 'file3.js']);
+      expect(fs.readFileSync(path.join('folder', 'file1.js'))).toBe('file1');
+      expect(fs.readFileSync(path.join('folder', 'file2.js'))).toBe('file2');
+      expect(fs.readFileSync(path.join('folder', 'file3.js'))).toBe('oldfile3');
+      expect(fs.readdirSync(path.join('folder', 'deepFolder')).sort()).toEqual(['file4.js']);
+      expect(fs.readFileSync(path.join('folder', 'deepFolder', 'file4.js'))).toBe('file4');
     });
   });
 });

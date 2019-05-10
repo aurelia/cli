@@ -1,0 +1,41 @@
+{
+  "type": "project:plugin",
+  "paths": {
+    "root": "dev-app",
+    "resources": "../src",
+    "elements": "../src/elements",
+    "attributes": "../src/attributes",
+    "valueConverters": "../src/value-converters",
+    "bindingBehaviors": "../src/binding-behaviors"
+  },
+  "plugin": {
+    "source": {
+      // @if feat.babel
+      "js": "src/**/*.js",
+      // @endif
+
+      // @if feat.typescript
+      "js": "src/**/*.ts",
+      // @endif
+
+      // @if ! (feat.less || feat.sass || feat.stylus)
+      "css": "src/**/*.css",
+      // @endif
+
+      // @if feat.less
+      "css": "src/**/*.less",
+      // @endif
+
+      // @if feat.sass
+      "css": "src/**/*.scss",
+      // @endif
+
+      // @if feat.stylus
+      "css": "src/**/*.styl",
+      // @endif
+
+      "html": "src/**/*.html",
+      "json": "src/**/*.json"
+    }
+  }
+}

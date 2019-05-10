@@ -1,0 +1,19 @@
+Open at Views/Shared/_Layout.cshtml and make sure that it contains the following parts:
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>@ViewData["Title"] - Aurelia</title>
+
+        <link rel="stylesheet" href="~/dist/vendor.css" asp-append-version="true">
+    </head>
+    <body>
+        @RenderBody()
+
+        @RenderSection("scripts", required: false)
+    </body>
+</html>
+
+That's it for _Layout.cshtml

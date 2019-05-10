@@ -1,0 +1,8 @@
+export class App {
+  // @if feat.babel
+  message = 'Hello World!';
+  // @endif
+  // @if feat.typescript
+  public message: string = 'Hello World!';
+  // @endif
+}

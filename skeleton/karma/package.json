@@ -1,0 +1,31 @@
+{
+  "devDependencies": {
+    "jasmine-core": "",
+    "karma": "",
+    "karma-chrome-launcher": "",
+    "karma-jasmine": "",
+    "karma-sourcemap-loader": "",
+
+    // @if feat.webpack
+    "karma-coverage": "",
+    "karma-mocha-reporter": "",
+    "karma-webpack": "",
+    "karma-coverage-istanbul-reporter": "",
+    "jest-jasmine2": "",
+    "jest-matchers": "",
+    // @endif
+
+    // @if feat.babel
+    "karma-babel-preprocessor": "",
+    // @endif
+
+    // @if feat.typescript
+    "karma-typescript-preprocessor": "",
+    "@types/jasmine": "",
+    // @endif
+  },
+
+  "scripts": {
+    "test": "au test"
+  }
+}

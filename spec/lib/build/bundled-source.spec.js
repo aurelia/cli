@@ -1,4 +1,3 @@
-'use strict';
 const path = require('path');
 const BundlerMock = require('../../mocks/bundler');
 const BundledSource = require('../../../lib/build/bundled-source').BundledSource;
@@ -296,7 +295,7 @@ export {t};
   it('transforms npm package js file with named AMD module', () => {
     let file = {
       path: path.resolve(cwd, 'node_modules/foo/index.js'),
-      contents: "define('M', ['a', 'b'], function(){});\n"
+      contents: "define('M', ['a', 'b'], function(){});"
     };
 
     let bs = new BundledSource(bundler, file);
@@ -322,8 +321,8 @@ export {t};
     let deps = bs.transform();
     expect(deps).toEqual(['a', 'b']);
     expect(bs.requiresTransform).toBe(false);
-    expect(bs.contents.replace(/\r|\n/g, ''))
-      .toBe("define('M', ['a', 'b'], function(){});define(\"foo/index\", [\"M\"], function(m){return m;});");
+    expect(bs.contents)
+      .toBe("define('M', ['a', 'b'], function(){});\n;define(\"foo/index\", [\"M\"], function(m){return m;});\n");
   });
 
   it('transforms npm package js file with more than one named AMD module', () => {
@@ -356,8 +355,8 @@ export {t};
     expect(deps).toEqual(['a', 'b', 'c']);
     expect(bs.requiresTransform).toBe(false);
     // the alias targets first named module 'M'
-    expect(bs.contents.replace(/\r|\n/g, ''))
-      .toBe("define('M', ['a', 'b'], function(){});define('N', ['c'], function(){});define(\"foo/index\", [\"M\"], function(m){return m;});");
+    expect(bs.contents)
+      .toBe("define('M', ['a', 'b'], function(){});define('N', ['c'], function(){});\n\n;define(\"foo/index\", [\"M\"], function(m){return m;});\n");
   });
 
   it('transforms npm package js file by force cjs wrapper', () => {
@@ -740,6 +739,48 @@ export {t};
     expect(bs.contents.replace(/\r|\n/g, ''))
       .toBe("define('foo/index',['require','exports','module','pack-name.js','@pack/name.js','pack-name.js/foo','@pack/name.js/foo','./bar'],function (require, exports, module) {require('pack-name.js'); require('@pack/name.js'); require('pack-name.js/foo'); require('@pack/name.js/foo'); require('./bar');});");
   });
+
+  it('does not clears up deps with ".js" for browserify umd build', () => {
+    const umd = `(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.foo = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+module.exports = 'bar';
+
+},{}],2:[function(require,module,exports){
+module.exports = require('./bar.js');
+},{"./bar.js":1}]},{},[2])(2)
+});
+`;
+    let file = {
+      path: path.resolve(cwd, 'node_modules/foo/index.js'),
+      contents: umd
+    };
+
+    let bs = new BundledSource(bundler, file);
+    bs._getProjectRoot = () => 'src';
+    bs.includedBy = {
+      includedBy: {
+        description: {
+          name: 'foo',
+          mainId: 'foo/index',
+          loaderConfig: {
+            name: 'foo',
+            path: '../node_modules/foo',
+            main: 'index'
+          },
+          browserReplacement: () => undefined
+        }
+      }
+    };
+    bs._getLoaderPlugins = () => [];
+    bs._getLoaderConfig = () => ({paths: {}});
+    bs._getUseCache = () => undefined;
+
+    let deps = bs.transform();
+    expect(deps).toBeUndefined();
+    expect(bs.requiresTransform).toBe(false);
+    expect(bs.contents).toContain("define('foo/index',[]");
+    expect(bs.contents).toContain("require('./bar.js')");
+  });
+
 
   describe('cache', () => {
     let oldGetCache;

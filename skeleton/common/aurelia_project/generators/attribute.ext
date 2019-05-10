@@ -1,0 +1,69 @@
+import {inject} from 'aurelia-dependency-injection';
+import {Project, ProjectItem, CLIOptions, UI} from 'aurelia-cli';
+
+@inject(Project, CLIOptions, UI)
+export default class AttributeGenerator {
+  // @if feat.babel
+  constructor(project, options, ui) {
+    this.project = project;
+    this.options = options;
+    this.ui = ui;
+  }
+  // @endif
+  // @if feat.typescript
+  constructor(private project: Project, private options: CLIOptions, private ui: UI) { }
+  // @endif
+
+  async execute() {
+    const name = await this.ui.ensureAnswer(
+      this.options.args[0],
+      'What would you like to call the custom attribute?'
+    );
+
+    let fileName = this.project.makeFileName(name);
+    let className = this.project.makeClassName(name);
+
+    this.project.attributes.add(
+      // @if feat.babel
+      ProjectItem.text(`${fileName}.js`, this.generateSource(className))
+      // @endif
+      // @if feat.typescript
+      ProjectItem.text(`${fileName}.ts`, this.generateSource(className))
+      // @endif
+    );
+
+    await this.project.commitChanges();
+    await this.ui.log(`Created ${fileName}.`);
+  }
+
+  generateSource(className) {
+// @if feat.babel
+    return `import {inject} from 'aurelia-framework';
+
+@inject(Element)
+export class ${className}CustomAttribute {
+  constructor(element) {
+    this.element = element;
+  }
+
+  valueChanged(newValue, oldValue) {
+    //
+  }
+}
+`;
+// @endif
+// @if feat.typescript
+    return `import {autoinject} from 'aurelia-framework';
+
+@autoinject()
+export class ${className}CustomAttribute {
+  constructor(private element: Element) { }
+
+  valueChanged(newValue, oldValue) {
+    //
+  }
+}
+`;
+// @endif
+  }
+}

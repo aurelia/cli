@@ -1,4 +1,3 @@
-'use strict';
 const PackageInstaller = require('../../../lib/build/package-installer').PackageInstaller;
 const path = require('path');
 

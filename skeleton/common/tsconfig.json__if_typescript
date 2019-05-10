@@ -1,0 +1,73 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    // @if feat['cli-bundler']
+    "module": "amd",
+    "noImplicitAny": false,
+
+    // @if feat.plugin
+    "declaration": true,
+    // @endif
+
+    // @if !feat.plugin
+    "declaration": false,
+    // @endif
+
+    // @endif
+
+    // @if feat.webpack
+    "module": "esnext",
+    "skipLibCheck": true,
+    // @endif
+
+    // @if feat.cypress && feat.karma
+    "types": ["jasmine"],
+    // @endif
+
+    // @if feat.cypress && feat.jest && feat['cli-bundler']
+    "types": ["node", "jest"],
+    // @endif
+
+    // @if feat.protractor && feat.jest
+    "types": ["node", "jest"],
+    // @endif
+
+    // @if feat.webpack && feat['postcss-typical'] && feat.protractor
+    "typeRoots": ["./node_modules/@types"],
+    // @endif
+
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "target": "es5",
+    "lib": ["es2015", "dom"],
+    "moduleResolution": "node",
+    "baseUrl": "src",
+
+    // @if feat.plugin
+    "paths": { "resources": [ "" ] },
+    "allowJs": false,
+    // @endif
+
+    // @if !feat.plugin
+    "allowJs": true,
+    // @endif
+  },
+  "include": [
+    "./src/**/*.ts",
+    // @if feat.plugin
+    "./dev-app/**/*.ts",
+    // @endif
+    "./test/**/*.ts",
+    "./types/**/*.d.ts"
+  ],
+  // @if feat.cypress
+  "exclude": [
+    "./test/e2e/**/*.ts"
+  ],
+  // @endif
+  "atom": {
+    "rewriteTsconfig": false
+  }
+}

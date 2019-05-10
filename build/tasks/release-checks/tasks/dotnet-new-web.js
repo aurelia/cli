@@ -1,4 +1,3 @@
-'use strict';
 const Task = require('./task');
 const ExecuteCommand = require('./execute-command');
 const fs = require('fs');
