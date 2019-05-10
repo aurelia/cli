@@ -7,18 +7,10 @@ Take a look at Views/Home/Index.cshtml and make sure that it contains the follow
 <div aurelia-app="main">Loading...</div>
 
 @section scripts {
-<environment names="Production">
-   <script type="text/javascript" asp-src-include="~/dist/common.*.chunk.js" asp-append-version="true"></script>
-</environment>
-<environment names="Development, Staging, Production">
-   <script type="text/javascript" asp-src-include="~/dist/vendor.*.chunk.js" asp-append-version="true"></script>
-</environment>
-<environment names="Development">
-   <script type="text/javascript" src="~/dist/app.bundle.js" asp-append-version="true"></script>
-</environment>
-<environment names="Staging, Production">
-   <script type="text/javascript" asp-src-include="~/dist/app.*.bundle.js" asp-append-version="true"></script>
-</environment>
+   <script type="text/javascript" asp-src-include="~/dist/runtime*.bundle.js"></script>
+   <script type="text/javascript" asp-src-include="~/dist/common*.chunk.js"></script>
+   <script type="text/javascript" asp-src-include="~/dist/vendor*.chunk.js"></script>
+   <script type="text/javascript" asp-src-include="~/dist/app*.chunk.js"></script>
 }
 
 That's it for Index.cshtml

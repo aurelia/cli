@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>@ViewData["Title"] - Aurelia</title>
-        <link rel="stylesheet" asp-append-version="true" asp-href-include="~/dist/css/*.css"/>
+        <link rel="stylesheet" asp-append-version="true" asp-href-include="~/dist/vendor*.css" />
     </head>
     <body>
         @RenderBody()
@@ -12,3 +12,4 @@
         @RenderSection("scripts", required: false)
     </body>
 </html>
+<!DOCTYPE html>
