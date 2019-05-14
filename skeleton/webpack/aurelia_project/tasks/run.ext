@@ -29,7 +29,7 @@ function runWebpack(done) {
     stats: {
       colors: require('supports-color')
     },
-    https: config.devServer.https
+    ...config.devServer
   }/* @if feat.typescript ** as any/* @endif */;
 
   // Add the webpack-dev-server client to the webpack entry point
