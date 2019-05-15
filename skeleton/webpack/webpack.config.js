@@ -50,7 +50,7 @@ const sassRules = [
 ];
 // @endif
 
-module.exports = ({ production, server, extractCss, coverage, analyze, karma } = {}) => ({
+module.exports = ({ production, extractCss, analyze, tests, hmr } = {}) => ({
   resolve: {
     // @if feat.typescript
     extensions: ['.ts', '.js'],
@@ -206,7 +206,8 @@ module.exports = ({ production, server, extractCss, coverage, analyze, karma } =
   devServer: {
     contentBase: outDir,
     // serve index.html for all 404 (required for push-state)
-    historyApiFallback: true
+    historyApiFallback: true,
+    hot: hmr
   },
   devtool: production ? 'nosources-source-map' : 'cheap-module-eval-source-map',
   module: {
@@ -278,7 +279,7 @@ module.exports = ({ production, server, extractCss, coverage, analyze, karma } =
       // @if feat.babel
       {
         test: /\.js$/i, loader: 'babel-loader', exclude: nodeModulesDir,
-        options: coverage ? { sourceMap: 'inline', plugins: ['istanbul'] } : {}
+        options: tests ? { sourceMap: 'inline', plugins: ['istanbul'] } : {}
       },
       // @endif
       // @if feat.typescript
@@ -290,8 +291,11 @@ module.exports = ({ production, server, extractCss, coverage, analyze, karma } =
       { test: /\.woff(\?v=[0-9]\.[0-9]\.[0-9])?$/i, loader: 'url-loader', options: { limit: 10000, mimetype: 'application/font-woff' } },
       // load these fonts normally, as files:
       { test: /\.(ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/i, loader: 'file-loader' },
+      { test: /environment\.json$/i, use: [
+        {loader: path.resolve("./aurelia_project/environment-loader.js"), query: {env: production ? 'production' : 'development' }},
+      ]},
       // @if feat.typescript
-      ...when(coverage, {
+      ...when(tests, {
         test: /\.[jt]s$/i, loader: 'istanbul-instrumenter-loader',
         include: srcDir, exclude: [/\.(spec|test)\.[jt]s$/i],
         enforce: 'post', options: { esModules: true },
@@ -300,7 +304,7 @@ module.exports = ({ production, server, extractCss, coverage, analyze, karma } =
     ]
   },
   plugins: [
-    ...when(!karma, new DuplicatePackageCheckerPlugin()),
+    ...when(!tests, new DuplicatePackageCheckerPlugin()),
     new AureliaPlugin(),
     new ProvidePlugin({
     // @if feat['scaffold-navigation']
@@ -336,7 +340,7 @@ module.exports = ({ production, server, extractCss, coverage, analyze, karma } =
       // @endif
       metadata: {
         // available in index.ejs //
-        title, server, baseUrl
+        title, baseUrl
       }
     }),
     // ref: https://webpack.js.org/plugins/mini-css-extract-plugin/
@@ -344,7 +348,7 @@ module.exports = ({ production, server, extractCss, coverage, analyze, karma } =
       filename: production ? 'css/[name].[contenthash].bundle.css' : 'css/[name].[hash].bundle.css',
       chunkFilename: production ? 'css/[name].[contenthash].chunk.css' : 'css/[name].[hash].chunk.css'
     })),
-    ...when(production || server, new CopyWebpackPlugin([
+    ...when(!tests, new CopyWebpackPlugin([
       { from: 'static', to: outDir, ignore: ['.*'] }])), // ignore dot (hidden) files
     ...when(analyze, new BundleAnalyzerPlugin())
   ]
