@@ -6,7 +6,7 @@ import 'regenerator-runtime/runtime';
 // @if feat.typescript
 import {Aurelia} from 'aurelia-framework'
 // @endif
-import environment from './environment';
+import * as environment from '../config/environment.json';
 // @if feat.webpack
 import {PLATFORM} from 'aurelia-pal';
 // @endif
