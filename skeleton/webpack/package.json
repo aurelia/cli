@@ -69,5 +69,11 @@
     "istanbul-instrumenter-loader": "",
     "opn": "",
     "webpack-bundle-analyzer": "",
+  },
+  "scripts": {
+    "build": "gulp prebuild && webpack --env.production --env.extractCss",
+    "build:dev": "gulp prebuild && webpack --env.extractCss",
+    "analyze": "webpack --env.production --env.analyze",
+    "start": "gulp prebuild && webpack-dev-server --env.extractCss"
   }
 }
