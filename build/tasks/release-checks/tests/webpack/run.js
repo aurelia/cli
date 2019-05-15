@@ -6,9 +6,9 @@ const StepRunner = require('../../step-runner');
 const path = require('path');
 const fs = require('fs');
 
-class AuRunDoesNotThrowCommandLineErrors extends Test {
+class NpmStartDoesNotThrowCommandLineErrors extends Test {
   constructor() {
-    super('au run does not throw commandline errors');
+    super('npm start does not throw commandline errors');
   }
 
   onOutput(message) {
@@ -24,14 +24,14 @@ class AuRunDoesNotThrowCommandLineErrors extends Test {
   }
 
   execute() {
-    this.executeCommand = new ExecuteCommand('au', ['run'], (msg) => this.onOutput(msg));
+    this.executeCommand = new ExecuteCommand('npm', ['start'], (msg) => this.onOutput(msg));
     return this.executeCommand.executeAsNodeScript();
   }
 }
 
-class AuRunLaunchesServer extends Test {
+class NpmStartLaunchesServer extends Test {
   constructor() {
-    super('au run launches server');
+    super('npm start launches server');
   }
 
   onOutput(message) {
@@ -44,14 +44,14 @@ class AuRunLaunchesServer extends Test {
   }
 
   execute() {
-    this.executeCommand = new ExecuteCommand('au', ['run'], (msg) => this.onOutput(msg));
+    this.executeCommand = new ExecuteCommand('npm', ['start'], (msg) => this.onOutput(msg));
     return this.executeCommand.executeAsNodeScript();
   }
 }
 
-class AuRunWatchPicksUpFileChanges extends Test {
+class NpmStartWatchPicksUpFileChanges extends Test {
   constructor(fileToChange) {
-    super('au run picks up file changes');
+    super('npm start picks up file changes');
 
     this.fileToChange = fileToChange || path.join('src', 'app.html');
     this.watchingForFileChangeNotification = false;
@@ -99,14 +99,14 @@ class AuRunWatchPicksUpFileChanges extends Test {
   execute(context) {
     this.context = context;
 
-    this.executeCommand = new ExecuteCommand('au', ['run'], (msg) => this.onOutput(msg));
+    this.executeCommand = new ExecuteCommand('npm', ['start'], (msg) => this.onOutput(msg));
     return this.executeCommand.executeAsNodeScript();
   }
 }
 
-class AuRunAppLaunchesWithoutJavascriptErrors extends Test {
+class NpmStartAppLaunchesWithoutJavascriptErrors extends Test {
   constructor() {
-    super('au run app launches without javascript errors');
+    super('npm start app launches without javascript errors');
   }
 
   onOutput(message) {
@@ -127,14 +127,14 @@ class AuRunAppLaunchesWithoutJavascriptErrors extends Test {
   }
 
   execute() {
-    this.executeCommand = new ExecuteCommand('au', ['run'], (msg) => this.onOutput(msg));
+    this.executeCommand = new ExecuteCommand('npm', ['start'], (msg) => this.onOutput(msg));
     return this.executeCommand.executeAsNodeScript();
   }
 }
 
-class AuRunRendersPage extends Test {
+class NpmStartRendersPage extends Test {
   constructor() {
-    super('au run renders page');
+    super('npm start renders page');
   }
 
   onOutput(context, message) {
@@ -144,7 +144,7 @@ class AuRunRendersPage extends Test {
       this.isUp = true;
       const url = getURL(message);
 
-      const screenshot = new TakeScreenShotOfPage(url, path.join(context.resultOutputFolder, 'screenshot-of-au-run.png'));
+      const screenshot = new TakeScreenShotOfPage(url, path.join(context.resultOutputFolder, 'screenshot-of-npm-start.png'));
 
       return new StepRunner(screenshot).run()
         .then(() => {
@@ -155,7 +155,7 @@ class AuRunRendersPage extends Test {
   }
 
   execute(context) {
-    this.executeCommand = new ExecuteCommand('au', ['run'], (msg) => this.onOutput(context, msg));
+    this.executeCommand = new ExecuteCommand('npm', ['start'], (msg) => this.onOutput(context, msg));
     return this.executeCommand.executeAsNodeScript();
   }
 }
@@ -171,9 +171,9 @@ function getURL(msg) {
 }
 
 module.exports = {
-  AuRunDoesNotThrowCommandLineErrors,
-  AuRunLaunchesServer,
-  AuRunWatchPicksUpFileChanges,
-  AuRunAppLaunchesWithoutJavascriptErrors,
-  AuRunRendersPage
+  NpmStartDoesNotThrowCommandLineErrors,
+  NpmStartLaunchesServer,
+  NpmStartWatchPicksUpFileChanges,
+  NpmStartAppLaunchesWithoutJavascriptErrors,
+  NpmStartRendersPage
 };

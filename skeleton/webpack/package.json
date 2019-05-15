@@ -64,9 +64,22 @@
     "del": "",
     "css-loader": "",
     "file-loader": "",
+    "app-settings-loader": "",
     "json-loader": "",
     "html-loader": "",
     "istanbul-instrumenter-loader": "",
     "webpack-bundle-analyzer": "",
+  },
+  "scripts": {
+    "build": "gulp prebuild && webpack --env.production --env.extractCss",
+    "build:dev": "gulp prebuild && webpack --env.extractCss",
+    "analyze": "webpack --env.production --env.analyze",
+    // @if feat['dotnet-core']
+    "start": "gulp prebuild && webpack-dev-server --env.extractCss  --port 5000"
+    // @endif
+
+    // @if feat.web
+    "start": "gulp prebuild && webpack-dev-server --env.extractCss --port 8080"
+    // @endif
   }
 }

@@ -2,16 +2,14 @@ For more information, go to https://aurelia.io/docs/cli/webpack
 
 ## Run dev app
 
-Run `au run`, then open `http://localhost:/* @if feat.web */8080/* @endif *//* @if feat['dotnet-core'] */5000/* @endif */`
+Run `npm start`, then open `http://localhost:/* @if feat.web */8080/* @endif *//* @if feat['dotnet-core'] */5000/* @endif */`
 
-To open browser automatically, do `au run --open`.
+You can change the standard webpack configurations from CLI easily with something like this: `npm start -- --open --port 8888`. However, it is better to change the respective npm scripts or `webpack.config.js` with these options, as per your need.
 
-To change dev server port, do `au run --port 8888`.
+To enable Webpack Bundle Analyzer, do `npm run analyze` (production build).
 
-To enable Webpack Bundle Analyzer, do `au run --analyze`.
-
-To enable hot module reload, do `au run --hmr`.
+To enable hot module reload, do `npm start -- --env.hmr`.
 
 ## Build for production
 
-Run `au build --env prod`.
+Run `npm run build`.

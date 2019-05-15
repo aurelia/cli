@@ -30,7 +30,7 @@ class AuCypressRunsTests extends Test {
   }
 
   execute() {
-    this.executeCommand = new ExecuteCommand('au', ['run'], (msg) => this.onOutput(msg));
+    this.executeCommand = new ExecuteCommand('npm', ['start'], (msg) => this.onOutput(msg));
     return this.executeCommand.executeAsNodeScript();
   }
 }
