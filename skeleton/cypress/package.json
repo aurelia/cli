@@ -1,6 +1,7 @@
 {
   "devDependencies": {
     // @if feat.typescript
+    "@types/mocha": "",
     "@cypress/webpack-preprocessor": "",
     "webpack": "",
     "ts-loader": "",
