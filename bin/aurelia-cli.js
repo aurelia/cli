@@ -25,7 +25,7 @@ resolve('aurelia-cli', {
   let cli;
 
   if (commandName === 'new' || error) {
-    const args = commandArgs.filter(item => !item.includes('-'));
+    const args = commandArgs.filter(item => !item.charAt(0).includes('-'));
     if (args.length > 1) {
     	console.log();
     	console.log(' Kindly provide only one argument as the <project-name>');
