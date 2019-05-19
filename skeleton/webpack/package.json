@@ -64,6 +64,7 @@
     "del": "",
     "css-loader": "",
     "file-loader": "",
+    "app-settings-loader": "",
     "json-loader": "",
     "html-loader": "",
     "istanbul-instrumenter-loader": "",

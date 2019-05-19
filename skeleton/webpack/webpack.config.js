@@ -292,7 +292,7 @@ module.exports = ({ production, extractCss, analyze, tests, hmr } = {}) => ({
       // load these fonts normally, as files:
       { test: /\.(ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/i, loader: 'file-loader' },
       { test: /environment\.json$/i, use: [
-        {loader: path.resolve("./aurelia_project/environment-loader.js"), query: {env: production ? 'production' : 'development' }},
+        {loader: "app-settings-loader", options: {env: production ? 'production' : 'development' }},
       ]},
       // @if feat.typescript
       ...when(tests, {
