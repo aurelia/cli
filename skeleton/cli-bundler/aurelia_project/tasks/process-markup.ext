@@ -17,6 +17,9 @@ import * as plumber from 'gulp-plumber';
 import * as notify from 'gulp-notify';
 // @endif
 // @endif
+// @if feat.plugin
+import { processMarkupAliases } from './process-markup-aliases';
+// @endif
 
 export default function processMarkup() {
   return gulp.src(project.markupProcessor.source, {sourcemaps: true, since: gulp.lastRun(processMarkup)})
@@ -41,26 +44,34 @@ export default function processMarkup() {
 }
 
 // @if feat.plugin
-export function pluginMarkup(dest) {
+export function pluginMarkup(dest, runProcessMarkupAliases = false, verbose = false) {
   return function processPluginMarkup() {
-    return gulp.src(project.plugin.source.html)
-      // @if feat['htmlmin-min'] || feat['htmlmin-max']
-      .pipe(htmlmin({
-          // @if feat['htmlmin-max']
-          collapseInlineTagWhitespace: true,
-          collapseBooleanAttributes: true,
-          removeAttributeQuotes: true,
-          removeScriptTypeAttributes: true,
-          removeStyleLinkTypeAttributes: true,
-          // @endif
-          removeComments: true,
-          collapseWhitespace: true,
-          minifyCSS: true,
-          minifyJS: true,
-          ignoreCustomFragments: [/\${.*?}/g] // ignore interpolation expressions
-      }))
-      // @endif
-      .pipe(gulp.dest(dest));
+    let stream = gulp.src(project.plugin.source.html);
+
+        if (runProcessMarkupAliases) {
+            stream = stream.pipe(processMarkupAliases(verbose));
+        }
+
+        stream = stream
+            // @if feat['htmlmin-min'] || feat['htmlmin-max']
+            .pipe(
+                htmlmin({
+                    collapseInlineTagWhitespace: true,
+                    collapseBooleanAttributes: true,
+                    removeAttributeQuotes: true,
+                    removeScriptTypeAttributes: true,
+                    removeStyleLinkTypeAttributes: true,
+                    removeComments: true,
+                    collapseWhitespace: true,
+                    minifyCSS: true,
+                    minifyJS: true,
+                    ignoreCustomFragments: [/\${.*?}/g], // ignore interpolation expressions
+                })
+            )
+            // @endif
+            .pipe(gulp.dest(dest));
+
+        return stream;
   };
 }
 // @endif

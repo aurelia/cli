@@ -1,0 +1,16 @@
+{
+  "name": "build-plugin",
+  "description": "Build plugin",
+  "flags": [
+    {
+      "name": "process-markup-aliases",
+      "description": "Replace aliases in template require tags to relative paths for distribution",
+      "type": "boolean"
+    },
+    {
+      "name": "verbose",
+      "description": "Increase log output during build",
+      "type": "boolean"
+    }
+  ]
+}

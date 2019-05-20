@@ -67,5 +67,9 @@
     "gulp-rename": "",
     "gulp-notify": "",
     "gulp-watch": "",
+    
+    // @if feat.plugin
+    "gulp-replace": "",
+    // @endif
   }
 }

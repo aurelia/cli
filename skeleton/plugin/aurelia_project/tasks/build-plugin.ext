@@ -10,6 +10,7 @@ import {pluginMarkup} from './process-markup';
 import {pluginCSS} from './process-css';
 import {pluginJson} from './process-json';
 import {buildPluginJavaScript} from './transpile';
+import { CLIOptions } from 'aurelia-cli';
 
 function clean() {
   return del('dist');
@@ -19,13 +20,13 @@ export default gulp.series(
   clean,
   gulp.parallel(
     // package.json "module" field pointing to dist/native-modules/index.js
-    pluginMarkup('dist/native-modules'),
+    pluginMarkup('dist/native-modules', CLIOptions.hasFlag('process-markup-aliases'), CLIOptions.hasFlag('verbose')),
     pluginCSS('dist/native-modules'),
     pluginJson('dist/native-modules'),
     buildPluginJavaScript('dist/native-modules', 'es2015'),
 
     // package.json "main" field pointing to dist/native-modules/index.js
-    pluginMarkup('dist/commonjs'),
+    pluginMarkup('dist/commonjs', CLIOptions.hasFlag('process-markup-aliases'), CLIOptions.hasFlag('verbose')),
     pluginCSS('dist/commonjs'),
     pluginJson('dist/commonjs'),
     buildPluginJavaScript('dist/commonjs', 'commonjs'),
