@@ -75,6 +75,12 @@
     "build": "gulp prebuild && webpack --env.production --env.extractCss",
     "build:dev": "gulp prebuild && webpack --env.extractCss",
     "analyze": "webpack --env.production --env.analyze",
-    "start": "gulp prebuild && webpack-dev-server --env.extractCss // @if feat['dotnet-core'] --port 5000 // @endif"
+    // @if feat['dotnet-core']
+    "start": "gulp prebuild && webpack-dev-server --env.extractCss  --port 5000"
+    // @endif
+
+    // @if feat.web
+    "start": "gulp prebuild && webpack-dev-server --env.extractCss --port 8080"
+    // @endif
   }
 }
