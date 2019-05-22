@@ -283,7 +283,7 @@ module.exports = ({ production, extractCss, analyze, tests, hmr } = {}) => ({
       },
       // @endif
       // @if feat.typescript
-      { test: /\.ts$/, loader: "ts-loader", options: { reportFiles: [ srcDir+'/**/*.ts'] }, include: srcDir },
+      { test: /\.ts$/, loader: "ts-loader" },
       // @endif
       // embed small images and fonts as Data Urls and larger ones as files:
       { test: /\.(png|gif|jpg|cur)$/i, loader: 'url-loader', options: { limit: 8192 } },
