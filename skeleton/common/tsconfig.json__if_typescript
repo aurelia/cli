@@ -32,10 +32,8 @@
     "types": ["node", "jest"],
     // @endif
 
-    // @if feat.webpack && feat['postcss-typical'] && feat.protractor
     "typeRoots": ["./node_modules/@types"],
-    // @endif
-
+    
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
