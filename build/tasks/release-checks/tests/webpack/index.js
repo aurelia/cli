@@ -1,3 +1,3 @@
 module.exports = {
-  ...require('./npm-start')
+  ...require('./run')
 };
