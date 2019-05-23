@@ -1,3 +1,3 @@
 module.exports = {
-  ...require('./au-run')
+  ...require('./npm-start')
 };

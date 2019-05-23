@@ -8,7 +8,7 @@ const fs = require('fs');
 
 class NpmStartDoesNotThrowCommandLineErrors extends Test {
   constructor() {
-    super('au run does not throw commandline errors');
+    super('npm start does not throw commandline errors');
   }
 
   onOutput(message) {
@@ -31,7 +31,7 @@ class NpmStartDoesNotThrowCommandLineErrors extends Test {
 
 class NpmStartLaunchesServer extends Test {
   constructor() {
-    super('au run launches server');
+    super('npm start launches server');
   }
 
   onOutput(message) {
@@ -51,7 +51,7 @@ class NpmStartLaunchesServer extends Test {
 
 class NpmStartWatchPicksUpFileChanges extends Test {
   constructor(fileToChange) {
-    super('au run picks up file changes');
+    super('npm start picks up file changes');
 
     this.fileToChange = fileToChange || path.join('src', 'app.html');
     this.watchingForFileChangeNotification = false;
@@ -106,7 +106,7 @@ class NpmStartWatchPicksUpFileChanges extends Test {
 
 class NpmStartAppLaunchesWithoutJavascriptErrors extends Test {
   constructor() {
-    super('au run app launches without javascript errors');
+    super('npm start app launches without javascript errors');
   }
 
   onOutput(message) {
@@ -133,7 +133,7 @@ class NpmStartAppLaunchesWithoutJavascriptErrors extends Test {
 
 class NpmStartRendersPage extends Test {
   constructor() {
-    super('au run renders page');
+    super('npm start renders page');
   }
 
   onOutput(context, message) {
@@ -142,7 +142,7 @@ class NpmStartRendersPage extends Test {
     if (isApplicationAvailableMessage(message)) {
       const url = getURL(message);
 
-      const screenshot = new TakeScreenShotOfPage(url, path.join(context.resultOutputFolder, 'screenshot-of-au-run.png'));
+      const screenshot = new TakeScreenShotOfPage(url, path.join(context.resultOutputFolder, 'screenshot-of-npm-start.png'));
 
       return new StepRunner(screenshot).run()
         .then(() => {
