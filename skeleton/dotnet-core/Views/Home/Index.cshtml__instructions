@@ -8,9 +8,10 @@ Take a look at Views/Home/Index.cshtml and make sure that it contains the follow
 
 @section scripts {
    <script type="text/javascript" asp-src-include="~/dist/runtime*.bundle.js"></script>
-   <script type="text/javascript" asp-src-include="~/dist/common*.chunk.js"></script>
-   <script type="text/javascript" asp-src-include="~/dist/vendor*.chunk.js"></script>
-   <script type="text/javascript" asp-src-include="~/dist/app*.chunk.js"></script>
+   <script type="text/javascript" asp-src-include="~/dist/vendor*.chunk.js"
+                                  asp-src-exclude="~/dist/vendor*.async*.chunk.js"></script>
+   <script type="text/javascript" asp-src-include="~/dist/app*.chunk.js"
+                                  asp-src-exclude="~/dist/app*.async*.chunk.js"></script>
 }
 
 That's it for Index.cshtml
