@@ -17,6 +17,7 @@ const when = (condition, config, negativeConfig) =>
 const title = 'Aurelia Navigation Skeleton';
 const outDir = path.resolve(__dirname, project.platform.output);
 const srcDir = path.resolve(__dirname, 'src');
+const testDir = path.resolve(__dirname, 'test', 'unit');
 const nodeModulesDir = path.resolve(__dirname, 'node_modules');
 const baseUrl = '/';
 
@@ -282,7 +283,7 @@ module.exports = ({ production, server, extractCss, coverage, analyze, karma } =
       },
       // @endif
       // @if feat.typescript
-      { test: /\.ts$/, loader: "ts-loader", options: { reportFiles: [ srcDir+'/**/*.ts'] }, include: srcDir },
+      { test: /\.ts$/, loader: "ts-loader", options: { reportFiles: [ srcDir+'/**/*.ts'] }, include: karma ? [srcDir, testDir] : srcDir },
       // @endif
       // embed small images and fonts as Data Urls and larger ones as files:
       { test: /\.(png|gif|jpg|cur)$/i, loader: 'url-loader', options: { limit: 8192 } },
