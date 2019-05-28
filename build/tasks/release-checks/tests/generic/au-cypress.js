@@ -58,7 +58,7 @@ class AuCypressRunsTestsDotNet extends Test {
     this.debug(message);
 
     if (message.indexOf('Now listening on: http://localhost:') > -1) {
-      this.cypressCommand = new ExecuteCommand('au', ['cypress'], (msg) => this.onCypressOutput(msg), (msg) => this.onCypressOutput(msg));
+      this.cypressCommand = new ExecuteCommand('au', ['cypress', '--run'], (msg) => this.onCypressOutput(msg), (msg) => this.onCypressOutput(msg));
       return this.cypressCommand.executeAsNodeScript();
     }
   }
