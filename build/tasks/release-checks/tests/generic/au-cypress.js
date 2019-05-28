@@ -23,7 +23,7 @@ class AuCypressRunsTests extends Test {
   onOutput(message) {
     this.debug(message);
 
-    if (isApplicationAvailableMessage(message)) {
+    if (isApplicationAvailableMessage(message) && !this.cypressCommand) {
       this.cypressCommand = new ExecuteCommand('au', ['cypress', '--run'], (msg) => this.onCypressOutput(msg), (msg) => this.onCypressOutput(msg));
       return this.cypressCommand.executeAsNodeScript();
     }
@@ -57,8 +57,8 @@ class AuCypressRunsTestsDotNet extends Test {
   onOutput(message) {
     this.debug(message);
 
-    if (message.indexOf('Now listening on: http://localhost:') > -1) {
-      this.cypressCommand = new ExecuteCommand('au', ['cypress'], (msg) => this.onCypressOutput(msg), (msg) => this.onCypressOutput(msg));
+    if (message.indexOf('Now listening on: http://localhost:') > -1 && !this.cypressCommand) {
+      this.cypressCommand = new ExecuteCommand('au', ['cypress', '--run'], (msg) => this.onCypressOutput(msg), (msg) => this.onCypressOutput(msg));
       return this.cypressCommand.executeAsNodeScript();
     }
   }
