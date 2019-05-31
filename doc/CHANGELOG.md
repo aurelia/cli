@@ -1,3 +1,24 @@
+# [1.0.0](https://github.com/aurelia/cli/compare/1.0.0-beta.15...1.0.0) (2019-05-31)
+
+
+### Bug Fixes
+
+* **bundler:** avoid appending alias after comment (sourceMap line). ([621bda7](https://github.com/aurelia/cli/commit/621bda7))
+* **bundler:** fix missing json watch ([2f5f0cd](https://github.com/aurelia/cli/commit/2f5f0cd))
+* **bundler:** fix sourceMap source file path and sourceRoot ([d8a04c0](https://github.com/aurelia/cli/commit/d8a04c0))
+* **CLI-Bundler, Aliases:** improve alias support ([19ea1ec](https://github.com/aurelia/cli/commit/19ea1ec)), closes [#1093](https://github.com/aurelia/cli/issues/1093)
+* **release-check:** avoid duplicated e2e processes ([615096a](https://github.com/aurelia/cli/commit/615096a))
+* **skeleton:** allows TS plugin skeleton to support `import {...} from "resources"` ([eeb59c8](https://github.com/aurelia/cli/commit/eeb59c8))
+* **skeleton:** fix missing .gitignore file in aurelia-cli npm package ([d13c437](https://github.com/aurelia/cli/commit/d13c437)), closes [#1102](https://github.com/aurelia/cli/issues/1102)
+* **skeleton:** fix Promise polyfill on IE ([bc377dc](https://github.com/aurelia/cli/commit/bc377dc)), closes [#1079](https://github.com/aurelia/cli/issues/1079)
+* **skeleton:** fix ts-loader option for webpack+karma setup ([beca7f3](https://github.com/aurelia/cli/commit/beca7f3))
+* **skeleton:** TS plugin skeleton to generate d.ts files ([22075c1](https://github.com/aurelia/cli/commit/22075c1))
+* **skeleton:** upgrade karma to v4 to get rid of deprecated circular-json ([6501a57](https://github.com/aurelia/cli/commit/6501a57))
+* **webpack:** fix TypeScript error on unneeded test code when running webpack ([36d384e](https://github.com/aurelia/cli/commit/36d384e))
+* **webpack:** use typeRoots to avoid TS typing issue when cssnano and protractor are selected ([d85ca5c](https://github.com/aurelia/cli/commit/d85ca5c)), closes [#1090](https://github.com/aurelia/cli/issues/1090)
+
+
+
 # [1.0.0-beta.15](https://github.com/aurelia/cli/compare/1.0.0-beta.14...1.0.0-beta.15) (2019-03-28)
 
 
