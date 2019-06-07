@@ -26,14 +26,14 @@ const cssRules = [
   // @if feat['postcss-basic']
   {
     loader: 'postcss-loader',
-    options: { plugins: () => [require('autoprefixer')({ browsers: ['last 2 versions'] })] }
+    options: { plugins: () => [require('autoprefixer')()] }
   }
   // @endif
   // @if feat['postcss-typical']
   {
     loader: 'postcss-loader',
     options: { plugins: () => [
-      require('autoprefixer')({ browsers: ['last 2 versions'] }),
+      require('autoprefixer')(),
       require('cssnano')()
     ] }
   }
