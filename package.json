@@ -39,7 +39,6 @@
     "@babel/plugin-proposal-decorators": "^7.4.4",
     "@babel/plugin-transform-modules-amd": "^7.2.0",
     "@babel/plugin-transform-modules-commonjs": "^7.4.4",
-    "@babel/polyfill": "^7.4.4",
     "@babel/register": "^7.4.4",
     "ansi-colors": "^3.2.4",
     "aurelia-dependency-injection": "^1.4.2",
