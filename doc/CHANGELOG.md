@@ -1,3 +1,12 @@
+## [1.0.1](https://github.com/aurelia/cli/compare/1.0.0...1.0.1) (2019-06-11)
+
+
+### Bug Fixes
+
+* **skeleton:** fix wrong vscode launch.json file name ([4007939](https://github.com/aurelia/cli/commit/4007939)), closes [#1113](https://github.com/aurelia/cli/issues/1113)
+
+
+
 # [1.0.0](https://github.com/aurelia/cli/compare/1.0.0-beta.15...1.0.0) (2019-05-31)
 
 
