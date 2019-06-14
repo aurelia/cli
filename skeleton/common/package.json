@@ -21,16 +21,21 @@
     "aurelia-cli": "",
     "aurelia-testing": "",
     "aurelia-tools": "",
-    "core-js": "",
     "gulp": "",
     "minimatch": "",
     "through2": "",
     "vinyl-fs": "",
+    "promise-polyfill": "",
 
     // @if feat.babel
     "regenerator-runtime": "",
     // @endif
   },
+  // @if feat['postcss-basic'] || feat['postcss-typical']
+  "browserslist": [
+    "defaults"
+  ],
+  // @endif
   "scripts": {
     "build": "au build",
     "start": "au run"

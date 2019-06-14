@@ -40,6 +40,37 @@ config.globalResources([
 
 The usage of `PLATFORM.moduleName` wrapper is mandatory. It's needed for your plugin to be consumed by any app using webpack, CLI built-in bundler, or jspm.
 
+## Resource import within the dev app
+
+In dev app, when you need to import something from the inner plugin (for example, importing a class for dependency injection), use special name `"resources"` to reference the inner plugin.
+
+// @if feat.babel
+```js
+import {inject} from 'aurelia-framework';
+// "resources" refers the inner plugin src/index.js
+import {MyService} from 'resources';
+
+@inject(MyService)
+export class App {
+  constructor(myService) {
+    this.myService = myService;
+  }
+}
+```
+// @endif
+// @if feat.typescript
+```js
+import {autoinject} from 'aurelia-framework';
+// "resources" refers the inner plugin src/index.ts
+import {MyService} from 'resources';
+
+@autoinject()
+export class App {
+  constructor(myService: MyService) {}
+}
+```
+// @endif
+
 ## Manage dependencies
 
 By default, this plugin has no "dependencies" in package.json. Theoretically this plugin depends on at least `aurelia-pal` because `src/index./* @if feat.babel **js/* @endif *//* @if feat.typescript **ts/* @endif */` imports it. It could also depends on more core Aurelia package like `aurelia-binding` or `aurelia-templating` if you build advanced components that reference them.

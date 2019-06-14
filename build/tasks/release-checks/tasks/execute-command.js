@@ -34,8 +34,12 @@ module.exports = class ExecuteCommand extends Task {
 
     this.proc.stderr.on('data', (data) => {
       if (!this.ignoreStdErr) {
-        this.outputCallback(this.stripANSI(data.toString()));
-        this.errorCallback(this.stripANSI(data.toString()));
+        const str = this.stripANSI(data.toString());
+        // nodejs v12 DeprecationWarning
+        if (str.includes('DeprecationWarning')) return;
+
+        this.outputCallback(str);
+        this.errorCallback(str);
       }
     });
 

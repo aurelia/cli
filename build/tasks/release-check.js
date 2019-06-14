@@ -27,6 +27,9 @@ gulp.task('release-check', gulp.series(
   async function() {
     configureLogging();
 
+    // turn off cypress video for reliable release-check
+    process.env.CYPRESS_VIDEO = 'false';
+
     const reporter = new Reporter();
     const selector = new TestProjectsSelector();
 

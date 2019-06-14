@@ -19,7 +19,7 @@ class AuProtractorRunsTests extends Test {
   onOutput(message) {
     this.debug(message);
 
-    if (isApplicationAvailableMessage(message)) {
+    if (isApplicationAvailableMessage(message) && !this.protractorCommand) {
       this.protractorCommand = new ExecuteCommand('au', ['protractor'], (msg) => this.onProtractorOutput(msg));
       this.protractorCommand.ignoreStdErr = true;
       return this.protractorCommand.executeAsNodeScript();
@@ -50,7 +50,7 @@ class AuProtractorRunsTestsDotNet extends Test {
   onOutput(message) {
     this.debug(message);
 
-    if (message.indexOf('Now listening on: http://localhost:') > -1) {
+    if (message.indexOf('Now listening on: http://localhost:') > -1 && !this.protractorCommand) {
       this.protractorCommand = new ExecuteCommand('au', ['protractor'], (msg) => this.onProtractorOutput(msg));
       this.protractorCommand.ignoreStdErr = true;
       return this.protractorCommand.executeAsNodeScript();

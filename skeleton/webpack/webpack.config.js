@@ -17,6 +17,7 @@ const when = (condition, config, negativeConfig) =>
 const title = 'Aurelia Navigation Skeleton';
 const outDir = path.resolve(__dirname, project.platform.output);
 const srcDir = path.resolve(__dirname, 'src');
+const testDir = path.resolve(__dirname, 'test', 'unit');
 const nodeModulesDir = path.resolve(__dirname, 'node_modules');
 const baseUrl = '/';
 
@@ -25,19 +26,30 @@ const cssRules = [
   // @if feat['postcss-basic']
   {
     loader: 'postcss-loader',
-    options: { plugins: () => [require('autoprefixer')({ browsers: ['last 2 versions'] })] }
+    options: { plugins: () => [require('autoprefixer')()] }
   }
   // @endif
   // @if feat['postcss-typical']
   {
     loader: 'postcss-loader',
     options: { plugins: () => [
-      require('autoprefixer')({ browsers: ['last 2 versions'] }),
+      require('autoprefixer')(),
       require('cssnano')()
     ] }
   }
   // @endif
 ];
+
+// @if feat.sass
+const sassRules = [
+  {
+     loader: "sass-loader",
+     options: {
+       includePaths: ["node_modules"]
+     }
+  }
+];
+// @endif
 
 module.exports = ({ production, server, extractCss, coverage, analyze, karma } = {}) => ({
   resolve: {
@@ -221,7 +233,10 @@ module.exports = ({ production, server, extractCss, coverage, analyze, karma } =
       // @if feat.less
       {
         test: /\.less$/i,
-        use: ['style-loader', 'css-loader', 'less-loader'],
+        use: extractCss ? [{
+          loader: MiniCssExtractPlugin.loader
+        }, ...cssRules, 'less-loader'
+        ]: ['style-loader', ...cssRules, 'less-loader'],
         issuer: /\.[tj]s$/i
       },
       {
@@ -233,7 +248,10 @@ module.exports = ({ production, server, extractCss, coverage, analyze, karma } =
       // @if feat.stylus
       {
         test: /\.styl$/i,
-        use: ['style-loader', 'css-loader', 'stylus-loader'],
+        use: extractCss ? [{
+          loader: MiniCssExtractPlugin.loader
+        }, ...cssRules, 'stylus-loader'
+        ]: ['style-loader', ...cssRules, 'stylus-loader'],
         issuer: /\.[tj]s$/i
       },
       {
@@ -245,7 +263,10 @@ module.exports = ({ production, server, extractCss, coverage, analyze, karma } =
       // @if feat.sass
       {
         test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
+        use: extractCss ? [{
+          loader: MiniCssExtractPlugin.loader
+        }, ...cssRules, ...sassRules
+        ]: ['style-loader', ...cssRules, ...sassRules],
         issuer: /\.[tj]s$/i
       },
       {
@@ -262,7 +283,7 @@ module.exports = ({ production, server, extractCss, coverage, analyze, karma } =
       },
       // @endif
       // @if feat.typescript
-      { test: /\.ts$/, loader: "ts-loader" },
+      { test: /\.ts$/, loader: "ts-loader", options: { reportFiles: [ srcDir+'/**/*.ts'] }, include: karma ? [srcDir, testDir] : srcDir },
       // @endif
       // embed small images and fonts as Data Urls and larger ones as files:
       { test: /\.(png|gif|jpg|cur)$/i, loader: 'url-loader', options: { limit: 8192 } },
@@ -287,6 +308,7 @@ module.exports = ({ production, server, extractCss, coverage, analyze, karma } =
       $: 'jquery',
       jQuery: 'jquery',
     // @endif
+      'Promise': ['promise-polyfill', 'default']
     }),
     new ModuleDependenciesPlugin({
       'aurelia-testing': ['./compile-spy', './view-spy']
