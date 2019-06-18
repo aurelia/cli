@@ -67,7 +67,7 @@
     "json-loader": "",
     "html-loader": "",
     "istanbul-instrumenter-loader": "",
-    "opn": "",
+    "open": "",
     "webpack-bundle-analyzer": "",
   }
 }
