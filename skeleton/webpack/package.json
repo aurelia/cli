@@ -69,5 +69,6 @@
     "istanbul-instrumenter-loader": "",
     "open": "",
     "webpack-bundle-analyzer": "",
+    "source-map-loader": "",
   }
 }

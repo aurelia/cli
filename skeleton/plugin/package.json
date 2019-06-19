@@ -17,6 +17,8 @@
     "dist"
   ],
   "devDependencies": {
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-if": "^2.0.2",
     "del": ""
   }
 }

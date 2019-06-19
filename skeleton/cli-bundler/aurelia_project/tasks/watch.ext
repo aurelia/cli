@@ -12,17 +12,62 @@ import * as gulpWatch from 'gulp-watch';
 import * as debounce from 'debounce';
 import * as project from '../aurelia.json';
 // @endif
+// @if feat.plugin
+import { buildPluginJavaScript } from './transpile';
+import { pluginMarkup } from './process-markup';
+import { pluginCSS } from './process-css';
+import { pluginJson } from './process-json';
+// @endif
+// @if !feat.plugin
 import transpile from './transpile';
 import processMarkup from './process-markup';
 import processCSS from './process-css';
 import processJson from './process-json';
 import copyFiles from './copy-files';
+// @endif
 import { build } from 'aurelia-cli';
 
 const debounceWaitTime = 100;
 let isBuilding = false;
 let pendingRefreshPaths = [];
 let watchCallback = () => { };
+// @if feat.plugin
+function processMarkupPlugin() {
+  return gulp.parallel(
+    pluginMarkup('dist/native-modules'),
+    pluginMarkup('dist/commonjs')
+  )
+}
+
+function processCSSPlugin() {
+  return gulp.parallel(
+    pluginCSS('dist/native-modules'),
+    pluginCSS('dist/commonjs')
+  )
+}
+
+function processJsonPlugin() {
+  return gulp.parallel(
+    pluginJson('dist/native-modules'),
+    pluginJson('dist/commonjs')
+  )
+}
+
+function transpilePlugin() {
+  return gulp.parallel(
+    buildPluginJavaScript('dist/native-modules', 'es2015'),
+    buildPluginJavaScript('dist/commonjs', 'commonjs')
+  );
+}
+
+let watches = [
+  { name: 'transpile', callback: transpilePlugin(), source: project.transpiler.source },
+  { name: 'markup', callback: processMarkupPlugin(), source: project.markupProcessor.source },
+  { name: 'CSS', callback: processCSSPlugin(), source: project.cssProcessor.source },
+  { name: 'JSON', callback: processJsonPlugin(), source: project.jsonProcessor.source }
+];
+// @endif
+// @if !feat.plugin
 let watches = [
   { name: 'transpile', callback: transpile, source: project.transpiler.source },
   { name: 'markup', callback: processMarkup, source: project.markupProcessor.source },
@@ -35,6 +80,7 @@ if (typeof project.build.copyFiles === 'object') {
     watches.push({ name: 'file copy', callback: copyFiles, source: src });
   }
 }
+// @endif
 
 let watch = (callback) => {
   watchCallback = callback || watchCallback;
@@ -106,6 +152,24 @@ let refresh = debounce(() => {
 
   log(`Watcher: Running ${refreshTasks.map(x => x.name).join(', ')} tasks on next build...`);
 
+// @if feat.plugin
+  let toExecute = gulp.series(
+    gulp.parallel(refreshTasks.map(x => x.callback)),
+    (done) => {
+      isBuilding = false;
+      watchCallback();
+      done();
+      if (pendingRefreshPaths.length > 0) {
+        log('Watcher: Found more pending changes after finishing build, triggering next one...');
+        refresh();
+      }
+    }
+  );
+  
+  toExecute();
+}, debounceWaitTime);
+// @endif
+// @if !feat.plugin
   let toExecute = gulp.series(
     readProjectConfiguration,
     gulp.parallel(refreshTasks.map(x => x.callback)),
@@ -124,16 +188,17 @@ let refresh = debounce(() => {
   toExecute();
 }, debounceWaitTime);
 
-function log(message/* @if feat.typescript **: string/* @endif */) {
-  console.log(message);
-}
-
 function readProjectConfiguration() {
   return build.src(project);
 }
 
 function writeBundles() {
   return build.dest();
+}
+// @endif
+
+function log(message/* @if feat.typescript **: string/* @endif */) {
+  console.log(message);
 }
 
 export default watch;

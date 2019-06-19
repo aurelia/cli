@@ -9,13 +9,20 @@ import * as del from 'del';
 import {pluginMarkup} from './process-markup';
 import {pluginCSS} from './process-css';
 import {pluginJson} from './process-json';
-import {buildPluginJavaScript} from './transpile';
+import { buildPluginJavaScript } from './transpile';
+import { CLIOptions } from 'aurelia-cli';
+import watch from './watch';
+
+let doneMessage = 'Finish building Aurelia plugin to dist/commonjs and dist/native-modules.';
 
 function clean() {
-  return del('dist');
+  if (CLIOptions.getEnvironment()==='prod') {
+    return del(['dist']);
+  }
+  return new Promise((resolve) => setTimeout(resolve, 100));
 }
 
-export default gulp.series(
+let build = gulp.series(
   clean,
   gulp.parallel(
     // package.json "module" field pointing to dist/native-modules/index.js
@@ -28,7 +35,22 @@ export default gulp.series(
     pluginMarkup('dist/commonjs'),
     pluginCSS('dist/commonjs'),
     pluginJson('dist/commonjs'),
-    buildPluginJavaScript('dist/commonjs', 'commonjs'),
-  ),
-  () => console.log('Finish building Aurelia plugin to dist/commonjs and dist/native-modules')
+    buildPluginJavaScript('dist/commonjs', 'commonjs')
+  )
 );
+
+let main;
+
+if (CLIOptions.hasFlag('watch')) {
+  main = gulp.series(
+    build,
+    (done) => { console.log(doneMessage + 'Watching for changes'); watch(null, true); done(); }
+  );
+} else {
+  main = gulp.series(
+    build,
+    () => console.log(doneMessage)
+  );
+}
+
+export { main as default };

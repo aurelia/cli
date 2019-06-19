@@ -12,7 +12,8 @@
       "webRoot": "${workspaceRoot}/src",
       "userDataDir": "${workspaceRoot}/.chrome",
       "sourceMapPathOverrides": {
-        "webpack:///./src/*": "${webRoot}/*"
+        "webpack:///./src/*": "${webRoot}/*",
+        "webpack:///./node_modules/*": "${workspaceRoot}/node_modules/*",
       }
     }
   ]

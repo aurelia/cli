@@ -59,6 +59,7 @@ module.exports = ({ production, server, extractCss, coverage, analyze, karma } =
     // @if feat.babel
     extensions: ['.js'],
     // @endif
+    symlinks: false,
     modules: [srcDir, 'node_modules'],
     // Enforce single aurelia-binding, to avoid v1/v2 duplication due to
     // out-of-date dependencies on 3rd party aurelia plugins
@@ -291,6 +292,11 @@ module.exports = ({ production, server, extractCss, coverage, analyze, karma } =
       { test: /\.woff(\?v=[0-9]\.[0-9]\.[0-9])?$/i, loader: 'url-loader', options: { limit: 10000, mimetype: 'application/font-woff' } },
       // load these fonts normally, as files:
       { test: /\.(ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/i, loader: 'file-loader' },
+      ...when(!production, {
+        test: /\.js$/,
+        use: ["source-map-loader"],
+        enforce: "pre"
+      }),
       // @if feat.typescript
       ...when(coverage, {
         test: /\.[jt]s$/i, loader: 'istanbul-instrumenter-loader',
