@@ -78,7 +78,7 @@
   "karma-webpack": "^4.0.0-rc.3",
   "minimatch": "^3.0.4",
   "node-sass": "^4.11.0",
-  "opn": "^5.4.0",
+  "open": "^6.3.0",
   "postcss-loader": "^3.0.0",
   "postcss-url": "^8.0.0",
   "promise-polyfill": "^8.1.0",
