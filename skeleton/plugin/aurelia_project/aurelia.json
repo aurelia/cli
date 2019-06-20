@@ -2,7 +2,11 @@
   "type": "project:plugin",
   "paths": {
     "root": "dev-app",
-    "resources": "../src"
+    "resources": "../src",
+    "elements": "../src/elements",
+    "attributes": "../src/attributes",
+    "valueConverters": "../src/value-converters",
+    "bindingBehaviors": "../src/binding-behaviors"    
   },
   "plugin": {
     "source": {
