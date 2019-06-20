@@ -7,7 +7,8 @@ module.exports = class CheckJavascriptErrors extends Task {
   constructor(url) {
     super('Check javascript errors');
 
-    this.url = url;
+    // somehow puppeteer/win32 thinks http://0.0.0.0:5000 is an invalid address.
+    this.url = url.replace('//0.0.0.0', '//localhost');
   }
 
   execute() {

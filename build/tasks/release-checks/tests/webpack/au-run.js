@@ -112,7 +112,8 @@ class AuRunAppLaunchesWithoutJavascriptErrors extends Test {
   onOutput(message) {
     this.debug(message);
 
-    if (isApplicationAvailableMessage(message)) {
+    if (isApplicationAvailableMessage(message) && !this.isUp) {
+      this.isUp = true;
       const url = getURL(message);
 
       const checkJavascriptErrorsTask = new CheckForJavascriptErrors(url);
@@ -139,7 +140,8 @@ class AuRunRendersPage extends Test {
   onOutput(context, message) {
     this.debug(message);
 
-    if (isApplicationAvailableMessage(message)) {
+    if (isApplicationAvailableMessage(message) && !this.isUp) {
+      this.isUp = true;
       const url = getURL(message);
 
       const screenshot = new TakeScreenShotOfPage(url, path.join(context.resultOutputFolder, 'screenshot-of-au-run.png'));
@@ -159,7 +161,7 @@ class AuRunRendersPage extends Test {
 }
 
 function isApplicationAvailableMessage(msg) {
-  return msg.indexOf('Project is running at http://localhost') > -1;
+  return msg.indexOf('Project is running at http://') > -1;
 }
 
 function getURL(msg) {

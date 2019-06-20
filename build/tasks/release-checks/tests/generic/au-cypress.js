@@ -57,7 +57,7 @@ class AuCypressRunsTestsDotNet extends Test {
   onOutput(message) {
     this.debug(message);
 
-    if (message.indexOf('Now listening on: http://localhost:') > -1 && !this.cypressCommand) {
+    if (message.indexOf('Now listening on: http://') > -1 && !this.cypressCommand) {
       this.cypressCommand = new ExecuteCommand('au', ['cypress', '--run'], (msg) => this.onCypressOutput(msg), (msg) => this.onCypressOutput(msg));
       return this.cypressCommand.executeAsNodeScript();
     }
@@ -70,8 +70,8 @@ class AuCypressRunsTestsDotNet extends Test {
 }
 
 function isApplicationAvailableMessage(msg) {
-  return msg.indexOf('Application Available At: http://localhost') > -1 ||
-    msg.indexOf('Project is running at http://localhost') > -1;
+  return msg.indexOf('Application Available At: http://') > -1 ||
+    msg.indexOf('Project is running at http://') > -1;
 }
 
 function isCypressCompletedMessage(msg) {
