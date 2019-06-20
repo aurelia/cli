@@ -154,7 +154,7 @@ class AuRunRendersPage extends Test {
 }
 
 function isApplicationAvailableMessage(msg) {
-  return msg.indexOf('Application Available At: http://localhost') > -1;
+  return msg.indexOf('Application Available At: http://') > -1;
 }
 
 function getURL(msg) {

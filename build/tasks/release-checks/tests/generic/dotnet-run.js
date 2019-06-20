@@ -62,10 +62,10 @@ class DotnetRunRendersPage extends Test {
       const screenshot = new TakeScreenShotOfPage(url, path.join(context.resultOutputFolder, 'screenshot-of-dotnet-run.png'));
 
       return new StepRunner(screenshot).run()
-      .then(() => {
-        this.success();
-        this.executeCommand.stop();
-      });
+        .then(() => {
+          this.success();
+          this.executeCommand.stop();
+        });
     }
   }
 
@@ -89,10 +89,10 @@ class DotNetRunAppLaunchesWithoutJavascriptErrors extends Test {
       const checkJavascriptErrorsTask = new CheckForJavascriptErrors(url);
 
       return new StepRunner(checkJavascriptErrorsTask).run()
-      .then(() => {
-        this.success();
-        this.executeCommand.stop();
-      });
+        .then(() => {
+          this.success();
+          this.executeCommand.stop();
+        });
     }
   }
 
@@ -103,7 +103,7 @@ class DotNetRunAppLaunchesWithoutJavascriptErrors extends Test {
 }
 
 function isApplicationAvailableMessage(msg) {
-  return msg.indexOf('Now listening on: http://localhost:') > -1;
+  return msg.indexOf('Now listening on: http://') > -1;
 }
 
 function getURL(msg) {

@@ -159,7 +159,7 @@ class AuRunRendersPage extends Test {
 }
 
 function isApplicationAvailableMessage(msg) {
-  return msg.indexOf('Project is running at http://localhost') > -1;
+  return msg.indexOf('Project is running at http://') > -1;
 }
 
 function getURL(msg) {
