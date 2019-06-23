@@ -13,7 +13,6 @@
     "systemjs": "",
     "systemjs-plugin-text": "",
     // @endif
-
     // @if feat.babel
     "babel-eslint": "",
     "@babel/plugin-proposal-decorators": "",
@@ -25,7 +24,6 @@
     "gulp-cache": "",
     "gulp-eslint": "",
     // @endif
-
     // @if feat.typescript
     "gulp-typescript": "",
     "gulp-tslint": "",
@@ -33,32 +31,29 @@
     "typescript": "",
     "@types/node": "",
     // @endif
-
     // @if feat.less
     "gulp-less": "",
     // @endif
-
-    // @if feat['postcss-basic'] || feat['postcss-typical']
+    // @if feat['postcss-basic'] || feat['postcss-typical'] || feat['postcss-tailwind']
     "gulp-postcss": "",
     "autoprefixer": "",
     // @endif
-    // @if feat['postcss-typical']
+    // @if feat['postcss-typical'] || feat['postcss-tailwind']
     "cssnano": "",
     "postcss-url": "",
     // @endif
-
+    // @if feat['postcss-tailwind']
+    "tailwindcss": "",
+    // @endif
     // @if feat.sass
     "gulp-sass": "",
     // @endif
-
     // @if feat.stylus
     "gulp-stylus": "",
     // @endif
-
     // @if feat['htmlmin-min'] || feat['htmlmin-max']
     "gulp-htmlmin": "",
     // @endif
-
     "browser-sync": "",
     "connect-history-api-fallback": "",
     "debounce": "",

@@ -31,12 +31,16 @@
     "less": "",
     // @endif
 
-    // @if feat['postcss-basic'] || feat['postcss-typical']
+    // @if feat['postcss-basic'] || feat['postcss-typical'] || ['postcss-tailwind']
     "postcss-loader": "",
     "autoprefixer": "",
     // @endif
-    // @if feat['postcss-typical']
+    // @if feat['postcss-typical'] || ['postcss-tailwind']
     "cssnano": "",
+    // @endif
+    // @if feat['postcss-tailwind']
+    "tailwindcss": "",
+    "@fullhuman/postcss-purgecss": "",
     // @endif
 
     // @if feat.sass
@@ -67,6 +71,7 @@
     "json-loader": "",
     "html-loader": "",
     "istanbul-instrumenter-loader": "",
+    "open": "",
     "webpack-bundle-analyzer": "",
   }
 }

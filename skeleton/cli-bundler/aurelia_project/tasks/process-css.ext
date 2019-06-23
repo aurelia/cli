@@ -15,11 +15,11 @@ import sass from 'gulp-sass';
 // @if feat.stylus
 import stylus from 'gulp-stylus';
 // @endif
-// @if feat['postcss-basic'] || feat['postcss-typical']
+// @if feat['postcss-basic'] || feat['postcss-typical'] || feat['postcss-tailwind']
 import postcss from 'gulp-postcss';
 import autoprefixer from 'autoprefixer';
 // @endif
-// @if feat['postcss-typical']
+// @if feat['postcss-typical'] || feat['postcss-tailwind']
 import cssnano from 'cssnano';
 import postcssUrl from 'postcss-url';
 // @endif
@@ -40,11 +40,11 @@ import * as sass from 'gulp-sass';
 // @if feat.stylus
 import * as stylus from 'gulp-stylus';
 // @endif
-// @if feat['postcss-basic'] || feat['postcss-typical']
+// @if feat['postcss-basic'] || feat['postcss-typical'] || feat['postcss-tailwind']
 import * as postcss from 'gulp-postcss';
 import * as autoprefixer from 'autoprefixer';
 // @endif
-// @if feat['postcss-typical']
+// @if feat['postcss-typical'] || feat['postcss-tailwind']
 import * as cssnano from 'cssnano';
 import * as postcssUrl from 'postcss-url';
 // @endif
@@ -76,6 +76,14 @@ export default function processCSS() {
       cssnano()
     ]))
     // @endif
+    // @if feat['postcss-tailwind']
+    .pipe(postcss([
+	  require('tailwindcss'),
+      autoprefixer(),
+      postcssUrl({url: 'inline', encodeType: 'base64'}),
+      cssnano()
+    ]))
+    // @endif
     .pipe(build.bundle());
 }
 
@@ -102,6 +110,14 @@ export function pluginCSS(dest) {
       // @endif
       // @if feat['postcss-typical']
       .pipe(postcss([
+        autoprefixer(),
+        postcssUrl({url: 'inline', encodeType: 'base64'}),
+        cssnano()
+      ]))
+      // @endif
+      // @if feat['postcss-tailwind']
+      .pipe(postcss([
+		    require('tailwindcss'),
         autoprefixer(),
         postcssUrl({url: 'inline', encodeType: 'base64'}),
         cssnano()

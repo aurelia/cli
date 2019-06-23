@@ -13,7 +13,9 @@
   <!-- @if feat.webpack && feat.stylus -->
   <require from="./styles.styl"></require>
   <!-- @endif -->
-
+  <!-- @if feat['postcss-tailwind'] -->
+  <require from="./tailwind.css"></require>
+  <!--  @endif -->
   <require from="./nav-bar.html"></require>
 
   <nav-bar router.bind="router"></nav-bar>

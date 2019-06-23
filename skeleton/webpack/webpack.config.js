@@ -21,7 +21,23 @@ const testDir = path.resolve(__dirname, 'test', 'unit');
 const nodeModulesDir = path.resolve(__dirname, 'node_modules');
 const baseUrl = '/';
 
+// @if feat['postcss-tailwind']
+const purgecss = require('@fullhuman/postcss-purgecss')({
+  content: [
+    path.resolve(srcDir, '/**/*.html')
+  ],
+  defaultExtractor: content => content.match(/[A-Za-z0–9-_:/]+/g) || []
+});
+// @endif
+
+// @if ! feat['postcss-tailwind']
 const cssRules = [
+// @endif
+// @if feat['postcss-tailwind']
+const cssRules = (production) => [
+  // @endif
+
+
   { loader: 'css-loader' },
   // @if feat['postcss-basic']
   {
@@ -32,10 +48,25 @@ const cssRules = [
   // @if feat['postcss-typical']
   {
     loader: 'postcss-loader',
-    options: { plugins: () => [
-      require('autoprefixer')(),
-      require('cssnano')()
-    ] }
+    options: {
+      plugins: () => [
+        require('autoprefixer')(),
+        require('cssnano')()
+      ]
+    }
+  }
+  // @endif
+  // @if feat['postcss-tailwind']
+    {
+    loader: 'postcss-loader',
+    options: {
+      plugins: () => [
+        require('tailwindcss')('tailwind.config.js'),
+        require('autoprefixer')(),
+        ...when(production, purgecss),
+        ...when(production, require('cssnano')())
+      ]
+    }
   }
   // @endif
 ];
@@ -43,10 +74,10 @@ const cssRules = [
 // @if feat.sass
 const sassRules = [
   {
-     loader: "sass-loader",
-     options: {
-       includePaths: ["node_modules"]
-     }
+    loader: "sass-loader",
+    options: {
+      includePaths: ["node_modules"]
+    }
   }
 ];
 // @endif
@@ -220,133 +251,160 @@ module.exports = ({ production, server, extractCss, coverage, analyze, karma } =
         use: extractCss ? [{
           loader: MiniCssExtractPlugin.loader
         },
-        'css-loader'
+          'css-loader'
+          // @if ! feat['postcss-tailwind']
         ] : ['style-loader', ...cssRules]
-      },
+        // @endif
+        // @if feat['postcss-tailwind']
+        ] : ['style-loader', ...cssRules(production)]
+    // @endif
+  },
       {
-        test: /\.css$/i,
-        issuer: [{ test: /\.html$/i }],
-        // CSS required in templates cannot be extracted safely
-        // because Aurelia would try to require it again in runtime
-        use: cssRules
+  test: /\.css$/i,
+    issuer: [{ test: /\.html$/i }],
+      // CSS required in templates cannot be extracted safely
+      // because Aurelia would try to require it again in runtime
+      // @if ! feat['postcss-tailwind']
+      use: cssRules
+  // @endif
+  // @if feat['postcss-tailwind']
+  use: cssRules(production)
+  // @endif
+},
+// @if feat.less
+{
+  test: /\.less$/i,
+    use: extractCss ? [{
+      loader: MiniCssExtractPlugin.loader
+      // @if ! feat['postcss-tailwind']
+    }, ...cssRules, 'less-loader'
+    ] : ['style-loader', ...cssRules, 'less-loader'],
+        // @endif
+        // @if feat['postcss-tailwind']
+          }, ...cssRules(production), 'less-loader'
+          ]: ['style-loader', ...cssRules(production), 'less-loader'],
+  // @endif
+  issuer: /\.[tj]s$/i
+      }, {
+  test: /\.less$/i,
+    use: ['css-loader', 'less-loader'],
+      issuer: /\.html?$/i
+},
+// @endif
+// @if feat.stylus
+{
+  test: /\.styl$/i,
+    use: extractCss ? [{
+      loader: MiniCssExtractPlugin.loader
+      // @if ! feat['postcss-tailwind']
+    }, ...cssRules, 'stylus-loader'
+    ] : ['style-loader', ...cssRules, 'stylus-loader'],
+        // @endif
+        // @if feat['postcss-tailwind']
+      }, ...cssRules(production), 'stylus-loader'
+      ]: ['style-loader', ...cssRules(production), 'stylus-loader'],
+  // @endif
+  issuer: /\.[tj]s$/i
       },
-      // @if feat.less
-      {
-        test: /\.less$/i,
-        use: extractCss ? [{
-          loader: MiniCssExtractPlugin.loader
-        }, ...cssRules, 'less-loader'
-        ]: ['style-loader', ...cssRules, 'less-loader'],
-        issuer: /\.[tj]s$/i
+{
+  test: /\.styl$/i,
+    use: ['css-loader', 'stylus-loader'],
+      issuer: /\.html?$/i
+},
+// @endif
+// @if feat.sass
+{
+  test: /\.scss$/,
+    use: extractCss ? [{
+      loader: MiniCssExtractPlugin.loader
+      // @if ! feat['postcss-tailwind']
+    }, ...cssRules, ...sassRules
+    ] : ['style-loader', ...cssRules, ...sassRules],
+        // @endif
+        // @if feat['postcss-tailwind']
+        }, ...cssRules(production), ...sassRules
+        ]: ['style-loader', ...cssRules(production), ...sassRules],
+  // @endif
+  issuer: /\.[tj]s$/i
       },
-      {
-        test: /\.less$/i,
-        use: ['css-loader', 'less-loader'],
-        issuer: /\.html?$/i
-      },
-      // @endif
-      // @if feat.stylus
-      {
-        test: /\.styl$/i,
-        use: extractCss ? [{
-          loader: MiniCssExtractPlugin.loader
-        }, ...cssRules, 'stylus-loader'
-        ]: ['style-loader', ...cssRules, 'stylus-loader'],
-        issuer: /\.[tj]s$/i
-      },
-      {
-        test: /\.styl$/i,
-        use: ['css-loader', 'stylus-loader'],
-        issuer: /\.html?$/i
-      },
-      // @endif
-      // @if feat.sass
-      {
-        test: /\.scss$/,
-        use: extractCss ? [{
-          loader: MiniCssExtractPlugin.loader
-        }, ...cssRules, ...sassRules
-        ]: ['style-loader', ...cssRules, ...sassRules],
-        issuer: /\.[tj]s$/i
-      },
-      {
-        test: /\.scss$/,
-        use: ['css-loader', 'sass-loader'],
-        issuer: /\.html?$/i
-      },
-      // @endif
-      { test: /\.html$/i, loader: 'html-loader' },
-      // @if feat.babel
-      {
-        test: /\.js$/i, loader: 'babel-loader', exclude: nodeModulesDir,
-        options: coverage ? { sourceMap: 'inline', plugins: ['istanbul'] } : {}
-      },
-      // @endif
-      // @if feat.typescript
-      { test: /\.ts$/, loader: "ts-loader", options: { reportFiles: [ srcDir+'/**/*.ts'] }, include: karma ? [srcDir, testDir] : srcDir },
-      // @endif
-      // embed small images and fonts as Data Urls and larger ones as files:
-      { test: /\.(png|gif|jpg|cur)$/i, loader: 'url-loader', options: { limit: 8192 } },
-      { test: /\.woff2(\?v=[0-9]\.[0-9]\.[0-9])?$/i, loader: 'url-loader', options: { limit: 10000, mimetype: 'application/font-woff2' } },
-      { test: /\.woff(\?v=[0-9]\.[0-9]\.[0-9])?$/i, loader: 'url-loader', options: { limit: 10000, mimetype: 'application/font-woff' } },
-      // load these fonts normally, as files:
-      { test: /\.(ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/i, loader: 'file-loader' },
+{
+  test: /\.scss$/,
+    use: ['css-loader', 'sass-loader'],
+      issuer: /\.html?$/i
+},
+// @endif
+{ test: /\.html$/i, loader: 'html-loader' },
+// @if feat.babel
+{
+  test: /\.js$/i, loader: 'babel-loader', exclude: nodeModulesDir,
+    options: coverage ? { sourceMap: 'inline', plugins: ['istanbul'] } : {}
+},
+// @endif
+// @if feat.typescript
+{ test: /\.ts$/, loader: "ts-loader", options: { reportFiles: [srcDir + '/**/*.ts'] }, include: karma ? [srcDir, testDir] : srcDir },
+// @endif
+// embed small images and fonts as Data Urls and larger ones as files:
+{ test: /\.(png|gif|jpg|cur)$/i, loader: 'url-loader', options: { limit: 8192 } },
+{ test: /\.woff2(\?v=[0-9]\.[0-9]\.[0-9])?$/i, loader: 'url-loader', options: { limit: 10000, mimetype: 'application/font-woff2' } },
+{ test: /\.woff(\?v=[0-9]\.[0-9]\.[0-9])?$/i, loader: 'url-loader', options: { limit: 10000, mimetype: 'application/font-woff' } },
+// load these fonts normally, as files:
+{ test: /\.(ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/i, loader: 'file-loader' },
       // @if feat.typescript
       ...when(coverage, {
-        test: /\.[jt]s$/i, loader: 'istanbul-instrumenter-loader',
-        include: srcDir, exclude: [/\.(spec|test)\.[jt]s$/i],
-        enforce: 'post', options: { esModules: true },
-      })
+  test: /\.[jt]s$/i, loader: 'istanbul-instrumenter-loader',
+  include: srcDir, exclude: [/\.(spec|test)\.[jt]s$/i],
+  enforce: 'post', options: { esModules: true },
+})
       // @endif
     ]
   },
-  plugins: [
-    ...when(!karma, new DuplicatePackageCheckerPlugin()),
-    new AureliaPlugin(),
-    new ProvidePlugin({
+plugins: [
+  ...when(!karma, new DuplicatePackageCheckerPlugin()),
+  new AureliaPlugin(),
+  new ProvidePlugin({
     // @if feat['scaffold-navigation']
-      $: 'jquery',
-      jQuery: 'jquery',
+    $: 'jquery',
+    jQuery: 'jquery',
     // @endif
-      'Promise': ['promise-polyfill', 'default']
-    }),
-    new ModuleDependenciesPlugin({
-      'aurelia-testing': ['./compile-spy', './view-spy']
-    }),
-    new HtmlWebpackPlugin({
-      template: 'index.ejs',
-      // @if feat['htmlmin-min']
-      minify: production ? {
-        removeComments: true,
-        collapseWhitespace: true
-      } : undefined,
-      // @endif
-      // @if feat['htmlmin-max']
-      minify: production ? {
-        removeComments: true,
-        collapseWhitespace: true,
-        collapseInlineTagWhitespace: true,
-        collapseBooleanAttributes: true,
-        removeAttributeQuotes: true,
-        minifyCSS: true,
-        minifyJS: true,
-        removeScriptTypeAttributes: true,
-        removeStyleLinkTypeAttributes: true,
-        ignoreCustomFragments: [/\${.*?}/g]
-      } : undefined,
-      // @endif
-      metadata: {
-        // available in index.ejs //
-        title, server, baseUrl
-      }
-    }),
-    // ref: https://webpack.js.org/plugins/mini-css-extract-plugin/
-    ...when(extractCss, new MiniCssExtractPlugin({ // updated to match the naming conventions for the js files
-      filename: production ? 'css/[name].[contenthash].bundle.css' : 'css/[name].[hash].bundle.css',
-      chunkFilename: production ? 'css/[name].[contenthash].chunk.css' : 'css/[name].[hash].chunk.css'
-    })),
-    ...when(production || server, new CopyWebpackPlugin([
-      { from: 'static', to: outDir, ignore: ['.*'] }])), // ignore dot (hidden) files
-    ...when(analyze, new BundleAnalyzerPlugin())
-  ]
+    'Promise': ['promise-polyfill', 'default']
+  }),
+  new ModuleDependenciesPlugin({
+    'aurelia-testing': ['./compile-spy', './view-spy']
+  }),
+  new HtmlWebpackPlugin({
+    template: 'index.ejs',
+    // @if feat['htmlmin-min']
+    minify: production ? {
+      removeComments: true,
+      collapseWhitespace: true
+    } : undefined,
+    // @endif
+    // @if feat['htmlmin-max']
+    minify: production ? {
+      removeComments: true,
+      collapseWhitespace: true,
+      collapseInlineTagWhitespace: true,
+      collapseBooleanAttributes: true,
+      removeAttributeQuotes: true,
+      minifyCSS: true,
+      minifyJS: true,
+      removeScriptTypeAttributes: true,
+      removeStyleLinkTypeAttributes: true,
+      ignoreCustomFragments: [/\${.*?}/g]
+    } : undefined,
+    // @endif
+    metadata: {
+      // available in index.ejs //
+      title, server, baseUrl
+    }
+  }),
+  // ref: https://webpack.js.org/plugins/mini-css-extract-plugin/
+  ...when(extractCss, new MiniCssExtractPlugin({ // updated to match the naming conventions for the js files
+    filename: production ? 'css/[name].[contenthash].bundle.css' : 'css/[name].[hash].bundle.css',
+    chunkFilename: production ? 'css/[name].[contenthash].chunk.css' : 'css/[name].[hash].chunk.css'
+  })),
+  ...when(production || server, new CopyWebpackPlugin([
+    { from: 'static', to: outDir, ignore: ['.*'] }])), // ignore dot (hidden) files
+  ...when(analyze, new BundleAnalyzerPlugin())
+]
 });
