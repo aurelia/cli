@@ -10,12 +10,13 @@ import {pluginMarkup} from './process-markup';
 import {pluginCSS} from './process-css';
 import {pluginJson} from './process-json';
 import {buildPluginJavaScript} from './transpile';
+import { CLIOptions } from 'aurelia-cli';
 
 function clean() {
-  return del('dist');
+  return del(['dist/**', '!dist']);
 }
 
-export default gulp.series(
+let build = gulp.series(
   clean,
   gulp.parallel(
     // package.json "module" field pointing to dist/native-modules/index.js
@@ -29,6 +30,22 @@ export default gulp.series(
     pluginCSS('dist/commonjs'),
     pluginJson('dist/commonjs'),
     buildPluginJavaScript('dist/commonjs', 'commonjs'),
-  ),
-  () => console.log('Finish building Aurelia plugin to dist/commonjs and dist/native-modules')
-);
+  ), (done) => {
+    console.log('Finish building Aurelia plugin to dist/commonjs and dist/native-modules.');
+    done();
+  });
+
+let main;
+if (CLIOptions.hasFlag('watch')) {
+  main = function () {
+    console.log('Watching plugin sources for changes ...');
+    return gulp.watch('src/**/*', { ignoreInitial: false }, build);
+  }
+} else {
+  main = function () {
+    console.log('Building plugin sources ...');
+    return build();
+  }
+}
+
+export { main as default };
