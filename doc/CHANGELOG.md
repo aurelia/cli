@@ -1,3 +1,20 @@
+## [1.0.2](https://github.com/aurelia/cli/compare/1.0.1...1.0.2) (2019-06-26)
+
+
+### Bug Fixes
+
+* **cli-bundler:** fix source map path for local source file ([7deea6f](https://github.com/aurelia/cli/commit/7deea6f)), closes [#1117](https://github.com/aurelia/cli/issues/1117)
+* **release-check:** adjust task for webpack hostname ([3f22fef](https://github.com/aurelia/cli/commit/3f22fef))
+* **release-check:** avoid duplicated task ([19f6547](https://github.com/aurelia/cli/commit/19f6547))
+* **release-check:** bypass win32 puppeteer error on 0.0.0.0 ([bcbe262](https://github.com/aurelia/cli/commit/bcbe262))
+* **skeleton:** don't overwrite user's editorconfig ([d896772](https://github.com/aurelia/cli/commit/d896772)), closes [#1121](https://github.com/aurelia/cli/issues/1121)
+* **skeleton:** fix readonly environment files ([4ae1bba](https://github.com/aurelia/cli/commit/4ae1bba)), closes [#1031](https://github.com/aurelia/cli/issues/1031)
+* **webpack:** allow webpack app to run inside docker container ([263b2c2](https://github.com/aurelia/cli/commit/263b2c2))
+* **webpack:** bring in "open" to cli deps to avoid breaking existing webpack apps ([1258f4f](https://github.com/aurelia/cli/commit/1258f4f))
+* **webpack:** use npm package "open" to replace deprecated "opn" ([112075f](https://github.com/aurelia/cli/commit/112075f)), closes [#1120](https://github.com/aurelia/cli/issues/1120)
+
+
+
 ## [1.0.1](https://github.com/aurelia/cli/compare/1.0.0...1.0.1) (2019-06-11)
 
 
