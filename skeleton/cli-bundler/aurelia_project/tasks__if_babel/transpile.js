@@ -9,7 +9,6 @@ import fs from 'fs';
 import through from 'through2';
 import { CLIOptions, build, Configuration } from 'aurelia-cli';
 import gulpSourcemaps from 'gulp-sourcemaps';
-import gulpIf from 'gulp-if';
 
 let env = CLIOptions.getEnvironment();
 const buildOptions = new Configuration(project.build.options);
@@ -70,22 +69,13 @@ export function buildPluginJavaScript(dest, format) {
     }
     const transpile = babel(opts);
 
-    let defaultBuildOptions = {
-      minify: 'stage & prod',
-      sourcemaps: 'dev & stage',
-      rev: false
-    };
-
-    let buildOptions = new Configuration(project.build.options, defaultBuildOptions);
-    let sourcemaps = buildOptions.isApplicable('sourcemaps');
-
     return gulp.src(project.plugin.source.js)
-      .pipe(gulpIf(sourcemaps, gulpSourcemaps.init()))
+      .pipe(gulpSourcemaps.init())
       .pipe(transpile)
-      .pipe(gulpIf(sourcemaps, gulpSourcemaps.write('.', {
+      .pipe(gulpSourcemaps.write('.', {
         includeContent: false,
         sourceRoot: '../../src'
-      })))
+      }))
       .pipe(gulp.dest(dest));
   };
 }

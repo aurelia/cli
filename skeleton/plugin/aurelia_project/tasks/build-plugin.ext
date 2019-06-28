@@ -6,14 +6,18 @@ import del from 'del';
 import * as gulp from 'gulp';
 import * as del from 'del';
 // @endif
-import {pluginMarkup} from './process-markup';
-import {pluginCSS} from './process-css';
-import {pluginJson} from './process-json';
-import {buildPluginJavaScript} from './transpile';
+import { pluginMarkup } from './process-markup';
+import { pluginCSS } from './process-css';
+import { pluginJson } from './process-json';
+import { buildPluginJavaScript } from './transpile';
 import { CLIOptions } from 'aurelia-cli';
 
 function clean() {
-  return del(['dist/**', '!dist']);
+  if (CLIOptions.hasFlag('watch')) {
+    return Promise.resolve();
+  } else {
+    return del('dist');
+  }
 }
 
 let build = gulp.series(

@@ -5,7 +5,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "au build-plugin --env prod",
+    "build": "au build-plugin",
     "watch": "au build-plugin --watch",
     "prepare": "npm run build",
     // @if feat.karma || feat.jest
@@ -19,7 +19,6 @@
   ],
   "devDependencies": {
     "del": "",
-    "gulp-sourcemaps": "",
-    "gulp-if": "",
+    "gulp-sourcemaps": ""
   }
 }
