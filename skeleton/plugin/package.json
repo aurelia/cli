@@ -15,7 +15,8 @@
 
   },
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
   "devDependencies": {
     "del": "",

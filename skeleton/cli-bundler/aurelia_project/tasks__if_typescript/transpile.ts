@@ -56,7 +56,7 @@ export function buildPluginJavaScript(dest, format) {
       .pipe(gulp.src(project.plugin.source.js))
       .pipe(gulpSourcemaps.init())
       .pipe(typescriptCompiler())
-      .pipe(gulpSourcemaps.write('.', { includeContent: false, sourceRoot: '../../src' }))
+      .pipe(gulpSourcemaps.write('.', { includeContent: false, sourceRoot: '../../src/' }))
       .pipe(gulp.dest(dest));
   };
 }
