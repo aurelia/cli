@@ -12,6 +12,7 @@
 
     // @if feat.web
     "port": 8080,
+    "host": "localhost",
     "output": "dist",
     // @endif
 
