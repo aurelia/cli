@@ -49,7 +49,7 @@ function runWebpack(done) {
   server.listen(opts.port, opts.host, function(err) {
     if (err) throw err;
 
-    reportWebpackReadiness(opts);
+    // reportWebpackReadiness(opts);
     done();
   });
 }
