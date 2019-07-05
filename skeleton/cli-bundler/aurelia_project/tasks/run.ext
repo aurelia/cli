@@ -19,7 +19,7 @@ let serve = gulp.series(
   done => {
     browserSync({
       online: false,
-      open: CLIOptions.hasFlag('open'),
+      open: CLIOptions.hasFlag('open') || project.platform.open,
       port: CLIOptions.getFlagValue('port') || project.platform.port,
       logLevel: 'silent',
       server: {

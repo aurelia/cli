@@ -94,6 +94,7 @@
   "platform": {
     // @if feat.web
     "port": 9000,
+    "open": false,
     "index": "index.html",
     "baseDir": ".",
     "output": "scripts",
