@@ -18,7 +18,7 @@ import {CLIOptions, reportWebpackReadiness} from 'aurelia-cli';
 function runWebpack(done) {
   // https://webpack.github.io/docs/webpack-dev-server.html
   let opts = {
-    host: CLIOptions.getFlagValue('host') || project.platform.host,
+    host: CLIOptions.getFlagValue('host') || project.platform.host || "localhost",
     port: CLIOptions.getFlagValue('port') || project.platform.port,
     hot: project.platform.hmr || CLIOptions.hasFlag('hmr'),
     open: project.platform.open || CLIOptions.hasFlag('open'),

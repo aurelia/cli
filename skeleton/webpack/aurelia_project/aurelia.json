@@ -18,7 +18,6 @@
 
     // @if feat['dotnet-core']
     "port": 5000,
-    "host": "localhost",
     "output": "wwwroot/dist",
     // @endif
   }
