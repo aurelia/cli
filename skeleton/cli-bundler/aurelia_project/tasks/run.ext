@@ -21,6 +21,7 @@ let serve = gulp.series(
       online: false,
       open: CLIOptions.hasFlag('open') || project.platform.open,
       port: CLIOptions.getFlagValue('port') || project.platform.port,
+      host: CLIOptions.getFlagValue('host') || project.platform.host || "localhost",
       logLevel: 'silent',
       server: {
         baseDir: [project.platform.baseDir],
