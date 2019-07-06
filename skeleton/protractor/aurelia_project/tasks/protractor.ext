@@ -6,6 +6,18 @@ import * as gulp from 'gulp';
 // @endif
 const {protractor, webdriver_update }  = require('gulp-protractor');
 
+import { CLIOptions } from 'aurelia-cli';
+import * as project from '../aurelia.json';
+import { default as run } from './run';
+
+function runApp(cb) {
+     if (CLIOptions.hasFlag('start')) {
+      run();
+      cb();
+    }
+}
+gulp.task('run-app' , runApp);
+
 gulp.task('webdriver_update', webdriver_update);
 
 gulp.task('protractor', (cb) => {
@@ -22,6 +34,7 @@ gulp.task('protractor', (cb) => {
 
 // Setting up the test task
 export default gulp.series(
+  'run-app',
   'webdriver_update',
   'protractor'
 );
