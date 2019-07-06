@@ -1,10 +1,10 @@
 const aureliaConfig = require('../aurelia_project/aurelia.json');
 const port = aureliaConfig.platform.port;
+const host = aureliaConfig.platform.host;
 
 exports.config = {
   port: port,
-
-  baseUrl: `http://localhost:${port}/`,
+  baseUrl: `http://${host}:${port}/`,
 
   specs: [
 // @if feat.babel
