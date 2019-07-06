@@ -19,7 +19,7 @@
     },
     {
       "name": "host",
-      "description": "Set host adddress of the dev server, the accessible URL",
+      "description": "Set host address of the dev server, the accessible URL",
       "type": "string"
     },
     {
