@@ -33,6 +33,12 @@ let serve = gulp.series(
     }, function (err, bs) {
       if (err) return done(err);
       let urls = bs.options.get('urls').toJS();
+      let host = bs.options.get('host');
+      let port = bs.options.get('port');
+
+      if( host !== "localhost" )
+        log(`Application Available At: http://${host}:${port}`);
+
       log(`Application Available At: ${urls.local}`);
       log(`BrowserSync Available At: ${urls.ui}`);
       done();
