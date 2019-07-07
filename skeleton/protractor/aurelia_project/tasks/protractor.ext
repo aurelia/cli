@@ -10,10 +10,10 @@ import { CLIOptions } from 'aurelia-cli';
 import { default as run } from './run';
 
 function runApp(cb) {
-    if (CLIOptions.hasFlag('start')) {
-      run();
-    }
-    cb();
+  if (CLIOptions.hasFlag('start')) {
+    run();
+  }
+  cb();
 }
 gulp.task('run-app' , runApp);
 
@@ -26,7 +26,7 @@ gulp.task('protractor', (cb) => {
   // @if feat.typescript
   gulp.src('test/e2e/**/*.e2e.ts')
   // @endif
-    .pipe(protractor({configFile: 'test/protractor.conf.js'}))
+    .pipe(protractor({configFile: 'test/protractor.conf.js', args: process.argv.slice(3) }))
     .on('error', cb)
     .on('end', cb);
 });
