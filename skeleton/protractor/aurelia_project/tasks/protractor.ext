@@ -7,14 +7,13 @@ import * as gulp from 'gulp';
 const {protractor, webdriver_update }  = require('gulp-protractor');
 
 import { CLIOptions } from 'aurelia-cli';
-import * as project from '../aurelia.json';
 import { default as run } from './run';
 
 function runApp(cb) {
-     if (CLIOptions.hasFlag('start')) {
+    if (CLIOptions.hasFlag('start')) {
       run();
-      cb();
     }
+    cb();
 }
 gulp.task('run-app' , runApp);
 
