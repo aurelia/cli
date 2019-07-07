@@ -28,7 +28,10 @@ gulp.task('protractor', (cb) => {
   // @endif
     .pipe(protractor({configFile: 'protractor.conf.js', args: process.argv.slice(3) }))
     .on('error', cb)
-    .on('end', cb);
+    .on('end', () => {
+      cb()
+      process.exit(0);
+    });
 });
 
 // Setting up the test task
