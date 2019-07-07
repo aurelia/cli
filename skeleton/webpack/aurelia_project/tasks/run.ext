@@ -20,8 +20,8 @@ function runWebpack(done) {
   let opts = {
     host: CLIOptions.getFlagValue('host') || project.platform.host || "localhost",
     port: CLIOptions.getFlagValue('port') || project.platform.port,
-    hot: project.platform.hmr || CLIOptions.hasFlag('hmr'),
-    open: project.platform.open || CLIOptions.hasFlag('open'),
+    open: CLIOptions.hasFlag('open') || project.platform.open,
+    hot: CLIOptions.hasFlag('hmr') || project.platform.hmr,
     publicPath: config.output.publicPath,
     filename: config.output.filename,
     contentBase: config.output.path,
