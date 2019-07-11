@@ -29,7 +29,6 @@
     // @if feat.typescript
     "gulp-typescript": "",
     "gulp-tslint": "",
-    "merge2": "",
     "tslint": "",
     "typescript": "",
     "@types/node": "",

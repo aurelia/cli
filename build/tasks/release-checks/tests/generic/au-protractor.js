@@ -50,7 +50,7 @@ class AuProtractorRunsTestsDotNet extends Test {
   onOutput(message) {
     this.debug(message);
 
-    if (message.indexOf('Now listening on: http://localhost:') > -1 && !this.protractorCommand) {
+    if (message.indexOf('Now listening on: http://') > -1 && !this.protractorCommand) {
       this.protractorCommand = new ExecuteCommand('au', ['protractor'], (msg) => this.onProtractorOutput(msg));
       this.protractorCommand.ignoreStdErr = true;
       return this.protractorCommand.executeAsNodeScript();
@@ -64,8 +64,8 @@ class AuProtractorRunsTestsDotNet extends Test {
 }
 
 function isApplicationAvailableMessage(msg) {
-  return msg.indexOf('Application Available At: http://localhost') > -1 ||
-    msg.indexOf('Project is running at http://localhost') > -1;
+  return msg.indexOf('Application Available At: http://') > -1 ||
+    msg.indexOf('Project is running at http://') > -1;
 }
 
 function isProtractorCompletedMessage(msg) {
