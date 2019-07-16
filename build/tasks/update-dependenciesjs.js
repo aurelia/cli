@@ -3,7 +3,7 @@ const latestVersion = require('latest-version');
 const fs = require('fs');
 const path = require('path');
 
-const depJsonPath = path.resolve(__dirname, '../../lib/dependencies.json');
+const depJsonPath = path.resolve(__dirname, '../../dist/lib/dependencies.json');
 
 const ignore = ['text', 'gulp', 'extract-text-webpack-plugin'];
 

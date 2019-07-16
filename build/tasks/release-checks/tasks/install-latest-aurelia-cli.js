@@ -1,10 +1,10 @@
 const Task = require('./task');
-const Yarn = require('../../../../lib/package-managers/yarn').Yarn;
+const Yarn = require('../../../../dist/lib/package-managers/yarn').Yarn;
 const LogManager = require('aurelia-logging');
 const logger = LogManager.getLogger('link-aurelia-cli');
-const CLIOptions = require('../../../../lib/cli-options').CLIOptions;
+const CLIOptions = require('../../../../dist/lib/cli-options').CLIOptions;
 const cliOptions = new CLIOptions();
-const ConsoleUI = require('../../../../lib/ui').ConsoleUI;
+const ConsoleUI = require('../../../../dist/lib/ui').ConsoleUI;
 const ui = new ConsoleUI();
 
 let userArgs = process.argv.slice(2);

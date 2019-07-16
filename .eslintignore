@@ -5,3 +5,4 @@ lib/build/map-stream
 lib/resolve
 lib/colors
 lib/resources
+dist

@@ -1,7 +1,7 @@
 const path = require('path');
 const tasks = require('./tasks/index');
 const tests = require('./tests/index');
-const applicable = require('../../../lib/workflow/applicable');
+const applicable = require('../../../dist/lib/workflow/applicable');
 
 module.exports = function(suite) {
   const features = suite.split('_');

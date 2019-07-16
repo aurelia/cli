@@ -1,7 +1,7 @@
-const Utils = require('../../../lib/build/utils');
+const Utils = require('../../../dist/lib/build/utils');
 const suiteSteps = require('./suite-steps');
 const StepRunner = require('./step-runner');
-const fs = require('../../../lib/file-system');
+const fs = require('../../../dist/lib/file-system');
 
 module.exports = class SuiteRunner {
   constructor(context, reporter) {

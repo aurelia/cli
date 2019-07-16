@@ -1,5 +1,5 @@
 const Task = require('./task');
-const Yarn = require('../../../../lib/package-managers/yarn').Yarn;
+const Yarn = require('../../../../dist/lib/package-managers/yarn').Yarn;
 const LogManager = require('aurelia-logging');
 const logger = LogManager.getLogger('install-node-modules');
 const fs = require('fs');
