@@ -7,36 +7,25 @@ import * as gulp from 'gulp';
 const {protractor, webdriver_update }  = require('gulp-protractor');
 
 import { CLIOptions } from 'aurelia-cli';
-import { default as run } from './run';
+import { default as runAppServer, shutdownAppServer } from './run';
 
 function runApp(cb) {
   if (CLIOptions.hasFlag('start')) {
-    run();
+    runAppServer();
   }
   cb();
 }
-gulp.task('run-app' , runApp);
 
-gulp.task('webdriver_update', webdriver_update);
-
-gulp.task('protractor', (cb) => {
-  // @if feat.babel
-  gulp.src('test/e2e/**/*.e2e.js')
-  // @endif
-  // @if feat.typescript
-  gulp.src('test/e2e/**/*.e2e.ts')
-  // @endif
-    .pipe(protractor({configFile: 'protractor.conf.js', args: process.argv.slice(3) }))
-    .on('error', cb)
-    .on('end', () => {
-      cb()
-      process.exit(0);
-    });
-});
+function runProtractor() {
+  return gulp.src('test/e2e/**/*.e2e.ts')
+    .pipe(protractor({ configFile: 'protractor.conf.js', args: process.argv.slice(3) }))
+    .on('end', shutdownAppServer);
+}
 
 // Setting up the test task
 export default gulp.series(
-  'run-app',
-  'webdriver_update',
-  'protractor'
+  runApp,
+  webdriver_update,
+  runProtractor
 );
+
