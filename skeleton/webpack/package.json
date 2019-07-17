@@ -49,19 +49,18 @@
     "stylus": "",
     // @endif
 
-    "gulp-rename": "",
     "html-webpack-plugin": "",
     "copy-webpack-plugin": "",
     "mini-css-extract-plugin": "",
     "aurelia-webpack-plugin": "",
     "duplicate-package-checker-webpack-plugin": "",
+    "clean-webpack-plugin": "",
     "webpack": "",
     "webpack-cli": "",
     "webpack-dev-server": "",
     "expose-loader": "",
     "style-loader": "",
     "url-loader": "",
-    "del": "",
     "css-loader": "",
     "file-loader": "",
     "app-settings-loader": "",
@@ -71,15 +70,15 @@
     "webpack-bundle-analyzer": "",
   },
   "scripts": {
-    "build": "gulp prebuild && webpack --env.production --env.extractCss",
-    "build:dev": "gulp prebuild && webpack --env.extractCss",
+    "build": "webpack --env.production --env.extractCss",
+    "build:dev": "webpack --env.extractCss",
     "analyze": "webpack --env.production --env.analyze",
     // @if feat['dotnet-core']
-    "start": "gulp prebuild && webpack-dev-server --env.extractCss  --port 5000"
+    "start": "webpack-dev-server --env.extractCss  --port 5000"
     // @endif
 
     // @if feat.web
-    "start": "gulp prebuild && webpack-dev-server --env.extractCss --port 8080"
+    "start": "webpack-dev-server --env.extractCss --port 8080"
     // @endif
   }
 }

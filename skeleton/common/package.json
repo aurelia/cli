@@ -21,7 +21,9 @@
     "aurelia-cli": "",
     "aurelia-testing": "",
     "aurelia-tools": "",
+    // @if ! feat.webpack
     "gulp": "",
+    // @endif
     "minimatch": "",
     "through2": "",
     "vinyl-fs": "",

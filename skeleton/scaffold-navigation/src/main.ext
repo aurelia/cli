@@ -7,8 +7,11 @@ import 'bootstrap';
 // @if feat.typescript
 import {Aurelia} from 'aurelia-framework';
 // @endif
-import * as environment from '../config/environment.json';
+// @if ! feat.webpack
+import environment from './environment';
+// @endif
 // @if feat.webpack
+import * as environment from '../config/environment.json';
 import {PLATFORM} from 'aurelia-pal';
 // @endif
 
