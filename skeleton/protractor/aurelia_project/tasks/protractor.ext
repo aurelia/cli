@@ -17,7 +17,12 @@ function runApp(cb) {
 }
 
 function runProtractor() {
+  // @if feat.babel
+  return gulp.src('test/e2e/**/*.e2e.js')
+  // @endif
+  // @if feat.typescript
   return gulp.src('test/e2e/**/*.e2e.ts')
+  // @endif
     .pipe(protractor({ configFile: 'protractor.conf.js', args: process.argv.slice(3) }))
     .on('end', shutdownAppServer);
 }
