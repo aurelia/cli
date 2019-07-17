@@ -14,10 +14,13 @@ import {CLIOptions} from 'aurelia-cli';
 import build from './build';
 import watch from './watch';
 
+// recommended: https://www.browsersync.io/docs/api#api-create
+const bs = browserSync.create();
+
 let serve = gulp.series(
   build,
   done => {
-    browserSync({
+    bs.init({
       online: false,
       open: CLIOptions.hasFlag('open') || project.platform.open,
       port: CLIOptions.getFlagValue('port') || project.platform.port,
