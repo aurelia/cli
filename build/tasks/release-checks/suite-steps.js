@@ -65,11 +65,11 @@ module.exports = function(suite) {
 
   if (applicable(features, 'webpack')) {
     steps.push(
-      new tests.webpack.NpmStartDoesNotThrowCommandLineErrors(),
-      new tests.webpack.NpmStartLaunchesServer(),
-      new tests.webpack.NpmStartRendersPage(),
-      new tests.webpack.NpmStartAppLaunchesWithoutJavascriptErrors(),
-      new tests.webpack.NpmStartWatchPicksUpFileChanges()
+      new tests.webpack.AuRunDoesNotThrowCommandLineErrors(),
+      new tests.webpack.AuRunLaunchesServer(),
+      new tests.webpack.AuRunRendersPage(),
+      new tests.webpack.AuRunAppLaunchesWithoutJavascriptErrors(),
+      new tests.webpack.AuRunWatchPicksUpFileChanges()
     );
   }
 

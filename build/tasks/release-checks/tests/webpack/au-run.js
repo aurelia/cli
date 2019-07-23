@@ -6,9 +6,9 @@ const StepRunner = require('../../step-runner');
 const path = require('path');
 const fs = require('fs');
 
-class NpmStartDoesNotThrowCommandLineErrors extends Test {
+class AuRunDoesNotThrowCommandLineErrors extends Test {
   constructor() {
-    super('npm start does not throw commandline errors');
+    super('au run does not throw commandline errors');
   }
 
   onOutput(message) {
@@ -24,14 +24,14 @@ class NpmStartDoesNotThrowCommandLineErrors extends Test {
   }
 
   execute() {
-    this.executeCommand = new ExecuteCommand('npm', ['start'], (msg) => this.onOutput(msg));
+    this.executeCommand = new ExecuteCommand('au', ['run'], (msg) => this.onOutput(msg));
     return this.executeCommand.executeAsNodeScript();
   }
 }
 
-class NpmStartLaunchesServer extends Test {
+class AuRunLaunchesServer extends Test {
   constructor() {
-    super('npm start launches server');
+    super('au run launches server');
   }
 
   onOutput(message) {
@@ -44,14 +44,14 @@ class NpmStartLaunchesServer extends Test {
   }
 
   execute() {
-    this.executeCommand = new ExecuteCommand('npm', ['start'], (msg) => this.onOutput(msg));
+    this.executeCommand = new ExecuteCommand('au', ['run'], (msg) => this.onOutput(msg));
     return this.executeCommand.executeAsNodeScript();
   }
 }
 
-class NpmStartWatchPicksUpFileChanges extends Test {
+class AuRunWatchPicksUpFileChanges extends Test {
   constructor(fileToChange) {
-    super('npm start picks up file changes');
+    super('au run picks up file changes');
 
     this.fileToChange = fileToChange || path.join('src', 'app.html');
     this.watchingForFileChangeNotification = false;
@@ -99,14 +99,14 @@ class NpmStartWatchPicksUpFileChanges extends Test {
   execute(context) {
     this.context = context;
 
-    this.executeCommand = new ExecuteCommand('npm', ['start'], (msg) => this.onOutput(msg));
+    this.executeCommand = new ExecuteCommand('au', ['run'], (msg) => this.onOutput(msg));
     return this.executeCommand.executeAsNodeScript();
   }
 }
 
-class NpmStartAppLaunchesWithoutJavascriptErrors extends Test {
+class AuRunAppLaunchesWithoutJavascriptErrors extends Test {
   constructor() {
-    super('npm start app launches without javascript errors');
+    super('au run app launches without javascript errors');
   }
 
   onOutput(message) {
@@ -127,14 +127,14 @@ class NpmStartAppLaunchesWithoutJavascriptErrors extends Test {
   }
 
   execute() {
-    this.executeCommand = new ExecuteCommand('npm', ['start'], (msg) => this.onOutput(msg));
+    this.executeCommand = new ExecuteCommand('au', ['run'], (msg) => this.onOutput(msg));
     return this.executeCommand.executeAsNodeScript();
   }
 }
 
-class NpmStartRendersPage extends Test {
+class AuRunRendersPage extends Test {
   constructor() {
-    super('npm start renders page');
+    super('au run renders page');
   }
 
   onOutput(context, message) {
@@ -144,7 +144,7 @@ class NpmStartRendersPage extends Test {
       this.isUp = true;
       const url = getURL(message);
 
-      const screenshot = new TakeScreenShotOfPage(url, path.join(context.resultOutputFolder, 'screenshot-of-npm-start.png'));
+      const screenshot = new TakeScreenShotOfPage(url, path.join(context.resultOutputFolder, 'screenshot-of-au-run.png'));
 
       return new StepRunner(screenshot).run()
         .then(() => {
@@ -155,7 +155,7 @@ class NpmStartRendersPage extends Test {
   }
 
   execute(context) {
-    this.executeCommand = new ExecuteCommand('npm', ['start'], (msg) => this.onOutput(context, msg));
+    this.executeCommand = new ExecuteCommand('au', ['run'], (msg) => this.onOutput(context, msg));
     return this.executeCommand.executeAsNodeScript();
   }
 }
@@ -171,9 +171,9 @@ function getURL(msg) {
 }
 
 module.exports = {
-  NpmStartDoesNotThrowCommandLineErrors,
-  NpmStartLaunchesServer,
-  NpmStartWatchPicksUpFileChanges,
-  NpmStartAppLaunchesWithoutJavascriptErrors,
-  NpmStartRendersPage
+  AuRunDoesNotThrowCommandLineErrors,
+  AuRunLaunchesServer,
+  AuRunWatchPicksUpFileChanges,
+  AuRunAppLaunchesWithoutJavascriptErrors,
+  AuRunRendersPage
 };
