@@ -13,8 +13,8 @@
     "url": "https://github.com/aurelia/cli/issues"
   },
   "bin": {
-    "aurelia": "dist/bin/aurelia-cli.js",
-    "au": "dist/bin/aurelia-cli.js"
+    "aurelia": "bin/aurelia-cli.js",
+    "au": "bin/aurelia-cli.js"
   },
   "engines": {
     "node": ">=8.9.0"
@@ -24,17 +24,18 @@
     "build:ts": "tsc",
     "build:ts:watch": "npm run build:ts -- --watch",
     "build:dts": "tsc -d --emitDeclarationOnly --allowJs false",
-    "build:copy-files": "copyfiles -e ./skeleton/**/*.{js,ts} -e ./lib/**/*.{js,ts} ./lib/**/* ./skeleton/**/* ./dist",
+    "build:copy-files": "copyfiles -u 1 -e ./lib/**/*.{js,ts} ./lib/**/* ./dist",
     "lint": "gulp lint",
-    "pretest": "npm run lint",
+    "pretest": "npm run build && npm run lint",
     "test": "jasmine-ts",
     "coverage": "nyc jasmine-ts",
-    "test:watch": "nodemon -x 'npm test'"
+    "test:watch": "nodemon -x 'npm test'",
+    "prepare": "npm run build"
   },
   "license": "MIT",
   "author": "Rob Eisenberg <rob@bluespire.com> (http://robeisenberg.com/)",
-  "main": "dist/lib/index.js",
-  "types": "dist/lib/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/aurelia/cli"
