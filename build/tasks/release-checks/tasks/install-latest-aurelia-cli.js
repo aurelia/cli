@@ -1,5 +1,5 @@
 const Task = require('./task');
-const Yarn = require('../../../../dist/package-managers/yarn').Yarn;
+const NPM = require('../../../../dist/package-managers/npm').NPM;
 const LogManager = require('aurelia-logging');
 const logger = LogManager.getLogger('link-aurelia-cli');
 const CLIOptions = require('../../../../dist/cli-options').CLIOptions;
@@ -36,7 +36,7 @@ module.exports = class InstallLatestAureliaCLI extends Task {
     const forkUrl = await this.determineURL();
     logger.debug('Install latest Aurelia-CLI (' + forkUrl + ') ' + context.workingDirectory);
 
-    const yarn = new Yarn();
-    return yarn.install([forkUrl], context.workingDirectory);
+    const npm = new NPM();
+    return npm.install([forkUrl], context.workingDirectory);
   }
 };
