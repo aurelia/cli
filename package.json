@@ -24,7 +24,7 @@
     "build:ts": "tsc",
     "build:ts:watch": "npm run build:ts -- --watch",
     "build:dts": "tsc -d --emitDeclarationOnly --allowJs false",
-    "build:copy-files": "copyfiles -u 1 -e ./lib/**/*.{js,ts} ./lib/**/* ./dist",
+    "build:copy-files": "copyfiles -u 1 -e \"./lib/**/*.{js,ts}\" \"./lib/**/*\" ./dist",
     "lint": "gulp lint",
     "pretest": "npm run build && npm run lint",
     "test": "jasmine-ts",
