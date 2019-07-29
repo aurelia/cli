@@ -40,7 +40,6 @@
     // @endif
     // @if feat['postcss-tailwind']
     "tailwindcss": "",
-    "@fullhuman/postcss-purgecss": "",
     // @endif
 
     // @if feat.sass
