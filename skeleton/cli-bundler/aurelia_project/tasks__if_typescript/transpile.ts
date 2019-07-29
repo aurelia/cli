@@ -7,7 +7,9 @@ import * as project from '../aurelia.json';
 import * as fs from 'fs';
 import * as through from 'through2';
 import { CLIOptions, build, Configuration } from 'aurelia-cli';
+// @if feat.plugin
 import * as gulpSourcemaps from 'gulp-sourcemaps';
+// @endif
 
 function configureEnvironment() {
   let env = CLIOptions.getEnvironment();

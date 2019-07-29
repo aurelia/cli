@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-'use strict';
+
 const resolve = require('resolve');
 
 const semver = require('semver');
@@ -25,7 +25,7 @@ resolve('aurelia-cli', {
   let cli;
 
   if (commandName === 'new' || error) {
-    cli = new (require('../lib/index').CLI);
+    cli = new (require('../dist/index').CLI);
     cli.options.runningGlobally = true;
   } else {
     cli = new (require(projectLocalCli).CLI);

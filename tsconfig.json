@@ -5,10 +5,10 @@
       "target": "es6"
   },
   "include": [
-      "./bin/*",
-      "./lib/**/*"
+    "./lib/**/*"
   ],
   "exclude": [
+    "./bin/*",
     "./skeleton/**/*"
   ]
 }
