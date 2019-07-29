@@ -1,8 +1,8 @@
-import { NPM } from 'aurelia-cli/lib/package-managers/npm';
+import { NPM } from 'aurelia-cli';
 
 export default function() {
   console.log('`au run` is an alias of the `npm start`, you may use either of those; see README for more details.');
 
   const args = process.argv.slice(3);
-  return (new NPM()).install(['--', ...args], process.cwd(), 'start');
+  return (new NPM()).run('start',['--', ...args]);
 }
