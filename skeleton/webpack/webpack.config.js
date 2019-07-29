@@ -7,6 +7,9 @@ const project = require('./aurelia_project/aurelia.json');
 const { AureliaPlugin, ModuleDependenciesPlugin } = require('aurelia-webpack-plugin');
 const { ProvidePlugin } = require('webpack');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const autoprefixer = require('autoprefixer');
+const tailwindcss = require('tailwindcss');
+const cssnano = require('cssnano');
 
 // config helpers:
 const ensureArray = (config) => config && (Array.isArray(config) ? config : [config]) || [];
@@ -29,18 +32,12 @@ const cssRules = (production) => {
       loader: 'postcss-loader',
       options: {
         plugins: () => [
-          require('autoprefixer')(),
+          autoprefixer(),
           // @if feat['postcss-tailwind']   
-          require('tailwindcss')('tailwind.config.js'),
-          ...when(production, require('@fullhuman/postcss-purgecss')({
-            content: [
-              path.resolve(srcDir, '/**/*.html')
-            ],
-            defaultExtractor: content => content.match(/[A-Za-z0–9-_:/]+/g) || []
-          })),
+          tailwindcss('tailwind.config.js'),
           // @endif
           // @if feat['postcss-typical'] || feat['postcss-tailwind']
-          ...when(production, require('cssnano')()),
+          ...when(production, cssnano()),
           // @endif
         ]
       }
