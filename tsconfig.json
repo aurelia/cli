@@ -2,13 +2,10 @@
   "compilerOptions": {
       "outDir": "./dist",
       "allowJs": true,
-      "target": "es6"
+      "target": "es6",
+      "module": "commonjs"
   },
   "include": [
     "./lib/**/*"
-  ],
-  "exclude": [
-    "./bin/*",
-    "./skeleton/**/*"
   ]
 }
