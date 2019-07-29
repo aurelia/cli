@@ -23,6 +23,12 @@ import autoprefixer from 'autoprefixer';
 import cssnano from 'cssnano';
 import postcssUrl from 'postcss-url';
 // @endif
+// @if feat['postcss-tailwind']
+const tailwindcss = require('tailwindcss');
+// @if feat['cli-bundler'] && (feat['less'] || feat['sass'] || feat['stylus'])
+const postcssImport = require('postcss-import');
+// @endif
+// @endif
 // @endif
 // @if feat.typescript
 import * as gulp from 'gulp';
@@ -47,6 +53,12 @@ import * as autoprefixer from 'autoprefixer';
 // @if feat['postcss-typical'] || feat['postcss-tailwind']
 import * as cssnano from 'cssnano';
 import * as postcssUrl from 'postcss-url';
+// @endif
+// @if feat['postcss-tailwind']
+const tailwindcss = require('tailwindcss');
+// @if feat['cli-bundler'] && (feat['less'] || feat['sass'] || feat['stylus'])
+const postcssImport = require('postcss-import');
+// @endif
 // @endif
 // @endif
 
@@ -78,7 +90,10 @@ export default function processCSS() {
     // @endif
     // @if feat['postcss-tailwind']
     .pipe(postcss([
-	  require('tailwindcss'),
+      // @if feat['cli-bundler'] && (feat['less'] || feat['sass'] || feat['stylus'])
+      postcssImport(),
+      // @endif
+      tailwindcss('tailwind.config.js'),
       autoprefixer(),
       postcssUrl({url: 'inline', encodeType: 'base64'}),
       cssnano()
@@ -117,7 +132,10 @@ export function pluginCSS(dest) {
       // @endif
       // @if feat['postcss-tailwind']
       .pipe(postcss([
-		    require('tailwindcss'),
+        // @if feat['cli-bundler'] && (feat['less'] || feat['sass'] || feat['stylus'])
+        postcssImport(),
+        // @endif
+        tailwindcss('tailwind.config.js'),
         autoprefixer(),
         postcssUrl({url: 'inline', encodeType: 'base64'}),
         cssnano()

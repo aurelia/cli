@@ -44,6 +44,9 @@
     // @endif
     // @if feat['postcss-tailwind']
     "tailwindcss": "",
+    // @if feat['cli-bundler'] && (feat['less'] || feat['sass'] || feat['stylus'])
+    "postcss-import": "",
+    // @endif
     // @endif
     // @if feat.sass
     "gulp-sass": "",
