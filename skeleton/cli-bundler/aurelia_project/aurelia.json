@@ -47,8 +47,10 @@
     "source": [
       // @if feat.plugin
       "dev-app/**/*.less",
+      "dev-app/**/*.css",
       // @endif
-      "src/**/*.less"
+      "src/**/*.less",
+      "src/**/*.css"
     ],
     // @endif
 
@@ -56,8 +58,10 @@
     "source": [
       // @if feat.plugin
       "dev-app/**/*.scss",
+      "dev-app/**/*.css",
       // @endif
-      "src/**/*.scss"
+      "src/**/*.scss",
+      "src/**/*.css"
     ],
     // @endif
 
@@ -65,8 +69,10 @@
     "source": [
       // @if feat.plugin
       "dev-app/**/*.styl",
+      "dev-app/**/*.css",
       // @endif
-      "src/**/*.styl"
+      "src/**/*.styl",
+      "src/**/*.css"
     ],
     // @endif
   },

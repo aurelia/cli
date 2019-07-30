@@ -24,11 +24,9 @@ import cssnano from 'cssnano';
 import postcssUrl from 'postcss-url';
 // @endif
 // @if feat['postcss-tailwind']
-const tailwindcss = require('tailwindcss');
-// @if feat['cli-bundler'] && (feat['less'] || feat['sass'] || feat['stylus'])
-const postcssImport = require('postcss-import');
+import tailwindcss from 'tailwindcss';
 // @endif
-// @endif
+import gulpIf from 'gulp-if';
 // @endif
 // @if feat.typescript
 import * as gulp from 'gulp';
@@ -55,11 +53,9 @@ import * as cssnano from 'cssnano';
 import * as postcssUrl from 'postcss-url';
 // @endif
 // @if feat['postcss-tailwind']
-const tailwindcss = require('tailwindcss');
-// @if feat['cli-bundler'] && (feat['less'] || feat['sass'] || feat['stylus'])
-const postcssImport = require('postcss-import');
+import * as  tailwindcss from 'tailwindcss';
 // @endif
-// @endif
+import * as gulpIf from 'gulp-if';
 // @endif
 
 export default function processCSS() {
@@ -68,13 +64,13 @@ export default function processCSS() {
     .pipe(plumber({ errorHandler: notify.onError('Error: <%= error.message %>') }))
     // @endif
     // @if feat.less
-    .pipe(less())
+    .pipe(gulpIf(f => f.extname === '.less', less()))
     // @endif
     // @if feat.sass
-    .pipe(sass().on('error', sass.logError))
+    .pipe(gulpIf(f => f.extname === '.scss', sass().on('error', sass.logError)))
     // @endif
     // @if feat.stylus
-    .pipe(stylus())
+    .pipe(gulpIf(f => f.extname === '.styl', stylus()))
     // @endif
     // @if feat['postcss-basic']
     .pipe(postcss([
@@ -90,9 +86,6 @@ export default function processCSS() {
     // @endif
     // @if feat['postcss-tailwind']
     .pipe(postcss([
-      // @if feat['cli-bundler'] && (feat['less'] || feat['sass'] || feat['stylus'])
-      postcssImport(),
-      // @endif
       tailwindcss('tailwind.config.js'),
       autoprefixer(),
       postcssUrl({url: 'inline', encodeType: 'base64'}),
@@ -110,13 +103,13 @@ export function pluginCSS(dest) {
       .pipe(plumber({ errorHandler: notify.onError('Error: <%= error.message %>') }))
       // @endif
       // @if feat.less
-      .pipe(less())
+      .pipe(gulpIf(f => f.extname === '.less', less()))
       // @endif
       // @if feat.sass
-      .pipe(sass().on('error', sass.logError))
+      .pipe(gulpIf(f => f.extname === '.scss', sass().on('error', sass.logError)))
       // @endif
       // @if feat.stylus
-      .pipe(stylus())
+      .pipe(gulpIf(f => f.extname === '.styl', stylus()))
       // @endif
       // @if feat['postcss-basic']
       .pipe(postcss([
@@ -132,9 +125,6 @@ export function pluginCSS(dest) {
       // @endif
       // @if feat['postcss-tailwind']
       .pipe(postcss([
-        // @if feat['cli-bundler'] && (feat['less'] || feat['sass'] || feat['stylus'])
-        postcssImport(),
-        // @endif
         tailwindcss('tailwind.config.js'),
         autoprefixer(),
         postcssUrl({url: 'inline', encodeType: 'base64'}),
