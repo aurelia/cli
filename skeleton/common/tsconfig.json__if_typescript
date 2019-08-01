@@ -32,10 +32,8 @@
     "types": ["node", "jest"],
     // @endif
 
-    // @if feat.webpack && feat['postcss-typical'] && feat.protractor
     "typeRoots": ["./node_modules/@types"],
-    // @endif
-
+    
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -44,6 +42,7 @@
     "lib": ["es2015", "dom"],
     "moduleResolution": "node",
     "baseUrl": "src",
+    "resolveJsonModule": true,
 
     // @if feat.plugin
     "paths": { "resources": [ "" ] },
