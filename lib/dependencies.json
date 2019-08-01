@@ -4,6 +4,7 @@
   "@types/lodash": "^4.14.117",
   "@types/node": "^10.11.6",
   "@types/webpack": "^4.4.15",
+  "app-settings-loader": "^1.0.2",
   "aspnet-webpack": "^3.0.0",
   "aurelia-animator-css": "^1.0.4",
   "aurelia-bootstrapper": "^2.3.2",
