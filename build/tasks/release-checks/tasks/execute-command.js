@@ -1,5 +1,4 @@
 const Task = require('./task');
-const { killProc } = require('../utils');
 const { spawn } = require('child_process');
 const os = require('os');
 
@@ -24,8 +23,9 @@ module.exports = class ExecuteCommand extends Task {
 
   execute() {
     this.proc = spawn(this.command, this.parameters);
-    this.promise = new Promise((resolve) => {
+    this.promise = new Promise((resolve, reject) => {
       this.resolve = resolve;
+      this.reject = reject;
     });
 
     this.proc.stdout.on('data', (data) => {
@@ -60,11 +60,6 @@ module.exports = class ExecuteCommand extends Task {
     }
 
     return this.execute();
-  }
-
-  stop() {
-    this.resolve();
-    killProc(this.proc);
   }
 
   getTitle() {

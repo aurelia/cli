@@ -96,6 +96,7 @@
     "nyc": "^14.1.1",
     "puppeteer": "^1.19.0",
     "rimraf": "^2.6.3",
+    "tree-kill": "^1.2.1",
     "ts-node": "^8.3.0",
     "typescript": "^3.5.3",
     "yargs": "^13.3.0"

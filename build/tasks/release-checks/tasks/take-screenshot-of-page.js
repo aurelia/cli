@@ -1,6 +1,5 @@
 const Task = require('./task');
 const puppeteer = require('puppeteer');
-const { killProc } = require('../utils');
 const PUPPETEER_TIMEOUT = 5000;
 
 module.exports = class TakeScreenShotOfPage extends Task {
@@ -36,11 +35,6 @@ module.exports = class TakeScreenShotOfPage extends Task {
             });
         });
     });
-  }
-
-  stop() {
-    this.resolve();
-    killProc(this.proc);
   }
 
   getTitle() {
