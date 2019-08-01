@@ -30,7 +30,7 @@ module.exports = function (config) {
       'test/karma-bundle.js': [ 'webpack' ]
     },
 
-    webpack: require('../webpack.config')({ coverage: true, karma: true }),
+    webpack: require('../webpack.config')({ tests: true }),
 
     /*
      * test results reporter to use
