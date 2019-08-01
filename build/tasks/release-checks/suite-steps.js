@@ -65,6 +65,8 @@ module.exports = function(suite) {
 
   if (applicable(features, 'webpack')) {
     steps.push(
+      new tests.webpack.AuBuildDoesNotThrowCommandLineErrors(),
+      new tests.webpack.AuBuildStartsWebpackInWatchMode(),
       new tests.webpack.AuRunDoesNotThrowCommandLineErrors(),
       new tests.webpack.AuRunLaunchesServer(),
       new tests.webpack.AuRunRendersPage(),
