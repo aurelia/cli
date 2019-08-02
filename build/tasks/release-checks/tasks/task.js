@@ -16,7 +16,6 @@ module.exports = class Task extends Step {
   }
 
   stop() {
-    this.resolve && this.resolve();
     kill(this.proc.pid, err => {
       if (err) {
         this.reject && this.reject(err);
