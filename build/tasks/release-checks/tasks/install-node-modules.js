@@ -1,5 +1,5 @@
 const Task = require('./task');
-const Yarn = require('../../../../lib/package-managers/yarn').Yarn;
+const NPM = require('../../../../dist/package-managers/npm').NPM;
 const LogManager = require('aurelia-logging');
 const logger = LogManager.getLogger('install-node-modules');
 const fs = require('fs');
@@ -18,7 +18,7 @@ module.exports = class InstallNodeModules extends Task {
 
     logger.debug('installing packages in ' + context.workingDirectory);
 
-    const yarn = new Yarn();
-    return yarn.install([], context.workingDirectory);
+    const npm = new NPM();
+    return npm.install([], context.workingDirectory);
   }
 };

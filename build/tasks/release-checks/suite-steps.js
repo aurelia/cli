@@ -1,7 +1,7 @@
 const path = require('path');
 const tasks = require('./tasks/index');
 const tests = require('./tests/index');
-const applicable = require('../../../lib/workflow/applicable');
+const applicable = require('../../../dist/workflow/applicable');
 
 module.exports = function(suite) {
   const features = suite.split('_');
@@ -65,6 +65,8 @@ module.exports = function(suite) {
 
   if (applicable(features, 'webpack')) {
     steps.push(
+      new tests.webpack.AuBuildDoesNotThrowCommandLineErrors(),
+      new tests.webpack.AuBuildStartsWebpackInWatchMode(),
       new tests.webpack.AuRunDoesNotThrowCommandLineErrors(),
       new tests.webpack.AuRunLaunchesServer(),
       new tests.webpack.AuRunRendersPage(),

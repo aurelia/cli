@@ -1,14 +1,12 @@
 const Task = require('./task');
 const puppeteer = require('puppeteer');
-const { killProc } = require('../utils');
 const PUPPETEER_TIMEOUT = 5000;
 
 module.exports = class CheckJavascriptErrors extends Task {
   constructor(url) {
     super('Check javascript errors');
 
-    // somehow puppeteer/win32 thinks http://0.0.0.0:5000 is an invalid address.
-    this.url = url.replace('//0.0.0.0', '//localhost');
+    this.url = url;
   }
 
   execute() {
@@ -41,11 +39,6 @@ module.exports = class CheckJavascriptErrors extends Task {
             });
         });
     });
-  }
-
-  stop() {
-    this.resolve();
-    killProc(this.proc);
   }
 
   getTitle() {

@@ -81,14 +81,11 @@ describe('The cli-options', () => {
     });
 
     it('terminates when env is not defined by an env file', () => {
-      let oldExit = process.exit;
-      let spy = jasmine.createSpy('exit');
-      process.exit = spy;
+      let spy = jasmine.createSpy('exit', process.exit);
 
       cliOptions.args = ['build', '--env', 'unknown'];
       cliOptions.getEnvironment();
       expect(spy).toHaveBeenCalledWith(1);
-      process.exit = oldExit;
     });
 
     it('normalizes NODE_ENV from production to prod', () => {
@@ -128,15 +125,12 @@ describe('The cli-options', () => {
     });
 
     it('terminates when NODE_ENV is not defined by an env file', () => {
-      let oldExit = process.exit;
-      let spy = jasmine.createSpy('exit');
-      process.exit = spy;
+      let spy = jasmine.createSpy('exit', process.exit);
 
       process.env.NODE_ENV = 'unknown';
       cliOptions.args = ['build'];
       cliOptions.getEnvironment();
       expect(spy).toHaveBeenCalledWith(1);
-      process.exit = oldExit;
     });
   });
 });

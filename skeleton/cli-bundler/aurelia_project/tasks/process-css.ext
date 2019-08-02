@@ -59,7 +59,7 @@ import * as gulpIf from 'gulp-if';
 // @endif
 
 export default function processCSS() {
-  return gulp.src(project.cssProcessor.source, {sourcemaps: true, since: gulp.lastRun(processCSS)})
+  return gulp.src(project.cssProcessor.source, {sourcemaps: true/* @if !feat.less && !feat.sass && !feat.stylus */, since: gulp.lastRun(processCSS)/* @endif */})
     // @if feat.less || feat.stylus
     .pipe(plumber({ errorHandler: notify.onError('Error: <%= error.message %>') }))
     // @endif
