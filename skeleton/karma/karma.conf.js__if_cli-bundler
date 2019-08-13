@@ -61,7 +61,7 @@ module.exports = function(config) {
     /*
      * To run in non-headless mode:
      * 1. Comment the following lines
-     * 2. Uncomment the above "browser" setting
+     * 2. Uncomment the above "browsers" setting
     */
     browsers: [
       'ChromeHeadless',
