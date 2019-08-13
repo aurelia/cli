@@ -1,10 +1,18 @@
-const aureliaConfig = require('../aurelia_project/aurelia.json');
-const port = aureliaConfig.platform.port;
+const CLIOptions = require('aurelia-cli').CLIOptions;
+const aureliaConfig = require('./aurelia_project/aurelia.json');
+const cliOptions = new CLIOptions();
 
-exports.config = {
+Object.assign(cliOptions, {
+  args: process.argv.slice(3)
+});
+
+const port = cliOptions.getFlagValue('port') || aureliaConfig.platform.port;
+const host = cliOptions.getFlagValue('host') || aureliaConfig.platform.host || "localhost";
+const headless = cliOptions.hasFlag('run') || false;
+
+const config  = {
   port: port,
-
-  baseUrl: `http://localhost:${port}/`,
+  baseUrl: `http://${host}:${port}/`,
 
   specs: [
 // @if feat.babel
@@ -45,11 +53,7 @@ exports.config = {
         '--disable-translate',
         '--disable-background-timer-throttling',
         '--disable-renderer-backgrounding',
-        '--disable-device-discovery-notifications',
-        /* enable these if you'd like to test using Chrome Headless
-          '--no-gpu',
-          '--headless'
-        */
+        '--disable-device-discovery-notifications'
       ]
     }
   },
@@ -69,3 +73,10 @@ exports.config = {
     package: 'aurelia-protractor-plugin'
   }],
 };
+
+if (headless) {
+  config.capabilities.chromeOptions.args.push("--no-gpu");
+  config.capabilities.chromeOptions.args.push("--headless");
+}
+
+exports.config = config;
