@@ -103,6 +103,7 @@
 
     // @if feat['dotnet-core']
     "port": 5000,
+    "host": "localhost",
     "index": "wwwroot/index.html",
     "baseDir": "./wwwroot",
     "baseUrl": "scripts",

@@ -16,7 +16,7 @@ function runApp(cb) {
   cb();
 }
 
-function runProtractor() {
+function runProtractor(cb) {
   // @if feat.babel
   return gulp.src('test/e2e/**/*.e2e.js')
   // @endif
@@ -24,7 +24,12 @@ function runProtractor() {
   return gulp.src('test/e2e/**/*.e2e.ts')
   // @endif
     .pipe(protractor({ configFile: 'protractor.conf.js', args: process.argv.slice(3) }))
-    .on('end', shutdownAppServer);
+    .on('end', () => {
+      shutdownAppServer().then(cb);
+    })
+    .on('error', () => {
+      shutdownAppServer(1).then(cb);
+    });
 }
 
 // Setting up the test task
