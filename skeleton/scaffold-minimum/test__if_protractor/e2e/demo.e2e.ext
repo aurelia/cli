@@ -14,7 +14,7 @@ describe('aurelia skeleton app', function() {
     poSkeleton = new PageObjectSkeleton();
     poWelcome = new PageObjectWelcome();
 
-    await browser.loadAndWaitForAureliaPage(`http://localhost:${config.port}`);
+    await browser.loadAndWaitForAureliaPage(`http://${config.baseUrl}`);
   });
 
   it('should load the page and display the initial page title', async () => {

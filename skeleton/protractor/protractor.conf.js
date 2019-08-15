@@ -12,6 +12,7 @@ const headless = cliOptions.hasFlag('run') || false;
 
 const config  = {
   port: port,
+  host: host,
   baseUrl: `http://${host}:${port}/`,
 
   specs: [
