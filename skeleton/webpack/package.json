@@ -78,7 +78,7 @@
     // @endif
 
     // @if feat.web
-    "start": "webpack-dev-server --env.extractCss --port 8080"
+    "start": "webpack-dev-server --env.extractCss"
     // @endif
   }
 }

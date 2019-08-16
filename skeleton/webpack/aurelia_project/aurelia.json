@@ -12,11 +12,13 @@
 
     // @if feat.web
     "port": 8080,
+    "host": "localhost",
     "output": "dist",
     // @endif
 
     // @if feat['dotnet-core']
     "port": 5000,
+    "host": "localhost",
     "output": "wwwroot/dist",
     // @endif
   }
