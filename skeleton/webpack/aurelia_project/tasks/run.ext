@@ -1,8 +1,41 @@
 import { NPM } from 'aurelia-cli';
+import { CLIOptions } from 'aurelia-cli';
+import * as project from '../aurelia.json';
 
-export default function() {
+var find = require('find-process');
+var kill = require('tree-kill');
+
+const port = CLIOptions.getFlagValue('port') || project.platform.port;
+const host = CLIOptions.getFlagValue('host') || project.platform.host || "localhost";
+
+const run = () => {
   console.log('`au run` is an alias of the `npm start`, you may use either of those; see README for more details.');
 
   const args = process.argv.slice(3);
-  return (new NPM()).run('start',['--', ...args]);
+
+  if (!CLIOptions.hasFlag('port')) {
+    args.push('--port');
+    args.push(port);
+  }
+  if (!CLIOptions.hasFlag('host')) {
+    args.push('--host');
+    args.push(host);
+  }
+
+  return (new NPM()).run('start', ['--', ...args]);
 }
+
+const shutdownAppServer = () => {
+  return new Promise(resolve => {
+    find('port', port)
+      .then(function (list) {
+        if (list.length) {
+          kill(list[0].pid, 'SIGKILL', function (err) {
+            resolve();
+          });
+        }
+      });
+  });
+};
+
+export { run as default, shutdownAppServer };

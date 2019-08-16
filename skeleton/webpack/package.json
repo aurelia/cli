@@ -68,6 +68,8 @@
     "html-loader": "",
     "istanbul-instrumenter-loader": "",
     "webpack-bundle-analyzer": "",
+    "find-process": "^1.4.2",
+    "tree-kill": "^1.2.1",
   },
   "scripts": {
     "build": "webpack --env.production --env.extractCss",
