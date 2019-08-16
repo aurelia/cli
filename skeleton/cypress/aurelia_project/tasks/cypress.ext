@@ -7,14 +7,37 @@ import * as cypress from 'cypress';
 import * as config from '../../cypress.config';
 // @endif
 import { CLIOptions } from 'aurelia-cli';
+import * as project from '../aurelia.json';
+import { default as runAppServer, shutdownAppServer } from './run';
 
-export default (cb) => {
+const runCypress = (cb) => {
   if (CLIOptions.hasFlag('run')) {
+    const port = CLIOptions.getFlagValue('port') || project.platform.port;
     cypress
       .run(config)
-      .then(results => (results.totalFailed === 0 ? cb() : cb('Run failed!')))
+      .then(results => {
+        if (results.totalFailed === 0) {
+          shutdownAppServer().then(cb);
+        }
+        else {
+          shutdownAppServer(1)
+            .then(_ => {
+              cb('Tests failed');
+            });
+        }
+      })
       .catch(cb);
   } else {
     cypress.open(config);
   }
+}
+
+export default (cb) => {
+  if (CLIOptions.hasFlag('start')) {
+    runCypress(cb);
+    runAppServer();
+    return;
+  }
+
+  runCypress(cb);
 };
