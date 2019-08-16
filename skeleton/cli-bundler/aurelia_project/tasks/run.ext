@@ -58,9 +58,17 @@ function reload() {
   browserSync.reload();
 }
 
-let run = gulp.series(
+const run = gulp.series(
   serve,
   done => { watch(reload); done(); }
 );
 
-export default run;
+const shutdownAppServer = (code) =>{
+  return new Promise(resolve => {
+    bs.exit();
+    process.exit(code || 0);
+    resolve();
+  });
+};
+
+export { run as default , shutdownAppServer };
