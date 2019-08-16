@@ -80,9 +80,30 @@ module.exports = function (config) {
      * start these browsers
      * available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
      */
+    // browsers: [
+    //   'Chrome',
+    // ],
+    /*
+     * To run in non-headless mode:
+     * 1. Comment the following lines
+     * 2. Uncomment the above "browsers" setting
+    */
     browsers: [
-      'Chrome',
+      'ChromeHeadless',
     ],
+
+    customLaunchers: {
+      'ChromeHeadless': {
+        base: 'Chrome',
+        flags: [
+          '--no-sandbox',
+          '--headless',
+          '--disable-gpu',
+          '--remote-debugging-port=9222'
+        ]
+      }
+    },
+    /** **************************************************************************** */
 
     /*
      * Continuous Integration mode
