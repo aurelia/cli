@@ -4,7 +4,22 @@
   "flags": [
     {
       "name": "run",
-      "description": "Perfom a testrun and reports the results.",
+      "description": "Perform a test run and reports the results.",
+      "type": "boolean"
+    },
+    {
+      "name": "host",
+      "description": "Set host address of the dev server, the accessible URL",
+      "type": "string"
+    },
+    {
+      "name": "port",
+      "description": "Set port number of the dev server",
+      "type": "string"
+    },
+    {
+      "name": "start",
+      "description": "Runs the application before starting to perform a testrun",
       "type": "boolean"
     }
   ]
