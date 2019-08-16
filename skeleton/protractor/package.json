@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "e2e": "au protractor",
+    "e2e:headless": "au protractor --run --start"
+  },
   "devDependencies": {
     // @if feat.typescript
     "ts-node": "",
