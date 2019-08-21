@@ -2,11 +2,12 @@ import { NPM } from 'aurelia-cli';
 import { CLIOptions } from 'aurelia-cli';
 import * as project from '../aurelia.json';
 
-var find = require('find-process');
 var kill = require('tree-kill');
 
 const port = CLIOptions.getFlagValue('port') || project.platform.port;
 const host = CLIOptions.getFlagValue('host') || project.platform.host || "localhost";
+
+const npm =  new NPM();
 
 const run = () => {
   console.log('`au run` is an alias of the `npm start`, you may use either of those; see README for more details.');
@@ -22,19 +23,16 @@ const run = () => {
     args.push(host);
   }
 
-  return (new NPM()).run('start', ['--', ...args]);
+  return npm.run('start', ['--', ...args]);
 }
 
 const shutdownAppServer = () => {
   return new Promise(resolve => {
-    find('port', port)
-      .then(function (list) {
-        if (list.length) {
-          kill(list[0].pid, 'SIGKILL', function (err) {
+    if(npm.proc){
+      kill(npm.proc.pid, 'SIGKILL', function (err) {
             resolve();
           });
-        }
-      });
+    }
   });
 };
 
