@@ -4,9 +4,15 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin');
 const project = require('./aurelia_project/aurelia.json');
+// @if feat['postcss-basic'] || feat['postcss-typical'] || ['postcss-tailwind']
 const autoprefixer = require('autoprefixer');
+// @endif
+// @if feat['postcss-tailwind']
 const tailwindcss = require('tailwindcss');
+// @endif
+// @if feat['postcss-typical'] || ['postcss-tailwind']
 const cssnano = require('cssnano');
+// @endif
 const { AureliaPlugin, ModuleDependenciesPlugin } = require('aurelia-webpack-plugin');
 const { ProvidePlugin } = require('webpack');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
