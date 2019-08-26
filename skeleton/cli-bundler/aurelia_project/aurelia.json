@@ -131,7 +131,7 @@
     "options": {
       "minify": "stage & prod",
       "sourcemaps": "dev & stage",
-      "rev": false,
+      "rev": "prod",
       "cache": "dev & stage"
     },
     "bundles": [
