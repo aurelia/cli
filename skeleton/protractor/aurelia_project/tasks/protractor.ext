@@ -7,7 +7,13 @@ import * as gulp from 'gulp';
 const {protractor, webdriver_update }  = require('gulp-protractor');
 
 import { CLIOptions } from 'aurelia-cli';
+// @if feat["cli-bundler"]
+import { serve as runAppServer, shutdownAppServer } from './run';
+// @endif
+// @if feat.webpack
 import { default as runAppServer, shutdownAppServer } from './run';
+// @endif
+
 
 function runApp(cb) {
   if (CLIOptions.hasFlag('start')) {
@@ -28,7 +34,7 @@ function runProtractor(cb) {
       shutdownAppServer().then(cb);
     })
     .on('error', () => {
-      shutdownAppServer(1).then(cb);
+      shutdownAppServer().then(cb);
     });
 }
 

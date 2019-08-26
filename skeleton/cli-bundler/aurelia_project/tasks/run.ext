@@ -63,12 +63,11 @@ const run = gulp.series(
   done => { watch(reload); done(); }
 );
 
-const shutdownAppServer = (code) =>{
+const shutdownAppServer = () =>{
   return new Promise(resolve => {
     bs.exit();
-    process.exit(code || 0);
     resolve();
   });
 };
 
-export { run as default , shutdownAppServer };
+export { run as default, serve , shutdownAppServer };
