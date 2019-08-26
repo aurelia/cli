@@ -8,7 +8,12 @@ import * as config from '../../cypress.config';
 // @endif
 import { CLIOptions } from 'aurelia-cli';
 import * as project from '../aurelia.json';
+// @if feat["cli-bundler"]
+import { serve as runAppServer, shutdownAppServer } from './run';
+// @endif
+// @if feat.webpack
 import { default as runAppServer, shutdownAppServer } from './run';
+// @endif
 
 const runCypress = (cb) => {
   if (CLIOptions.hasFlag('run')) {
@@ -20,7 +25,7 @@ const runCypress = (cb) => {
           shutdownAppServer().then(cb);
         }
         else {
-          shutdownAppServer(1)
+          shutdownAppServer()
             .then(_ => {
               cb('Tests failed');
             });
@@ -34,8 +39,8 @@ const runCypress = (cb) => {
 
 export default (cb) => {
   if (CLIOptions.hasFlag('start')) {
-    runCypress(cb);
     runAppServer();
+    runCypress(cb);
     return;
   }
 
