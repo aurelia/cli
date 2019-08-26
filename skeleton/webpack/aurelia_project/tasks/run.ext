@@ -29,9 +29,9 @@ const run = () => {
 const shutdownAppServer = () => {
   return new Promise(resolve => {
     if(npm.proc){
-      kill(npm.proc.pid, 'SIGKILL', function (err) {
-            resolve();
-          });
+      kill(npm.proc.pid, function (err) {
+        resolve();
+      });
     }
   });
 };
