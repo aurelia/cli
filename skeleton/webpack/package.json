@@ -75,7 +75,7 @@
     "build:dev": "webpack --env.extractCss",
     "analyze": "webpack --env.production --env.analyze",
     // @if feat['dotnet-core']
-    "start": "webpack-dev-server --env.extractCss  --port 5000"
+    "start": "webpack-dev-server --env.extractCss"
     // @endif
 
     // @if feat.web
