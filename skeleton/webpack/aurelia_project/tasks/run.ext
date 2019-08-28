@@ -4,24 +4,12 @@ import * as project from '../aurelia.json';
 
 var kill = require('tree-kill');
 
-const port = CLIOptions.getFlagValue('port') || project.platform.port;
-const host = CLIOptions.getFlagValue('host') || project.platform.host || "localhost";
-
 const npm =  new NPM();
 
 const run = () => {
   console.log('`au run` is an alias of the `npm start`, you may use either of those; see README for more details.');
 
   const args = process.argv.slice(3);
-
-  if (!CLIOptions.hasFlag('port')) {
-    args.push('--port');
-    args.push(port);
-  }
-  if (!CLIOptions.hasFlag('host')) {
-    args.push('--host');
-    args.push(host);
-  }
 
   return npm.run('start', ['--', ...args]);
 }
