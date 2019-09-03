@@ -17,8 +17,8 @@ module.exports = class Task extends Step {
 
   stop() {
     kill(this.proc.pid, err => {
-      // ignore windows taskkill error on process not found.
-      if (err && !err.message.match(/not found\.\s*$/)) {
+      // ignore windows taskkill error.
+      if (err && process.platform !== 'win32') {
         this.reject && this.reject(err);
       } else {
         this.resolve && this.resolve();
