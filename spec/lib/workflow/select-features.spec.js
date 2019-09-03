@@ -87,7 +87,8 @@ describe('The selectFeatures for app project', () => {
         2, // karma
         3, // cypress
         1, // no editor
-        2  // scaffold-navigation
+        2, // scaffold-navigation
+        1  // no docker file
       ]);
 
       expect(result).toEqual([
@@ -117,7 +118,8 @@ describe('The selectFeatures for app project', () => {
         1, // no unit test
         2, // protractor
         1, // no editor
-        1  // scaffold-minimum
+        1, // scaffold-minimum
+        2  // docker file
       ]);
 
       expect(result).toEqual([
@@ -128,7 +130,8 @@ describe('The selectFeatures for app project', () => {
         'less',
         'postcss-basic',
         'protractor',
-        'scaffold-minimum'
+        'scaffold-minimum',
+        'docker'
       ]);
     });
 
@@ -145,7 +148,8 @@ describe('The selectFeatures for app project', () => {
         1, // no unit test
         1, // no e2e test
         1, // no editor
-        1  // scaffold-minimum
+        1, // scaffold-minimum
+        1  // no docker file
       ]);
 
       expect(result).toEqual(['webpack', 'http1', 'web', 'babel', 'scaffold-minimum']);
@@ -159,7 +163,8 @@ describe('The selectFeatures for app project', () => {
         2, // htmlmin-min
         3, // postcss-typical
         2, // vscode
-        2  // scaffold-navigation
+        2,  // scaffold-navigation
+        2   // docker
       ]);
 
       expect(result).toEqual([
@@ -173,7 +178,8 @@ describe('The selectFeatures for app project', () => {
         'karma',
         'cypress',
         'vscode',
-        'scaffold-navigation'
+        'scaffold-navigation',
+        'docker'
       ]);
     });
   });
