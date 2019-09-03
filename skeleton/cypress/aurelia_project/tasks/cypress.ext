@@ -7,7 +7,6 @@ import * as cypress from 'cypress';
 import * as config from '../../cypress.config';
 // @endif
 import { CLIOptions } from 'aurelia-cli';
-import * as project from '../aurelia.json';
 // @if feat["cli-bundler"]
 import { serve as runAppServer, shutdownAppServer } from './run';
 // @endif
@@ -17,20 +16,10 @@ import { default as runAppServer, shutdownAppServer } from './run';
 
 const runCypress = (cb) => {
   if (CLIOptions.hasFlag('run')) {
-    const port = CLIOptions.getFlagValue('port') || project.platform.port;
     cypress
       .run(config)
-      .then(results => {
-        if (results.totalFailed === 0) {
-          shutdownAppServer().then(cb);
-        }
-        else {
-          shutdownAppServer()
-            .then(_ => {
-              cb('Tests failed');
-            });
-        }
-      })
+      .then(results => (results.totalFailed === 0 ? cb() : cb('Run failed!')))
+      .then(shutdownAppServer)
       .catch(cb);
   } else {
     cypress.open(config);

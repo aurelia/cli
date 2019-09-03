@@ -1,11 +1,7 @@
 {
   "name": "protractor",
   "description": "Runs Protractor and reports the results. Start the application before running this task.",
-  "flags": [{
-      "name": "run",
-      "description": "Perform a test run and reports the results.",
-      "type": "boolean"
-    },
+  "flags": [
     {
       "name": "host",
       "description": "Set host address of the dev server, the accessible URL",

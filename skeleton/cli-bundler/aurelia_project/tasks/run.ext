@@ -14,7 +14,6 @@ import {CLIOptions} from 'aurelia-cli';
 import build from './build';
 import watch from './watch';
 
-// recommended: https://www.browsersync.io/docs/api#api-create
 const bs = browserSync.create();
 
 let serve = gulp.series(
@@ -55,7 +54,7 @@ function log(message) {
 
 function reload() {
   log('Refreshing the browser');
-  browserSync.reload();
+  bs.reload();
 }
 
 const run = gulp.series(
@@ -63,11 +62,8 @@ const run = gulp.series(
   done => { watch(reload); done(); }
 );
 
-const shutdownAppServer = () =>{
-  return new Promise(resolve => {
-    bs.exit();
-    resolve();
-  });
+const shutdownAppServer = () => {
+  bs.exit();
 };
 
 export { run as default, serve , shutdownAppServer };

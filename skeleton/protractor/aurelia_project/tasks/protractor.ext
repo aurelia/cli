@@ -24,17 +24,19 @@ function runApp(cb) {
 
 function runProtractor(cb) {
   // @if feat.babel
-  return gulp.src('test/e2e/**/*.e2e.js')
+  gulp.src('test/e2e/**/*.e2e.js')
   // @endif
   // @if feat.typescript
-  return gulp.src('test/e2e/**/*.e2e.ts')
+  gulp.src('test/e2e/**/*.e2e.ts')
   // @endif
     .pipe(protractor({ configFile: 'protractor.conf.js', args: process.argv.slice(3) }))
     .on('end', () => {
-      shutdownAppServer().then(cb);
+      shutdownAppServer();
+      cb();
     })
-    .on('error', () => {
-      shutdownAppServer().then(cb);
+    .on('error', err => {
+      shutdownAppServer();
+      cb(err);
     });
 }
 

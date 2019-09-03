@@ -1,27 +1,23 @@
 import { NPM } from 'aurelia-cli';
-import { CLIOptions } from 'aurelia-cli';
-import * as project from '../aurelia.json';
-
-var kill = require('tree-kill');
+// @if feat.babel
+import kill from 'tree-kill';
+// @endif
+// @if feat.typescript
+import * as kill from 'tree-kill';
+// @endif
 
 const npm =  new NPM();
 
 const run = () => {
   console.log('`au run` is an alias of the `npm start`, you may use either of those; see README for more details.');
-
   const args = process.argv.slice(3);
-
   return npm.run('start', ['--', ...args]);
 }
 
 const shutdownAppServer = () => {
-  return new Promise(resolve => {
-    if(npm.proc){
-      kill(npm.proc.pid, function (err) {
-        resolve();
-      });
-    }
-  });
+  if (npm && npm.proc) {
+    kill(npm.proc.pid);
+  }
 };
 
 export { run as default, shutdownAppServer };
