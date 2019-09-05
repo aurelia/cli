@@ -38,7 +38,12 @@
   // @endif
   "scripts": {
     "build": "au build",
-    "start": "au run"
+    "start": "au run",
+// @if feat.docker
+"docker:build": "docker build -t /* @echo projectName */:0.1.0 -t /* @echo projectName */:latest .",
+"docker:start": "docker-compose up -d",
+"docker:stop": "docker-compose down",
+// @endif
   },
   "engines": {
     "node": ">=8.9.0"
