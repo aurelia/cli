@@ -1,8 +1,6 @@
 # build stage
 FROM node:12 as build
 
-RUN npm install -g aurelia-cli
-
 // @if feat.cypress || feat.protractor || feat.karma
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -50,24 +48,35 @@ RUN curl --silent --show-error --location --fail --retry 3 --output /tmp/google-
 
 // @endif
 
+RUN npm install -g aurelia-cli@1.1.0
+
+
 WORKDIR /app
 
 # install dependencies
 COPY ./*.json  ./
 RUN npm install
 
-# copy other files
-COPY ./*.config.js  ./
-COPY ./*.ejs  ./
-COPY ./*.ico  ./
+COPY config ./config
 COPY aurelia_project  ./aurelia_project
 
-# COPY application
+// @if feat.typescript && feat.webpack
 COPY types ./types
+// @endif
+
+// @if feat.webpack
 COPY static ./static
+// @endif
+
+# Copy files in the root folder
+COPY *.* ./
+
+# Copy source files
 COPY src ./src
 
+
 // @if feat.cypress || feat.protractor || feat.jest || feat.karma
+# Copy test, unit & e2e
 COPY test ./test
 // @endif
 
@@ -81,7 +90,6 @@ RUN au test
 RUN npm run e2e:headless
 // @endif
 
-
 # build
 FROM build as publish
 RUN au build
@@ -90,7 +98,18 @@ RUN au build
 FROM nginx:alpine as run-time
 COPY nginx.conf /etc/nginx/nginx.conf
 WORKDIR /usr/share/nginx/html
+// @if feat.webpack
 COPY --from=publish /app/dist/ .
+// @endif
+
+// @if feat["cli-bundler"]
+  // @if feat["scaffold-navigation"]
+COPY --from=publish /app/bootstrap/dist/ ./bootstrap/dist/
+  // @endif
+COPY --from=publish /app/scripts/ ./scripts/
+COPY --from=publish /app/index.html/ .
+// @endif
+
 EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
