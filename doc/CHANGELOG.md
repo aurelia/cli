@@ -1,3 +1,31 @@
+# [1.1.0](https://github.com/aurelia/cli/compare/1.0.2...1.1.0) (2019-09-05)
+
+
+### Bug Fixes
+
+* **--open:** resolved [#1129](https://github.com/aurelia/cli/issues/1129) ([4aded24](https://github.com/aurelia/cli/commit/4aded24))
+* **browser-sync:** update the mechanism to stop the server ([3ffc7ec](https://github.com/aurelia/cli/commit/3ffc7ec))
+* **build:** remove prompt confirmation on windows ([6850804](https://github.com/aurelia/cli/commit/6850804))
+* **cli-bundler:** fix missing refresh in less/scss/styl watch mode ([1d61223](https://github.com/aurelia/cli/commit/1d61223)), closes [#1138](https://github.com/aurelia/cli/issues/1138)
+* **cli-bundler:** revision should be turned on for production build by default ([055a912](https://github.com/aurelia/cli/commit/055a912))
+* **protractor:** updated protractor demo.e2e.ts files to use baseUrl ([7aaa38e](https://github.com/aurelia/cli/commit/7aaa38e))
+* **protractor:** updated protractor demo.e2e.ts files to use baseUrl ([81cb28a](https://github.com/aurelia/cli/commit/81cb28a))
+* **webpack:** Duplicated args for --port ([d666176](https://github.com/aurelia/cli/commit/d666176))
+* **webpack:** fix overlooked refactoring ([3b224dd](https://github.com/aurelia/cli/commit/3b224dd))
+* **webpack:** new release check ([a217fec](https://github.com/aurelia/cli/commit/a217fec))
+
+
+### Features
+
+* **base-package-manager:** updated  to keep track of child process ([3496c13](https://github.com/aurelia/cli/commit/3496c13))
+* **build-plugin:** add sourcemaps and watch support for plugin development ([391c5f0](https://github.com/aurelia/cli/commit/391c5f0))
+* **cli-bundler:** add `shutdownAppServer` method to CLI-Bundler ([b832ed1](https://github.com/aurelia/cli/commit/b832ed1))
+* **cypress:** update cypress to reflect changes for running with custom port & host ([50c7de5](https://github.com/aurelia/cli/commit/50c7de5))
+* **protractor:** update protractor to reflect changes for running with custom port & host ([770fd87](https://github.com/aurelia/cli/commit/770fd87))
+* **webpack:** use: host & port && add: shutdownAppServer ([d665ef1](https://github.com/aurelia/cli/commit/d665ef1))
+
+
+
 ## [1.0.2](https://github.com/aurelia/cli/compare/1.0.1...1.0.2) (2019-06-26)
 
 
