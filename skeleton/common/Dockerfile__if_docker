@@ -98,8 +98,13 @@ RUN au build --env prod
 FROM nginx:alpine as run-time
 COPY nginx.conf /etc/nginx/nginx.conf
 WORKDIR /usr/share/nginx/html
-// @if feat.webpack
+
+// @if feat.webpack && !feat["dotnet-core"]
 COPY --from=publish /app/dist/ .
+// @endif
+
+// @if feat["dotnet-core"]
+COPY --from=publish /app/wwwroot/dist/ .
 // @endif
 
 // @if feat["cli-bundler"]
