@@ -92,7 +92,7 @@ RUN npm run e2e:headless
 
 # build
 FROM build as publish
-RUN au build
+RUN au build --env prod
 
 # run-time stage
 FROM nginx:alpine as run-time
