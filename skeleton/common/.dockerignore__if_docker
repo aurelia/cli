@@ -1,5 +1,6 @@
 Dockerfile
 .dockerignore
+docker-compose.yml
 
 node_modules
 
@@ -17,3 +18,9 @@ Thumbs.db
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+**/*.cs
+**/*.cshtml
+Views
+Controllers
+**/*.Development.*
