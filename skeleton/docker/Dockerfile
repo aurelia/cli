@@ -80,6 +80,10 @@ COPY src ./src
 COPY test ./test
 // @endif
 
+// @if feat["cli-bundler"] && feat["dotnet-core"]
+COPY wwwroot ./wwwroot
+// @endif
+
 // @if feat.jest || feat.karma
 # RUN UNIT TESTS
 RUN au test
@@ -103,11 +107,15 @@ WORKDIR /usr/share/nginx/html
 COPY --from=publish /app/dist/ .
 // @endif
 
-// @if feat["dotnet-core"]
+// @if feat.webpack && feat["dotnet-core"]
 COPY --from=publish /app/wwwroot/dist/ .
 // @endif
 
-// @if feat["cli-bundler"]
+// @if feat["cli-bundler"] && feat["dotnet-core"]
+COPY --from=publish /app/wwwroot/ .
+// @endif
+
+// @if feat["cli-bundler"] && !feat["dotnet-core"]
   // @if feat["scaffold-navigation"]
 COPY --from=publish /app/bootstrap/dist/ ./bootstrap/dist/
   // @endif
