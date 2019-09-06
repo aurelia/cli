@@ -19,6 +19,7 @@ Thumbs.db
 !.vscode/launch.json
 !.vscode/extensions.json
 
+**/*.csproj
 **/*.cs
 **/*.cshtml
 Views
