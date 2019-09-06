@@ -1,0 +1,7 @@
+{
+  "scripts": {
+    "docker:build": "docker build -t /* @echo projectName */:0.1.0 -t /* @echo projectName */:latest .",
+    "docker:start": "docker-compose up -d",
+    "docker:stop": "docker-compose down"
+  }
+}
