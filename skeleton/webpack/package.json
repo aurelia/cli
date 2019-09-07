@@ -71,15 +71,15 @@
     "tree-kill": "^1.2.1",
   },
   "scripts": {
-    "build": "webpack --env.production --env.extractCss",
-    "build:dev": "webpack --env.extractCss",
-    "analyze": "webpack --env.production --env.analyze",
+    "build": "webpack --env.production --extractCss",
+    "build:dev": "webpack --extractCss",
+    "analyze": "webpack --env.production --analyze",
     // @if feat['dotnet-core']
-    "start": "webpack-dev-server --env.extractCss"
+    "start": "webpack-dev-server --extractCss"
     // @endif
 
     // @if feat.web
-    "start": "webpack-dev-server --env.extractCss"
+    "start": "webpack-dev-server --extractCss"
     // @endif
   }
 }

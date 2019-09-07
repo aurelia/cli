@@ -51,7 +51,7 @@ const sassRules = [
 ];
 // @endif
 
-module.exports = ({ production, extractCss, analyze, tests, hmr, port, host } = {}) => ({
+module.exports = ({ production } = {}, {extractCss, analyze, tests, hmr, port, host } = {}) => ({
   resolve: {
     // @if feat.typescript
     extensions: ['.ts', '.js'],
@@ -208,7 +208,7 @@ module.exports = ({ production, extractCss, analyze, tests, hmr, port, host } = 
     contentBase: outDir,
     // serve index.html for all 404 (required for push-state)
     historyApiFallback: true,
-    hot: hmr,
+    hot: hmr || project.platform.hmr,
     port: port || project.platform.port,
     host: host || project.platform.host
   },
