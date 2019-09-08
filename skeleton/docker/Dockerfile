@@ -5,9 +5,8 @@ FROM node:12 as build
 ENV DEBIAN_FRONTEND=noninteractive
 
 #update apt-get
-RUN apt-get update
-
-RUN apt-get install -y \
+#update apt-get
+RUN apt-get update && apt-get install -y \
     apt-utils \
     fonts-liberation \
     libappindicator3-1 \
@@ -23,28 +22,10 @@ RUN apt-get install -y \
     libgtk2.0-0 \
     libnotify-dev \
     libgconf-2-4 \
-    libnss3 \
     libxss1 \
     libasound2 \
-    xvfb
-
-# cypress dependencies or use cypress/base images
-RUN apt-get install -y \
-    libgtk2.0-0 \
-    libnotify-dev \
-    libgconf-2-4 \
-    libnss3 \
-    libxss1 \
-    libasound2 \
-    xvfb
-
-# install chrome
-RUN curl --silent --show-error --location --fail --retry 3 --output /tmp/google-chrome-stable_current_amd64.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
-  && ( dpkg -i /tmp/google-chrome-stable_current_amd64.deb ||  apt-get -fy install)  \
-  && rm -rf /tmp/google-chrome-stable_current_amd64.deb \
-  &&  sed -i 's|HERE/chrome"|HERE/chrome" --disable-setuid-sandbox --no-sandbox|g' \
-           "/opt/google/chrome/google-chrome" \
-  && google-chrome --version
+    xvfb \
+  && rm -rf /var/lib/apt/lists/*
 
 // @endif
 
