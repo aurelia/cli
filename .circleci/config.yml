@@ -51,7 +51,7 @@ jobs:
       - run: au new forth -u -s http2,dotnet-core,htmlmin-min,sass,postcss-typical,karma,cypress,scaffold-navigation,docker && cd ./forth && npm install && npm link aurelia-cli && npm run docker:build
       # four scaffolding using Alameda with various configurations
       - run: au new fifth -u -s cli-bundler,alameda,htmlmin-max,sass,postcss-typical,karma,cypress,docker && cd ./fifth && npm install && npm link aurelia-cli && npm run docker:build
-      - run: au new sixth -u -s cli-bundler,alameda,http2,typescript,htmlmin-min,less,postcss-typical,jest,protractor,scaffold-navigation,docker && cd ./sixth && npm install && npm link aurelia-cli && npm run docker:build
+      # - run: au new sixth -u -s cli-bundler,alameda,http2,typescript,htmlmin-min,less,postcss-typical,jest,protractor,scaffold-navigation,docker && cd ./sixth && npm install && npm link aurelia-cli && npm run docker:build
       - run: au new seventh -u -s cli-bundler,alameda,dotnet-core,typescript,htmlmin-max,stylus,postcss-basic,jest,protractor,docker && cd ./seventh && npm install && npm link aurelia-cli && npm run docker:build
       - run: au new eighth -u -s cli-bundler,alameda,http2,dotnet-core,htmlmin-min,sass,postcss-typical,karma,cypress,scaffold-navigation,docker && cd ./eighth && npm install && npm link aurelia-cli && npm run docker:build
   test_node_8:
