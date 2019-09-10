@@ -1,4 +1,3 @@
-For more information, go to https://aurelia.io/docs/cli/cli-bundler
 
 ## Build for Docker
 
