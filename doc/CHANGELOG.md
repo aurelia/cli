@@ -1,3 +1,12 @@
+## [1.1.1](https://github.com/aurelia/cli/compare/1.1.0...1.1.1) (2019-09-10)
+
+
+### Bug Fixes
+
+* **webpack:** avoid unnecessary breaking change on argument ([f73c4ea](https://github.com/aurelia/cli/commit/f73c4ea))
+
+
+
 # [1.1.0](https://github.com/aurelia/cli/compare/1.0.2...1.1.0) (2019-09-05)
 
 
