@@ -8,13 +8,13 @@ You can change the standard webpack configurations from CLI easily with somethin
 
 To enable Webpack Bundle Analyzer, do `npm run analyze` (production build).
 
-To enable hot module reload, do `npm start -- --env.hmr`.
+To enable hot module reload, do `npm start -- --hmr`.
 
 To change dev server port, do `au run --port 8888`.
 
 To change dev server host, do `au run --host 127.0.0.1`
 
-**PS:** You could mix all the flags as well, `au run --host 127.0.0.1 --port 7070 --open --env.hmr`
+**PS:** You could mix all the flags as well, `au run --host 127.0.0.1 --port 7070 --open --hmr`
 
 ## Build for production
 
