@@ -1,3 +1,23 @@
+# [1.2.0](https://github.com/aurelia/cli/compare/1.1.1...1.2.0) (2019-09-19)
+
+
+### Bug Fixes
+
+* **Dockerfile:** better integration with cli-bundler & dotnet template ([8fa9ee6](https://github.com/aurelia/cli/commit/8fa9ee6))
+* **linter:** add .dockerignore file & fixed failed build due to linter ([966f55f](https://github.com/aurelia/cli/commit/966f55f))
+* **linter:** issues with linter ([2a42ded](https://github.com/aurelia/cli/commit/2a42ded))
+* **protractor:** does not start app server when running in e2e:headless ([61f3ada](https://github.com/aurelia/cli/commit/61f3ada))
+* **protractor:** to run application before e2e tests in headless mode ([79c9585](https://github.com/aurelia/cli/commit/79c9585))
+* **webpack:** bring back au run --env prod ([eeebdc8](https://github.com/aurelia/cli/commit/eeebdc8))
+
+
+### Features
+
+* **docker:** add Dockerfile && docker-compose file ([4ed59ab](https://github.com/aurelia/cli/commit/4ed59ab))
+* **docker:** add initila docker files & setup for the cli ([9ea4c54](https://github.com/aurelia/cli/commit/9ea4c54))
+
+
+
 ## [1.1.1](https://github.com/aurelia/cli/compare/1.1.0...1.1.1) (2019-09-10)
 
 
