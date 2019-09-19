@@ -7,7 +7,7 @@ export default function() {
 }
 
 // Cleanup --env prod to --env.production
-// for backwards compatability
+// for backwards compatibility
 function cleanArgs(args) {
   const cleaned = [];
   for (let i = 0, ii = args.length; i < ii; i++) {
