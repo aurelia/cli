@@ -1,7 +1,7 @@
 {
   "scripts": {
-    "e2e": "au protractor",
-    "e2e:headless": "au protractor --run --start"
+    "e2e": "au protractor --interactive",
+    "e2e:headless": "au protractor --start"
   },
   "devDependencies": {
     // @if feat.typescript
