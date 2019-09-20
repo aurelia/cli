@@ -1,5 +1,5 @@
 # build stage
-FROM node:12 as build
+FROM node:lts as build-stage
 
 // @if feat.cypress || feat.protractor || feat.karma
 ENV DEBIAN_FRONTEND=noninteractive
@@ -32,12 +32,12 @@ RUN curl --silent --show-error --location --fail --retry 3 --output /tmp/google-
   && ( dpkg -i /tmp/google-chrome-stable_current_amd64.deb ||  apt-get -fy install)  \
   && rm -rf /tmp/google-chrome-stable_current_amd64.deb \
   &&  sed -i 's|HERE/chrome"|HERE/chrome" --disable-setuid-sandbox --no-sandbox|g' \
-           "/opt/google/chrome/google-chrome" \
+          "/opt/google/chrome/google-chrome" \
   && google-chrome --version
 
 // @endif
 
-RUN npm install -g aurelia-cli@1.1.0
+RUN npm install -g aurelia-cli@1.2.0
 
 
 WORKDIR /app
@@ -84,32 +84,32 @@ RUN npm run e2e:headless
 // @endif
 
 # build
-FROM build as publish
+FROM build-stage as publish-stage
 RUN au build --env prod
 
-# run-time stage
-FROM nginx:alpine as run-time
+# production stage
+FROM nginx:alpine as production-stage
 COPY nginx.conf /etc/nginx/nginx.conf
 WORKDIR /usr/share/nginx/html
 
 // @if feat.webpack && !feat["dotnet-core"]
-COPY --from=publish /app/dist/ .
+COPY --from=publish-stage /app/dist/ .
 // @endif
 
 // @if feat.webpack && feat["dotnet-core"]
-COPY --from=publish /app/wwwroot/dist/ .
+COPY --from=publish-stage /app/wwwroot/dist/ .
 // @endif
 
 // @if feat["cli-bundler"] && feat["dotnet-core"]
-COPY --from=publish /app/wwwroot/ .
+COPY --from=publish-stage /app/wwwroot/ .
 // @endif
 
 // @if feat["cli-bundler"] && !feat["dotnet-core"]
   // @if feat["scaffold-navigation"]
-COPY --from=publish /app/bootstrap/dist/ ./bootstrap/dist/
+COPY --from=publish-stage /app/bootstrap/dist/ ./bootstrap/dist/
   // @endif
-COPY --from=publish /app/scripts/ ./scripts/
-COPY --from=publish /app/index.html/ .
+COPY --from=publish-stage /app/scripts/ ./scripts/
+COPY --from=publish-stage /app/index.html/ .
 // @endif
 
 EXPOSE 80
