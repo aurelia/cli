@@ -4,9 +4,9 @@ You need the app running for integration test.
 
 First, run `au run` and keep it running.
 
-Then run `au cypress` to run cypress in interactive mode.
+Then run `au cypress --interactive` to run cypress in interactive mode.
 
-To perform a test-run and reports the results, do `au cypress --run`.
+To perform a test-run and reports the results, do `au cypress`.
 
 To ask the `cypress` to start the application first and then start testing: `au cypress --start`
 
