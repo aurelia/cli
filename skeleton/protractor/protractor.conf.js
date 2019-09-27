@@ -8,7 +8,7 @@ Object.assign(cliOptions, {
 
 const port = cliOptions.getFlagValue('port') || aureliaConfig.platform.port;
 const host = cliOptions.getFlagValue('host') || aureliaConfig.platform.host || "localhost";
-const headless = !cliOptions.hasFlag('interactive');
+const headless = cliOptions.hasFlag('headless');
 
 const config  = {
   port: port,
