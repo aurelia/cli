@@ -1,7 +1,7 @@
 {
   "scripts": {
-    "e2e": "au cypress --interactive",
-    "e2e:headless": "au cypress --start"
+    "e2e": "au cypress",
+    "e2e:headless": "au cypress --start --run"
   },
   "devDependencies": {
     // @if feat.typescript

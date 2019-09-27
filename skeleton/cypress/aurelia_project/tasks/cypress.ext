@@ -15,7 +15,7 @@ import { default as runAppServer, shutdownAppServer } from './run';
 // @endif
 
 const runCypress = (cb) => {
-  if (!CLIOptions.hasFlag('interactive')) {
+  if (CLIOptions.hasFlag('run')) {
     cypress
       .run(config)
       .then(results => (results.totalFailed === 0 ? cb() : cb('Run failed!')))
