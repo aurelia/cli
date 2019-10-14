@@ -1,3 +1,17 @@
+## [1.2.1](https://github.com/aurelia/cli/compare/1.2.0...1.2.1) (2019-10-14)
+
+
+### Bug Fixes
+
+* **Dockerfile:** use aurelia-cli@1.2.0 ([ec9234b](https://github.com/aurelia/cli/commit/ec9234b))
+
+
+### Features
+
+* **Dockerfile:** update aurelia-cli inside docker to support minor versions ^1.2.0 ([57583fa](https://github.com/aurelia/cli/commit/57583fa))
+
+
+
 # [1.2.0](https://github.com/aurelia/cli/compare/1.1.1...1.2.0) (2019-09-19)
 
 
