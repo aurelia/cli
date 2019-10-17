@@ -123,9 +123,9 @@ Yarn has a [bug](https://github.com/yarnpkg/yarn/issues/5235) that ignores `"pre
 
 By default, `"private"` field in package.json has been turned on, this prevents you from accidentally publish a private plugin to npm.
 
-To publish the plugin to npm for public assumption:
-1. Remove `"private": true,` from package.json.
+To publish the plugin to npm for public consumption:
 
+1. Remove `"private": true,` from package.json.
 2. Pump up project version. This will run through `au test` (in "preversion" in package.json) first.
 ```shell
 npm version patch # or minor or major
@@ -147,7 +147,6 @@ Here is one simple setup.
 1. `npm i -D standard-changelog`. We use [`standard-changelog`](https://github.com/conventional-changelog/conventional-changelog) as a minimum example to support conventional changelog.
   * Alternatively you can use high level [standard-version](https://github.com/conventional-changelog/standard-version).
 2. Add two commands to `"scripts"` section of package.json.
-
 ```
 "scripts": {
   // ...
