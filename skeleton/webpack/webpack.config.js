@@ -222,8 +222,7 @@ module.exports = ({ production } = {}, {extractCss, analyze, tests, hmr, port, h
         issuer: [{ not: [{ test: /\.html$/i }] }],
         use: extractCss ? [{
           loader: MiniCssExtractPlugin.loader
-        },
-        'css-loader'
+        }, ...cssRules
         ] : ['style-loader', ...cssRules]
       },
       {
@@ -244,7 +243,7 @@ module.exports = ({ production } = {}, {extractCss, analyze, tests, hmr, port, h
       },
       {
         test: /\.less$/i,
-        use: ['css-loader', 'less-loader'],
+        use: [...cssRules, 'less-loader'],
         issuer: /\.html?$/i
       },
       // @endif
@@ -259,7 +258,7 @@ module.exports = ({ production } = {}, {extractCss, analyze, tests, hmr, port, h
       },
       {
         test: /\.styl$/i,
-        use: ['css-loader', 'stylus-loader'],
+        use: [...cssRules, 'stylus-loader'],
         issuer: /\.html?$/i
       },
       // @endif
@@ -274,7 +273,7 @@ module.exports = ({ production } = {}, {extractCss, analyze, tests, hmr, port, h
       },
       {
         test: /\.scss$/,
-        use: ['css-loader', 'sass-loader'],
+        use: [...cssRules, ...sassRules],
         issuer: /\.html?$/i
       },
       // @endif
