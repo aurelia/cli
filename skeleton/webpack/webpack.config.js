@@ -210,7 +210,7 @@ module.exports = ({ production } = {}, {extractCss, analyze, tests, hmr, port, h
     historyApiFallback: true,
     hot: hmr || project.platform.hmr,
     port: port || project.platform.port,
-    host: host || project.platform.host
+    host: host
   },
   devtool: production ? 'nosources-source-map' : 'cheap-module-eval-source-map',
   module: {
