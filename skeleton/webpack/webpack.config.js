@@ -43,10 +43,12 @@ const cssRules = [
 // @if feat.sass
 const sassRules = [
   {
-     loader: "sass-loader",
-     options: {
-       includePaths: ["node_modules"]
-     }
+    loader: "sass-loader",
+    options: {
+      sassOptions: {
+        includePaths: ['node_modules']
+      }
+    }
   }
 ];
 // @endif
