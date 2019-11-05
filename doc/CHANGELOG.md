@@ -1,3 +1,13 @@
+## [1.2.2](https://github.com/aurelia/cli/compare/1.2.1...1.2.2) (2019-11-05)
+
+
+### Bug Fixes
+
+* **webpack:** deal with host option before webpack config ([fe322c6](https://github.com/aurelia/cli/commit/fe322c6))
+* **webpack:** fix missing postcss in less/scss/styl processing ([c246d66](https://github.com/aurelia/cli/commit/c246d66)), closes [#1152](https://github.com/aurelia/cli/issues/1152)
+
+
+
 ## [1.2.1](https://github.com/aurelia/cli/compare/1.2.0...1.2.1) (2019-10-14)
 
 
