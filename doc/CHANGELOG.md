@@ -1,3 +1,12 @@
+## [1.2.3](https://github.com/aurelia/cli/compare/1.2.2...1.2.3) (2019-12-18)
+
+
+### Bug Fixes
+
+* **cli-bundler:** avoid passing empty source map to concat-with-sourcemaps ([160a817](https://github.com/aurelia/cli/commit/160a817)), closes [#1157](https://github.com/aurelia/cli/issues/1157)
+
+
+
 ## [1.2.2](https://github.com/aurelia/cli/compare/1.2.1...1.2.2) (2019-11-05)
 
 
