@@ -46,7 +46,9 @@ WORKDIR /app
 COPY ./*.json  ./
 RUN npm install
 
+// @if feat.webpack
 COPY config ./config
+// @endif
 COPY aurelia_project  ./aurelia_project
 
 // @if feat.typescript && feat.webpack
