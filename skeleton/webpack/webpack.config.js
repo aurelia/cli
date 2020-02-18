@@ -64,9 +64,17 @@ module.exports = ({ production } = {}, {extractCss, analyze, tests, hmr, port, h
     extensions: ['.js'],
     // @endif
     modules: [srcDir, 'node_modules'],
-    // Enforce single aurelia-binding, to avoid v1/v2 duplication due to
-    // out-of-date dependencies on 3rd party aurelia plugins
-    alias: { 'aurelia-binding': path.resolve(__dirname, 'node_modules/aurelia-binding') }
+
+    alias: {
+      // https://github.com/aurelia/dialog/issues/387
+      // Uncomment next line if you want to use aurelia-dialog on IE11
+      // 'aurelia-dialog': path.resolve(__dirname, 'node_modules/aurelia-dialog/dist/umd/aurelia-dialog.js'),
+
+      // https://github.com/aurelia/binding/issues/702
+      // Enforce single aurelia-binding, to avoid v1/v2 duplication due to
+      // out-of-date dependencies on 3rd party aurelia plugins
+      'aurelia-binding': path.resolve(__dirname, 'node_modules/aurelia-binding')
+    }
   },
   entry: {
     app: [
