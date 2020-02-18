@@ -5,7 +5,9 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin');
 const project = require('./aurelia_project/aurelia.json');
 const { AureliaPlugin, ModuleDependenciesPlugin } = require('aurelia-webpack-plugin');
+// @if feat['scaffold-navigation']
 const { ProvidePlugin } = require('webpack');
+// @endif
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
@@ -67,7 +69,11 @@ module.exports = ({ production } = {}, {extractCss, analyze, tests, hmr, port, h
     alias: { 'aurelia-binding': path.resolve(__dirname, 'node_modules/aurelia-binding') }
   },
   entry: {
-    app: ['aurelia-bootstrapper']
+    app: [
+      // Remove next line if you don't need to support IE11
+      'promise-polyfill/src/polyfill',
+      'aurelia-bootstrapper'
+    ]
   },
   mode: production ? 'production' : 'development',
   output: {
@@ -310,13 +316,14 @@ module.exports = ({ production } = {}, {extractCss, analyze, tests, hmr, port, h
   plugins: [
     ...when(!tests, new DuplicatePackageCheckerPlugin()),
     new AureliaPlugin(),
-    new ProvidePlugin({
     // @if feat['scaffold-navigation']
-      $: 'jquery',
-      jQuery: 'jquery',
-    // @endif
-      'Promise': ['promise-polyfill', 'default']
+    new ProvidePlugin({
+      'jQuery': 'jquery',
+      '$': 'jquery',
+      'window.jQuery': 'jquery',
+      'window.$': 'jquery'
     }),
+    // @endif
     new ModuleDependenciesPlugin({
       'aurelia-testing': ['./compile-spy', './view-spy']
     }),
