@@ -78,6 +78,8 @@ const config  = {
 if (headless) {
   config.capabilities.chromeOptions.args.push("--no-gpu");
   config.capabilities.chromeOptions.args.push("--headless");
+  config.capabilities.chromeOptions.args.push("--no-sandbox");
+  config.capabilities.chromeOptions.args.push("--disable-dev-shm-usage");
 }
 
 exports.config = config;
