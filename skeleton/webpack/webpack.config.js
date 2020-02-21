@@ -67,7 +67,7 @@ module.exports = ({ production } = {}, {extractCss, analyze, tests, hmr, port, h
 
     alias: {
       // https://github.com/aurelia/dialog/issues/387
-      // Uncomment next line if you want to use aurelia-dialog on IE11
+      // Uncomment next line if you had trouble to run aurelia-dialog on IE11
       // 'aurelia-dialog': path.resolve(__dirname, 'node_modules/aurelia-dialog/dist/umd/aurelia-dialog.js'),
 
       // https://github.com/aurelia/binding/issues/702
@@ -78,8 +78,8 @@ module.exports = ({ production } = {}, {extractCss, analyze, tests, hmr, port, h
   },
   entry: {
     app: [
-      // Remove next line if you don't need to support IE11
-      'promise-polyfill/src/polyfill',
+      // Uncomment next line if you need to support IE11
+      // 'promise-polyfill/src/polyfill',
       'aurelia-bootstrapper'
     ]
   },
