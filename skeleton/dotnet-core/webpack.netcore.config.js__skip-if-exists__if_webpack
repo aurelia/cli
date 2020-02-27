@@ -1,6 +1,6 @@
 const webpackConfig = require('./webpack.config');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const project = require('./aurelia_project/aurelia.json');
 var originalConfig = webpackConfig({});
 
