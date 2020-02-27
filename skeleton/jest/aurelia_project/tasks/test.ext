@@ -1,10 +1,9 @@
+import { runCLI } from '@jest/core';
 // @if feat.babel
-import jest from 'jest-cli';
 import path from 'path';
 import packageJson from '../../package.json';
 // @endif
 // @if feat.typescript
-import * as jest from 'jest-cli';
 import * as path from 'path';
 import * as packageJson from '../../package.json';
 // @endif
@@ -22,7 +21,7 @@ export default (cb) => {
   process.env.BABEL_TARGET = 'node';
   // @endif
 
-  jest.runCLI(options, [path.resolve(__dirname, '../../')]).then(({ results }) => {
+  runCLI(options, [path.resolve(__dirname, '../../')]).then(({ results }) => {
     if (results.numFailedTests || results.numFailedTestSuites) {
       cb('Tests Failed');
     } else {
