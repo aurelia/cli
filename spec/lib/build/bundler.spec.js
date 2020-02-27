@@ -66,7 +66,7 @@ describe('the Bundler module', () => {
       build: { loader: {} }
     };
 
-    analyzer.analyze = dep => Promise.resolve({depResult: true});
+    analyzer.analyze = () => Promise.resolve({depResult: true});
     let bundler = new Bundler(project, analyzer);
 
     bundler.configureDependency('lorem')
@@ -86,7 +86,7 @@ describe('the Bundler module', () => {
       build: { loader: {} }
     };
 
-    analyzer.reverseEngineer = dep => Promise.resolve({depResult: true});
+    analyzer.reverseEngineer = () => Promise.resolve({depResult: true});
     let bundler = new Bundler(project, analyzer);
 
     bundler.configureDependency({name: 'lorem'})
@@ -117,7 +117,7 @@ describe('the Bundler module', () => {
     bundler.autoInstall = true;
 
     bundler.configureDependency('lorem')
-      .then(description => {
+      .then(() => {
         expect(analyzer.analyze).toHaveBeenCalledTimes(2);
         expect(analyzer.analyze.calls.argsFor(0)).toEqual(['lorem']);
         expect(analyzer.analyze.calls.argsFor(1)).toEqual(['lorem']);

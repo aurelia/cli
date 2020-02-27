@@ -22,7 +22,7 @@ describe('The cli-options', () => {
   describe('The CLIOptions', () => {
     it('gets the right task name', () => {
       const paths = [
-        'C:\\some\path to\\project\\aurelia_project\\tasks\\',
+        'C:\\some\\path to\\project\\aurelia_project\\tasks\\',
         '/some/path to/project/aurelia_project/tasks/'
       ];
       const files = {

@@ -2,10 +2,10 @@
   "extends": "eslint:recommended",
   "parser": "babel-eslint",
   "rules": {
-    "strict": ["error", "global"],
+    "no-prototype-builtins": 0,
     "no-console": 0,
+    "getter-return": 0,
     "no-inner-declarations": 0,
-    "no-undef": 2,
     "comma-dangle": ["error", {
       "arrays": "never",
       "objects": "never",
