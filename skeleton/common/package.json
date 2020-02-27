@@ -20,7 +20,6 @@
     // @endif
     "aurelia-cli": "",
     "aurelia-testing": "",
-    "aurelia-tools": "",
     "gulp": "",
     "minimatch": "",
     "through2": "",
