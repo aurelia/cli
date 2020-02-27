@@ -37,7 +37,7 @@ function getDepsJSON() {
 
 function write(deps) {
   return new Promise((resolve, reject) => {
-    fs.writeFile(depJsonPath, JSON.stringify(deps, null, 2), function(err) {
+    fs.writeFile(depJsonPath, JSON.stringify(deps, null, 2) + '\n', function(err) {
       if (err) {
         reject(err);
         return console.log(err);
