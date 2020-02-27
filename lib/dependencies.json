@@ -62,7 +62,7 @@
   "istanbul-instrumenter-loader": "^3.0.1",
   "jasmine-core": "^3.5.0",
   "jest": "^25.1.0",
-  "jest-jasmine2": "^25.1.0",
+  "jest-jasmine2": "^23.6.0",
   "jest-cli": "^25.1.0",
   "jest-matchers": "^20.0.3",
   "jest-transform-stub": "^2.0.0",
