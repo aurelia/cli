@@ -91,7 +91,7 @@
   "style-loader": "^1.1.3",
   "stylus": "^0.54.7",
   "stylus-loader": "^3.0.2",
-  "systemjs": "^6.2.4",
+  "systemjs": "^0.21.6",
   "systemjs-plugin-text": "^0.0.11",
   "text": "requirejs/text#latest",
   "through2": "^3.0.1",
