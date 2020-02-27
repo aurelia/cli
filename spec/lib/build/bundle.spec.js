@@ -370,7 +370,7 @@ describe('the Bundle module', () => {
         }
       });
     });
-    bundler.itemIncludedInBuild.and.callFake((dep) => true);
+    bundler.itemIncludedInBuild.and.callFake(() => true);
 
     let config = {
       name: 'app-bundle.js',
@@ -389,7 +389,7 @@ describe('the Bundle module', () => {
       ]
     };
 
-    Bundle.create(bundler, config).then((bundle) => {
+    Bundle.create(bundler, config).then(() => {
       expect(configuredDependencies[0]).toBe('foo');
       expect(configuredDependencies[1]).toBe('my-large-plugin');
       expect(configuredDependencies[2]).toBe('my-other-plugin');
@@ -409,7 +409,7 @@ describe('the Bundle module', () => {
 
       return Promise.resolve(description);
     });
-    bundler.itemIncludedInBuild.and.callFake((dep) => true);
+    bundler.itemIncludedInBuild.and.callFake(() => true);
 
     let config = {
       name: 'app-bundle.js',

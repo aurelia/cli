@@ -40,9 +40,9 @@ describe('The config command - util', () => {
     const values = {
       '123': '123',
       'one two three': 'one two three',
-      '\"456\"': '456',
-      '{ \"myKey\": \"myValue\" }': { myKey: 'myValue' },
-      '[ \"one\", 2,   \"thre ee\" ]': [ 'one', 2, 'thre ee' ]
+      '"456"': '456',
+      '{ "myKey": "myValue" }': { myKey: 'myValue' },
+      '[ "one", 2,   "thre ee" ]': [ 'one', 2, 'thre ee' ]
     };
     Object.assign(CLIOptions.instance, { args: args });
     const configurationUtilities = new ConfigurationUtilities(CLIOptions, args);

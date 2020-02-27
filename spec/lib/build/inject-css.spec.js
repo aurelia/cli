@@ -29,12 +29,12 @@ describe('fixupCSSUrls', () => {
   });
 
   it("Full url isn't changed (double quotes)", () => {
-    const css = 'body { background-image:url(\"http://example.com/bg.jpg\"); }';
+    const css = 'body { background-image:url("http://example.com/bg.jpg"); }';
     expect(fixupCSSUrls('foo/bar', css)).toBe(css);
   });
 
   it("Full url isn't changed (double quotes, spaces)", () => {
-    const css = 'body { background-image:url ( \"http://example.com/bg.jpg\" ); }';
+    const css = 'body { background-image:url ( "http://example.com/bg.jpg" ); }';
     expect(fixupCSSUrls('foo/bar', css)).toBe(css);
   });
 

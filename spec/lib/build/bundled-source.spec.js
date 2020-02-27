@@ -422,7 +422,7 @@ export {t};
     expect(deps).toBeUndefined();
     expect(bs.requiresTransform).toBe(false);
     expect(bs.contents)
-      .toBe('define(\'text!foo/bar/lo.json\',[],function(){return "{\\\"a\\\":1}";});\ndefine(\'foo/bar/lo.json\',[\'text!foo/bar/lo.json\'],function(m){return JSON.parse(m);});\ndefine(\'json!foo/bar/lo.json\',[\'foo/bar/lo.json\'],function(m){return m;});\n');
+      .toBe('define(\'text!foo/bar/lo.json\',[],function(){return "{\\"a\\":1}";});\ndefine(\'foo/bar/lo.json\',[\'text!foo/bar/lo.json\'],function(m){return JSON.parse(m);});\ndefine(\'json!foo/bar/lo.json\',[\'foo/bar/lo.json\'],function(m){return m;});\n');
   });
 
   it('transforms npm package non-js file', () => {
