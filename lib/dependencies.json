@@ -10,7 +10,7 @@
   "aurelia-bootstrapper": "^2.3.3",
   "aurelia-cli": "^1.2.3",
   "aurelia-loader-nodejs": "^1.1.0",
-  "aurelia-pal-nodejs": "^1.2.0",
+  "aurelia-pal-nodejs": "^2.0.0",
   "aurelia-protractor-plugin": "^1.0.6",
   "aurelia-testing": "^1.0.0",
   "aurelia-webpack-plugin": "^4.0.0",
