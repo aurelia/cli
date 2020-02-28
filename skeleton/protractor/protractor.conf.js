@@ -54,7 +54,9 @@ const config  = {
         '--disable-translate',
         '--disable-background-timer-throttling',
         '--disable-renderer-backgrounding',
-        '--disable-device-discovery-notifications'
+        '--disable-device-discovery-notifications',
+        '--no-sandbox',
+        '--disable-dev-shm-usage'
       ]
     }
   },
@@ -78,8 +80,6 @@ const config  = {
 if (headless) {
   config.capabilities.chromeOptions.args.push("--no-gpu");
   config.capabilities.chromeOptions.args.push("--headless");
-  config.capabilities.chromeOptions.args.push("--no-sandbox");
-  config.capabilities.chromeOptions.args.push("--disable-dev-shm-usage");
 }
 
 exports.config = config;
