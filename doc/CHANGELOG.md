@@ -1,3 +1,22 @@
+# [1.3.0](https://github.com/aurelia/cli/compare/1.2.3...1.3.0) (2020-03-03)
+
+
+### Bug Fixes
+
+* missing semicolon in ts skeleton ([5661b23](https://github.com/aurelia/cli/commit/5661b23))
+* **cli-bundler:** avoid writing out webpack env json files ([5893a67](https://github.com/aurelia/cli/commit/5893a67))
+* **docker:** only copy config folder for webpack projs ([d560a4d](https://github.com/aurelia/cli/commit/d560a4d))
+* **protractor:** fix chrome-driver issue on visible chrome too ([f45a7a9](https://github.com/aurelia/cli/commit/f45a7a9))
+* **tasks:** update-all-dependencies should mutate original file, not dist file ([ec3a743](https://github.com/aurelia/cli/commit/ec3a743))
+* **webpack:** clean-webpack-plugin changed export ([273a1f4](https://github.com/aurelia/cli/commit/273a1f4))
+
+
+### Features
+
+* **webpack:** show aurelia-dialog patch for IE11 issue ([ff13245](https://github.com/aurelia/cli/commit/ff13245))
+
+
+
 ## [1.2.3](https://github.com/aurelia/cli/compare/1.2.2...1.2.3) (2019-12-18)
 
 
