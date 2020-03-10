@@ -1,20 +1,26 @@
-os:
-  - linux
-  - windows
-  - osx
 language: node_js
+
 node_js:
   - "8"
   - "10"
   - "12"
 
-services:
-  - docker
-
-install:
-  - npm install
-  - npm run build
-  - npm install -g aurelia-cli
-
-script:
-  - au new second -u -s http2,typescript,htmlmin-min,less,postcss-typical,jest,protractor,scaffold-navigation,docker && cd ./second && npm install && npm link aurelia-cli && npm run docker:build
+jobs:
+  include:
+    - os: linux
+      services:
+        - docker
+      install:
+        - npm install
+        - npm run build
+        - npm install -g aurelia-cli
+      script:
+        - au new second -u -s http2,typescript,htmlmin-min,less,postcss-typical,jest,protractor,scaffold-navigation,docker && cd ./second && npm install && npm link aurelia-cli && npm run docker:build
+    - os: windows
+      install:
+        - npm install
+        - npm run build
+    - os: osx
+      install:
+        - npm install
+        - npm run build
