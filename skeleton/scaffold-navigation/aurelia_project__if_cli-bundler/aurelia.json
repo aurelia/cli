@@ -5,25 +5,15 @@
         "name": "vendor-bundle.js",
         "prepend": [
           "node_modules/whatwg-fetch/dist/fetch.umd.js"
-        ],
-        "dependencies": [
-          {
-            "name": "bootstrap",
-            "deps": ["jquery"],
-            "path": "../node_modules/bootstrap",
-            "main": "dist/js/bootstrap.min"
-          }
         ]
       }
     ],
     "copyFiles": {
       // @if feat.web
-      "node_modules/bootstrap/dist/fonts/*": "bootstrap/dist/fonts",
-      "node_modules/font-awesome/fonts/*": "font-awesome/fonts",
+      "node_modules/@fortawesome/fontawesome-free/webfonts/*": "@fortawesome/fontawesome-free/webfonts",
       // @endif
       // @if feat['dotnet-core']
-      "node_modules/bootstrap/dist/fonts/*": "wwwroot/bootstrap/dist/fonts",
-      "node_modules/font-awesome/fonts/*": "wwwroot/font-awesome/fonts",
+      "node_modules/@fortawesome/fontawesome-free/webfonts/*": "wwwroot/@fortawesome/fontawesome-free/webfonts",
       // @endif
     }
   }

@@ -1,29 +1,11 @@
 body
   margin: 0
 
-.splash
-  text-align: center
-  margin: 10% 0 0 0
-  box-sizing: border-box
-
-.splash .message
-  font-size: 72px
-  line-height: 72px
-  text-shadow: rgba(0, 0, 0, 0.5) 0 0 15px
-  text-transform: uppercase
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
-
-.splash .fa-spinner
-  text-align: center
-  display: inline-block
-  font-size: 72px
-  margin-top: 50px
-
 .page-host
   position: absolute
   left: 0
   right: 0
-  top: 50px
+  top: 56px
   bottom: 0
   overflow-x: hidden
   overflow-y: auto
@@ -33,14 +15,13 @@ body
     position: absolute
     left: 10px
     right: 0
-    top: 50px
+    top: 56px
     bottom: 0
     overflow-y: inherit
     overflow-x: inherit
 
 section
-  margin: 0 20px
-
+  margin: 1rem
 
 .navbar-nav li.loader
   margin: 12px 24px 0 6px
@@ -58,14 +39,14 @@ div.au-stagger
   -webkit-animation-delay: 50ms
   animation-delay: 50ms
 
-.card-container.au-enter
+.user-card-container.au-enter
   opacity: 0
 
-.card-container.au-enter-active
+.user-card-container.au-enter-active
   -webkit-animation: fadeIn 2s
   animation: fadeIn 2s
 
-.card
+.user-card
   overflow: hidden
   position: relative
   border: 1px solid #CCC
@@ -77,15 +58,15 @@ div.au-stagger
   margin-bottom: 32px
   box-shadow: 0 0 5px rgba(0, 0, 0, .5)
 
-.card .content
+.user-card .content
   margin-top: 10px
 
-.card .content .name
+.user-card .content .name
   color: white
   text-shadow: 0 0 6px rgba(0, 0, 0, .5)
   font-size: 18px
 
-.card .header-bg
+.user-card .header-bg
   /* This stretches the canvas across the entire hero unit */
   position: absolute
   top: 0
@@ -95,12 +76,12 @@ div.au-stagger
   border-bottom: 1px #FFF solid
   border-radius: 6px 6px 0 0
 
-.card .avatar
+.user-card .avatar
   position: relative
   margin-top: 15px
   z-index: 100
 
-.card .avatar img
+.user-card .avatar img
   width: 100px
   height: 100px
   -webkit-border-radius: 50%

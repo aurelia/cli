@@ -2,8 +2,9 @@
   "dependencies": {
     "whatwg-fetch": "^3.0.0",
     "aurelia-fetch-client": "^1.0.0",
-    "bootstrap": "^3.3.6",
-    "font-awesome": "^4.6.3",
+    "bootstrap": "^4.4.1",
+    "popper.js": "^1.16.1",
+    "@fortawesome/fontawesome-free": "^5.12.1",
     "jquery": "^3.3.1"
   }
 }
