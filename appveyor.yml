@@ -32,9 +32,8 @@ build_script:
 test_script:
   - ps: Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
   - docker-switch-linux
-  # - au new sixth -u -s cli-bundler,alameda,http2,typescript,htmlmin-min,less,postcss-typical,jest,protractor,scaffold-navigation,docker
-  - au new second -u -s http2,typescript,htmlmin-min,less,postcss-typical,jest,protractor,scaffold-navigation,docker
-  - cd ./second
+  - au new sixth -u -s cli-bundler,alameda,http2,typescript,htmlmin-min,less,postcss-typical,jest,protractor,scaffold-navigation,docker
+  - cd ./sixth
   - npm install
   - npm link aurelia-cli
   - npm run docker:build
