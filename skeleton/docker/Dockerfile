@@ -107,9 +107,6 @@ COPY --from=publish-stage /app/wwwroot/ .
 // @endif
 
 // @if feat["cli-bundler"] && !feat["dotnet-core"]
-  // @if feat["scaffold-navigation"]
-COPY --from=publish-stage /app/bootstrap/dist/ ./bootstrap/dist/
-  // @endif
 COPY --from=publish-stage /app/scripts/ ./scripts/
 COPY --from=publish-stage /app/index.html/ .
 // @endif

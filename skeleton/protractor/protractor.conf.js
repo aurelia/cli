@@ -56,7 +56,8 @@ const config  = {
         '--disable-renderer-backgrounding',
         '--disable-device-discovery-notifications',
         '--no-sandbox',
-        '--disable-dev-shm-usage'
+        '--disable-dev-shm-usage',
+        '--window-size=1024,768'
       ]
     }
   },

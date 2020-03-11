@@ -43,7 +43,6 @@ describe('aurelia skeleton app', function() {
 
   it('should navigate to users page', async () => {
     await poSkeleton.navigateTo('#/users');
-    browser.sleep(200);
     await expect(await poSkeleton.getCurrentPageTitle()).toBe('Github Users | Aurelia');
   });
 });

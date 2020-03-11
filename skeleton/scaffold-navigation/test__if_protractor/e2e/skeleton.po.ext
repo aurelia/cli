@@ -11,5 +11,6 @@ export class PageObjectSkeleton {
     const navigatingReady = browser.waitForRouterComplete();
     await element(by.css('a[href="' + href + '"]')).click();
     await navigatingReady;
+    await browser.sleep(200);
   }
 }
