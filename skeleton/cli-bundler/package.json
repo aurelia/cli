@@ -48,7 +48,7 @@
     // @endif
 
     // @if feat.sass
-    "gulp-sass": "",
+    "gulp-dart-sass": "",
     // @endif
 
     // @if feat.stylus
