@@ -10,7 +10,7 @@ import notify from 'gulp-notify';
 import less from 'gulp-less';
 // @endif
 // @if feat.sass
-import sass from 'gulp-sass';
+import sass from 'gulp-dart-sass';
 // @endif
 // @if feat.stylus
 import stylus from 'gulp-stylus';
@@ -35,7 +35,7 @@ import * as notify from 'gulp-notify';
 import * as less from 'gulp-less';
 // @endif
 // @if feat.sass
-import * as sass from 'gulp-sass';
+import * as sass from 'gulp-dart-sass';
 // @endif
 // @if feat.stylus
 import * as stylus from 'gulp-stylus';
@@ -59,7 +59,7 @@ export default function processCSS() {
     .pipe(less())
     // @endif
     // @if feat.sass
-    .pipe(sass().on('error', sass.logError))
+    .pipe(sass.sync().on('error', sass.logError))
     // @endif
     // @if feat.stylus
     .pipe(stylus())
@@ -90,7 +90,7 @@ export function pluginCSS(dest) {
       .pipe(less())
       // @endif
       // @if feat.sass
-      .pipe(sass().on('error', sass.logError))
+      .pipe(sass.sync().on('error', sass.logError))
       // @endif
       // @if feat.stylus
       .pipe(stylus())

@@ -41,7 +41,7 @@
 
     // @if feat.sass
     "sass-loader": "",
-    "node-sass": "",
+    "sass": "",
     // @endif
 
     // @if feat.stylus
