@@ -1,7 +1,11 @@
 import { inject } from 'aurelia-dependency-injection';
 import { Project, ProjectItem, CLIOptions, UI } from 'aurelia-cli';
-
-var path = require('path');
+// @if feat.babel
+import path from 'path';
+// @endif
+// @if feat.typescript
+import * as path from 'path';
+// @endif
 
 @inject(Project, CLIOptions, UI)
 export default class ElementGenerator {

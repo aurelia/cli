@@ -23,10 +23,8 @@ function configureEnvironment() {
     .pipe(gulp.dest(project.paths.root));
 }
 
-var typescriptCompiler = typescriptCompiler || null;
-
 function buildTypeScript() {
-  typescriptCompiler = ts.createProject('tsconfig.json', {
+  const typescriptCompiler = ts.createProject('tsconfig.json', {
     typescript: require('typescript')
   });
 
@@ -49,7 +47,7 @@ export default gulp.series(
 export function buildPluginJavaScript(dest, format) {
   // when format is missing, default is ESM as we turned off "modules": false in .babelrc.js
   return function processPluginJavaScript() {
-    typescriptCompiler = ts.createProject('tsconfig.json', {
+    const typescriptCompiler = ts.createProject('tsconfig.json', {
       typescript: require('typescript'),
       module: format
     });
