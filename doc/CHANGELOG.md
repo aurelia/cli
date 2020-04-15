@@ -1,3 +1,19 @@
+## [1.3.1](https://github.com/aurelia/cli/compare/1.3.0...1.3.1) (2020-04-15)
+
+
+### Bug Fixes
+
+* cypress now validates event name ([962c539](https://github.com/aurelia/cli/commit/962c539))
+* **babel:** fix regression on au generate ([b3b489e](https://github.com/aurelia/cli/commit/b3b489e))
+
+
+### Features
+
+* **scaffold-navigation:** upgrade to bootstrap v4 and fontawesome v5 ([#1167](https://github.com/aurelia/cli/issues/1167)) ([4652e0e](https://github.com/aurelia/cli/commit/4652e0e))
+* switch from libsass to dart-sass ([5da5355](https://github.com/aurelia/cli/commit/5da5355))
+
+
+
 # [1.3.0](https://github.com/aurelia/cli/compare/1.2.3...1.3.0) (2020-03-03)
 
 
