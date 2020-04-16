@@ -64,6 +64,11 @@ COPY *.* ./
 
 # Copy source files
 COPY src ./src
+// @if feat['scaffold-navigation']
+
+# Copy @fortawesome files
+COPY @fortawesome ./@fortawesome
+// @endif
 
 
 // @if feat.cypress || feat.protractor || feat.jest || feat.karma
@@ -109,6 +114,9 @@ COPY --from=publish-stage /app/wwwroot/ .
 // @if feat["cli-bundler"] && !feat["dotnet-core"]
 COPY --from=publish-stage /app/scripts/ ./scripts/
 COPY --from=publish-stage /app/index.html/ .
+// @endif
+// @if feat['scaffold-navigation'] && feat["cli-bundler"] && !feat["dotnet-core"]
+COPY --from=publish-stage /app/@fortawesome/ ./@fortawesome/
 // @endif
 
 EXPOSE 80
