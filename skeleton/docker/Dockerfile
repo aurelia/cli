@@ -64,11 +64,6 @@ COPY *.* ./
 
 # Copy source files
 COPY src ./src
-// @if feat['scaffold-navigation']
-
-# Copy @fortawesome files
-COPY @fortawesome ./@fortawesome
-// @endif
 
 
 // @if feat.cypress || feat.protractor || feat.jest || feat.karma
