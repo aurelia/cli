@@ -1,6 +1,6 @@
 const Test = require('../test');
 const ExecuteCommand = require('../../tasks/execute-command');
-const fs = require('../../../../../dist/file-system');
+const fs = require('../../../../../lib/file-system');
 const path = require('path');
 const _ = require('lodash');
 

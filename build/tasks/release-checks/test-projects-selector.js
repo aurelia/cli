@@ -1,6 +1,6 @@
-const CLIOptions = require('../../../dist/cli-options').CLIOptions;
+const CLIOptions = require('../../../lib/cli-options').CLIOptions;
 const cliOptions = new CLIOptions();
-const fs = require('../../../dist/file-system');
+const fs = require('../../../lib/file-system');
 const path = require('path');
 const _ = require('lodash');
 
@@ -9,7 +9,7 @@ Object.assign(cliOptions, {
   args: userArgs.slice(1)
 });
 
-const ConsoleUI = require('../../../dist/ui').ConsoleUI;
+const ConsoleUI = require('../../../lib/ui').ConsoleUI;
 const ui = new ConsoleUI();
 
 module.exports = class TestProjectsSelector {

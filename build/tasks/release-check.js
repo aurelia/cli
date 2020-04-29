@@ -2,12 +2,12 @@ const gulp = require('gulp');
 const path = require('path');
 const SuiteRunner = require('./release-checks/suite-runner');
 const LogManager = require('aurelia-logging');
-const Utils = require('../../dist/build/utils');
+const Utils = require('../../lib/build/utils');
 const {MessageHistoryLogger} = require('./release-checks/message-history-logger');
 const TestProjectsSelector = require('./release-checks/test-projects-selector');
 const Reporter = require('./release-checks/reporter');
 const del = require('del');
-const ConsoleUI = require('../../dist/ui').ConsoleUI;
+const ConsoleUI = require('../../lib/ui').ConsoleUI;
 const ui = new ConsoleUI();
 const c = require('ansi-colors');
 

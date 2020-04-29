@@ -20,23 +20,20 @@
     "node": ">=8.9.0"
   },
   "scripts": {
-    "clean": "rimraf dist",
-    "build": "npm run build:ts && npm run build:dts && npm run build:copy-files",
-    "build:ts": "tsc",
-    "build:ts:watch": "npm run build:ts -- --watch",
-    "build:dts": "tsc -d --emitDeclarationOnly --allowJs false",
-    "build:copy-files": "copyfiles -u 1 -e \"./lib/**/*.{js,ts}\" \"./lib/**/*\" ./dist",
     "lint": "gulp lint",
-    "pretest": "npm run clean && npm run build && npm run lint",
-    "test": "jasmine-ts",
-    "coverage": "nyc jasmine-ts",
-    "test:watch": "nodemon -x 'npm test'",
-    "prepare": "npm run clean && npm run build"
+    "pretest": "npm run lint",
+    "test": "jasmine",
+    "coverage": "nyc jasmine",
+    "test:watch": "nodemon -x 'npm test'"
   },
   "license": "MIT",
   "author": "Rob Eisenberg <rob@bluespire.com> (http://robeisenberg.com/)",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "lib/index.js",
+  "files": [
+    "bin",
+    "lib",
+    "skeleton"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/aurelia/cli"
@@ -86,7 +83,6 @@
     "gulp-eslint": "^6.0.0",
     "jasmine": "^3.5.0",
     "jasmine-spec-reporter": "^4.2.1",
-    "jasmine-ts": "^0.3.0",
     "latest-version": "^5.1.0",
     "minimatch": "^3.0.4",
     "mock-fs": "^4.11.0",
@@ -95,8 +91,6 @@
     "puppeteer": "^2.1.1",
     "rimraf": "^3.0.2",
     "tree-kill": "^1.2.2",
-    "ts-node": "^8.6.2",
-    "typescript": "^3.8.2",
     "yargs": "^15.1.0"
   }
 }

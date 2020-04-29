@@ -1,4 +1,4 @@
-const fs = require('../../../dist/file-system');
+const fs = require('../../../lib/file-system');
 
 exports.MessageHistoryLogger = class {
   constructor(ui) {
