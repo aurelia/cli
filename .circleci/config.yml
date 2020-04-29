@@ -38,7 +38,6 @@ jobs:
           - node8-dependencies-
 
       - run: npm install
-      - run: npm run build
 
       - save_cache:
           paths:
@@ -73,7 +72,6 @@ jobs:
           - node8-dependencies-
 
       - run: npm install
-      - run: npm run build
 
       - save_cache:
           paths:
@@ -107,7 +105,6 @@ jobs:
           - node8-dependencies-
 
       - run: npm install
-      - run: npm run build
 
       - save_cache:
           paths:
@@ -142,7 +139,6 @@ jobs:
           - node8-dependencies-
 
       - run: npm install
-      - run: npm run build
 
       - save_cache:
           paths:
@@ -177,7 +173,6 @@ jobs:
           - node8-dependencies-
 
       - run: npm install
-      - run: npm run build
 
       - save_cache:
           paths:
@@ -212,7 +207,6 @@ jobs:
           - node8-dependencies-
 
       - run: npm install
-      - run: npm run build
 
       - save_cache:
           paths:
@@ -247,7 +241,6 @@ jobs:
           - node8-dependencies-
 
       - run: npm install
-      - run: npm run build
 
       - save_cache:
           paths:
@@ -278,7 +271,6 @@ jobs:
           - node8-dependencies-
 
       - run: npm install
-      - run: npm run build
 
       - save_cache:
           paths:
@@ -305,7 +297,6 @@ jobs:
           - node10-dependencies-
 
       - run: npm install
-      - run: npm run build
 
       - save_cache:
           paths:
