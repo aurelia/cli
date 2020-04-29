@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "strict": true,
-    "module": "commonjs",
     "baseUrl": "../../node_modules",
     "target": "es5",
     "types": [

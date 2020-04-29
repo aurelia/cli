@@ -2,7 +2,6 @@
   "compileOnSave": false,
   "compilerOptions": {
     // @if feat['cli-bundler']
-    "module": "amd",
     "noImplicitAny": false,
 
     // @if feat.plugin
@@ -33,7 +32,7 @@
     // @endif
 
     "typeRoots": ["./node_modules/@types"],
-    
+
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
