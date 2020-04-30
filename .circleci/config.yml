@@ -33,16 +33,16 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - node8-dependencies-{{ checksum "package.json" }}
+          - node12-dependencies-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
-          - node8-dependencies-
+          - node12-dependencies-
 
       - run: npm install
 
       - save_cache:
           paths:
             - node_modules
-          key: node8-dependencies-{{ checksum "package.json" }}
+          key: node12-dependencies-{{ checksum "package.json" }}
 
       # run tests!
       - run: npm test
@@ -67,16 +67,16 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - node8-dependencies-{{ checksum "package.json" }}
+          - node12-dependencies-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
-          - node8-dependencies-
+          - node12-dependencies-
 
       - run: npm install
 
       - save_cache:
           paths:
             - node_modules
-          key: node8-dependencies-{{ checksum "package.json" }}
+          key: node12-dependencies-{{ checksum "package.json" }}
 
       # run tests!
       - run: npm test
@@ -100,16 +100,16 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - node8-dependencies-{{ checksum "package.json" }}
+          - node12-dependencies-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
-          - node8-dependencies-
+          - node12-dependencies-
 
       - run: npm install
 
       - save_cache:
           paths:
             - node_modules
-          key: node8-dependencies-{{ checksum "package.json" }}
+          key: node12-dependencies-{{ checksum "package.json" }}
 
       # run tests!
       - run: npm test
@@ -134,16 +134,16 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - node8-dependencies-{{ checksum "package.json" }}
+          - node12-dependencies-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
-          - node8-dependencies-
+          - node12-dependencies-
 
       - run: npm install
 
       - save_cache:
           paths:
             - node_modules
-          key: node8-dependencies-{{ checksum "package.json" }}
+          key: node12-dependencies-{{ checksum "package.json" }}
 
       # run tests!
       - run: npm test
@@ -168,16 +168,16 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - node8-dependencies-{{ checksum "package.json" }}
+          - node12-dependencies-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
-          - node8-dependencies-
+          - node12-dependencies-
 
       - run: npm install
 
       - save_cache:
           paths:
             - node_modules
-          key: node8-dependencies-{{ checksum "package.json" }}
+          key: node12-dependencies-{{ checksum "package.json" }}
 
       # run tests!
       - run: npm test
@@ -202,16 +202,16 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - node8-dependencies-{{ checksum "package.json" }}
+          - node12-dependencies-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
-          - node8-dependencies-
+          - node12-dependencies-
 
       - run: npm install
 
       - save_cache:
           paths:
             - node_modules
-          key: node8-dependencies-{{ checksum "package.json" }}
+          key: node12-dependencies-{{ checksum "package.json" }}
 
       # run tests!
       - run: npm test
@@ -236,16 +236,16 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - node8-dependencies-{{ checksum "package.json" }}
+          - node12-dependencies-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
-          - node8-dependencies-
+          - node12-dependencies-
 
       - run: npm install
 
       - save_cache:
           paths:
             - node_modules
-          key: node8-dependencies-{{ checksum "package.json" }}
+          key: node12-dependencies-{{ checksum "package.json" }}
 
       # run tests!
       - run: npm test
@@ -292,16 +292,16 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - node8-dependencies-{{ checksum "package.json" }}
+          - node12-dependencies-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
-          - node8-dependencies-
+          - node12-dependencies-
 
       - run: npm install
 
       - save_cache:
           paths:
             - node_modules
-          key: node8-dependencies-{{ checksum "package.json" }}
+          key: node12-dependencies-{{ checksum "package.json" }}
 
       # run tests!
       - run: npm test
