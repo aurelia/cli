@@ -6,8 +6,8 @@ workflows:
   version: 2
   node-multi-build:
     jobs:
-      - test_node_8
       - test_node_10
+      - test_node_12
       - test_docker_1
       - test_docker_2
       - test_docker_3
@@ -20,7 +20,7 @@ version: 2
 jobs:
   test_docker_1:
     docker:
-      - image: circleci/node:8-browsers
+      - image: circleci/node:12-browsers
 
     working_directory: ~/repo
 
@@ -54,7 +54,7 @@ jobs:
 
   test_docker_2:
     docker:
-      - image: circleci/node:8-browsers
+      - image: circleci/node:12-browsers
 
     working_directory: ~/repo
 
@@ -87,7 +87,7 @@ jobs:
 
   test_docker_3:
     docker:
-      - image: circleci/node:8-browsers
+      - image: circleci/node:12-browsers
 
     working_directory: ~/repo
 
@@ -121,7 +121,7 @@ jobs:
 
   test_docker_4:
     docker:
-      - image: circleci/node:8-browsers
+      - image: circleci/node:12-browsers
 
     working_directory: ~/repo
 
@@ -155,7 +155,7 @@ jobs:
 
   test_docker_5:
     docker:
-      - image: circleci/node:8-browsers
+      - image: circleci/node:12-browsers
 
     working_directory: ~/repo
 
@@ -189,7 +189,7 @@ jobs:
 
   test_docker_7:
     docker:
-      - image: circleci/node:8-browsers
+      - image: circleci/node:12-browsers
 
     working_directory: ~/repo
 
@@ -223,7 +223,7 @@ jobs:
 
   test_docker_8:
     docker:
-      - image: circleci/node:8-browsers
+      - image: circleci/node:12-browsers
 
     working_directory: ~/repo
 
@@ -254,32 +254,6 @@ jobs:
       - run: sudo npm link
       - run: au new eighth -u -s cli-bundler,alameda,http2,dotnet-core,htmlmin-min,sass,postcss-typical,karma,cypress,scaffold-navigation,docker && cd ./eighth && npm install && npm link aurelia-cli && npm run docker:build
 
-  test_node_8:
-    docker:
-      - image: circleci/node:8-browsers
-
-    working_directory: ~/repo
-
-    steps:
-      - checkout
-
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - node8-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - node8-dependencies-
-
-      - run: npm install
-
-      - save_cache:
-          paths:
-            - node_modules
-          key: node8-dependencies-{{ checksum "package.json" }}
-
-      # run tests!
-      - run: npm test
-
   test_node_10:
     docker:
       - image: circleci/node:10-browsers
@@ -305,3 +279,30 @@ jobs:
 
       # run tests!
       - run: npm test
+
+  test_node_12:
+    docker:
+      - image: circleci/node:12-browsers
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - node8-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - node8-dependencies-
+
+      - run: npm install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: node8-dependencies-{{ checksum "package.json" }}
+
+      # run tests!
+      - run: npm test
+
