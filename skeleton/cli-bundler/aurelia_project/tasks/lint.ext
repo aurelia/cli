@@ -1,0 +1,10 @@
+import /* @if feat.typescript */* as /* @endif */gulp from 'gulp';
+import /* @if feat.typescript */* as /* @endif */eslint from 'gulp-eslint';
+import /* @if feat.typescript */* as /* @endif */project from '../aurelia.json';
+
+export default function lint() {
+  return gulp.src(project.transpiler.source)
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(eslint.failAfterError());
+}
