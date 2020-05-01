@@ -38,7 +38,6 @@
     "experimentalDecorators": true,
     "sourceMap": true,
     "target": "es5",
-    "lib": ["es2015", "dom"],
     "moduleResolution": "node",
     "baseUrl": "src",
     "resolveJsonModule": true,
@@ -53,18 +52,13 @@
     // @endif
   },
   "include": [
-    "./src/**/*.ts",
+    "src",
     // @if feat.plugin
-    "./dev-app/**/*.ts",
+    "dev-app",
     // @endif
-    "./test/**/*.ts",
-    "./types/**/*.d.ts"
+    "test",
+    "types"
   ],
-  // @if feat.cypress
-  "exclude": [
-    "./test/e2e/**/*.ts"
-  ],
-  // @endif
   "atom": {
     "rewriteTsconfig": false
   }
