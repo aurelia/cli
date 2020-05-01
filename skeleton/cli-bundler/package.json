@@ -14,8 +14,10 @@
     "systemjs-plugin-text": "",
     // @endif
 
-    // @if feat.babel
     "babel-eslint": "",
+    "gulp-eslint": "",
+
+    // @if feat.babel
     "@babel/plugin-proposal-decorators": "",
     "@babel/plugin-proposal-class-properties": "",
     "@babel/preset-env": "",
@@ -23,15 +25,14 @@
     "@babel/register": "",
     "gulp-babel": "",
     "gulp-cache": "",
-    "gulp-eslint": "",
     // @endif
 
     // @if feat.typescript
     "gulp-typescript": "",
-    "gulp-tslint": "",
-    "tslint": "",
     "typescript": "",
     "@types/node": "",
+    "@typescript-eslint/eslint-plugin": "",
+    "@typescript-eslint/parser": "",
     // @endif
 
     // @if feat.less

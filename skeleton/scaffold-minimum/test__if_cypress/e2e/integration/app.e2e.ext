@@ -1,4 +1,6 @@
-describe('Aurelia skeleton app', () => {
+/// <reference types="Cypress" />
+
+context('Aurelia skeleton app', () => {
   beforeEach(() => {
     cy.visit('/');
   });
