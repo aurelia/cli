@@ -1,3 +1,4 @@
+/* eslint-disable */
 // @if feat.babel
 import {inject} from 'aurelia-framework';
 
@@ -17,7 +18,7 @@ export class BlurImageCustomAttribute {
   constructor(private element: Element) {
   }
 
-  public valueChanged(newImage: HTMLImageElement) {
+  public valueChanged(newImage: HTMLImageElement): void {
 // @endif
     if (newImage.complete) {
       drawBlur(this.element, newImage);
@@ -26,13 +27,6 @@ export class BlurImageCustomAttribute {
     }
   }
 }
-
-// @if feat.babel
-/* eslint-disable */
-// @endif
-// @if feat.typescript
-/* tslint:disable */
-// @endif
 
 /*
 This Snippet is using a modified Stack Blur js lib for blurring the header images.
@@ -382,4 +376,4 @@ function drawBlur(canvas, image) {
   var canvasContext = canvas.getContext('2d');
   canvasContext.drawImage(image, 0, 0, w, h);
   stackBlurCanvasRGBA(canvas, 0, 0, w, h, BLUR_RADIUS);
-};
+}

@@ -3,7 +3,7 @@ import {HttpClient} from 'aurelia-fetch-client';
 
 @autoinject
 export class Users {
-  public heading: string = 'Github Users';
+  public heading = 'Github Users';
   public users: any[] = [];
 
   constructor(private http: HttpClient) {

@@ -1,9 +1,9 @@
 import {computedFrom} from 'aurelia-framework';
 
 export class Welcome {
-  public heading: string = 'Welcome to the Aurelia Navigation App!';
-  public firstName: string = 'John';
-  public lastName: string = 'Doe';
+  public heading = 'Welcome to the Aurelia Navigation App!';
+  public firstName = 'John';
+  public lastName = 'Doe';
   private previousValue: string = this.fullName;
 
   // Getters can't be directly observed, so they must be dirty checked.
