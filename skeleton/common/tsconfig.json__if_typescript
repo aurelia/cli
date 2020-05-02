@@ -2,7 +2,6 @@
   "compileOnSave": false,
   "compilerOptions": {
     // @if feat['cli-bundler']
-    "noImplicitAny": false,
 
     // @if feat.plugin
     "declaration": true,
