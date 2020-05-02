@@ -25,6 +25,7 @@ transpilerOptions.sourceMap = 'inline';
 let compilerOptions = tsconfig.compilerOptions;
 compilerOptions.inlineSourceMap = true;
 compilerOptions.inlineSources = true;
+compilerOptions.module = 'amd';
 // @endif
 
 module.exports = function(config) {
