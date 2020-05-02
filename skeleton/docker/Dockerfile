@@ -51,10 +51,6 @@ COPY config ./config
 // @endif
 COPY aurelia_project  ./aurelia_project
 
-// @if feat.typescript && feat.webpack
-COPY types ./types
-// @endif
-
 // @if feat.webpack
 COPY static ./static
 // @endif
