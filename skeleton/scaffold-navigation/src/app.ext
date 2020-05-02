@@ -12,7 +12,7 @@ export class App {
   // @if feat.typescript
   public router: Router;
 
-  public configureRouter(config: RouterConfiguration, router: Router) {
+  public configureRouter(config: RouterConfiguration, router: Router): Promise<void> | PromiseLike<void> | void {
   // @endif
     config.title = 'Aurelia';
     config.map([
