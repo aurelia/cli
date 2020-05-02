@@ -15,7 +15,7 @@ export class ChildRouter {
   public heading = 'Child Router';
   public router: Router;
 
-  public configureRouter(config: RouterConfiguration, router: Router) {
+  public configureRouter(config: RouterConfiguration, router: Router): Promise<void> | PromiseLike<void> | void {
   // @endif
     config.map([
       {
