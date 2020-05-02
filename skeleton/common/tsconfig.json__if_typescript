@@ -16,15 +16,6 @@
 
     // @if feat.webpack
     "module": "esnext",
-    "skipLibCheck": true,
-    // @endif
-
-    // @if feat.cypress && feat.karma
-    "types": ["jasmine"],
-    // @endif
-
-    // @if feat.cypress && feat.jest && feat['cli-bundler']
-    "types": ["node", "jest"],
     // @endif
 
     // @if feat.protractor && feat.jest
@@ -56,8 +47,7 @@
     // @if feat.plugin
     "dev-app",
     // @endif
-    "test",
-    "types"
+    "test"
   ],
   "atom": {
     "rewriteTsconfig": false

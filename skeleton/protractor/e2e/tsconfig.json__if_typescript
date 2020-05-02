@@ -1,10 +1,12 @@
 {
+  "extends": "../tsconfig.json",
   "compilerOptions": {
     "strict": true,
-    "baseUrl": "../../node_modules",
+    "baseUrl": "../node_modules",
     "target": "es5",
     "types": [
-      "cypress"
+      "node",
+      "jasmine"
     ]
   },
   "include": [
