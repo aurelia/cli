@@ -17,10 +17,10 @@ const config  = {
 
   specs: [
 // @if feat.babel
-    '**/*.e2e.js'
+    'e2e/**/*.e2e.js'
 // @endif
 // @if feat.typescript
-    '**/*.e2e.ts'
+    'e2e/**/*.e2e.ts'
 // @endif
   ],
 
