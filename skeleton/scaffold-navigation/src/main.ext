@@ -15,7 +15,7 @@ import * as environment from '../config/environment.json';
 import {PLATFORM} from 'aurelia-pal';
 // @endif
 
-export function configure(aurelia/* @if feat.typescript **: Aurelia/* @endif */) {
+export function configure(aurelia/* @if feat.typescript **: Aurelia/* @endif */)/* @if feat.typescript **: void/* @endif */ {
   aurelia.use
     .standardConfiguration()
     // @if feat.webpack

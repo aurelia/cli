@@ -3,6 +3,6 @@ export class App {
   message = 'Hello World!';
   // @endif
   // @if feat.typescript
-  public message: string = 'Hello World!';
+  public message = 'Hello World!';
   // @endif
 }
