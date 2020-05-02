@@ -30,7 +30,7 @@ function isTestFinishedMessage(msg) {
 }
 
 function isErrorMessage(msg) {
-  return msg.indexOf('error') > -1;
+  return !!msg.match(/\([1-9]\d*\s+errors/);
 }
 
 module.exports = {
