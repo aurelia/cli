@@ -62,9 +62,16 @@ COPY *.* ./
 COPY src ./src
 
 
-// @if feat.cypress || feat.protractor || feat.jest || feat.karma
-# Copy test, unit & e2e
+// @if feat.jest || feat.karma
 COPY test ./test
+// @endif
+
+// @if feat.cypress
+COPY cypress ./cypress
+// @endif
+
+// @if feat.protractor
+COPY e2e ./e2e
 // @endif
 
 // @if feat["cli-bundler"] && feat["dotnet-core"]
