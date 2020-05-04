@@ -59,6 +59,7 @@
     "crypto-browserify": "^3.12.0",
     "del": "^5.1.0",
     "domain-browser": "^4.0.0",
+    "enquirer": "^2.3.5",
     "esprima": "^4.0.1",
     "events": "^3.1.0",
     "gulp": "^4.0.2",
@@ -66,6 +67,7 @@
     "https-browserify": "^1.0.0",
     "lodash": "^4.17.15",
     "map-stream": "0.0.7",
+    "minimatch": "^3.0.4",
     "npm-which": "^3.0.1",
     "os-browserify": "^0.3.0",
     "path-browserify": "1.0.1",
@@ -84,8 +86,7 @@
     "typescript": "^3.8.3",
     "url": "^0.11.0",
     "util": "^0.12.2",
-    "vm-browserify": "^1.1.2",
-    "minimatch": "^3.0.4"
+    "vm-browserify": "^1.1.2"
   },
   "devDependencies": {
     "@types/node": "^13.13.4",
