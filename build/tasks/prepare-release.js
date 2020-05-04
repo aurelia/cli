@@ -18,6 +18,5 @@ gulp.task('changelog', function() {
 gulp.task('prepare-release', gulp.series(
   'lint',
   'bump-version',
-  'changelog',
-  'update-cli-dependenciesjs'
+  'changelog'
 ));
