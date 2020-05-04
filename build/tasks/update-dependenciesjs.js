@@ -27,7 +27,7 @@ gulp.task('update-all-dependenciesjs', async() => {
     deps[lookup[i]] = '^' + ver;
   }
 
-  await updateCLIVersion(deps);
+  updateCLIVersion(deps);
   await write(deps);
 });
 

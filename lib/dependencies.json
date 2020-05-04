@@ -95,7 +95,6 @@
   "systemjs": "^0.21.6",
   "systemjs-plugin-text": "^0.0.11",
   "text": "requirejs/text#latest",
-  "through2": "^3.0.1",
   "ts-jest": "^25.2.1",
   "ts-node": "^8.6.2",
   "ts-loader": "^6.2.1",

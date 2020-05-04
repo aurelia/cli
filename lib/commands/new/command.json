@@ -1,6 +1,6 @@
 {
   "name": "new",
-  "description": "Creates a new Aurelia application project.",
+  "description": "Creates a new Aurelia application project. Wraps \"npx makes aurelia/v1\". https://github.com/aurelia/v1",
   "parameters": [
     {
       "name": "project-name",
@@ -20,18 +20,8 @@
       "type": "boolean"
     },
     {
-      "name": "unattended",
-      "description": "Creates project in unattended mode. It will fail if there is any conflicting file in target folder.",
-      "type": "boolean"
-    },
-    {
       "name": "select",
-      "description": "Preselect features (e.g. --select cli-bundler,alameda,karma). In unattended mode, these overwrite default-esnext selections. In interactive mode, some questions will be skipped because they are pre-answered.",
-      "type": "string"
-    },
-    {
-      "name": "install-deps",
-      "description": "Auto install dependencies using yarn or npm (e.g --install-deps yarn)",
+      "description": "Preselect features (e.g. --select cli-bundler,alameda,karma). This option also turns on unattended mode.",
       "type": "string"
     }
   ]
