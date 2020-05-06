@@ -21,7 +21,7 @@ module.exports = () => {
   });
   config.plugins = [
     // first clean the output directory
-    new CleanWebpackPlugin([config.output.path]),
+    new CleanWebpackPlugin(),
     ...config.plugins
   ];
 
