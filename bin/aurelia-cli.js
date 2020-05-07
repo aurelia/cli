@@ -4,9 +4,9 @@ const resolve = require('resolve');
 
 const semver = require('semver');
 const nodeVersion = process.versions.node;
-if (semver.lt(nodeVersion, '8.9.0')) {
+if (semver.lt(nodeVersion, '10.12.0')) {
   console.error(`You are running Node.js v${nodeVersion}.
-aurelia-cli requires Node.js v8.9.0 or above.
+aurelia-cli requires Node.js v10.12.0 or above.
 Please upgrade to latest Node.js https://nodejs.org`);
   process.exit(1);
 }

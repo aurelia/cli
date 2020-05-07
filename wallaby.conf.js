@@ -2,7 +2,6 @@ module.exports = function() {
   return {
     files: [
       'lib/**/*.js',
-      '!lib/resources/generators/**/*',
       'package.json',
       {pattern: 'spec/mocks/**/*', load: false},
       {pattern: 'spec/helpers/polyfills.js', load: false}

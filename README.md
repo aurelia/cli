@@ -1,5 +1,6 @@
 # Aurelia CLI
 
+![CI](https://github.com/aurelia/cli/workflows/CI/badge.svg)
 [![npm Version](https://img.shields.io/npm/v/aurelia-cli.svg)](https://www.npmjs.com/package/aurelia-cli)
 [![Join the chat at https://gitter.im/aurelia/discuss](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/aurelia/discuss?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Twitter](https://img.shields.io/twitter/follow/aureliaeffect.svg?style=social&label=Follow)](https://twitter.com/intent/follow?screen_name=aureliaeffect)
@@ -17,14 +18,14 @@ Please see the [contributing guidelines](./CONTRIBUTING.md).
 
 ## Providing new feature to app skeleton
 
-For contributors planning to add new features to the skeleton application, please see the [descriptive skeleton guide](./DESCRIPTIVE_SKELETON.md) guide.
+Skeleton has been moved to a dedicated repo [aurelia/v1](https://github.com/aurelia/v1).
 
 ## Building
 
 1. Clone the aurelia-cli: `git clone https://github.com/aurelia/cli.git`
 2. Go into the cli directory: `cd cli`
 3. Run `npm install`
-4. Run build `npm run build` 
+4. Run build `npm run build`
 5. Link the cli with: `npm link`
 6. Create a new project with `au new` or use an existing project. The linked CLI will be used to create the project.
 7. In the project directory, run `npm link aurelia-cli`. The linked CLI will then be used for `au` commands such as `au run`
