@@ -18,7 +18,7 @@ Please see the [contributing guidelines](./CONTRIBUTING.md).
 
 ## Providing new feature to app skeleton
 
-Skeleton has been moved to a dedicated repo [aurelia/v1](https://github.com/aurelia/v1).
+App skeleton has been moved to a dedicated repo [aurelia/v1](https://github.com/aurelia/v1).
 
 ## Building
 
@@ -37,3 +37,7 @@ Run `npm test` to run the unit tests.
 ## Release new aurelia-cli version
 
 Please see the [release instructions](./RELEASE_INSTRUCTIONS.md).
+
+## License
+
+MIT.
