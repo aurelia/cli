@@ -8,6 +8,8 @@
 This library is part of the [Aurelia](http://www.aurelia.io/) platform and contains its CLI implementation.
 To keep up to date on [Aurelia](http://www.aurelia.io/), please visit and subscribe to [the official blog](http://blog.aurelia.io/) and [our email list](http://eepurl.com/ces50j). We also invite you to [follow us on twitter](https://twitter.com/aureliaeffect). If you have questions look around our [Discourse forums](https://discourse.aurelia.io/), chat in our [community on Gitter](https://gitter.im/aurelia/discuss) or use [stack overflow](http://stackoverflow.com/search?q=aurelia). Documentation can be found [in our developer hub](http://aurelia.io/docs).
 
+** Aurelia CLI v2 has deprecated bin name "au", replaced it with "au1".** We decided to reserve bin name "au" for upcoming Aurelia 2. More to come ...
+
 ## Documentation
 
 You can read documentation on the cli [here](https://aurelia.io/docs/cli). If you would like to help improve this documentation, visit [aurelia/documentation](https://github.com/aurelia/documentation/tree/master/current/en-us/11.%20cli).
@@ -27,8 +29,8 @@ App skeleton has been moved to a dedicated repo [aurelia/v1](https://github.com/
 3. Run `npm install`
 4. Run build `npm run build`
 5. Link the cli with: `npm link`
-6. Create a new project with `au new` or use an existing project. The linked CLI will be used to create the project.
-7. In the project directory, run `npm link aurelia-cli`. The linked CLI will then be used for `au` commands such as `au run`
+6. Create a new project with `au1 new` or use an existing project. The linked CLI will be used to create the project.
+7. In the project directory, run `npm link aurelia-cli`. The linked CLI will then be used for `au1` commands such as `au1 run`
 
 ## Running the Tests
 

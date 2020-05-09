@@ -14,7 +14,8 @@
   },
   "bin": {
     "aurelia": "bin/aurelia-cli.js",
-    "au": "bin/aurelia-cli.js"
+    "au1": "bin/aurelia-cli.js",
+    "au": "bin/deprecated-au.js"
   },
   "engines": {
     "node": ">=10.12.0"
