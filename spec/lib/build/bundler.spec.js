@@ -883,7 +883,104 @@ describe('the Bundler module', () => {
       .catch(e => done.fail(e));
   });
 
+  it('build supports onNotBundled to report not bundled items', done => {
+    let project = {
+      paths: {
+        root: 'src',
+        foo: 'bar'
+      },
+      build: { loader: {} }
+    };
 
+    let bundler = new Bundler(project, analyzer);
+
+    bundler.items = [
+      {
+        includedIn: 1,
+        moduleId: 'one',
+        transform: jasmine.createSpy('transform1')
+          .and.returnValues([], undefined)
+      },
+      {
+        moduleId: 'two',
+        transform: jasmine.createSpy('transform2')
+          .and.returnValues([], undefined)
+      }
+    ];
+
+    let bundle = {
+      getRawBundledModuleIds: () => ['one'],
+      addAlias: jasmine.createSpy('addAlias')
+    };
+
+    bundler.bundles = [bundle];
+
+    bundler.addNpmResource = jasmine.createSpy('addNpmResource')
+      .and.returnValue(Promise.resolve());
+
+    let notBundled;
+    bundler.build({
+      onNotBundled: function(items) {
+        notBundled = items;
+      }
+    })
+      .then(() => {
+        expect(bundler.addNpmResource).not.toHaveBeenCalled();
+        expect(bundle.addAlias).not.toHaveBeenCalled();
+        expect(notBundled.length).toBe(1);
+        expect(notBundled[0].moduleId).toBe('two');
+        done();
+      })
+      .catch(e => done.fail(e));
+  });
+
+  it('build\'s onNotBundled is not called if there is no not-bundled', done => {
+    let project = {
+      paths: {
+        root: 'src',
+        foo: 'bar'
+      },
+      build: { loader: {} }
+    };
+
+    let bundler = new Bundler(project, analyzer);
+
+    bundler.items = [
+      {
+        includedIn: 1,
+        moduleId: 'one',
+        transform: jasmine.createSpy('transform1')
+          .and.returnValues([], undefined)
+      },
+      {
+        includedIn: 1,
+        moduleId: 'two',
+        transform: jasmine.createSpy('transform2')
+          .and.returnValues([], undefined)
+      }
+    ];
+
+    let bundle = {
+      getRawBundledModuleIds: () => ['one'],
+      addAlias: jasmine.createSpy('addAlias')
+    };
+
+    bundler.bundles = [bundle];
+
+    bundler.addNpmResource = jasmine.createSpy('addNpmResource')
+      .and.returnValue(Promise.resolve());
+
+    const onNotBundled = jasmine.createSpy('onNotBundled');
+
+    bundler.build({onNotBundled})
+      .then(() => {
+        expect(bundler.addNpmResource).not.toHaveBeenCalled();
+        expect(bundle.addAlias).not.toHaveBeenCalled();
+        expect(onNotBundled).not.toHaveBeenCalled();
+        done();
+      })
+      .catch(e => done.fail(e));
+  });
   afterEach(() => {
     cliOptionsMock.detach();
   });
