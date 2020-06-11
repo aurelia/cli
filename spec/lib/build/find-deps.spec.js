@@ -130,6 +130,7 @@ describe('find-deps', () => {
         return c.foo = 1;
       });
     }
+    something.toString();
     aurelia.start().then(function () {
       return aurelia.setRoot();
     });
