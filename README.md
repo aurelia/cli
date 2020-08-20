@@ -18,7 +18,9 @@ Please see the [contributing guidelines](./CONTRIBUTING.md).
 
 ## Providing new feature to app skeleton
 
-App skeleton has been moved to a dedicated repo [aurelia/v1](https://github.com/aurelia/v1).
+App skeleton is no longer in this repo, it has been moved to a dedicated repo [aurelia/v1](https://github.com/aurelia/v1). Any contribution to app skeleton should go into [aurelia/v1](https://github.com/aurelia/v1).
+
+The `au new` command now simplify wraps `npx makes aurelia/v1`. Users can directly use that makes command to create new project.
 
 ## Building
 
