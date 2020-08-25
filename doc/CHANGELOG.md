@@ -1,3 +1,42 @@
+# [2.0.0](https://github.com/aurelia/cli/compare/1.3.1...2.0.0) (2020-08-25)
+
+
+### Bug Fixes
+
+* **cli-bundler:** avoid unwanted match on prototype ([9054f9c](https://github.com/aurelia/cli/commit/9054f9cbf1c7c3b82866a15d9bb26ca6aa6c646b))
+* **cli-bundler:** warn user about missed source matcher ([bf13526](https://github.com/aurelia/cli/commit/bf13526bf26d967dd1198134a7a8f8305334560f)), closes [#1182](https://github.com/aurelia/cli/issues/1182) [#1160](https://github.com/aurelia/cli/issues/1160)
+* **docker:** e2e folder is changed ([b45e6b1](https://github.com/aurelia/cli/commit/b45e6b1f2a46ec617b8daa52888a9d828319a26d))
+* **docker:** no more types folder ([56caa9e](https://github.com/aurelia/cli/commit/56caa9ebfc4184f764e0f73e22624d8b54ba50e2))
+* **scaffold-navigation:** wrong fontawesome class used ([03d509e](https://github.com/aurelia/cli/commit/03d509e898efc22916a1902d0ec5ca1e882c60fe))
+* **typescript:** fix karma+ts unit tests ([7d90d2b](https://github.com/aurelia/cli/commit/7d90d2ba837c15291b2cd6fc295998a69b7965ff))
+* **typescript:** fix missing eslintrc ([c59195d](https://github.com/aurelia/cli/commit/c59195d2e0db6e83e08e16fc9025655b6ffc9a29))
+* fix lint task ([23ffc87](https://github.com/aurelia/cli/commit/23ffc87ff5091d0db313fee523f246577fa6243d))
+* **typescript:** fix few typing conflicts by moving e2e files ([156fb6e](https://github.com/aurelia/cli/commit/156fb6e26ba7b5c346e85d679cf16aa2aa39ce82))
+* latest cypress is confused about module format ([c427b25](https://github.com/aurelia/cli/commit/c427b2578973e5cff4edbc7c915cc6fe248d03b2))
+* latest cypress simplified ts setup ([7ac344b](https://github.com/aurelia/cli/commit/7ac344b3a5275a618fd5678cb1a595d4ba42ab9f))
+* **docker:** copy fortawesome files  ([fa63b0a](https://github.com/aurelia/cli/commit/fa63b0aa1daa56bda72011777934bdcaa2fbce51))
+* **docker:** remove unnecessary copy task ([eed22ae](https://github.com/aurelia/cli/commit/eed22aeee276ffb08cb959c038dc890928043f13))
+* **scaffold-navigation:** change to modern fas ([b8480a4](https://github.com/aurelia/cli/commit/b8480a42e59fbf70d65d95b5336905de840ded1d))
+* **scaffold-navigation:** fix spinner class ([98c0270](https://github.com/aurelia/cli/commit/98c027007eecb7137d49adf1075dae124375b5d7))
+
+
+### Features
+
+* au new wraps npx makes aurelia/v1 ([4599a12](https://github.com/aurelia/cli/commit/4599a123d9127e1c662fbba633af23c85939e3e2))
+* onNotBundled callback to report not bundled items ([62305d0](https://github.com/aurelia/cli/commit/62305d07f2e95e00c11963e01c2705b0d6c7f2e5))
+* upgrade deps, many dropped nodejs v8 support ([0249227](https://github.com/aurelia/cli/commit/02492274470c39b439d0412c7b2e2dcd0f306743))
+
+
+### BREAKING CHANGES
+
+* skeleton files is moved to dedicated repo https://github.com/aurelia/v1
+* release-check is removed. Skeletons check is done in aurelia/v1 repo.
+* "--unattended" is removed from "au new" params.
+* "au generate-skeletons" is removed.
+* drop nodejs v8 support
+
+
+
 ## [1.3.1](https://github.com/aurelia/cli/compare/1.3.0...1.3.1) (2020-04-15)
 
 
