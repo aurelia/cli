@@ -48,10 +48,10 @@ describe('StubCoreNodejsModule', () => {
   });
 
   it('stubs empty module for some core module', () => {
-    expect(stubModule('dns', 'src')).toBe('define(function(){});');
+    expect(stubModule('dns', 'src')).toBe('define(function(){return {};});');
   });
 
   it('stubs empty module for __ignore__', () => {
-    expect(stubModule('__ignore__', 'src')).toBe('define(function(){});');
+    expect(stubModule('__ignore__', 'src')).toBe('define(function(){return {};});');
   });
 });
