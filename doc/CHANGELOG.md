@@ -1,3 +1,12 @@
+## [2.0.1](https://github.com/aurelia/cli/compare/2.0.0...2.0.1) (2020-09-14)
+
+
+### Bug Fixes
+
+* **cli-bundler:** browser ignore field should return empty object instead of undefined ([58d8355](https://github.com/aurelia/cli/commit/58d8355028cbf5964a632ede3b5023f5c7ec25ce))
+
+
+
 # [2.0.0](https://github.com/aurelia/cli/compare/1.3.1...2.0.0) (2020-08-25)
 
 
