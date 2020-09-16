@@ -152,6 +152,30 @@ describe('the Utils.nodejsLoad function', () => {
     expect(Utils.nodejsLoad(path.resolve('foo', 'bar'))).toBe(path.resolve('foo', 'bar', 'lo.js'));
   });
 
+  it('load directory with package.json browser field', () => {
+    const fsConfig = {};
+    fsConfig[path.join('foo', 'bar', 'package.json')] = '{"main": "lo2.js", "browser": "lo.js"}';
+    fsConfig[path.join('foo', 'bar', 'lo.js')] = 'bar/lo.js';
+    mockfs(fsConfig);
+    expect(Utils.nodejsLoad(path.resolve('foo', 'bar'))).toBe(path.resolve('foo', 'bar', 'lo.js'));
+  });
+
+  it('load directory with package.json browser "." mapping', () => {
+    const fsConfig = {};
+    fsConfig[path.join('foo', 'bar', 'package.json')] = '{"main": "lo2.js", "browser": {".": "lo.js"}}';
+    fsConfig[path.join('foo', 'bar', 'lo.js')] = 'bar/lo.js';
+    mockfs(fsConfig);
+    expect(Utils.nodejsLoad(path.resolve('foo', 'bar'))).toBe(path.resolve('foo', 'bar', 'lo.js'));
+  });
+
+  it('load directory with package.json browser field', () => {
+    const fsConfig = {};
+    fsConfig[path.join('foo', 'bar', 'package.json')] = '{"main": "lo2.js", "module": "lo.js"}';
+    fsConfig[path.join('foo', 'bar', 'lo.js')] = 'bar/lo.js';
+    mockfs(fsConfig);
+    expect(Utils.nodejsLoad(path.resolve('foo', 'bar'))).toBe(path.resolve('foo', 'bar', 'lo.js'));
+  });
+
   it('load directory with package.json, case2', () => {
     const fsConfig = {};
     fsConfig[path.join('foo', 'bar', 'package.json')] = '{"main": "lo.js"}';

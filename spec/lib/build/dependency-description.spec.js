@@ -38,4 +38,16 @@ describe('The DependencyDescription', () => {
       './server/only': './shims/server-only'
     });
   });
+
+  it('gets browser replacement but leave . for main replacement', () => {
+    sut.metadata = {
+      browser: {
+        "readable-stream": "./lib/readable-stream-browser.js",
+        ".": "dist/jszip.min.js"
+      }
+    };
+    expect(sut.browserReplacement()).toEqual({
+      "readable-stream": "./lib/readable-stream-browser"
+    });
+  });
 });
