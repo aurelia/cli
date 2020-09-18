@@ -1,3 +1,12 @@
+## [2.0.2](https://github.com/aurelia/cli/compare/2.0.1...2.0.2) (2020-09-18)
+
+
+### Bug Fixes
+
+* **cli-bundler:** correctly handle browser "." mapping ([f2fc025](https://github.com/aurelia/cli/commit/f2fc02577d8f136c9b87de470814864efe41420c))
+
+
+
 ## [2.0.1](https://github.com/aurelia/cli/compare/2.0.0...2.0.1) (2020-09-14)
 
 
