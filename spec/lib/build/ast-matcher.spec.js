@@ -1,4 +1,4 @@
-const esprima = require('esprima');
+const meriyah = require('meriyah');
 
 const astm = require('../../../lib/build/ast-matcher');
 const extract = astm.extract;
@@ -11,8 +11,8 @@ const extractTest = function(pattern, part) {
 };
 
 describe('compilePattern', () => {
-  it('bypass esprima node', () => {
-    let node = esprima.parse('a = 1');
+  it('bypass meriyah node', () => {
+    let node = meriyah.parseScript('a = 1');
     expect(compilePattern(node)).toBe(node);
   });
 
@@ -60,16 +60,13 @@ describe('extract', () => {
     expect(Object.keys(r)).toEqual(['a']);
     expect(r.a.type).toBe('Literal');
     expect(r.a.value).toBe('foo');
-    expect(r.a.raw).toBe('"foo"');
 
     r = extractTest('a(__any_a,__any_b)', 'a("foo", "bar")');
     expect(Object.keys(r).sort()).toEqual(['a', 'b']);
     expect(r.a.type).toBe('Literal');
     expect(r.a.value).toBe('foo');
-    expect(r.a.raw).toBe('"foo"');
     expect(r.b.type).toBe('Literal');
     expect(r.b.value).toBe('bar');
-    expect(r.b.raw).toBe('"bar"');
   });
 
   it('__anl matches nodes array, but no extract', () => {
@@ -208,7 +205,7 @@ describe('matcher built by astMatcher', () => {
   it('accepts both string input or node input', () => {
     let m = astMatcher('a(__str_foo)');
     expect(m('a("foo")').length).toBe(1);
-    expect(m(esprima.parse('a("foo")')).length).toBe(1);
+    expect(m(meriyah.parseScript('a("foo")')).length).toBe(1);
   });
 
   it('rejects unknown input', () => {
@@ -281,9 +278,9 @@ describe('jsDepFinder', () => {
     expect(f('a("a"); b("b"); b.a("c")')).toEqual(['a']);
   });
 
-  it('finds matching dep, accepts esprima node as input', () => {
+  it('finds matching dep, accepts meriyah node as input', () => {
     let f = jsDepFinder('a(__dep)');
-    expect(f(esprima.parse('a("a"); b("b"); b.a("c")'))).toEqual(['a']);
+    expect(f(meriyah.parseScript('a("a"); b("b"); b.a("c")'))).toEqual(['a']);
   });
 
   it('finds matching dep by matching length', () => {
