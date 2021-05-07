@@ -1,3 +1,12 @@
+## [2.0.3](https://github.com/aurelia/cli/compare/2.0.2...2.0.3) (2021-05-07)
+
+
+### Bug Fixes
+
+* **cli-bundler:** fix error on latest JS syntax, replaced outdated esprima with meriyah ([1dca043](https://github.com/aurelia/cli/commit/1dca043b82a1b0d4ba57698b7bad34c5f0f41069))
+
+
+
 ## [2.0.2](https://github.com/aurelia/cli/compare/2.0.1...2.0.2) (2020-09-18)
 
 
