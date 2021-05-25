@@ -96,7 +96,7 @@
     "gulp-eslint": "^6.0.0",
     "jasmine": "^3.7.0",
     "jasmine-spec-reporter": "^7.0.0",
-    "mock-fs": "^5.0.0",
+    "mock-fs": "^4.14.0",
     "nodemon": "^2.0.7",
     "nyc": "^15.1.0",
     "yargs": "^16.2.0"
