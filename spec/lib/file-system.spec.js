@@ -122,7 +122,10 @@ describe('The file-system module', () => {
         .catch(fail)
         .then(() => fs.readdir(writeDir))
         .catch(fail)
-        .then(done);
+        .then((files) => {
+          expect(files.length).toBe(0);
+          done();
+        });
     });
 
     it('rejects with EEXIST', done => {
@@ -137,7 +140,12 @@ describe('The file-system module', () => {
     it('makes deep directories', done => {
       fs.mkdirp(writeDir + readDir).then(() => {
         return fs.readdir(writeDir + readDir);
-      }).catch(fail).then(done);
+      })
+      .catch(fail)
+      .then((files) => {
+        expect(files.length).toBe(0);
+        done();
+      });
     });
   });
 

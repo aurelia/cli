@@ -396,7 +396,7 @@ describe('The PackageAnalyzer', () => {
               expect(description.loaderConfig.main).toBe('module');
             })
         ])
-        .then(done)
+        .then(() => done())
         .catch(done.fail);
     });
   });
