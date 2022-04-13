@@ -90,7 +90,6 @@
   },
   "devDependencies": {
     "@types/node": "^17.0.23",
-    "babel-eslint": "^10.1.0",
     "gulp-bump": "^3.2.0",
     "gulp-conventional-changelog": "^2.0.35",
     "gulp-eslint": "^6.0.0",
