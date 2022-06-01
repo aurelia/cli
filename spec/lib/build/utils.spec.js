@@ -45,18 +45,26 @@ describe('the Utils.runSequentially function', () => {
   });
 });
 
-describe('the Utils.createSrcFileRegex function', () => {
+describe('the Utils.createBundleFileRegex function', () => {
   it('matches script tag with double quotes', () => {
-    expect('<script src="scripts/vendor-bundle.js"></script>'.match(Utils.createSrcFileRegex('scripts', 'vendor-bundle'))).not.toBeFalsy();
+    expect('<script src="scripts/vendor-bundle.js"></script>'.match(Utils.createBundleFileRegex('vendor-bundle'))).not.toBeFalsy();
+
+    expect('<script src="scripts/vendor-bundle.js"></script>'.replace(Utils.createBundleFileRegex('vendor-bundle'), 'vendor-bundle-123.js')).toBe('<script src="scripts/vendor-bundle-123.js"></script>');
+
+    // dev to prod
+    expect('<link rel="preload" href="/scripts/app-bundle.js"><script src="scripts/app-bundle.js"></script><script src="scripts/vendor-bundle.js"></script>'.replace(Utils.createBundleFileRegex('app-bundle'), 'app-bundle-123.js').replace(Utils.createBundleFileRegex('vendor-bundle'), 'vendor-bundle-abc.js')).toBe('<link rel="preload" href="/scripts/app-bundle-123.js"><script src="scripts/app-bundle-123.js"></script><script src="scripts/vendor-bundle-abc.js"></script>');
+
+    // prod to dev
+    expect('<link rel="preload" href="/scripts/app-bundle-123.js"><script src="scripts/app-bundle-123.js"></script><script src="scripts/vendor-bundle-abc.js"></script>'.replace(Utils.createBundleFileRegex('app-bundle'), 'app-bundle.js').replace(Utils.createBundleFileRegex('vendor-bundle'), 'vendor-bundle.js')).toBe('<link rel="preload" href="/scripts/app-bundle.js"><script src="scripts/app-bundle.js"></script><script src="scripts/vendor-bundle.js"></script>');
   });
   it('matches script tag with single quotes', () => {
-    expect('<script src=\'scripts/vendor-bundle.js\'></script>'.match(Utils.createSrcFileRegex('scripts', 'vendor-bundle'))).not.toBeFalsy();
+    expect('<script src=\'scripts/vendor-bundle.js\'></script>'.match(Utils.createBundleFileRegex('vendor-bundle'))).not.toBeFalsy();
   });
   it('matches script tag without quotes', () => {
-    expect('<script src=scripts/vendor-bundle.js></script>'.match(Utils.createSrcFileRegex('scripts', 'vendor-bundle'))).not.toBeFalsy();
+    expect('<script src=scripts/vendor-bundle.js></script>'.match(Utils.createBundleFileRegex('vendor-bundle'))).not.toBeFalsy();
   });
   it('does not match other bundles', () => {
-    expect('<script src=scripts/app-bundle.js></script>'.match(Utils.createSrcFileRegex('scripts', 'vendor-bundle'))).toBeFalsy();
+    expect('<script src=scripts/app-bundle.js></script>'.match(Utils.createBundleFileRegex('vendor-bundle'))).toBeFalsy();
   });
 });
 
