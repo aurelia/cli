@@ -48,7 +48,7 @@ describe('The ProjectItem module', () => {
       expect(fs.readFileSync(path.join('folder', 'deepFolder', 'file4.js'))).toBe('file4');
     });
 
-    it('Overwrites existing file', async() => {
+    it('overwrites existing file', async() => {
       mockfs({
         'folder': {
           'file1.js': 'oldfile1',
@@ -61,6 +61,17 @@ describe('The ProjectItem module', () => {
       expect(fs.readFileSync(path.join('folder', 'file1.js'))).toBe('file1');
       expect(fs.readFileSync(path.join('folder', 'file2.js'))).toBe('file2');
       expect(fs.readFileSync(path.join('folder', 'file3.js'))).toBe('oldfile3');
+      expect(fs.readdirSync(path.join('folder', 'deepFolder')).sort()).toEqual(['file4.js']);
+      expect(fs.readFileSync(path.join('folder', 'deepFolder', 'file4.js'))).toBe('file4');
+    });
+
+    it('skips empty folder', async() => {
+      folder.add(ProjectItem.directory('empty-folder'));
+      await folder.create('root');
+      expect(fs.readdirSync('.')).toEqual(['folder']);
+      expect(fs.readdirSync('folder').sort()).toEqual(['deepFolder', 'file1.js', 'file2.js']);
+      expect(fs.readFileSync(path.join('folder', 'file1.js'))).toBe('file1');
+      expect(fs.readFileSync(path.join('folder', 'file2.js'))).toBe('file2');
       expect(fs.readdirSync(path.join('folder', 'deepFolder')).sort()).toEqual(['file4.js']);
       expect(fs.readFileSync(path.join('folder', 'deepFolder', 'file4.js'))).toBe('file4');
     });
