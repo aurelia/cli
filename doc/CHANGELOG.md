@@ -1,3 +1,30 @@
+# [3.0.0](https://github.com/aurelia/cli/compare/2.0.3...3.0.0) (2022-06-06)
+
+
+### Bug Fixes
+
+* **generate:** au generate should only create folder when needed ([238f68b](https://github.com/aurelia/cli/commit/238f68be2f8ac1bff7d63223371d3f79f77096dc)), closes [#475](https://github.com/aurelia/cli/issues/475)
+* hashed bundle file name rewrite should touch all instances ([47d0b0f](https://github.com/aurelia/cli/commit/47d0b0f876fe6ed34811e91aa42150d75937d28c)), closes [#456](https://github.com/aurelia/cli/issues/456)
+
+
+### chore
+
+* only support nodejs v14+ ([abd6151](https://github.com/aurelia/cli/commit/abd615114a1d957bdc6e8f96b01212419bcf88fa))
+* upgrade deps ([319188c](https://github.com/aurelia/cli/commit/319188c26f768db8f39f6d08e376c16c47147ed9))
+
+
+### Reverts
+
+* Revert "chore: upgrade mock-fs" ([7506c88](https://github.com/aurelia/cli/commit/7506c882592970d5b9bdd4d0d3bf05b53bda2bbc))
+
+
+### BREAKING CHANGES
+
+* drop support of nodejs v12 and below
+* drop support of Nodejs before v12
+
+
+
 ## [2.0.3](https://github.com/aurelia/cli/compare/2.0.2...2.0.3) (2021-05-07)
 
 
