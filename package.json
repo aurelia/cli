@@ -16,9 +16,6 @@
     "aurelia": "bin/aurelia-cli.js",
     "au": "bin/aurelia-cli.js"
   },
-  "engines": {
-    "node": ">=14.0.0"
-  },
   "scripts": {
     "lint": "gulp lint",
     "pretest": "npm run lint",
