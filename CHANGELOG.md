@@ -1,3 +1,12 @@
+## [3.0.1](https://github.com/aurelia/cli/compare/3.0.0...3.0.1) (2022-06-07)
+
+
+### Bug Fixes
+
+* remove engines requirement to allow to use in older nodejs with yarn ([0cc316e](https://github.com/aurelia/cli/commit/0cc316e080d863c9a35f303cc9e52447baabc0b7))
+
+
+
 # [3.0.0](https://github.com/aurelia/cli/compare/2.0.3...3.0.0) (2022-06-06)
 
 
