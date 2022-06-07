@@ -17,11 +17,14 @@
     "au": "bin/aurelia-cli.js"
   },
   "scripts": {
-    "lint": "gulp lint",
+    "lint": "eslint lib spec",
     "pretest": "npm run lint",
     "test": "jasmine",
     "coverage": "nyc jasmine",
-    "test:watch": "nodemon -x 'npm test'"
+    "test:watch": "nodemon -x 'npm test'",
+    "preversion": "npm test",
+    "version": "standard-changelog && git add CHANGELOG.md",
+    "postversion": "git push && git push --tags && npm publish"
   },
   "license": "MIT",
   "author": "Rob Eisenberg <rob@bluespire.com> (http://robeisenberg.com/)",
@@ -87,14 +90,13 @@
   },
   "devDependencies": {
     "@types/node": "^17.0.39",
-    "gulp-bump": "^3.2.0",
-    "gulp-conventional-changelog": "^2.0.35",
-    "gulp-eslint": "^6.0.0",
+    "eslint": "^8.17.0",
     "jasmine": "^4.1.0",
     "jasmine-spec-reporter": "^7.0.0",
     "mock-fs": "^5.1.2",
     "nodemon": "^2.0.16",
     "nyc": "^15.1.0",
+    "standard-changelog": "^2.0.27",
     "yargs": "^17.5.1"
   }
 }

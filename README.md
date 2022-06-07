@@ -38,7 +38,7 @@ Run `npm test` to run the unit tests.
 
 ## Release new aurelia-cli version
 
-Please see the [release instructions](./RELEASE_INSTRUCTIONS.md).
+Just run `npm version patch` (or minor or major)
 
 ## License
 
