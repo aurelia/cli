@@ -103,6 +103,36 @@ describe('the DependencyInclusion module', () => {
       .catch(e => done.fail(e));
   });
 
+  it('adds mjs main file to the bundle when there is a main file', done => {
+    let bundle = {
+      bundler: bundler,
+      addAlias: jasmine.createSpy('addAlias'),
+      includes: [],
+      createMatcher: function(pattern) {
+        return new Minimatch(pattern, {
+          dot: true
+        });
+      }
+    };
+
+    let description = new DependencyDescription('my-package', 'npm');
+    description.loaderConfig = {
+      path: '../node_modules/my-package',
+      name: 'my-package',
+      main: 'index.mjs'
+    };
+
+    let sut = new DependencyInclusion(bundle, description);
+    sut.traceResources()
+      .then(() => {
+        expect(bundle.includes.length).toBe(1);
+        expect(bundle.includes[0].pattern).toBe(path.join('..', 'node_modules', 'my-package', 'index.mjs'));
+        expect(bundle.addAlias).toHaveBeenCalledWith('my-package', 'my-package/index.mjs');
+        done();
+      })
+      .catch(e => done.fail(e));
+  });
+
   it('aliases main file when both package name and main file share same non-js extension', done => {
     let bundle = {
       bundler: bundler,

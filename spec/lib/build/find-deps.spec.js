@@ -71,6 +71,9 @@ describe('find-deps', () => {
       expect(findJsDeps('ignore.js', contents).sort())
         .toEqual(['./b/c', 'a']);
 
+      expect(findJsDeps('ignore.mjs', "define(['./b.mjs'], () => 1);").sort())
+      .toEqual(['./b.mjs']);
+
       expect(findJsDeps('ignore.js', 'define(() => 1);').length).toBe(0);
     });
 
