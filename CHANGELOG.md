@@ -1,3 +1,7 @@
+## [3.0.3](https://github.com/aurelia/cli/compare/v3.0.2...v3.0.3) (2024-04-17)
+
+
+
 ## [3.0.2](https://github.com/aurelia/cli/compare/v3.0.1...v3.0.2) (2023-10-07)
 
 
