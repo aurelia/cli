@@ -1,3 +1,12 @@
+## [3.0.3](https://github.com/aurelia/cli/compare/v3.0.2...v3.0.3) (2024-04-26)
+
+
+### Bug Fixes
+
+* **cli-bundler:** allow tracing of mjs file ([611da5e](https://github.com/aurelia/cli/commit/611da5e7ea40854ab7215a33b2628616da4a1a4b))
+
+
+
 ## [3.0.2](https://github.com/aurelia/cli/compare/v3.0.1...v3.0.2) (2023-10-07)
 
 
