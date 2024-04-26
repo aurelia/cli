@@ -1,5 +1,6 @@
+const mockfs = require('../mocks/mock-fs');
+
 describe('The project module', () => {
-  let mockfs;
   let path;
 
   let fs;
@@ -8,7 +9,6 @@ describe('The project module', () => {
   let project;
 
   beforeEach(() => {
-    mockfs = require('mock-fs');
     path = require('path');
 
     fs = require('../../lib/file-system');

@@ -1,4 +1,5 @@
 const fd = require('../../../lib/build/find-deps');
+const mockfs = require('../../mocks/mock-fs');
 const findJsDeps = fd.findJsDeps;
 const findHtmlDeps = fd.findHtmlDeps;
 const findDeps = fd.findDeps;
@@ -52,10 +53,8 @@ let css = `
 `;
 
 describe('find-deps', () => {
-  let mockfs;
 
   beforeEach(() => {
-    mockfs = require('mock-fs');
     mockfs({});
   });
 

@@ -1,6 +1,6 @@
 const path = require('path');
 const fs = require('../../lib/file-system');
-const mockfs = require('mock-fs');
+const mockfs = require('../mocks/mock-fs');
 const {ProjectItem} = require('../../lib/project-item');
 
 describe('The ProjectItem module', () => {

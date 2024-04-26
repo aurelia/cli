@@ -1,4 +1,5 @@
 const path = require('path');
+const mockfs = require('../../mocks/mock-fs');
 const Utils = require('../../../lib/build/utils');
 
 describe('the Utils.runSequentially function', () => {
@@ -97,10 +98,7 @@ describe('the Utils.couldMissGulpPreprocess function', () => {
 });
 
 describe('the Utils.nodejsLoad function', () => {
-  let mockfs;
-
   beforeEach(() => {
-    mockfs = require('mock-fs');
     const fsConfig = {};
     mockfs(fsConfig);
   });

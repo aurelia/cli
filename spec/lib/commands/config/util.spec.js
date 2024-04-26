@@ -1,10 +1,10 @@
+const mockfs = require('../../../mocks/mock-fs');
+
 describe('The config command - util', () => {
-  let mockfs;
   const CLIOptions = require('../../../../lib/cli-options').CLIOptions;
   const ConfigurationUtilities = require('../../../../lib/commands/config/util');
 
   beforeEach(() => {
-    mockfs = require('mock-fs');
     mockfs({
       'aurelia_project/aurelia.json': '{ "build": {} }'
     });

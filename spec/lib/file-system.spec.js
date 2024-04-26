@@ -1,10 +1,11 @@
+const mockfs = require('../mocks/mock-fs');
+
 const ERROR_CODES = {
   ENOENT: 'ENOENT',
   EEXIST: 'EEXIST'
 };
 
 describe('The file-system module', () => {
-  let mockfs;
   let path;
   let fs;
 
@@ -14,7 +15,6 @@ describe('The file-system module', () => {
   let writeFile;
 
   beforeEach(() => {
-    mockfs = require('mock-fs');
     path = require('path');
     fs = require('../../lib/file-system');
 
