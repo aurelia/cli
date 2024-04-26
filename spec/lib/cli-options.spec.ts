@@ -1,9 +1,9 @@
+const mockfs = require('../mocks/mock-fs');
+
 describe('The cli-options', () => {
   let cliOptions;
-  let mockfs;
 
   beforeEach(() => {
-    mockfs = require('mock-fs');
     const fsConfig = {
       'aurelia_project/environments/dev.js': 'content',
       'aurelia_project/environments/stage.js': 'content',

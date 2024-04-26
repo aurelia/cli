@@ -2,14 +2,13 @@ const path = require('path');
 const Bundler = require('../../../lib/build/bundler').Bundler;
 const PackageAnalyzer = require('../../mocks/package-analyzer');
 const CLIOptionsMock = require('../../mocks/cli-options');
+const mockfs = require('../../mocks/mock-fs');
 
 describe('the Bundler module', () => {
   let analyzer;
   let cliOptionsMock;
-  let mockfs;
 
   beforeEach(() => {
-    mockfs = require('mock-fs');
     analyzer = new PackageAnalyzer();
     cliOptionsMock = new CLIOptionsMock();
     cliOptionsMock.attach();

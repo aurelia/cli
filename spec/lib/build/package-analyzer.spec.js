@@ -1,14 +1,12 @@
 const path = require('path');
+const mockfs = require('../../mocks/mock-fs');
 const PackageAnalyzer = require('../../../lib/build/package-analyzer').PackageAnalyzer;
 
 describe('The PackageAnalyzer', () => {
-  let mockfs;
   let project;
   let sut;
 
   beforeEach(() => {
-    mockfs = require('mock-fs');
-
     project = {
       paths: {
         root: './src/'

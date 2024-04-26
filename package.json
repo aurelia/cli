@@ -93,7 +93,6 @@
     "eslint": "^8.17.0",
     "jasmine": "^4.1.0",
     "jasmine-spec-reporter": "^7.0.0",
-    "mock-fs": "^5.1.2",
     "nodemon": "^2.0.16",
     "nyc": "^15.1.0",
     "standard-changelog": "^2.0.27",

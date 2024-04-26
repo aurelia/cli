@@ -1,14 +1,12 @@
+const mockfs = require('../../mocks/mock-fs');
 const PackageInstaller = require('../../../lib/build/package-installer').PackageInstaller;
-const path = require('path');
 
 describe('The PackageInstaller', () => {
-  let mockfs;
   let project;
   let sut;
 
   describe('when there is no yarn.lock file', () => {
     beforeEach(() => {
-      mockfs = require('mock-fs');
       project = {};
       sut = new PackageInstaller(project);
       const fsConfig = {};
@@ -36,11 +34,9 @@ describe('The PackageInstaller', () => {
 
   describe('when there is yarn.lock file', () => {
     beforeEach(() => {
-      mockfs = require('mock-fs');
       project = {};
       sut = new PackageInstaller(project);
-      const fsConfig = {};
-      fsConfig[path.resolve(process.cwd(), 'yarn.lock')] = 'some-content';
+      const fsConfig = { 'yarn.lock': 'some-content'};
       mockfs(fsConfig);
     });
 

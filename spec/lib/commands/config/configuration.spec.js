@@ -1,6 +1,6 @@
-describe('The config command - configuration', () => {
-  let mockfs;
+const mockfs = require('../../../mocks/mock-fs');
 
+describe('The config command - configuration', () => {
   const CLIOptions = require('../../../../lib/cli-options').CLIOptions;
   const Configuration = require('../../../../lib/commands/config/configuration');
   let configuration;
@@ -25,7 +25,6 @@ describe('The config command - configuration', () => {
     };
     projectControl = JSON.parse(JSON.stringify(project));
 
-    mockfs = require('mock-fs');
     mockfs({
       'aurelia_project': {
         'aurelia.json': JSON.stringify(project)
