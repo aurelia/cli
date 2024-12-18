@@ -183,7 +183,6 @@ describe('the DependencyInclusion module', () => {
       lazyMain: true
     };
 
-    // eslint-disable-next-line no-unused-vars
     let sut = new DependencyInclusion(bundle, description);
 
     sut.traceResources()
