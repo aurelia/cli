@@ -444,11 +444,13 @@ export class Bundle {
         const minificationResult = await Terser.minify(String(contents), minificationOptions);
 
         contents = minificationResult.code;
-        if (typeof minificationResult.map !== "string"){
-          console.error("`minificationResult.map` should be string!", minificationOptions);
-          throw new Error("`minificationResult.map` should be string!");
+        if (needsSourceMap){
+          if (typeof minificationResult.map !== "string"){
+            console.error("`minificationResult.map` should be string!", minificationOptions);
+            throw new Error("`minificationResult.map` should be string!");
+          }
+          bundleMap = Convert.fromJSON(minificationResult.map).toObject();
         }
-        bundleMap = needsSourceMap ? Convert.fromJSON(minificationResult.map).toObject() : undefined;
       } else if (needsSourceMap) {
         bundleMap = Convert.fromJSON(concat.sourceMap)
           .setProperty('sourceRoot', mapSourceRoot)
