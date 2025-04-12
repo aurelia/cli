@@ -1,20 +1,25 @@
-import globals from "globals";
-import eslint from "@eslint/js";
+// @ts-check
 
-export default [
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
+import globals from "globals";
+
+export default tseslint.config(
   {
-    ignores: ["lib/build/amodro-trace", "**/dist"],
+    ignores: ["src/build/amodro-trace", "**/dist", "**/lib", "./spec"]
   },
   eslint.configs.recommended,
+  tseslint.configs.recommended,
+
   {
     languageOptions: {
       globals: {
         ...globals.node,
-        ...globals.jasmine,
+        ...globals.jasmine
       },
 
-      ecmaVersion: 2019,
-      sourceType: "commonjs",
+      ecmaVersion: 2023,
+      sourceType: "module"
     },
 
     rules: {
@@ -28,8 +33,12 @@ export default [
         objects: "never",
         imports: "never",
         exports: "never",
-        functions: "never",
+        functions: "never"
       }],
-    },
+      "prefer-rest-params": "warn",
+      "prefer-spread": "warn",
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-require-imports": "off"
+    }
   }
-];
+);

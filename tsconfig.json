@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "rootDir": "./src",
+    "target": "ES2023",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "typeRoots": [ "node_modules/@types"],
+    "types": ["node"],
+    "sourceMap": true,
+    "outDir": "./lib",
+    
+    "strict": false
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "package.json"
+  ]
+}

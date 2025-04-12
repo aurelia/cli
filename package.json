@@ -1,6 +1,6 @@
 {
   "name": "aurelia-cli",
-  "version": "3.0.4",
+  "version": "3.1.0-beta.1",
   "description": "The command line tooling for Aurelia.",
   "keywords": [
     "aurelia",
@@ -16,9 +16,12 @@
     "aurelia": "bin/aurelia-cli.js",
     "au": "bin/aurelia-cli.js"
   },
+  "type": "commonjs",
   "scripts": {
-    "lint": "eslint lib spec",
-    "pretest": "npm run lint",
+    "build": "tsc",
+    "build:test": "tsc --noEmit",
+    "lint": "eslint src",
+    "pretest": "npm run lint && npm run build",
     "test": "jasmine",
     "coverage": "c8 jasmine",
     "test:watch": "nodemon -x 'npm test'",
@@ -82,20 +85,27 @@
     "terser": "^5.36.0",
     "timers-browserify": "^2.0.12",
     "tty-browserify": "0.0.1",
-    "typescript": "^5.6.3",
+    "typescript": "^5.8.3",
     "url": "^0.11.4",
     "util": "^0.12.5",
     "vm-browserify": "^1.1.2"
   },
   "devDependencies": {
+    "@eslint/js": "^9.24.0",
+    "@types/convert-source-map": "^2.0.3",
+    "@types/lodash": "^4.17.16",
+    "@types/map-stream": "^0.0.3",
     "@types/node": "^22.8.1",
+    "@types/vinyl-fs": "^3.0.5",
     "c8": "^10.1.2",
-    "eslint": "^9.13.0",
+    "eslint": "^9.24.0",
     "globals": "^15.11.0",
     "jasmine": "^5.4.0",
     "jasmine-spec-reporter": "^7.0.0",
     "nodemon": "^3.1.7",
     "standard-changelog": "^6.0.0",
+    "testdouble": "^3.20.2",
+    "typescript-eslint": "^8.29.0",
     "yargs": "^17.7.2"
   }
 }
