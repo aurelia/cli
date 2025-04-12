@@ -1,23 +1,26 @@
-const {spawn} = require('child_process');
-const npmWhich = require('npm-which');
+import { spawn, type ChildProcess } from 'node:child_process';
+import npmWhich from 'npm-which';
 const isWindows = process.platform === "win32";
 
-exports.BasePackageManager = class {
-  constructor(executableName) {
+export abstract class BasePackageManager {
+  private executableName: string;
+  private proc: ChildProcess | undefined;
+  
+  constructor(executableName: string) {
     this.executableName = executableName;
   }
 
-  install(packages = [], workingDirectory = process.cwd(), command = 'install') {
+  install(packages: string[] = [], workingDirectory = process.cwd(), command = 'install') {
     return this.run(command, packages, workingDirectory);
   }
 
-  run(command, args = [], workingDirectory = process.cwd()) {
+  run(command: string, args: string[] = [], workingDirectory = process.cwd()): Promise<void> {
     let executable = this.getExecutablePath(workingDirectory);
     if (isWindows) {
       executable = JSON.stringify(executable); // Add quotes around path
     }
 
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       this.proc = spawn(
         executable,
         [command, ...args],
@@ -28,17 +31,15 @@ exports.BasePackageManager = class {
     });
   }
 
-  getExecutablePath(directory) {
+  getExecutablePath(directory: string): string | null {
     try {
-      return npmWhich(directory).sync(this.executableName);
+      return npmWhich(directory).sync(this.executableName) as string;
     } catch {
       return null;
     }
   }
 
-  isAvailable(directory) {
+  isAvailable(directory: string): boolean {
     return !!this.getExecutablePath(directory);
   }
 };
-
-exports.default = exports.BasePackageManager;

@@ -1,15 +1,15 @@
 // if moduleId is above surface (default src/), the '../../' confuses hell out of
 // requirejs as it tried to understand it as a relative module id.
 // replace '..' with '__dot_dot__' to enforce absolute module id.
-const toDotDot = (moduleId) => moduleId.split('/').map(p => p === '..' ? '__dot_dot__' : p).join('/');
-const fromDotDot = (moduleId) => moduleId.split('/').map(p => p === '__dot_dot__' ? '..' : p).join('/');
+export const toDotDot = (moduleId: string) => moduleId.split('/').map(p => p === '..' ? '__dot_dot__' : p).join('/');
+export const fromDotDot = (moduleId: string) => moduleId.split('/').map(p => p === '__dot_dot__' ? '..' : p).join('/');
 
-const getAliases = (moduleId, paths) => {
-  const aliases = [];
+export const getAliases = (moduleId: string, paths: AureliaJson.IPaths) => {
+  const aliases: {fromId: string, toId: string}[] = [];
   const _moduleId = fromDotDot(moduleId);
   for (let i = 0, keys = Object.keys(paths); i < keys.length; i++) {
-    let key = keys[i];
-    let target = paths[key];
+    const key = keys[i];
+    const target = paths[key];
     if (key === 'root') continue;
     if (key === target) continue;
 
@@ -23,5 +23,3 @@ const getAliases = (moduleId, paths) => {
 
   return aliases;
 };
-
-module.exports = { toDotDot, fromDotDot, getAliases };

@@ -1,6 +1,7 @@
-const path = require('path');
-const Utils = require('./utils');
-const logger = require('aurelia-logging').getLogger('StubNodejs');
+import * as path from 'node:path';
+import * as Utils from './utils';
+import { getLogger } from 'aurelia-logging';
+const logger = getLogger('StubNodejs');
 
 // stub core Node.js modules based on https://github.com/webpack/node-libs-browser/blob/master/index.js
 // no need stub for following modules, they got same name on npm package
@@ -29,12 +30,13 @@ const UNAVAIABLE_CORE_MODULES = [
 
 const EMPTY_MODULE = 'define(function(){return {};});';
 
-function resolvePath(packageName, root) {
-  return path.relative(root, Utils.resolvePackagePath(packageName)).replace(/\\/g, '/');
+function resolvePath(packageName: string, root: string) {
+  const rel = Utils.resolvePackagePath(packageName);
+  return path.relative(root, rel).replace(/\\/g, '/');
 }
 
 // note all paths here assumes local node_modules folder
-module.exports = function(moduleId, root) {
+const stubModule = function(moduleId: string, root: string) {
   // with subfix -browserify
   if (['crypto', 'https', 'os', 'path', 'stream', 'timers', 'tty', 'vm'].indexOf(moduleId) !== -1) {
     return {name: moduleId, path: resolvePath(`${moduleId}-browserify`, root)};
@@ -85,4 +87,6 @@ module.exports = function(moduleId, root) {
     };
   }
 };
+
+export = stubModule;
 

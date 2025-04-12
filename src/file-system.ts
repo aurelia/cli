@@ -1,19 +1,17 @@
-const fs = require('fs');
-const nodePath = require('path');
+import { access, constants } from 'node:fs/promises'
+import * as fs from 'node:fs';
+import * as nodePath from 'node:path';
 
-exports.fs = fs;
-
-/**
- * @deprecated
- *  fs.exists() is deprecated.
- *  See https://nodejs.org/api/fs.html#fs_fs_exists_path_callback.
- *  Functions using it can also not be properly tested.
- */
-exports.exists = function(path) {
-  return new Promise(resolve => fs.exists(path, resolve));
+export async function exists(path: string) {
+  try {
+    await access(path, constants.F_OK);
+    return true;
+  } catch {
+    return false;
+  }
 };
 
-exports.stat = function(path) {
+export function stat(path: string) {
   return new Promise((resolve, reject) => {
     fs.stat(path, (error, stats) => {
       if (error) reject(error);
@@ -22,12 +20,12 @@ exports.stat = function(path) {
   });
 };
 
-exports.existsSync = function(path) {
+export function existsSync(path: string) {
   return fs.existsSync(path);
 };
 
-exports.mkdir = function(path) {
-  return new Promise((resolve, reject) => {
+export function mkdir(path: string) {
+  return new Promise<void>((resolve, reject) => {
     fs.mkdir(path, error => {
       if (error) reject(error);
       else resolve();
@@ -35,8 +33,8 @@ exports.mkdir = function(path) {
   });
 };
 
-exports.mkdirp = function(path) {
-  return new Promise((resolve, reject) => {
+export function mkdirp(path: string) {
+  return new Promise<void>((resolve, reject) => {
     fs.mkdir(path, {recursive: true}, error => {
       if (error) reject(error);
       else resolve();
@@ -44,8 +42,8 @@ exports.mkdirp = function(path) {
   });
 };
 
-exports.readdir = function(path) {
-  return new Promise((resolve, reject) => {
+export function readdir(path: string) {
+  return new Promise<string[]>((resolve, reject) => {
     fs.readdir(path, (error, files) => {
       if (error) reject(error);
       else resolve(files);
@@ -53,20 +51,20 @@ exports.readdir = function(path) {
   });
 };
 
-exports.appendFile = function(path, text, cb) {
+export function appendFile(path: string, text: string, cb: fs.NoParamCallback) {
   fs.appendFile(path, text, cb);
 };
 
-exports.readdirSync = function(path) {
+export function readdirSync(path: string) {
   return fs.readdirSync(path);
 };
 
-exports.readFile = function(path, encoding) {
+export function readFile(path: string, encoding?: BufferEncoding) {
   if (encoding !== null) {
     encoding = encoding || 'utf8';
   }
 
-  return new Promise((resolve, reject) => {
+  return new Promise<string>((resolve, reject) => {
     fs.readFile(path, encoding, (error, data) => {
       if (error) reject(error);
       else resolve(data);
@@ -74,9 +72,7 @@ exports.readFile = function(path, encoding) {
   });
 };
 
-exports.readFileSync = fs.readFileSync;
-
-exports.readFileSync = function(path, encoding) {
+export function readFileSync(path: string, encoding?: BufferEncoding) {
   if (encoding !== null) {
     encoding = encoding || 'utf8';
   }
@@ -84,23 +80,23 @@ exports.readFileSync = function(path, encoding) {
   return fs.readFileSync(path, encoding);
 };
 
-exports.copySync = function(sourceFile, targetFile) {
+export function copySync(sourceFile: string, targetFile: string) {
   fs.writeFileSync(targetFile, fs.readFileSync(sourceFile));
 };
 
-exports.resolve = function(path) {
+export function resolve(path: string) {
   return nodePath.resolve(path);
 };
 
-exports.join = function() {
+export function join() {
   return nodePath.join.apply(this, Array.prototype.slice.call(arguments));
 };
 
-exports.statSync = function(path) {
+export function statSync(path: string) {
   return fs.statSync(path);
 };
 
-exports.isFile = function(path) {
+export function isFile(path: string) {
   try {
     return fs.statSync(path).isFile();
   } catch {
@@ -109,7 +105,7 @@ exports.isFile = function(path) {
   }
 };
 
-exports.isDirectory = function(path) {
+export function isDirectory(path: string) {
   try {
     return fs.statSync(path).isDirectory();
   } catch {
@@ -118,8 +114,8 @@ exports.isDirectory = function(path) {
   }
 };
 
-exports.writeFile = function(path, content, encoding) {
-  return new Promise((resolve, reject) => {
+export function writeFile(path: string, content: string | Buffer, encoding?: BufferEncoding) {
+  return new Promise<void>((resolve, reject) => {
     fs.mkdir(nodePath.dirname(path), {recursive: true}, err => {
       if (err) reject(err);
       else {

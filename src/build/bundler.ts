@@ -1,16 +1,38 @@
-const Bundle = require('./bundle').Bundle;
-const BundledSource = require('./bundled-source').BundledSource;
-const CLIOptions = require('../cli-options').CLIOptions;
-const LoaderPlugin = require('./loader-plugin').LoaderPlugin;
-const Configuration = require('../configuration').Configuration;
-const path = require('path');
-const fs = require('../file-system');
-const Utils = require('./utils');
-const logger = require('aurelia-logging').getLogger('Bundler');
-const stubModule = require('./stub-module');
+import { Bundle } from './bundle';
+import { BundledSource } from './bundled-source';
+import { CLIOptions } from "../cli-options";
+import { LoaderPlugin } from './loader-plugin';
+import { Configuration } from '../configuration';
+import * as path from 'node:path';
+import * as fs from '../file-system';
+import * as Utils from './utils';
+import { getLogger } from 'aurelia-logging';
+import stubModule from './stub-module';
 
-exports.Bundler = class {
-  constructor(project, packageAnalyzer, packageInstaller) {
+import { type Project } from '../project';
+import { type PackageAnalyzer } from './package-analyzer';
+import { type PackageInstaller } from './package-installer';
+import { type SourceInclusion } from './source-inclusion';
+import { type DependencyDescription } from './dependency-description';
+
+const logger = getLogger('Bundler');
+
+export class Bundler{
+  public project: Project;
+  private packageAnalyzer: PackageAnalyzer;
+  private packageInstaller: PackageInstaller;
+  public readonly bundles: Bundle[];
+  private readonly itemLookup: {[key: string]: BundledSource};
+  private readonly items: BundledSource[];
+  private readonly environment: string;
+  private readonly autoInstall: boolean;
+  private triedAutoInstalls: Set<string>;
+  public buildOptions: Configuration;
+  public loaderOptions: Omit<AureliaJson.ILoader, "plugins"> & { plugins: LoaderPlugin[] };
+  public loaderConfig: AureliaJson.ILoaderConfig;
+  public configTargetBundle: Bundle;
+
+  constructor(project: Project, packageAnalyzer: PackageAnalyzer, packageInstaller: PackageInstaller) {
     this.project = project;
     this.packageAnalyzer = packageAnalyzer;
     this.packageInstaller = packageInstaller;
@@ -21,20 +43,19 @@ exports.Bundler = class {
     // --auto-install is checked here instead of in app's tasks/run.js
     // this enables all existing apps to use this feature.
     this.autoInstall = CLIOptions.hasFlag('auto-install');
-    this.triedAutoInstalls = new Set();
+    this.triedAutoInstalls = new Set<string>();
 
-    let defaultBuildOptions = {
+    const defaultBuildOptions = {
       minify: 'stage & prod',
       sourcemaps: 'dev & stage',
       rev: false
     };
 
     this.buildOptions = new Configuration(project.build.options, defaultBuildOptions);
-    this.loaderOptions = project.build.loader;
-
+    
     this.loaderConfig = {
       baseUrl: project.paths.root,
-      paths: ensurePathsRelativelyFromRoot(project.paths || {}),
+      paths: ensurePathsRelativelyFromRoot(project.paths),
       packages: [],
       stubModules: [],
       shim: {}
@@ -42,8 +63,8 @@ exports.Bundler = class {
 
     Object.assign(this.loaderConfig, this.project.build.loader.config);
 
-    this.loaderOptions.plugins = (this.loaderOptions.plugins || []).map(x => {
-      let plugin = new LoaderPlugin(this.loaderOptions.type, x);
+    const plugins = (project.build.loader.plugins || []).map(x => {
+      const plugin = new LoaderPlugin(project.build.loader.type, x);
 
       if (plugin.stub && this.loaderConfig.stubModules.indexOf(plugin.name) === -1) {
         this.loaderConfig.stubModules.push(plugin.name);
@@ -51,38 +72,39 @@ exports.Bundler = class {
 
       return plugin;
     });
+    this.loaderOptions = {...project.build.loader, plugins};
   }
 
-  static create(project, packageAnalyzer, packageInstaller) {
-    let bundler = new exports.Bundler(project, packageAnalyzer, packageInstaller);
+  static async create(project: Project, packageAnalyzer: PackageAnalyzer, packageInstaller: PackageInstaller) {
+    const bundler = new Bundler(project, packageAnalyzer, packageInstaller);
 
-    return Promise.all(
+    await Promise.all(
       project.build.bundles.map(x => Bundle.create(bundler, x).then(bundle => {
         bundler.addBundle(bundle);
       }))
-    ).then(() => {
-      //Order the bundles so that the bundle containing the config is processed last.
-      if (bundler.bundles.length) {
-        let configTargetBundleIndex = bundler.bundles.findIndex(x => x.config.name === bundler.loaderOptions.configTarget);
-        bundler.bundles.splice(bundler.bundles.length, 0, bundler.bundles.splice(configTargetBundleIndex, 1)[0]);
-        bundler.configTargetBundle = bundler.bundles[bundler.bundles.length - 1];
-      }
-    }).then(() => bundler);
+    );
+    //Order the bundles so that the bundle containing the config is processed last.
+    if (bundler.bundles.length) {
+      const configTargetBundleIndex = bundler.bundles.findIndex(x_1 => x_1.config.name === bundler.loaderOptions.configTarget);
+      bundler.bundles.splice(bundler.bundles.length, 0, bundler.bundles.splice(configTargetBundleIndex, 1)[0]);
+      bundler.configTargetBundle = bundler.bundles[bundler.bundles.length - 1];
+    }
+    return bundler;
   }
 
-  itemIncludedInBuild(item) {
+  itemIncludedInBuild(item: string | { env?: string}) {
     if (typeof item === 'string' || !item.env) {
       return true;
     }
 
-    let value = item.env;
-    let parts = value.split('&').map(x => x.trim().toLowerCase());
+    const value = item.env;
+    const parts = value.split('&').map(x => x.trim().toLowerCase());
 
     return parts.indexOf(this.environment) !== -1;
   }
 
-  addFile(file, inclusion) {
-    let key =  normalizeKey(file.path);
+  addFile(file: IFile, inclusion?: SourceInclusion) {
+    const key =  normalizeKey(file.path);
     let found = this.itemLookup[key];
 
     if (!found) {
@@ -100,8 +122,8 @@ exports.Bundler = class {
     return found;
   }
 
-  updateFile(file, inclusion) {
-    let found = this.itemLookup[normalizeKey(file.path)];
+  updateFile(file: IFile, inclusion?: SourceInclusion) {
+    const found = this.itemLookup[normalizeKey(file.path)];
 
     if (found) {
       found.update(file);
@@ -110,29 +132,30 @@ exports.Bundler = class {
     }
   }
 
-  addBundle(bundle) {
+  addBundle(bundle: Bundle) {
     this.bundles.push(bundle);
   }
 
-  configureDependency(dependency) {
-    return analyzeDependency(this.packageAnalyzer, dependency)
-      .catch(e => {
-        let nodeId = dependency.name || dependency;
+  async configureDependency(dependency: ILoaderConfig | string): Promise<DependencyDescription> {
+    try {
+      return await analyzeDependency(this.packageAnalyzer, dependency);
+    } catch (e) {
+      const nodeId = typeof dependency === 'string' ? dependency : dependency.name;
 
-        if (this.autoInstall && !this.triedAutoInstalls.has(nodeId)) {
-          this.triedAutoInstalls.add(nodeId);
-          return this.packageInstaller.install([nodeId])
-            // try again after install
-            .then(() => this.configureDependency(nodeId));
-        }
+      if (this.autoInstall && !this.triedAutoInstalls.has(nodeId)) {
+        this.triedAutoInstalls.add(nodeId);
+        await this.packageInstaller.install([nodeId])
+          // try again after install
+        return await this.configureDependency(nodeId);
+      }
 
-        logger.error(`Unable to analyze ${nodeId}`);
-        logger.info(e);
-        throw e;
-      });
+      logger.error(`Unable to analyze ${nodeId}`);
+      logger.info(e);
+      throw e;
+    }
   }
 
-  build(opts) {
+  build(opts?) {
     let onRequiringModule, onNotBundled;
     if (opts && typeof opts.onRequiringModule === 'function') {
       onRequiringModule = opts.onRequiringModule;
@@ -141,13 +164,13 @@ exports.Bundler = class {
       onNotBundled = opts.onNotBundled;
     }
 
-    const doTranform = (initSet) => {
-      let deps = new Set(initSet);
+    const doTranform = (initSet?: Iterable<string>) => {
+      const deps = new Set<string>(initSet);
 
       this.items.forEach(item => {
         // Transformed items will be ignored
         // by flag item.requiresTransform.
-        let _deps = item.transform();
+        const _deps = item.transform();
         if (_deps) _deps.forEach(d => deps.add(d));
       });
 
@@ -161,7 +184,7 @@ exports.Bundler = class {
 
             if (id.endsWith('/index')) {
               // if id is 'resources/index', shortId is 'resources'.
-              let shortId = id.slice(0, -6);
+              const shortId = id.slice(0, -6);
               if (deps.delete(shortId)) {
                 // ok, someone try to use short name
                 bundle.addAlias(shortId, id);
@@ -172,7 +195,7 @@ exports.Bundler = class {
       }
 
       if (deps.size) {
-        let _leftOver = new Set();
+        const _leftOver = new Set<string>();
 
         return Utils.runSequentially(
           Array.from(deps).sort(),
@@ -194,7 +217,7 @@ exports.Bundler = class {
                 if (typeof result === 'string') {
                   let fakeFilePath = path.resolve(this.project.paths.root, d);
 
-                  let ext = path.extname(d).toLowerCase();
+                  const ext = path.extname(d).toLowerCase();
                   if (!ext || Utils.knownExtensions.indexOf(ext) === -1) {
                     fakeFilePath += '.js';
                   }
@@ -239,20 +262,18 @@ exports.Bundler = class {
       });
   }
 
-  write() {
-    return Promise.all(this.bundles.map(bundle => bundle.write(this.project.build.targets[0])))
-      .then(async() => {
-        for (let i = this.bundles.length; i--; ) {
-          await this.bundles[i].writeBundlePathsToIndex(this.project.build.targets[0]);
-        }
-      });
+  async write() {
+    await Promise.all(this.bundles.map(bundle => bundle.write(this.project.build.targets[0])));
+    for (let i = this.bundles.length; i--;) {
+      await this.bundles[i].writeBundlePathsToIndex(this.project.build.targets[0]);
+    }
   }
 
   getDependencyInclusions() {
     return this.bundles.reduce((a, b) => a.concat(b.getDependencyInclusions()), []);
   }
 
-  addMissingDep(id) {
+  addMissingDep(id: string) {
     const localFilePath = path.resolve(this.project.paths.root, id);
 
     // load additional local file missed by gulp tasks,
@@ -269,7 +290,7 @@ exports.Bundler = class {
     return this.addNpmResource(id);
   }
 
-  addNpmResource(id) {
+  async addNpmResource(id: string) {
     // match scoped npm module and normal npm module
     const match = id.match(/^((?:@[^/]+\/[^/]+)|(?:[^@][^/]*))(\/.+)?$/);
 
@@ -291,7 +312,7 @@ exports.Bundler = class {
       return depInclusion.traceMain();
     }
 
-    let stub = stubModule(nodeId, this.project.paths.root);
+    const stub = await stubModule(nodeId, this.project.paths.root);
     if (typeof stub === 'string') {
       this.addFile({
         path: path.resolve(this.project.paths.root, nodeId + '.js'),
@@ -329,7 +350,7 @@ exports.Bundler = class {
   }
 };
 
-function analyzeDependency(packageAnalyzer, dependency) {
+function analyzeDependency(packageAnalyzer: PackageAnalyzer, dependency: ILoaderConfig | string) {
   if (typeof dependency === 'string') {
     return packageAnalyzer.analyze(dependency);
   }
@@ -350,13 +371,13 @@ function normalizeKey(p) {
   return path.normalize(p);
 }
 
-function ensurePathsRelativelyFromRoot(p) {
-  let keys = Object.keys(p);
-  let original = JSON.stringify(p, null, 2);
+function ensurePathsRelativelyFromRoot(p: AureliaJson.IPaths) {
+  const keys = Object.keys(p);
+  const original = JSON.stringify(p, null, 2);
   let warn = false;
 
   for (let i = 0; i < keys.length; i++) {
-    let key = keys[i];
+    const key = keys[i];
     if (key !== 'root' && p[key].indexOf(p.root + '/') === 0) {
       warn = true;
       p[key] = p[key].slice(p.root.length + 1);

@@ -1,10 +1,17 @@
-const path = require('path');
-const fs = require('./file-system');
-const Utils = require('./build/utils');
+import * as path from 'node:path';
+import * as fs from './file-system';
+import * as Utils from './build/utils';
 
 // Legacy code, kept only for supporting `au generate`
-exports.ProjectItem = class {
-  constructor(name, isDirectory) {
+export class ProjectItem {
+  public parent: ProjectItem | undefined;
+  public text: string | undefined;
+
+  private readonly name: string;
+  private readonly isDirectory: boolean;
+  private _children: ProjectItem[] | undefined;
+
+  constructor(name: string, isDirectory: boolean) {
     this.name = name;
     this.isDirectory = !!isDirectory;
   }
@@ -23,7 +30,7 @@ exports.ProjectItem = class {
     }
 
     for (let i = 0; i < arguments.length; ++i) {
-      let child = arguments[i];
+      const child = arguments[i];
 
       if (this.children.indexOf(child) !== -1) {
         continue;
@@ -36,12 +43,12 @@ exports.ProjectItem = class {
     return this;
   }
 
-  calculateRelativePath(fromLocation) {
+  calculateRelativePath(fromLocation: ProjectItem) {
     if (this === fromLocation) {
       return '';
     }
 
-    let parentRelativePath = (this.parent && this.parent !== fromLocation)
+    const parentRelativePath = (this.parent && this.parent !== fromLocation)
       ? this.parent.calculateRelativePath(fromLocation)
       : '';
 
@@ -49,7 +56,7 @@ exports.ProjectItem = class {
   }
 
   create(relativeTo) {
-    let fullPath = relativeTo ? this.calculateRelativePath(relativeTo) : this.name;
+    const fullPath = relativeTo ? this.calculateRelativePath(relativeTo) : this.name;
 
     // Skip empty folder
     if (this.isDirectory && this.children.length) {
@@ -67,7 +74,7 @@ exports.ProjectItem = class {
   }
 
 
-  setText(text) {
+  setText(text: string) {
     this.text = text;
     return this;
   }
@@ -76,11 +83,11 @@ exports.ProjectItem = class {
     return this.text;
   }
 
-  static text(name, text) {
-    return new exports.ProjectItem(name, false).setText(text);
+  static text(name: string, text: string) {
+    return new ProjectItem(name, false).setText(text);
   }
 
-  static directory(p) {
-    return new exports.ProjectItem(p, true);
+  static directory(p: string) {
+    return new ProjectItem(p, true);
   }
 };

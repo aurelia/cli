@@ -1,0 +1,1 @@
+{"version":3,"file":"configure-bluebird-no-long-stacktraces.js","sourceRoot":"","sources":["../../../src/resources/scripts/configure-bluebird-no-long-stacktraces.ts"],"names":[],"mappings":"AAAA,8BAA8B;AAC9B,8DAA8D;AAC7D,OAAe,CAAC,MAAM,CAAC;IACtB,eAAe,EAAE,KAAK;IACtB,QAAQ,EAAE;QACR,gBAAgB,EAAE,KAAK;KACxB;CACF,CAAC,CAAC"}

@@ -1,20 +1,34 @@
-const path = require('path');
-const fs = require('./file-system');
-const _ = require('lodash');
-const ProjectItem = require('./project-item').ProjectItem;
+import * as path from 'node:path';
+import * as fs from './file-system';
+import * as _ from 'lodash';
+import { ProjectItem } from './project-item';
 
-exports.Project = class {
-  static establish(dir) {
+export class Project {
+  private directory: string;
+  private package: object; // package.json deserialized.
+  private taskDirectory: string;
+  private generatorDirectory: string;
+  private model: AureliaJson.IProject;
+  private aureliaJSONPath: string;
+  private locations: any[];
+  private root: any;
+  private generators: ProjectItem;
+  private tasks: ProjectItem;
+
+  public packageManager: string | undefined;
+
+  public paths: AureliaJson.IPaths;
+  public build: AureliaJson.IBuild;
+
+  static async establish(dir: string) {
     process.chdir(dir);
 
-    return fs.readFile(path.join(dir, 'aurelia_project', 'aurelia.json')).then(model => {
-      return fs.readFile(path.join(dir, 'package.json')).then(pack => {
-        return new exports.Project(dir, JSON.parse(model.toString()), JSON.parse(pack.toString()));
-      });
-    });
+    const model = await fs.readFile(path.join(dir, 'aurelia_project', 'aurelia.json'));
+    const pack = await fs.readFile(path.join(dir, 'package.json'));
+    return new Project(dir, JSON.parse(model.toString()) as AureliaJson.IProject, JSON.parse(pack.toString()));
   }
 
-  constructor(directory, model, pack) {
+  constructor(directory: string, model: AureliaJson.IProject, pack: object) {
     this.directory = directory;
     this.model = model;
     this.package = pack;
@@ -42,16 +56,16 @@ exports.Project = class {
     return Promise.all(this.locations.map(x => x.create(this.directory)));
   }
 
-  makeFileName(name) {
+  makeFileName(name: string) {
     return _.kebabCase(name);
   }
 
-  makeClassName(name) {
+  makeClassName(name: string) {
     const camel = _.camelCase(name);
     return camel.slice(0, 1).toUpperCase() + camel.slice(1);
   }
 
-  makeFunctionName(name) {
+  makeFunctionName(name: string) {
     return _.camelCase(name);
   }
 
@@ -68,7 +82,7 @@ exports.Project = class {
     }
   }
 
-  getExport(m, name) {
+  getExport(m: { default: string}, name?: string) {
     return name ? m[name] : m.default;
   }
 
@@ -80,30 +94,43 @@ exports.Project = class {
     return getMetadata(this.taskDirectory);
   }
 
-  resolveGenerator(name) {
-    let potential = path.join(this.generatorDirectory, `${name}${this.model.transpiler.fileExtension}`);
-    return fs.stat(potential).then(() => potential).catch(() => null);
+  async resolveGenerator(name: string) {
+    const potential = path.join(this.generatorDirectory, `${name}${this.model.transpiler.fileExtension}`);
+    try {
+      await fs.stat(potential);
+      return potential;
+    } catch {
+      return null;
+    }
   }
 
-  resolveTask(name) {
-    let potential = path.join(this.taskDirectory, `${name}${this.model.transpiler.fileExtension}`);
-    return fs.stat(potential).then(() => potential).catch(() => null);
+  async resolveTask(name: string) {
+    const potential = path.join(this.taskDirectory, `${name}${this.model.transpiler.fileExtension}`);
+    try {
+      await fs.stat(potential);
+      return potential;
+    } catch {
+      return null;
+    }
   }
 };
 
-function getMetadata(dir) {
-  return fs.readdir(dir).then(files => {
-    return Promise.all(
-      files
-        .sort()
-        .map(file => path.join(dir, file))
-        .filter(file => path.extname(file) === '.json')
-        .map(file => fs.readFile(file).then(data => JSON.parse(data.toString())))
-    );
-  });
+async function getMetadata(dir: string) {
+  const files = await fs.readdir(dir);
+
+  const metadata = await Promise.all(files
+    .sort()
+    .map(file => path.join(dir, file))
+    .filter(file_1 => path.extname(file_1) === '.json')
+    .map(async file_2 => {
+      const data = await fs.readFile(file_2);
+      return JSON.parse(data.toString());
+    }));
+  
+  return metadata;
 }
 
-function installBabel() {
+function installBabel(): void {
   require('@babel/register')({
     babelrc: false,
     configFile: false,
@@ -116,15 +143,15 @@ function installBabel() {
   });
 }
 
-function installTypeScript() {
-  let ts = require('typescript');
+function installTypeScript(): void {
+  const ts = require('typescript');
 
-  let json = require.extensions['.json'];
+  const json = require.extensions['.json'];
   delete require.extensions['.json'];
 
   require.extensions['.ts'] = function(module, filename) {
-    let source = fs.readFileSync(filename);
-    let result = ts.transpile(source, {
+    const source = fs.readFileSync(filename);
+    const result = ts.transpile(source, {
       module: ts.ModuleKind.CommonJS,
       declaration: false,
       noImplicitAny: false,
@@ -135,7 +162,7 @@ function installTypeScript() {
       experimentalDecorators: true
     });
 
-    return module._compile(result, filename);
+    return (module as any)._compile(result, filename);
   };
 
   require.extensions['.json'] = json;

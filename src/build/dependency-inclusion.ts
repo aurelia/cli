@@ -1,13 +1,20 @@
-const path = require('path');
-const SourceInclusion = require('./source-inclusion').SourceInclusion;
-const { minimatch } = require('minimatch');
-const Utils = require('./utils');
-const logger = require('aurelia-logging').getLogger('DependencyInclusion');
+import * as path from 'node:path';
+import { SourceInclusion } from './source-inclusion';
+import { minimatch } from 'minimatch';
+import * as Utils from './utils';
+import { Bundle } from './bundle';
+import { getLogger } from 'aurelia-logging';
+import { type DependencyDescription } from './dependency-description';
+const logger = getLogger('DependencyInclusion');
 
 const knownNonJsExtensions = ['.json', '.css', '.svg', '.html'];
 
-exports.DependencyInclusion = class {
-  constructor(bundle, description) {
+export class DependencyInclusion {
+  private bundle: Bundle;
+  public description: DependencyDescription;
+  private mainTraced: boolean;
+
+  constructor(bundle: Bundle, description: DependencyDescription) {
     this.bundle = bundle;
     this.description = description;
     this.mainTraced = false;
@@ -17,9 +24,9 @@ exports.DependencyInclusion = class {
     if (this.mainTraced) return Promise.resolve();
 
     this.mainTraced = true;
-    let mainId = this.description.mainId;
-    let ext = path.extname(mainId).toLowerCase();
-    let mainIsJs = !ext || knownNonJsExtensions.indexOf(ext) === -1;
+    const mainId = this.description.mainId;
+    const ext = path.extname(mainId).toLowerCase();
+    const mainIsJs = !ext || knownNonJsExtensions.indexOf(ext) === -1;
 
     if (mainIsJs || ext === path.extname(this.description.name).toLowerCase()) {
       // only create alias when main is js file
@@ -45,8 +52,8 @@ exports.DependencyInclusion = class {
       work = work.then(() => this.traceMain());
     }
 
-    let loaderConfig = this.description.loaderConfig;
-    let resources = loaderConfig.resources;
+    const loaderConfig = this.description.loaderConfig;
+    const resources = loaderConfig.resources;
 
     if (resources) {
       resources.forEach(x => {
@@ -58,7 +65,7 @@ exports.DependencyInclusion = class {
   }
 
   traceResource(resource) {
-    let resolved = resolvedResource(resource, this.description, this._getProjectRoot());
+    const resolved = resolvedResource(resource, this.description, this._getProjectRoot());
 
     if (!resolved) {
       logger.error(`Error: could not find "${resource}" in package ${this.description.name}`);
@@ -73,7 +80,8 @@ exports.DependencyInclusion = class {
       );
     }
 
-    let covered = this.bundle.includes.find(inclusion =>
+    const covered = this.bundle.includes.find(inclusion =>
+      inclusion instanceof SourceInclusion &&
       inclusion.includedBy === this &&
       minimatch(resolved, inclusion.pattern)
     );
@@ -85,12 +93,12 @@ exports.DependencyInclusion = class {
     return this._tracePattern(resolved);
   }
 
-  _tracePattern(resource) {
-    let loaderConfig = this.description.loaderConfig;
-    let bundle = this.bundle;
-    let pattern = path.join(loaderConfig.path, resource);
-    let inclusion = new SourceInclusion(bundle, pattern, this);
-    let promise = inclusion.addAllMatchingResources();
+  _tracePattern(resource: string) {
+    const loaderConfig = this.description.loaderConfig;
+    const bundle = this.bundle;
+    const pattern = path.join(loaderConfig.path, resource);
+    const inclusion = new SourceInclusion(bundle, pattern, this);
+    const promise = inclusion.addAllMatchingResources();
     bundle.includes.push(inclusion);
     bundle.requiresBuild = true;
     return promise;
@@ -100,27 +108,27 @@ exports.DependencyInclusion = class {
   // create conventional aliases like:
   // define('package/foo/bar', ['package/dist/type/foo/bar'], function(m) {return m;});
   conventionalAliases() {
-    let ids = [];
+    const ids: string[] = [];
     this.bundle.includes.forEach(inclusion => {
-      if (inclusion.includedBy === this) {
-        ids.push.apply(ids, inclusion.getAllModuleIds());
+      if (inclusion instanceof SourceInclusion && inclusion.includedBy === this) {
+        ids.push(...inclusion.getAllModuleIds());
       }
     });
 
     if (ids.length < 2) return {};
 
-    let nameLength = this.description.name.length;
+    const nameLength = this.description.name.length;
 
-    let commonLen = commonLength(ids);
+    const commonLen = commonLength(ids);
     if (!commonLen || commonLen <= nameLength + 1 ) return {};
 
-    let aliases = {};
+    const aliases: {[key: string]: string} = {};
     ids.forEach(id => {
       // for aurelia-templating-resources/dist/commonjs/if
       // compact name is aurelia-templating-resources/if
-      let compactResource = id.slice(commonLen);
+      const compactResource = id.slice(commonLen);
       if (compactResource) {
-        let compactId = this.description.name + '/' + compactResource;
+        const compactId = this.description.name + '/' + compactResource;
         aliases[compactId] = id;
       }
     });
@@ -149,7 +157,7 @@ exports.DependencyInclusion = class {
 
 function resolvedResource(resource, description, projectRoot) {
   const base = path.resolve(projectRoot, description.loaderConfig.path);
-  let mainShift = description.loaderConfig.main.split('/');
+  const mainShift = description.loaderConfig.main.split('/');
 
   // when mainShift is [dist,commonjs]
   // try  dist/commonjs/resource first
@@ -180,14 +188,14 @@ function validResource(resource, base) {
 }
 
 function commonLength(ids) {
-  let parts = ids[0].split('/');
-  let rest = ids.slice(1);
+  const parts = ids[0].split('/');
+  const rest = ids.slice(1);
   parts.pop(); // ignore last part
 
   let common = '';
 
   for (let i = 0, len = parts.length; i < len; i++) {
-    let all = common + parts[i] + '/';
+    const all = common + parts[i] + '/';
     if (rest.every(id => id.startsWith(all))) {
       common = all;
     } else {

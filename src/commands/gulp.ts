@@ -1,30 +1,35 @@
-const UI = require('../ui').UI;
-const CLIOptions = require('../cli-options').CLIOptions;
-const Container = require('aurelia-dependency-injection').Container;
-const Project = require('../project').Project;
+import { Container } from "aurelia-dependency-injection";
+import { UI } from "../ui";
+import { CLIOptions } from "../cli-options";
+import { Project } from "../project";
 
-module.exports = class {
+export = class {
   static inject() { return [Container, UI, CLIOptions, Project]; }
 
-  constructor(container, ui, options, project) {
+  private container: Container;
+  private ui: UI;
+  private options: CLIOptions;
+  private project: Project;
+
+  constructor(container: Container, ui: UI, options: CLIOptions, project: Project) {
     this.container = container;
     this.ui = ui;
     this.options = options;
     this.project = project;
   }
 
-  execute() {
-    return new Promise((resolve, reject) => {
-      const gulp = require('gulp');
-      this.connectLogging(gulp);
+  execute(): Promise<void> {
+    const gulp = require('gulp');
+    this.connectLogging(gulp);
 
-      this.project.installTranspiler();
+    this.project.installTranspiler();
 
-      makeInjectable(gulp, 'series', this.container);
-      makeInjectable(gulp, 'parallel', this.container);
+    makeInjectable(gulp, 'series', this.container);
+    makeInjectable(gulp, 'parallel', this.container);
 
-      process.nextTick(() => {
-        let task = this.project.getExport(require(this.options.taskPath), this.options.commandName);
+    return new Promise<void>((resolve, reject) => {
+      process.nextTick(async () => {
+        const task = this.project.getExport(require(this.options.taskPath), this.options.commandName);
 
         gulp.series(task)(error => {
           if (error) reject(error);
@@ -50,16 +55,16 @@ module.exports = class {
 };
 
 function makeInjectable(gulp, name, container) {
-  let original = gulp[name];
+  const original = gulp[name];
 
   gulp[name] = function() {
-    let args = new Array(arguments.length);
+    const args = Array.from({ length: arguments.length});
 
     for (let i = 0, ii = arguments.length; i < ii; ++i) {
       let task = arguments[i];
 
       if (task.inject) {
-        let taskName = task.name;
+        const taskName = task.name;
         task = container.get(task);
         task = task.execute.bind(task);
         task.displayName = taskName;

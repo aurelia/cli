@@ -1,3 +1,4 @@
+export {}
 var lang = require('../lib/lang'),
     parse = require('../lib/parse'),
     transform = require('../lib/transform'),
@@ -86,7 +87,7 @@ function defines(options) {
           contents += '\n' + 'define("' + moduleName + '", ' +
                          (shim.deps && shim.deps.length ?
                                 makeJsArrayString(shim.deps) + ', ' : '') +
-                         exportsFn(shim.exports) +
+                         exportsFn(shim.exports, undefined) +
                          ');\n';
         }
       } else {

@@ -1,17 +1,17 @@
-const path = require('path');
+import * as path from 'node:path';
+import { Configuration } from '../configuration';
+import { Bundler } from './bundler';
 
-const Configuration = require('../configuration').Configuration;
-
-exports.createLoaderCode = function createLoaderCode(platform, bundler) {
+export function createLoaderCode(platform, bundler) {
   let loaderCode;
-  let loaderOptions = bundler.loaderOptions;
+  const loaderOptions = bundler.loaderOptions;
 
   switch (loaderOptions.type) {
   case 'require':
-    loaderCode = 'requirejs.config(' + JSON.stringify(exports.createRequireJSConfig(platform, bundler), null, 2) + ')';
+    loaderCode = 'requirejs.config(' + JSON.stringify(createRequireJSConfig(platform, bundler), null, 2) + ')';
     break;
   case 'system':
-    loaderCode = 'window.define=SystemJS.amdDefine; window.require=window.requirejs=SystemJS.amdRequire; SystemJS.config(' + JSON.stringify(exports.createSystemJSConfig(platform, bundler), null, 2) + ');';
+    loaderCode = 'window.define=SystemJS.amdDefine; window.require=window.requirejs=SystemJS.amdRequire; SystemJS.config(' + JSON.stringify(createSystemJSConfig(platform, bundler), null, 2) + ');';
     break;
   default:
     //TODO: Enhancement: Look at a designated folder for any custom configurations
@@ -21,16 +21,16 @@ exports.createLoaderCode = function createLoaderCode(platform, bundler) {
   return loaderCode;
 };
 
-exports.createLoaderConfig = function createLoaderConfig(platform, bundler) {
+export function createLoaderConfig(platform, bundler) {
   let loaderConfig;
-  let loaderOptions = bundler.loaderOptions;
+  const loaderOptions = bundler.loaderOptions;
 
   switch (loaderOptions.type) {
   case 'require':
-    loaderConfig = exports.createRequireJSConfig(platform, bundler);
+    loaderConfig = createRequireJSConfig(platform, bundler);
     break;
   case 'system':
-    loaderConfig = exports.createSystemJSConfig(platform);
+    loaderConfig = createSystemJSConfig(platform);
     break;
   default:
     //TODO: Enhancement: Look at a designated folder for any custom configurations
@@ -40,14 +40,14 @@ exports.createLoaderConfig = function createLoaderConfig(platform, bundler) {
   return loaderConfig;
 };
 
-exports.createRequireJSConfig = function createRequireJSConfig(platform, bundler) {
-  let loaderOptions = bundler.loaderOptions;
-  let loaderConfig = bundler.loaderConfig;
-  let bundles = bundler.bundles;
-  let configName = loaderOptions.configTarget;
-  let bundleMetadata = {};
-  let includeBundles = shouldIncludeBundleMetadata(bundles, loaderOptions);
-  let config = Object.assign({}, loaderConfig);
+export function createRequireJSConfig(platform, bundler) {
+  const loaderOptions = bundler.loaderOptions;
+  const loaderConfig = bundler.loaderConfig;
+  const bundles = bundler.bundles;
+  const configName = loaderOptions.configTarget;
+  const bundleMetadata = {};
+  const includeBundles = shouldIncludeBundleMetadata(bundles, loaderOptions);
+  const config = Object.assign({}, loaderConfig);
   let location = platform.baseUrl || platform.output;
 
   if (platform.useAbsolutePath) {
@@ -57,9 +57,9 @@ exports.createRequireJSConfig = function createRequireJSConfig(platform, bundler
   }
 
   for (let i = 0; i < bundles.length; ++i) {
-    let currentBundle = bundles[i];
-    let currentName = currentBundle.config.name;
-    let buildOptions = new Configuration(currentBundle.config.options, bundler.buildOptions.getAllOptions());
+    const currentBundle = bundles[i];
+    const currentName = currentBundle.config.name;
+    const buildOptions = new Configuration(currentBundle.config.options, bundler.buildOptions.getAllOptions());
     if (currentName === configName) { //skip over the vendor bundle
       continue;
     }
@@ -78,7 +78,7 @@ exports.createRequireJSConfig = function createRequireJSConfig(platform, bundler
   return config;
 };
 
-exports.createSystemJSConfig = function createSystemJSConfig(platform, bundler) {
+export function createSystemJSConfig(platform, bundler?: Bundler) {
   const loaderOptions = bundler.loaderOptions;
   const bundles = bundler.bundles;
   const configBundleName = loaderOptions.configTarget;
@@ -94,7 +94,7 @@ exports.createSystemJSConfig = function createSystemJSConfig(platform, bundler) 
 };
 
 function shouldIncludeBundleMetadata(bundles, loaderOptions) {
-  let setting = loaderOptions.includeBundleMetadataInConfig;
+  const setting = loaderOptions.includeBundleMetadataInConfig;
 
   if (typeof setting === 'string') {
     switch (setting.toLowerCase()) {

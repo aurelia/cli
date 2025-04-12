@@ -1,14 +1,29 @@
-const os = require('os');
-const c = require('ansi-colors');
-const {wordWrap} = require('enquirer/lib/utils');
+import * as os from 'node:os';
+import * as c from 'ansi-colors';
+import { wordWrap } from 'enquirer/lib/utils.js';
 
-exports.buildFromMetadata = function(metadata, width) {
+export interface ITaskMetadata {
+  name: string,
+  description: string,
+  parameters?: {
+    optional: boolean;
+    name: string;
+    description: string;
+  }[];
+  flags?: {
+    name: string;
+    type: string;
+    description: string;
+  }[]
+}
+
+export function buildFromMetadata(metadata: ITaskMetadata[], width: number) {
   let text = '';
   metadata.forEach(json => text += transformCommandToStyledText(json, width));
   return text;
 };
 
-function transformCommandToStyledText(json, width) {
+function transformCommandToStyledText(json: ITaskMetadata, width: number): string {
   const indent = ' '.repeat(4);
 
   let text = c.magenta.bold(json.name);
