@@ -1,9 +1,10 @@
-const transform = require('@babel/core').transform;
+const transformSync = require('@babel/core').transformSync;
+const amdPlugin = require('@babel/plugin-transform-modules-amd');
 
 // use babel to translate native es module into AMD module
 export = function es(fileName: string, fileContents: string) {
-  return transform(fileContents, {
+  return transformSync(fileContents, {
     babelrc: false,
-    plugins: [['@babel/plugin-transform-modules-amd', {loose: true}]]
+    plugins: [[amdPlugin, {loose: true}]]
   }).code;
 };
