@@ -60,7 +60,7 @@
     "enquirer": "^2.4.1",
     "events": "^3.3.0",
     "fs-browser-stub": "^1.0.1",
-    "gulp": ">=4.0.2",
+    "gulp": "^4.0.2",
     "htmlparser2": "^9.1.0",
     "https-browserify": "^1.0.0",
     "lodash": "^4.17.21",
