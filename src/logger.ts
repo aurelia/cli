@@ -29,7 +29,7 @@ export class Logger {
     this.log(logger, c.bgRed('ERROR'), message, rest);
   }
 
-  log(logger: ILogger, level: string, message: string, ...rest: any[]) {
+  log(logger: ILogger, level: string, message: string, rest: any[]) {
     let msg = `${level} [${logger.id}] ${message}`;
 
     if (rest.length > 0) {
