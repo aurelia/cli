@@ -114,12 +114,6 @@ interface ILoaderConfig {
   wrapShim?: boolean;
 }
 
-// interface IDependencyDescription {
-//   mainId: string;
-//   name: string;
-//   loaderConfig: ILoaderConfig
-// }
-
 interface IFile {
   contents: string;
   path?: string;

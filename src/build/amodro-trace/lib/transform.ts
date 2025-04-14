@@ -6,8 +6,8 @@
 // };
 
 import * as meriyah from 'meriyah';
-import lang from './lang';
-import parse = require('./parse');
+import { lang } from './lang';
+import { parse } from './parse';
 
 /**
  * @license Copyright (c) 2012-2015, The Dojo Foundation All Rights Reserved.
@@ -18,8 +18,7 @@ import parse = require('./parse');
 /*global define */
 
 'use strict';
-var transform,
-    jsExtRegExp = /\.js$/g,
+var jsExtRegExp = /\.js$/g,
     baseIndentRegExp = /^([ \t]+)/,
     indentRegExp = /\{[\r\n]+([ \t]+)/,
     keyRegExp = /^[_A-Za-z]([A-Za-z\d_]*)$/,
@@ -33,8 +32,8 @@ function applyIndent(str, indent, lineReturn) {
     return str.replace(regExp, '$&' + indent);
 }
 
-transform = {
-    toTransport: function (namespace, moduleName, path, contents, onFound, options) {
+export class transform {
+    static toTransport(namespace, moduleName, path, contents, onFound, options) {
         options = options || {};
 
         var astRoot, contentLines, modLine,
@@ -305,7 +304,7 @@ transform = {
         contents = contentLines.join('\n');
 
         return applySourceUrl(contents);
-    },
+    }
 
     /**
      * Modify the contents of a require.config/requirejs.config call. This
@@ -318,7 +317,7 @@ transform = {
      * as the config.
      * @return {String} the fileContents with the config changes applied.
      */
-    modifyConfig: function (fileContents, onConfig) {
+    static modifyConfig(fileContents, onConfig) {
         var details =(parse as any).findConfig(fileContents),
             config = details.config;
 
@@ -336,9 +335,9 @@ transform = {
         }
 
         return fileContents;
-    },
+    }
 
-    serializeConfig: function (config, fileContents, start, end, options) {
+    static serializeConfig(config, fileContents, start, end, options) {
         //Calculate base level of indent
         var indent, match, configString, outDentRegExp,
             baseIndent = '',
@@ -382,7 +381,7 @@ transform = {
         configString = applyIndent(configString, baseIndent, lineReturn);
 
         return startString + configString + fileContents.substring(end);
-    },
+    }
 
     /**
      * Tries converting a JS object to a string. This will likely suck, and
@@ -398,7 +397,7 @@ transform = {
      * @param  {String} totalIndent the total indent to print for this level
      * @return {String}            a string representation of the object.
      */
-    objectToString: function (obj, options, totalIndent) {
+    static objectToString(obj, options, totalIndent?) {
         var startBrace, endBrace, nextIndent,
             first = true,
             value: string | number | boolean = '',
@@ -463,5 +462,3 @@ transform = {
         return value;
     }
 };
-
-export = transform;

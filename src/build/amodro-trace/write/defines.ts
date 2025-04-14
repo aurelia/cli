@@ -1,8 +1,8 @@
-export {}
-var lang = require('../lib/lang'),
-    parse = require('../lib/parse'),
-    transform = require('../lib/transform'),
-    falseProp = lang.falseProp,
+import { lang } from '../lib/lang';
+import { parse } from '../lib/parse';
+import { transform } from '../lib/transform';
+
+var falseProp = lang.falseProp,
     getOwn = lang.getOwn,
     makeJsArrayString = lang.makeJsArrayString;
 
@@ -21,7 +21,7 @@ var lang = require('../lib/lang'),
  * @return {Function} A function that can be used for multiple content transform
  * calls.
  */
-function defines(options) {
+export function defines(options) {
   options = options || {};
 
   return function(context: IBundleSourceContext, moduleName: string, filePath: string, _contents: string) {

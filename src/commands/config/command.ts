@@ -1,12 +1,12 @@
 import * as os from 'node:os';
 
-import Configuration from './configuration';
-import ConfigurationUtilities from './util';
+import { Configuration } from './configuration';
+import { ConfigurationUtilities } from './util';
 import { Container } from 'aurelia-dependency-injection';
 import { UI } from '../../ui';
 import { CLIOptions } from '../../cli-options';
 
-export = class {
+export default class {
   static inject() { return [Container, UI, CLIOptions]; }
 
   private container: Container;

@@ -2,7 +2,7 @@ import * as os from 'node:os';
 import { copySync, readFileSync, writeFile } from '../../file-system';
 import { CLIOptions } from '../../cli-options';
 
-class Configuration {
+export class Configuration {
   private options: CLIOptions;
   private aureliaJsonPath: string;
   private project: AureliaJson.IProject;
@@ -149,5 +149,3 @@ class Configuration {
       .then(() => { return bak; });
   }
 }
-
-export = Configuration;

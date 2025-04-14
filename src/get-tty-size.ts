@@ -2,7 +2,7 @@ import * as tty from 'node:tty';
 
 let size: { height: number; width: number };
 
-export = function() {
+export function getTtySize() {
   // Only run it once.
   if (size) return size;
 

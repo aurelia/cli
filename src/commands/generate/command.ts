@@ -6,7 +6,7 @@ import { Project } from "../../project";
 import * as string from '../../string';
 import * as os from 'node:os';
 
-export = class {
+export default class {
   static inject() { return [Container, UI, CLIOptions, Project]; }
 
   private container: Container;

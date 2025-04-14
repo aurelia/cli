@@ -1,6 +1,6 @@
 import { CLIOptions } from "../../cli-options";
 
-class ConfigurationUtilities {
+export class ConfigurationUtilities {
   private options: CLIOptions;
   private args: string[];
 
@@ -51,5 +51,3 @@ class ConfigurationUtilities {
     return 'set';
   }
 }
-
-export = ConfigurationUtilities;

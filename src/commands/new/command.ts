@@ -1,6 +1,6 @@
 import {spawn} from 'node:child_process';
 
-export = class {
+export default class {
   async execute(args: string[]) {
     // Calls "npx makes aurelia/v1"
     // https://github.com/aurelia/v1

@@ -1,5 +1,5 @@
 import { wordWrap } from 'enquirer/lib/utils.js';
-import getTtySize from './get-tty-size';
+import { getTtySize } from './get-tty-size';
 
 interface Choice {
   name: string
@@ -25,7 +25,7 @@ interface ChoiceEx extends Choice {
 }
 
 // Check all values, indent hint line.
-export = function(...choices: ChoiceEx[]) {
+export function prettyChoices(...choices: ChoiceEx[]) {
   if (choices.length && Array.isArray(choices[0])) {
     choices = choices[0];
   }

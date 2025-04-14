@@ -2,7 +2,7 @@ const mockfs = require('../../../mocks/mock-fs');
 
 describe('The config command - configuration', () => {
   const CLIOptions = require('../../../../lib/cli-options').CLIOptions;
-  const Configuration = require('../../../../lib/commands/config/configuration');
+  const Configuration = require('../../../../lib/commands/config/configuration').Configuration;
   let configuration;
   let project;
   let projectControl;

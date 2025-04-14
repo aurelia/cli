@@ -1,8 +1,8 @@
 import * as path from 'node:path';
 import { findDeps } from './find-deps';
-import cjsTransform from './amodro-trace/read/cjs';
-import esTransform from './amodro-trace/read/es';
-import allWriteTransforms from './amodro-trace/write/all';
+import { cjs as cjsTransform } from './amodro-trace/read/cjs';
+import { es as esTransform } from './amodro-trace/read/es';
+import { all as allWriteTransforms } from './amodro-trace/write/all';
 import * as Utils from './utils';
 import { getAliases, toDotDot } from './module-id-processor';
 import { getLogger } from 'aurelia-logging';

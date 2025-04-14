@@ -4,7 +4,7 @@ import { Optional } from 'aurelia-dependency-injection';
 import { Project } from '../../project';
 import * as string from '../../string';
 
-export = class {
+export default class {
   private options: CLIOptions;
   private ui: ui.UI;
   private project: Project;

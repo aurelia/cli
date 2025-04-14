@@ -29,7 +29,7 @@ if (typeof java !== 'undefined' && java.lang && java.lang.Object && typeof globa
     };
 }
 
-export = class lang {
+export class lang {
     // makeJsArrayString added after porting to this project
     //Converts an JS array of strings to a string representation.
     //Not using JSON.stringify() for Rhino's sake.

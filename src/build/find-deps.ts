@@ -1,5 +1,5 @@
 import * as meriyah from 'meriyah';
-import parse = require('./amodro-trace/lib/parse');
+import { parse } from './amodro-trace/lib/parse';
 import { jsDepFinder, astMatcher} from './ast-matcher';
 import * as htmlparser from 'htmlparser2';
 import * as path from 'node:path';

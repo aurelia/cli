@@ -72,7 +72,7 @@ export class CLI {
     const commandName = parts[1] || 'default';
     try {
       const alias = require('./commands/alias.json')[commandModule];
-      const found = this.container.get(require(`./commands/${alias || commandModule}/command`));
+      const found = this.container.get(require(`./commands/${alias || commandModule}/command`).default);
       Object.assign(this.options, { args: commandArgs });
       // need to configure logger after getting args
       this.configureLogger();
@@ -89,7 +89,7 @@ export class CLI {
           // need to configure logger after getting args
           this.configureLogger();
 
-          return this.container.get(require('./commands/gulp'));
+          return this.container.get(require('./commands/gulp').default);
         } else {
           this.ui.log(`Invalid Command: ${commandText}`);
           return this.createHelpCommand();
@@ -102,7 +102,7 @@ export class CLI {
   }
 
   async createHelpCommand() {
-    return this.container.get(require('./commands/help/command'));
+    return this.container.get(require('./commands/help/command').default);
   }
 
   async _establishProject(): Promise<Project | void> {

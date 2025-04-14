@@ -7,7 +7,7 @@ import * as path from 'node:path';
 import * as fs from '../file-system';
 import * as Utils from './utils';
 import { getLogger } from 'aurelia-logging';
-import stubModule from './stub-module';
+import { stubModule } from './stub-module';
 
 import { type Project } from '../project';
 import { type PackageAnalyzer } from './package-analyzer';

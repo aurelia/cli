@@ -15,7 +15,7 @@ var transforms = [ stubs, defines, replace ];
  * @return {Function} A function that can be used for multiple content transform
  * calls.
  */
-export = function all(options) {
+export function all(options) {
   options = options || {};
 
   var transformFns = transforms.map(function(transform) {

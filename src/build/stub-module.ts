@@ -36,7 +36,7 @@ function resolvePath(packageName: string, root: string) {
 }
 
 // note all paths here assumes local node_modules folder
-const stubModule = function(moduleId: string, root: string) {
+export function stubModule(moduleId: string, root: string) {
   // with subfix -browserify
   if (['crypto', 'https', 'os', 'path', 'stream', 'timers', 'tty', 'vm'].indexOf(moduleId) !== -1) {
     return {name: moduleId, path: resolvePath(`${moduleId}-browserify`, root)};
@@ -87,6 +87,4 @@ const stubModule = function(moduleId: string, root: string) {
     };
   }
 };
-
-export = stubModule;
 

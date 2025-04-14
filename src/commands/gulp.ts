@@ -4,7 +4,7 @@ import { CLIOptions } from "../cli-options";
 import { Project } from "../project";
 import { type Gulp } from "gulp";
 
-export = class {
+export default class {
   static inject() { return [Container, UI, CLIOptions, Project]; }
 
   private container: Container;

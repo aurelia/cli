@@ -1,15 +1,16 @@
-export {}
-// Taken from r.js, preserving its style for now to easily port changes in the
-// near term.
-var define = function(ary, fn) {
-  module.exports = fn.apply(undefined,
-                            (ary.map(function(id) { return require(id); })));
-};
+import * as meriyah from 'meriyah';
+import { lang } from './lang';
+// // Taken from r.js, preserving its style for now to easily port changes in the
+// // near term.
+// var define = function(ary, fn) {
+//   module.exports = fn.apply(undefined,
+//                             (ary.map(function(id) { return require(id); })));
+// };
 
-/*jslint plusplus: true */
-/*global define: false */
-define(['meriyah', './lang'], function (meriyah, lang) {
-  'use strict';
+// /*jslint plusplus: true */
+// /*global define: false */
+// define(['meriyah', './lang'], function (meriyah, lang) {
+//   'use strict';
 
   function arrayToString(ary) {
       var output = '[';
@@ -123,7 +124,7 @@ define(['meriyah', './lang'], function (meriyah, lang) {
    * @returns {String} JS source string or null, if no require or
    * define/require.def calls are found.
    */
-  function parse(moduleName, fileName, fileContents, options) {
+  export function parse(moduleName, fileName, fileContents, options) {
       options = options || {};
 
       //Set up source input
@@ -844,5 +845,5 @@ define(['meriyah', './lang'], function (meriyah, lang) {
       };
   };
 
-  return parse;
-});
+//   return parse;
+// });

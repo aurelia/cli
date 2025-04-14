@@ -92,7 +92,7 @@ describe('The cli', () => {
 
       cli.createHelpCommand();
       expect(cli.container.get)
-        .toHaveBeenCalledWith(require('../../lib/commands/help/command'));
+        .toHaveBeenCalledWith(require('../../lib/commands/help/command').default);
     });
   });
 

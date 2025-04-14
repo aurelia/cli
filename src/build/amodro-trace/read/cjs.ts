@@ -2,7 +2,7 @@
  * @license Copyright (c) 2010-2015, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
  */
-import parse = require('../lib/parse');
+import { parse } from '../lib/parse';
 
 // modified to add forceWrap for dealing with
 // nodjs dist/commonjs/*js or dist/cjs/*.js
@@ -10,7 +10,7 @@ import parse = require('../lib/parse');
 // node_modules/@aspnet/signalr/dist/cjs/IHubProtocol.js
 // node_modules/@aspnet/signalr/dist/cjs/ILogger.js
 // https://github.com/requirejs/r.js/issues/980
-export = function cjs(fileName: string, fileContents: string, forceWrap: boolean) {
+export function cjs(fileName: string, fileContents: string, forceWrap: boolean) {
   // Strip out comments.
   var preamble = '',
   commonJsProps = (parse as any).usesCommonJs(fileName, fileContents);

@@ -9,7 +9,7 @@ const cssUrlMatcher = /url\s*\(\s*(?!['"]data)([^) ]+)\s*\)/gi;
 // We inject css into a style tag on html head, it means the 'foo/hello.png'
 // is related to current url (not css url on link tag), or <base> tag in html
 // head (which is recommended setup of router if not using hash).
-function fixupCSSUrls(address: string, css: string) {
+export function fixupCSSUrls(address: string, css: string) {
   if (typeof css !== 'string') {
     throw new Error(`Failed loading required CSS file: ${address}`);
   }
@@ -45,7 +45,7 @@ function absoluteModuleId(baseId: string, moduleId: string) {
 }
 
 // copied from aurelia-pal-browser DOM.injectStyles
-function injectCSS(css: string, id: string) {
+export function injectCSS(css: string, id: string) {
   if (typeof document === 'undefined' || !css) return;
   css = fixupCSSUrls(id, css);
 
@@ -73,7 +73,3 @@ function injectCSS(css: string, id: string) {
 
   document.head.appendChild(node);
 }
-
-injectCSS.fixupCSSUrls = fixupCSSUrls;
-
-export = injectCSS;

@@ -3,13 +3,12 @@ import { CLIOptions } from "./cli-options";
 import * as os from 'os';
 import { readFile } from './file-system';
 import { wordWrap } from 'enquirer/lib/utils.js';
-import getTtySize from './get-tty-size';
-import prettyChoices from './pretty-choices';
+import { getTtySize } from './get-tty-size';
+import { prettyChoices } from './pretty-choices';
 import { Writable } from 'stream';
 import * as _ from 'lodash';
 
 // type definitions are very bad for `enquirer`, `require` does not pick them up.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const { Input, Select } = require('enquirer');
 
 /** Base class, used for DI registration of `ConsoleUI` */
