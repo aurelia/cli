@@ -14,6 +14,35 @@ import { type PackageAnalyzer } from './package-analyzer';
 import { type PackageInstaller } from './package-installer';
 import { type SourceInclusion } from './source-inclusion';
 import { type DependencyDescription } from './dependency-description';
+import { type DependencyInclusion } from './dependency-inclusion';
+import { type LoaderOptions } from './loader';
+
+/**
+ * onRequiringModule callback is called before auto-tracing on a moduleId. It would not be called for any modules provided by app's src files or explicit dependencies config in aurelia.json.
+
+ * Three types possible result (all can be returned in promise):
+ * 1. Boolean false: ignore this moduleId;
+ * 2. Array of strings like ['a', 'b']: require module id "a" and "b" instead;
+ * 3. A string: the full JavaScript content of this module
+ * 4. All other returns are ignored and go onto performing auto-tracing.
+ * 
+ * Usage example in applications `build.ts` file:
+ * 
+ * function writeBundles() {
+ *    return buildCLI.dest({
+ *        // use onRequiringModule to ignore tracing "template/**\/*"
+ *        onRequiringModule: moduleId => {
+ *          if (moduleId.startsWith("template/")) {
+ *              return false;
+ *          }
+ *      }
+ *  });
+ * 
+ */
+export type BuildOptions =  { onRequiringModule?: onRequiringModuleCallback; onNotBundled?: onNotBundledCallback };
+type onRequiringModuleResult = boolean | string | string[] | Promise<boolean | string | string[]>
+type onRequiringModuleCallback = (moduleId: string) => onRequiringModuleResult;
+type onNotBundledCallback = (items: BundledSource[]) => void;
 
 const logger = getLogger('Bundler');
 
@@ -28,7 +57,7 @@ export class Bundler{
   private readonly autoInstall: boolean;
   private triedAutoInstalls: Set<string>;
   public buildOptions: Configuration;
-  public loaderOptions: Omit<AureliaJson.ILoader, "plugins"> & { plugins: LoaderPlugin[] };
+  public loaderOptions: LoaderOptions;
   public loaderConfig: AureliaJson.ILoaderConfig;
   public configTargetBundle: Bundle;
 
@@ -155,8 +184,8 @@ export class Bundler{
     }
   }
 
-  build(opts?) {
-    let onRequiringModule, onNotBundled;
+  build(opts?: BuildOptions) {
+    let onRequiringModule: onRequiringModuleCallback | undefined, onNotBundled: onNotBundledCallback | undefined;
     if (opts && typeof opts.onRequiringModule === 'function') {
       onRequiringModule = opts.onRequiringModule;
     }
@@ -200,9 +229,9 @@ export class Bundler{
         return Utils.runSequentially(
           Array.from(deps).sort(),
           d => {
-            return new Promise(resolve => {
+            return new Promise<undefined | onRequiringModuleResult>(resolve => {
               resolve(onRequiringModule && onRequiringModule(d));
-            }).then(
+            }).then<void, void>(
               result => {
                 // ignore this module id
                 if (result === false) return;
@@ -270,7 +299,7 @@ export class Bundler{
   }
 
   getDependencyInclusions() {
-    return this.bundles.reduce((a, b) => a.concat(b.getDependencyInclusions()), []);
+    return this.bundles.reduce<DependencyInclusion[]>((a, b) => a.concat(b.getDependencyInclusions()), []);
   }
 
   addMissingDep(id: string) {
@@ -358,7 +387,7 @@ function analyzeDependency(packageAnalyzer: PackageAnalyzer, dependency: ILoader
   return packageAnalyzer.reverseEngineer(dependency);
 }
 
-function subsume(bundles, item) {
+function subsume(bundles: Bundle[], item: BundledSource) {
   for (let i = 0, ii = bundles.length; i < ii; ++i) {
     if (bundles[i].trySubsume(item)) {
       return;
@@ -367,7 +396,7 @@ function subsume(bundles, item) {
   logger.warn(item.path + ' is not captured by any bundle file. You might need to adjust the bundles source matcher in aurelia.json.');
 }
 
-function normalizeKey(p) {
+function normalizeKey(p: string) {
   return path.normalize(p);
 }
 

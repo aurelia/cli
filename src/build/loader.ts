@@ -1,6 +1,12 @@
 import * as path from 'node:path';
 import { Configuration } from '../configuration';
 import { type Bundler } from './bundler';
+import { type Bundle } from './bundle';
+import { type LoaderPlugin } from './loader-plugin';
+
+export type LoaderOptions = Omit<AureliaJson.ILoader, "plugins"> & { plugins: LoaderPlugin[] };
+type LoaderBundlesConfig = { bundles?: Record<string, string[]>; map: Omit<Record<string, string>, "bundles">};
+type LoaderConfig = AureliaJson.ILoaderConfig & Partial<LoaderBundlesConfig>;
 
 export function createLoaderCode(platform: AureliaJson.ITarget, bundler: Bundler) {
   let loaderCode: string;
@@ -22,7 +28,7 @@ export function createLoaderCode(platform: AureliaJson.ITarget, bundler: Bundler
 };
 
 export function createLoaderConfig(platform: AureliaJson.ITarget, bundler: Bundler) {
-  let loaderConfig;
+  let loaderConfig: LoaderConfig | undefined;
   const loaderOptions = bundler.loaderOptions;
 
   switch (loaderOptions.type) {
@@ -40,14 +46,14 @@ export function createLoaderConfig(platform: AureliaJson.ITarget, bundler: Bundl
   return loaderConfig;
 };
 
-export function createRequireJSConfig(platform: AureliaJson.ITarget, bundler: Bundler) {
+function createRequireJSConfig(platform: AureliaJson.ITarget, bundler: Bundler) {
   const loaderOptions = bundler.loaderOptions;
   const loaderConfig = bundler.loaderConfig;
   const bundles = bundler.bundles;
   const configName = loaderOptions.configTarget;
-  const bundleMetadata = {};
+  const bundleMetadata: Record<string, string[]> = {};
   const includeBundles = shouldIncludeBundleMetadata(bundles, loaderOptions);
-  const config = Object.assign({}, loaderConfig);
+  const config: LoaderConfig = Object.assign({}, loaderConfig);
   let location = platform.baseUrl || platform.output;
 
   if (platform.useAbsolutePath) {
@@ -78,7 +84,7 @@ export function createRequireJSConfig(platform: AureliaJson.ITarget, bundler: Bu
   return config;
 };
 
-export function createSystemJSConfig(platform, bundler?: Bundler) {
+function createSystemJSConfig(platform: AureliaJson.ITarget, bundler?: Bundler) {
   const loaderOptions = bundler.loaderOptions;
   const bundles = bundler.bundles;
   const configBundleName = loaderOptions.configTarget;
@@ -88,12 +94,12 @@ export function createSystemJSConfig(platform, bundler?: Bundler) {
 
   const bundlesConfig = bundles.map(bundle => systemJSConfigForBundle(bundle, bundler, location, includeBundles))
     .filter(bundle => bundle.name !== configBundleName)
-    .reduce((c, bundle) => bundle.addBundleConfig(c), { map: { 'text': 'text' } });
+    .reduce((c, bundle) => bundle.addBundleConfig(c), { map: { 'text': 'text' } } as LoaderBundlesConfig);
 
   return Object.assign(systemConfig, bundlesConfig);
 };
 
-function shouldIncludeBundleMetadata(bundles, loaderOptions) {
+function shouldIncludeBundleMetadata(bundles: Bundle[], loaderOptions: LoaderOptions) {
   const setting = loaderOptions.includeBundleMetadataInConfig;
 
   if (typeof setting === 'string') {
@@ -110,7 +116,7 @@ function shouldIncludeBundleMetadata(bundles, loaderOptions) {
   return setting === true;
 }
 
-function systemJSConfigForBundle(bundle, bundler, location, includeBundles) {
+function systemJSConfigForBundle(bundle: Bundle, bundler: Bundler, location: string, includeBundles: boolean) {
   const buildOptions = new Configuration(bundle.config.options, bundler.buildOptions.getAllOptions());
   const mapTarget = location + '/' + bundle.moduleId + (buildOptions.isApplicable('rev') && bundle.hash ? '-' + bundle.hash : '') + path.extname(bundle.config.name);
   const moduleId = bundle.moduleId;
@@ -118,7 +124,7 @@ function systemJSConfigForBundle(bundle, bundler, location, includeBundles) {
 
   return {
     name: bundle.config.name,
-    addBundleConfig: function(config) {
+    addBundleConfig: function(config: LoaderBundlesConfig) {
       config.map[moduleId] = mapTarget;
       if (includeBundles) {
         config.bundles = (config.bundles || {});

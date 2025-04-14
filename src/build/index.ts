@@ -1,5 +1,5 @@
 import { Transform, type TransformCallback } from 'node:stream';
-import { Bundler } from './bundler';
+import { Bundler, type BuildOptions } from './bundler';
 import { PackageAnalyzer } from './package-analyzer';
 import { PackageInstaller } from './package-installer';
 import { cacheDir } from './utils';
@@ -51,7 +51,7 @@ export function bundle() {
   });
 };
 
-export function dest(opts) {
+export function dest(opts: BuildOptions) {
   return bundler.build(opts)
     .then(() => bundler.write());
 };
