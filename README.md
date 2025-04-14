@@ -38,7 +38,7 @@ Run `npm test` to run the unit tests.
 To run and individual test, you can use command with filters. For example:
 
 ```powershell
-npx jasmine spec/lib/build/bundled-source.spec.mjs --filter="transform saves cache"
+npx jasmine spec/lib/build/bundled-source.spec.js --filter="transform saves cache"
 ```
 
 ## Release new aurelia-cli version
