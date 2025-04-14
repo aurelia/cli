@@ -78,7 +78,7 @@ function createRequireJSConfig(platform: AureliaJson.ITarget, bundler: Bundler) 
   }
 
   if (includeBundles) {
-    (config as any).bundles = bundleMetadata;
+    config.bundles = bundleMetadata;
   }
 
   return config;

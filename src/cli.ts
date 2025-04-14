@@ -89,7 +89,7 @@ export class CLI {
           // need to configure logger after getting args
           this.configureLogger();
 
-          return this.container.get(this.container.get(require('./commands/gulp')));
+          return this.container.get(require('./commands/gulp'));
         } else {
           this.ui.log(`Invalid Command: ${commandText}`);
           return this.createHelpCommand();

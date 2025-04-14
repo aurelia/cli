@@ -55,7 +55,7 @@ export = class {
   }
 };
 
-function makeInjectable(gulp: Gulp, name: string, container: Container) {
+function makeInjectable(gulp: Gulp, name: 'series' | 'parallel', container: Container) {
   const original = gulp[name];
 
   gulp[name] = function() {
