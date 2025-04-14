@@ -10,11 +10,11 @@ export abstract class BasePackageManager {
     this.executableName = executableName;
   }
 
-  install(packages: string[] = [], workingDirectory = process.cwd(), command = 'install') {
+  install(packages: string[] = [], workingDirectory: string = process.cwd(), command: string = 'install') {
     return this.run(command, packages, workingDirectory);
   }
 
-  run(command: string, args: string[] = [], workingDirectory = process.cwd()): Promise<void> {
+  run(command: string, args: string[] = [], workingDirectory: string = process.cwd()): Promise<void> {
     let executable = this.getExecutablePath(workingDirectory);
     if (isWindows) {
       executable = JSON.stringify(executable); // Add quotes around path

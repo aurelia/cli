@@ -5,7 +5,7 @@ export class Yarn extends BasePackageManager {
     super('yarn');
   }
 
-  install(packages: string[] = [], workingDirectory = process.cwd()) {
+  install(packages: string[] = [], workingDirectory: string = process.cwd()) {
     return super.install(packages, workingDirectory, !packages.length ? 'install' : 'add');
   }
 };

@@ -64,7 +64,7 @@ export class DependencyInclusion {
     return work;
   }
 
-  traceResource(resource) {
+  traceResource(resource: string) {
     const resolved = resolvedResource(resource, this.description, this._getProjectRoot());
 
     if (!resolved) {
@@ -155,7 +155,7 @@ export class DependencyInclusion {
   }
 };
 
-function resolvedResource(resource, description, projectRoot) {
+function resolvedResource(resource: string, description: DependencyDescription, projectRoot: string) {
   const base = path.resolve(projectRoot, description.loaderConfig.path);
   const mainShift = description.loaderConfig.main.split('/');
 
@@ -181,13 +181,13 @@ function resolvedResource(resource, description, projectRoot) {
   return resolved;
 }
 
-function validResource(resource, base) {
+function validResource(resource: string, base: string) {
   const resourcePath = path.resolve(base, resource);
   const loaded = Utils.nodejsLoad(resourcePath);
   if (loaded) return path.relative(base, loaded).replace(/\\/g, '/');
 }
 
-function commonLength(ids) {
+function commonLength(ids: string[]) {
   const parts = ids[0].split('/');
   const rest = ids.slice(1);
   parts.pop(); // ignore last part

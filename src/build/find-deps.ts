@@ -169,7 +169,7 @@ const inlineViewExtract = jsDepFinder(
   '__any.inlineView(__dep, __any)'
 );
 
-const auInlineViewDepsFinder = function(contents: meriyah.ESTree.Program, loaderType: string) {
+const auInlineViewDepsFinder = function(contents: meriyah.ESTree.Program, loaderType: LoaderType) {
   const match = inlineViewExtract(contents);
   if (match.length === 0) return [];
 
@@ -207,14 +207,14 @@ function _add(deps: string | string[]) {
   });
 }
 
-function isPackageName(id) {
+function isPackageName(id: string) {
   if (id.startsWith('.')) return false;
   const parts = id.split('/');
   // package name, or scope package name
   return parts.length === 1 || (parts.length === 2 && parts[0].startsWith('@'));
 }
 
-function auDep(dep, loaderType) {
+function auDep(dep: string, loaderType: LoaderType) {
   if (!dep) return dep;
   const ext = path.extname(dep).toLowerCase();
   if (ext === '.html' || ext === '.css') {
@@ -223,7 +223,7 @@ function auDep(dep, loaderType) {
   return dep;
 }
 
-export function findJsDeps(filename: string, contents: string, loaderType = 'require') {
+export function findJsDeps(filename: string, contents: string, loaderType: LoaderType = 'require') {
   const deps = new Set<string>();
   const add = _add.bind(deps);
 
@@ -257,12 +257,12 @@ export function findJsDeps(filename: string, contents: string, loaderType = 'req
   return Array.from(deps);
 };
 
-export function findHtmlDeps(filename: string, contents: string, loaderType = 'require') {
+export function findHtmlDeps(filename: string, contents: string, loaderType: LoaderType = 'require') {
   const deps = new Set<string>();
   const add = _add.bind(deps);
 
   const parser = new htmlparser.Parser({
-    onopentag: function(name, attrs) {
+    onopentag: function(name: string, attrs: Record<string, string>) {
       // <require from="dep"></require>
       if ((name === 'require' || name === 'import') && attrs.from) {
         add(auDep(attrs.from, loaderType));
@@ -283,7 +283,7 @@ export function findHtmlDeps(filename: string, contents: string, loaderType = 'r
   return Array.from(deps);
 };
 
-export function findDeps(filename: string, contents: any, loaderType = 'require') {
+export function findDeps(filename: string, contents: string, loaderType: LoaderType = 'require') {
   const ext = path.extname(filename).toLowerCase();
 
   if (ext === '.js' || ext === '.mjs' || ext === '.cjs') {

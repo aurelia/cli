@@ -2,6 +2,7 @@ import { Container } from "aurelia-dependency-injection";
 import { UI } from "../ui";
 import { CLIOptions } from "../cli-options";
 import { Project } from "../project";
+import { type Gulp } from "gulp";
 
 export = class {
   static inject() { return [Container, UI, CLIOptions, Project]; }
@@ -39,7 +40,7 @@ export = class {
     });
   }
 
-  connectLogging(gulp) {
+  connectLogging(gulp: Gulp) {
     gulp.on('start', e => {
       if (e.name[0] === '<') return;
       this.ui.log(`Starting '${e.name}'...`);
@@ -54,7 +55,7 @@ export = class {
   }
 };
 
-function makeInjectable(gulp, name, container) {
+function makeInjectable(gulp: Gulp, name: string, container: Container) {
   const original = gulp[name];
 
   gulp[name] = function() {

@@ -1,4 +1,4 @@
-import { Transform } from 'node:stream';
+import { Transform, type TransformCallback } from 'node:stream';
 import { Bundler } from './bundler';
 import { PackageAnalyzer } from './package-analyzer';
 import { PackageInstaller } from './package-installer';
@@ -25,7 +25,7 @@ export async function src(p: Project) {
   return bundler = b;
 };
 
-export async function createLoaderCode(p) {
+export async function createLoaderCode(p?: Project) {
   const createLoaderCode = require('./loader').createLoaderCode;
   project = p || project;
   await buildLoaderConfig(project);
@@ -33,7 +33,7 @@ export async function createLoaderCode(p) {
   return createLoaderCode(platform, bundler);
 };
 
-export async function createLoaderConfig(p) {
+export async function createLoaderConfig(p?: Project) {
   const createLoaderConfig = require('/loader').createLoaderConfig;
   project = p || project;
 
@@ -45,7 +45,7 @@ export async function createLoaderConfig(p) {
 export function bundle() {
   return new Transform({
     objectMode: true,
-    transform: function(file, encoding, callback) {
+    transform: function(file: IFile, encoding: BufferEncoding, callback: TransformCallback) {
       callback(null, capture(file));
     }
   });

@@ -84,7 +84,7 @@ export class DependencyDescription {
   }
 };
 
-function filePathToModuleId(filePath) {
+function filePathToModuleId(filePath: string) {
   let moduleId = path.normalize(filePath).replace(/\\/g, '/');
 
   if (moduleId.toLowerCase().endsWith('.js')) {

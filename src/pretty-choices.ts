@@ -19,7 +19,9 @@ interface ChoiceEx extends Choice {
   displayName?: string;
   description?: string;
   /** used by lib/workflow/run-questionnaire */
-  if: boolean;
+  if?: boolean;
+  initial?: string;
+  type?: string;
 }
 
 // Check all values, indent hint line.

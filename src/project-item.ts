@@ -43,7 +43,7 @@ export class ProjectItem {
     return this;
   }
 
-  calculateRelativePath(fromLocation: ProjectItem) {
+  calculateRelativePath(fromLocation: string | ProjectItem): string {
     if (this === fromLocation) {
       return '';
     }
@@ -55,7 +55,7 @@ export class ProjectItem {
     return path.posix.join(parentRelativePath, this.name);
   }
 
-  create(relativeTo) {
+  create(relativeTo: string) {
     const fullPath = relativeTo ? this.calculateRelativePath(relativeTo) : this.name;
 
     // Skip empty folder

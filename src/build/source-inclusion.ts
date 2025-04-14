@@ -42,14 +42,14 @@ export class SourceInclusion {
     this.items.push(item);
   }
 
-  _isExcluded(item) {
+  _isExcluded(item: BundledSource) {
     const found = this.excludes.findIndex(exclusion => {
       return exclusion.match(item.path);
     });
     return found > -1;
   }
 
-  trySubsume(item) {
+  trySubsume(item: BundledSource) {
     if (this.matcher.match(item.path) && !this._isExcluded(item)) {
       this.addItem(item);
       return true;

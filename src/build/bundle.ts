@@ -26,8 +26,8 @@ export class Bundle {
   private readonly dependencies: DependencyDescription[]; // TODO: remove?
   private readonly prepend: string[];
   private readonly append: string[];
-  private readonly moduleId: string;
-  private hash: string;
+  public readonly moduleId: string;
+  public hash: string;
   private readonly aliases: {[key: string]: string};
   private readonly buildOptions: Configuration;
   private readonly fileCache: {[key: string]: { contents: string, path: string }};
@@ -95,7 +95,7 @@ export class Bundle {
     return inclusion;
   }
 
-  trySubsume(item) {
+  trySubsume(item: BundledSource) {
     const includes = this.includes;
 
     for (let i = 0, ii = includes.length; i < ii; ++i) {
@@ -132,7 +132,7 @@ export class Bundle {
 
   getBundledModuleIds() {
     const allModuleIds = this.getRawBundledModuleIds();
-    const allIds = [];
+    const allIds: string[] = [];
     Array.from(allModuleIds).sort().forEach(id => {
       const matchingPlugin = this.bundler.loaderOptions.plugins.find(p => p.matches(id));
       if (matchingPlugin) {
@@ -293,7 +293,7 @@ export class Bundle {
           undefined;
         const parsedPath = currentFile.path && path.parse(currentFile.path);
 
-        function acquireSourceMapForDependency(file) {
+        function acquireSourceMapForDependency(file: IFile) {
           if (!file || !file.path) {
             return;
           }
@@ -507,14 +507,14 @@ export class Bundle {
     }
   }
 
-  async writeLoaderCode(platform) {
+  async writeLoaderCode(platform: AureliaJson.ITarget) {
     const createLoaderCode = require('./loader').createLoaderCode;
     const config = createLoaderCode(platform, this.bundler);
 
     return 'function _aureliaConfigureModuleLoader(){' + config + '}';
   }
 
-  async writeBundlePathsToIndex(platform) {
+  async writeBundlePathsToIndex(platform: AureliaJson.ITarget) {
     try {
       if (!platform.index) {
         return;

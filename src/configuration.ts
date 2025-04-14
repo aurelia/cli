@@ -15,6 +15,8 @@ export class Configuration {
 
   getValue(propPath: string) {
     const split = propPath.split('.');
+    // `cur` initially contains options, but then drills into child objects.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let cur: any = this.options;
 
     for (let i = 0; i < split.length; i++) {

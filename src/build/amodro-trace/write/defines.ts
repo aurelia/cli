@@ -24,8 +24,8 @@ var lang = require('../lib/lang'),
 function defines(options) {
   options = options || {};
 
-  return function(context, moduleName, filePath, _contents) {
-    var namedModule,
+  return function(context: IBundleSourceContext, moduleName: string, filePath: string, _contents: string) {
+    let namedModule: string,
         config = context.config,
         packageName = context.pkgsMainMap[moduleName];
 
@@ -37,7 +37,7 @@ function defines(options) {
       );
     }
 
-    function onFound(info) {
+    function onFound(info: { foundId?: string }) {
       if (info.foundId) {
         namedModule = info.foundId;
       }
@@ -106,7 +106,7 @@ function defines(options) {
   };
 }
 
-function exportsFn(_exports, wrapShim) {
+function exportsFn(_exports: string, wrapShim: boolean) {
   if (_exports) {
     if (wrapShim) return 'return root.' + _exports + ' = ' + _exports +';';
     else return '(function (global) {\n' +
@@ -137,8 +137,8 @@ function exportsFn(_exports, wrapShim) {
  * @return {String}            transformed content. May not be different from
  * the input contents string.
  */
-function toTransport(context, moduleName,
-                               filePath, contents, onFound, options) {
+function toTransport(context: IBundleSourceContext, moduleName: string,
+                               filePath: string, contents: string, onFound: Function, options: unknown) {
   options = options || {};
   return transform.toTransport('', moduleName, filePath,
                                contents, onFound, options);

@@ -3,22 +3,30 @@ import * as fs from './file-system';
 import * as _ from 'lodash';
 import { ProjectItem } from './project-item';
 
-export class Project {
+
+export class Project implements Record<keyof AureliaJson.IPaths, ProjectItem> {
   private directory: string;
   private package: object; // package.json deserialized.
   private taskDirectory: string;
   private generatorDirectory: string;
   private model: AureliaJson.IProject;
   private aureliaJSONPath: string;
-  private locations: any[];
-  private root: any;
+  private locations: ProjectItem[];
   private generators: ProjectItem;
   private tasks: ProjectItem;
-
   public packageManager: string | undefined;
 
   public paths: AureliaJson.IPaths;
   public build: AureliaJson.IBuild;
+
+  // From AureliaJson.IPaths
+  public root: ProjectItem | undefined;
+  public resources: ProjectItem | undefined;
+  public elements: ProjectItem | undefined;
+  public attributes: ProjectItem | undefined;
+  public valueConverters: ProjectItem | undefined;
+  public bindingBehaviours: ProjectItem | undefined;
+
 
   static async establish(dir: string) {
     process.chdir(dir);
@@ -149,7 +157,7 @@ function installTypeScript(): void {
   const json = require.extensions['.json'];
   delete require.extensions['.json'];
 
-  require.extensions['.ts'] = function(module, filename) {
+  require.extensions['.ts'] = function(module: NodeJS.Module, filename: string) {
     const source = fs.readFileSync(filename);
     const result = ts.transpile(source, {
       module: ts.ModuleKind.CommonJS,
@@ -162,6 +170,7 @@ function installTypeScript(): void {
       experimentalDecorators: true
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return (module as any)._compile(result, filename);
   };
 

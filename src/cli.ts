@@ -26,7 +26,7 @@ export class CLI {
   // because logger is not configured yet!
   // this.logger.error prints nothing in run(),
   // directly use this.ui.log.
-  async run(cmd: string, args: any): Promise<any> {
+  async run(cmd: string, args: string[]): Promise<void> {
     const version = `${this.options.runningGlobally ? 'Global' : 'Local'} aurelia-cli v${(require('../package.json')).version}`;
 
     if (cmd === '--version' || cmd === '-v') {

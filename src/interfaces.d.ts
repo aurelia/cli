@@ -46,10 +46,14 @@ declare namespace AureliaJson {
   }
 
   interface ITarget {
+    id?: string;
+    displayName?: string;
     port: number;
     index: string;
     baseDir: string;
+    baseUrl?: string;
     output: string;
+    useAbsolutePath?: boolean;
   }
 
   interface IBuildOptions {
@@ -72,7 +76,7 @@ declare namespace AureliaJson {
   }
 
   interface ILoader {
-    type: string;
+    type: LoaderType;
     configTarget: string;
     includeBundleMetadataInConfig: string;
     plugins: ILoaderPlugin[];
@@ -83,7 +87,7 @@ declare namespace AureliaJson {
     name: string;
     extensions: string[];
     stub: boolean;
-    test: string | RegExp; // TODO: later in the code there is a swap between `string` and `RegExp`
+    test: string;
   }
 
   interface ILoaderConfig {
@@ -95,6 +99,8 @@ declare namespace AureliaJson {
     wrapShim?: boolean
   }
 }
+
+type LoaderType = "require" | "system";
 
 interface ILoaderConfig {
   name: string;
@@ -129,4 +135,3 @@ interface IBundleSourceContext {
       exports: string[]
     }}}
 }
-

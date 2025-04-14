@@ -132,7 +132,7 @@ class Configuration {
     return `Configuration key '${key}' is now:` + os.EOL + JSON.stringify(this.configEntry(key), null, 2);
   }
 
-  save(backup) {
+  save(backup: unknown) {
     if (backup === undefined) backup = true;
 
     const unique = new Date().toISOString().replace(/[T\D]/g, '');

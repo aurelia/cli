@@ -93,6 +93,7 @@
   "devDependencies": {
     "@eslint/js": "^9.24.0",
     "@types/convert-source-map": "^2.0.3",
+    "@types/gulp": "^4.0.17",
     "@types/lodash": "^4.17.16",
     "@types/map-stream": "^0.0.3",
     "@types/node": "^22.8.1",

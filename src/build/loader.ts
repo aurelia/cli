@@ -1,9 +1,9 @@
 import * as path from 'node:path';
 import { Configuration } from '../configuration';
-import { Bundler } from './bundler';
+import { type Bundler } from './bundler';
 
-export function createLoaderCode(platform, bundler) {
-  let loaderCode;
+export function createLoaderCode(platform: AureliaJson.ITarget, bundler: Bundler) {
+  let loaderCode: string;
   const loaderOptions = bundler.loaderOptions;
 
   switch (loaderOptions.type) {
@@ -21,7 +21,7 @@ export function createLoaderCode(platform, bundler) {
   return loaderCode;
 };
 
-export function createLoaderConfig(platform, bundler) {
+export function createLoaderConfig(platform: AureliaJson.ITarget, bundler: Bundler) {
   let loaderConfig;
   const loaderOptions = bundler.loaderOptions;
 
@@ -40,7 +40,7 @@ export function createLoaderConfig(platform, bundler) {
   return loaderConfig;
 };
 
-export function createRequireJSConfig(platform, bundler) {
+export function createRequireJSConfig(platform: AureliaJson.ITarget, bundler: Bundler) {
   const loaderOptions = bundler.loaderOptions;
   const loaderConfig = bundler.loaderConfig;
   const bundles = bundler.bundles;
@@ -72,7 +72,7 @@ export function createRequireJSConfig(platform, bundler) {
   }
 
   if (includeBundles) {
-    config.bundles = bundleMetadata;
+    (config as any).bundles = bundleMetadata;
   }
 
   return config;

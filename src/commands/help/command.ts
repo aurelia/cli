@@ -21,7 +21,7 @@ export = class {
 
     let text: string;
     if (this.options.runningGlobally) {
-      text = await this.getGlobalCommandText();
+      text = this.getGlobalCommandText();
     }
     else {
       text = await this.getLocalCommandText();
@@ -30,7 +30,7 @@ export = class {
     this.ui.log(text);
   }
 
-  async getGlobalCommandText() {
+  private getGlobalCommandText() {
     return string.buildFromMetadata([
       require('../new/command.json'),
       require('./command.json')

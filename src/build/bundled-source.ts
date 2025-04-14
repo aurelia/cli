@@ -332,7 +332,7 @@ export class BundledSource {
   }
 };
 
-function absoluteModuleId(baseId, moduleId) {
+function absoluteModuleId(baseId: string, moduleId: string) {
   if (moduleId[0] !== '.') return moduleId;
 
   const parts = baseId.split('/');
@@ -350,7 +350,7 @@ function absoluteModuleId(baseId, moduleId) {
   return parts.join('/');
 }
 
-function relativeModuleId(baseId, moduleId) {
+function relativeModuleId(baseId: string, moduleId: string) {
   if (moduleId[0] === '.') return moduleId;
 
   const baseParts = baseId.split('/');

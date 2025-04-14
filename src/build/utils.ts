@@ -35,7 +35,7 @@ export function resolvePackagePath(packageName: string) {
   throw new Error(`cannot resolve npm package folder for "${packageName}"`);
 };
 
-export function moduleIdWithPlugin(moduleId, pluginName, type) {
+export function moduleIdWithPlugin(moduleId: string, pluginName: string, type: 'require' | 'system') {
   switch (type) {
   case 'require':
     return pluginName + '!' + moduleId;
@@ -49,13 +49,13 @@ export function moduleIdWithPlugin(moduleId, pluginName, type) {
 const CACHE_DIR = path.resolve(tmpDir, 'aurelia-cli-cache');
 export const cacheDir = CACHE_DIR;
 
-function cachedFilePath(hash) {
+function cachedFilePath(hash: string) {
   const folder = hash.slice(0, 2);
   const fileName = hash.slice(2);
   return path.resolve(CACHE_DIR, folder, fileName);
 }
 
-export function getCache(hash) {
+export function getCache(hash: string) {
   const filePath = cachedFilePath(hash);
   try {
     return JSON.parse(fs.readFileSync(filePath));
@@ -64,7 +64,7 @@ export function getCache(hash) {
   }
 };
 
-export function setCache(hash, object) {
+export function setCache(hash: string, object: unknown) {
   const filePath = cachedFilePath(hash);
   // async write
   fs.writeFile(filePath, JSON.stringify(object));
@@ -108,7 +108,7 @@ export function revertHashedPath(pth: string, hash: string) {
   });
 };
 
-export function generateHash(bufOrStr) {
+export function generateHash(bufOrStr: crypto.BinaryLike) {
   return crypto.createHash('md5').update(bufOrStr).digest('hex');
 };
 
@@ -117,7 +117,7 @@ export function escapeForRegex(str: string) {
   return str.replace(matchers, '\\$&');
 };
 
-export function createBundleFileRegex(bundleName) {
+export function createBundleFileRegex(bundleName: string) {
   return new RegExp(escapeForRegex(bundleName) + '[^"\']*?\\.js', 'g');
 };
 
@@ -129,7 +129,7 @@ function modifyFilename(pth: string | string[], modifier: (filename: string, ext
   }
 
   if (Array.isArray(pth)) {
-    return pth.map(function(el) {
+    return pth.map(function(el: string) {
       return modifyFilename(el, modifier);
     });
   }

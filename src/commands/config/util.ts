@@ -35,7 +35,7 @@ class ConfigurationUtilities {
     return value;
   }
 
-  getAction(value) {
+  getAction(value: unknown) {
     const actions = ['add', 'remove', 'set', 'clear', 'get'];
     for (const action of actions) {
       if (this.options.hasFlag(action)) {

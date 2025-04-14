@@ -1,8 +1,10 @@
 import { moduleIdWithPlugin } from './utils';
 
 export class LoaderPlugin {
-  public readonly type: string;
+  public readonly type: LoaderType;
   private readonly config: AureliaJson.ILoaderPlugin;
+  private readonly _test: RegExp;
+
   public get name() {
     return this.config.name;
   }
@@ -15,24 +17,23 @@ export class LoaderPlugin {
   public get test(){
     return this.config.test;
   }
-  #test: RegExp;
 
-  constructor(type: string, config:  AureliaJson.ILoaderPlugin) {
+  constructor(type: LoaderType, config: AureliaJson.ILoaderPlugin) {
     this.type = type;
     this.config = config;
-    this.#test = config.test ? new RegExp(config.test) : regExpFromExtensions(config.extensions);
+    this._test = config.test ? new RegExp(config.test) : regExpFromExtensions(config.extensions);
   }
 
-  matches(filePath: string) {
-    return this.#test.test(filePath);
+  public matches(filePath: string) {
+    return this._test.test(filePath);
   }
 
-  transform(moduleId: string, filePath: string, contents: any) {
+  public transform(moduleId: string, filePath: string, contents: string) {
     contents = `define('${this.createModuleId(moduleId)}',[],function(){return ${JSON.stringify(contents)};});`;
     return contents;
   }
 
-  createModuleId(moduleId: string) {
+  public createModuleId(moduleId: string) {
     // for backward compatibility, use 'text' as plugin name,
     // to not break existing app with additional json plugin in aurelia.json
     return moduleIdWithPlugin(moduleId, 'text', this.type);
