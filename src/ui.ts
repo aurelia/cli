@@ -145,7 +145,7 @@ export class ConsoleUI implements UI {
     const logoLocation = require.resolve('./resources/logo.txt');
 
     const logo = await readFile(logoLocation);
-    this.log(logo.toString());
+    void this.log(logo.toString());
   }
 };
 

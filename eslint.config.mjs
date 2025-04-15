@@ -10,7 +10,14 @@ export default tseslint.config(
   },
   eslint.configs.recommended,
   tseslint.configs.recommended,
-
+  {
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
   {
     languageOptions: {
       globals: {
@@ -27,7 +34,6 @@ export default tseslint.config(
       "no-console": 0,
       "getter-return": 0,
       "no-inner-declarations": 0,
-
       "comma-dangle": ["error", {
         arrays: "never",
         objects: "never",
@@ -38,7 +44,9 @@ export default tseslint.config(
       "prefer-rest-params": "warn",
       "prefer-spread": "warn",
       "@typescript-eslint/no-explicit-any": "warn",
-      "@typescript-eslint/no-require-imports": "warn"
+      "@typescript-eslint/no-require-imports": "warn",
+      "@typescript-eslint/no-floating-promises": "error",
+      "@typescript-eslint/no-misused-promises": "error"
     }
   }
 );

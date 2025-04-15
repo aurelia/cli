@@ -34,18 +34,18 @@ export class CLI {
     }
 
     const project = await (cmd === 'new' ? Promise.resolve() : this._establishProject());
-    this.ui.log(version);
+    void this.ui.log(version);
     if (project && this.options.runningLocally) {
       this.project = project;
       this.container.registerInstance(Project, project);
     } else if (project && this.options.runningGlobally) {
-      this.ui.log('The current directory is likely an Aurelia-CLI project, but no local installation of Aurelia-CLI could be found. ' +
+      await this.ui.log('The current directory is likely an Aurelia-CLI project, but no local installation of Aurelia-CLI could be found. ' +
         '(Do you need to restore node modules using npm install?)');
-      return Promise.resolve();
+      return;
     } else if (!project && this.options.runningLocally) {
-      this.ui.log('It appears that the Aurelia CLI is running locally from ' + __dirname + '. However, no project directory could be found. ' +
+      await this.ui.log('It appears that the Aurelia CLI is running locally from ' + __dirname + '. However, no project directory could be found. ' +
         'The Aurelia CLI has to be installed globally (npm install -g aurelia-cli) and locally (npm install aurelia-cli) in an Aurelia CLI project directory');
-      return Promise.resolve();
+      return;
     }
     const command = await this.createCommand(cmd, args);
     return command.execute(args);
@@ -91,11 +91,11 @@ export class CLI {
 
           return this.container.get((await import('./commands/gulp')).default);
         } else {
-          this.ui.log(`Invalid Command: ${commandText}`);
+          void this.ui.log(`Invalid Command: ${commandText}`);
           return this.createHelpCommand();
         }
       } else {
-        this.ui.log(`Invalid Command: ${commandText}`);
+        void this.ui.log(`Invalid Command: ${commandText}`);
         return this.createHelpCommand();
       }
     }

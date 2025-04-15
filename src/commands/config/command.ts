@@ -21,7 +21,7 @@ export default class {
     this.options = options;
   }
 
-  execute(args: string[]) {
+  async execute(args: string[]) {
     this.config = new Configuration(this.options);
     this.util = new ConfigurationUtilities(this.options, args);
     const key = this.util.getArg(0) || '';
@@ -30,16 +30,15 @@ export default class {
     const backup = !CLIOptions.hasFlag('no-backup');
     const action = this.util.getAction(value);
 
-    this.displayInfo(`Performing configuration action '${action}' on '${key}'${value ? ` with '${value}'` : ''}`);
-    this.displayInfo(this.config.execute(action, key, value));
+    await this.displayInfo(`Performing configuration action '${action}' on '${key}'${value ? ` with '${value}'` : ''}`);
+    await this.displayInfo(this.config.execute(action, key, value));
 
     if (action !== 'get') {
       if (save) {
-        this.config.save(backup).then((name) => {
-          this.displayInfo('Configuration saved. ' + (backup ? `Backup file '${name}' created.` : 'No backup file was created.'));
-        });
+        const name = await this.config.save(backup);
+        await this.displayInfo('Configuration saved. ' + (backup ? `Backup file '${name}' created.` : 'No backup file was created.'));
       } else {
-        this.displayInfo(`Action was '${action}', but no save was performed!`);
+        await this.displayInfo(`Action was '${action}', but no save was performed!`);
       }
     }
   }

@@ -27,7 +27,7 @@ export default class {
       text = await this.getLocalCommandText();
     }
 
-    this.ui.log(text);
+    void this.ui.log(text);
   }
 
   private async getGlobalCommandText() {

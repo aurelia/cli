@@ -43,15 +43,15 @@ export default class {
   connectLogging(gulp: Gulp) {
     gulp.on('start', e => {
       if (e.name[0] === '<') return;
-      this.ui.log(`Starting '${e.name}'...`);
+      void this.ui.log(`Starting '${e.name}'...`);
     });
 
     gulp.on('stop', e => {
       if (e.name[0] === '<') return;
-      this.ui.log(`Finished '${e.name}'`);
+      void this.ui.log(`Finished '${e.name}'`);
     });
 
-    gulp.on('error', e => this.ui.log(e));
+    gulp.on('error', e => void this.ui.log(e));
   }
 };
 

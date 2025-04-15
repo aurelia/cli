@@ -416,8 +416,8 @@ export class Bundle {
         }
 
         logger.info(`Writing bundle reports for ${bundleFileName}...`);
-        fs.writeFile(`bundle-report-${bundleFileName}.txt`, sbuffer.join('\n'));
-        fs.writeFile(`bundle-report-${bundleFileName}.json`, JSON.stringify(jsonRep, null, 2));
+        await fs.writeFile(`bundle-report-${bundleFileName}.txt`, sbuffer.join('\n'));
+        await fs.writeFile(`bundle-report-${bundleFileName}.json`, JSON.stringify(jsonRep, null, 2));
       }
 
       if (buildOptions.isApplicable('minify')) {

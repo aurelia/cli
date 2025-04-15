@@ -36,6 +36,6 @@ export class Logger {
       msg += ` ${rest.map(x => JSON.stringify(x)).join(' ')}`;
     }
 
-    this.ui.log(msg);
+    void this.ui.log(msg);
   }
 };

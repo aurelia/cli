@@ -67,7 +67,7 @@ export function getCache(hash: string) {
 export function setCache(hash: string, object: unknown) {
   const filePath = cachedFilePath(hash);
   // async write
-  fs.writeFile(filePath, JSON.stringify(object));
+  fs.writeFileSync(filePath, JSON.stringify(object));
 };
 
 export async function runSequentially<T, U>(tasks: T[], cb: (task: T, index: number) => Promise<U>): Promise<U[]> {
