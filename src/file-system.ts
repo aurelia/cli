@@ -1,6 +1,8 @@
-import { access, constants } from 'node:fs/promises'
-import * as fs from 'node:fs';
-import * as nodePath from 'node:path';
+import { access, constants, stat, mkdir, readdir, appendFile, readFile as _readFile, writeFile as _writeFile  } from 'node:fs/promises'
+import { existsSync, readdirSync, readFileSync as _readFileSync, writeFileSync as _writeFileSync, statSync } from 'node:fs';
+import { join as _join, resolve as _resolve, dirname as _dirname } from 'node:path';
+
+export { stat, mkdir, existsSync, readdir, appendFile, readdirSync, statSync };
 
 export async function exists(path: string) {
   try {
@@ -11,94 +13,33 @@ export async function exists(path: string) {
   }
 };
 
-export function stat(path: string) {
-  return new Promise((resolve, reject) => {
-    fs.stat(path, (error, stats) => {
-      if (error) reject(error);
-      else resolve(stats);
-    });
-  });
-};
-
-export function existsSync(path: string) {
-  return fs.existsSync(path);
-};
-
-export function mkdir(path: string) {
-  return new Promise<void>((resolve, reject) => {
-    fs.mkdir(path, error => {
-      if (error) reject(error);
-      else resolve();
-    });
-  });
-};
-
 export function mkdirp(path: string) {
-  return new Promise<void>((resolve, reject) => {
-    fs.mkdir(path, {recursive: true}, error => {
-      if (error) reject(error);
-      else resolve();
-    });
-  });
+  return mkdir(path, {recursive: true});
 };
 
-export function readdir(path: string) {
-  return new Promise<string[]>((resolve, reject) => {
-    fs.readdir(path, (error, files) => {
-      if (error) reject(error);
-      else resolve(files);
-    });
-  });
-};
+export function readFile(path: string, encoding: BufferEncoding = 'utf8') {
+  return _readFile(path, encoding);
+}
 
-export function appendFile(path: string, text: string, cb: fs.NoParamCallback) {
-  fs.appendFile(path, text, cb);
-};
-
-export function readdirSync(path: string) {
-  return fs.readdirSync(path);
-};
-
-export function readFile(path: string, encoding?: BufferEncoding) {
-  if (encoding !== null) {
-    encoding = encoding || 'utf8';
-  }
-
-  return new Promise<string>((resolve, reject) => {
-    fs.readFile(path, encoding, (error, data) => {
-      if (error) reject(error);
-      else resolve(data);
-    });
-  });
-};
-
-export function readFileSync(path: string, encoding?: BufferEncoding) {
-  if (encoding !== null) {
-    encoding = encoding || 'utf8';
-  }
-
-  return fs.readFileSync(path, encoding);
+export function readFileSync(path: string, encoding: BufferEncoding = 'utf8') {
+  return _readFileSync(path, encoding);
 };
 
 export function copySync(sourceFile: string, targetFile: string) {
-  fs.writeFileSync(targetFile, fs.readFileSync(sourceFile));
+  _writeFileSync(targetFile, _readFileSync(sourceFile));
 };
 
 export function resolve(path: string) {
-  return nodePath.resolve(path);
+  return _resolve(path);
 };
 
 export function join() {
-  return nodePath.join.apply(this, Array.prototype.slice.call(arguments));
-};
-
-export function statSync(path: string) {
-  return fs.statSync(path);
+  return _join.apply(this, Array.prototype.slice.call(arguments));
 };
 
 export function isFile(path: string) {
   try {
-    return fs.statSync(path).isFile();
+    return statSync(path).isFile();
   } catch {
     // ignore
     return false;
@@ -107,23 +48,14 @@ export function isFile(path: string) {
 
 export function isDirectory(path: string) {
   try {
-    return fs.statSync(path).isDirectory();
+    return statSync(path).isDirectory();
   } catch {
     // ignore
     return false;
   }
 };
 
-export function writeFile(path: string, content: string | Buffer, encoding?: BufferEncoding) {
-  return new Promise<void>((resolve, reject) => {
-    fs.mkdir(nodePath.dirname(path), {recursive: true}, err => {
-      if (err) reject(err);
-      else {
-        fs.writeFile(path, content, encoding || 'utf8', error => {
-          if (error) reject(error);
-          else resolve();
-        });
-      }
-    });
-  });
+export async function writeFile(path: string, content: string | Buffer, encoding: BufferEncoding = 'utf8') {
+  await mkdir(_dirname(path), { recursive: true });
+  await _writeFile(path, content, encoding);
 };
