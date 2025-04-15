@@ -281,7 +281,7 @@ export class Bundle {
     }
 
     return work.then(async () => {
-      const Concat = require('concat-with-sourcemaps');
+      const Concat = (await import('concat-with-sourcemaps')).default;
       const concat = new Concat(true, this.config.name, ';' + os.EOL);
       let needsSourceMap = false;
 
@@ -508,7 +508,7 @@ export class Bundle {
   }
 
   async writeLoaderCode(platform: AureliaJson.ITarget) {
-    const createLoaderCode = require('./loader').createLoaderCode;
+    const createLoaderCode = (await import('./loader')).createLoaderCode;
     const config = createLoaderCode(platform, this.bundler);
 
     return 'function _aureliaConfigureModuleLoader(){' + config + '}';

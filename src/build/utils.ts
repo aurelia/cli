@@ -11,7 +11,7 @@ export function couldMissGulpPreprocess(id: string) {
   return ext && ext !== '.js' && ext !== '.html' && ext !== '.css';
 };
 
-function getPackagePaths() {
+async function getPackagePaths() {
   // require.resolve(packageName) cannot resolve package has no main.
   // for instance: font-awesome v4.7.0
   // manually try resolve paths
@@ -20,13 +20,13 @@ function getPackagePaths() {
     ...require.resolve.paths('not-core/'),
     // additional search from app's folder, this is necessary to support
     // lerna hoisting where cli is out of app's local node_modules folder.
-    ...require('resolve/lib/node-modules-paths')(process.cwd(), {})
+    ...(await import('resolve/lib/node-modules-paths')).default(process.cwd(), {})
   ];
 }
 
 // resolve npm package path
-export function resolvePackagePath(packageName: string) {
-  const packagePaths = getPackagePaths();
+export async function resolvePackagePath(packageName: string) {
+  const packagePaths = await getPackagePaths();
   for (let i = 0, len = packagePaths.length; i < len; i++) {
     const dirname = path.join(packagePaths[i], packageName);
     if (fs.isDirectory(dirname)) return dirname;

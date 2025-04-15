@@ -26,7 +26,7 @@ export async function src(p: Project) {
 };
 
 export async function createLoaderCode(p?: Project) {
-  const createLoaderCode = require('./loader').createLoaderCode;
+  const createLoaderCode = (await import('./loader')).createLoaderCode;
   project = p || project;
   await buildLoaderConfig(project);
   const platform = project.build.targets[0];
@@ -34,7 +34,7 @@ export async function createLoaderCode(p?: Project) {
 };
 
 export async function createLoaderConfig(p?: Project) {
-  const createLoaderConfig = require('/loader').createLoaderConfig;
+  const createLoaderConfig = (await import('./loader')).createLoaderConfig;
   project = p || project;
 
   await buildLoaderConfig(project);

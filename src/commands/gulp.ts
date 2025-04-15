@@ -19,18 +19,18 @@ export default class {
     this.project = project;
   }
 
-  execute(): Promise<void> {
-    const gulp = require('gulp');
+  async execute(): Promise<void> {
+    const gulp = (await import('gulp')).default;
     this.connectLogging(gulp);
 
-    this.project.installTranspiler();
+    await this.project.installTranspiler();
 
     makeInjectable(gulp, 'series', this.container);
     makeInjectable(gulp, 'parallel', this.container);
 
     return new Promise<void>((resolve, reject) => {
       process.nextTick(async () => {
-        const task = this.project.getExport(require(this.options.taskPath), this.options.commandName);
+        const task = this.project.getExport(await import(this.options.taskPath), this.options.commandName);
 
         gulp.series(task)(error => {
           if (error) reject(error);

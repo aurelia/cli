@@ -77,13 +77,13 @@ export class Project implements Record<keyof AureliaJson.IPaths, ProjectItem> {
     return _.camelCase(name);
   }
 
-  installTranspiler() {
+  async installTranspiler() {
     switch (this.model.transpiler.id) {
     case 'babel':
-      installBabel.call(this);
+      await installBabel.call(this);
       break;
     case 'typescript':
-      installTypeScript();
+      await installTypeScript();
       break;
     default:
       throw new Error(`${this.model.transpiler.id} is not a supported transpiler.`);
@@ -138,8 +138,8 @@ async function getMetadata(dir: string) {
   return metadata;
 }
 
-function installBabel(): void {
-  require('@babel/register')({
+async function installBabel(): Promise<void> {
+  (await import('@babel/register'))({
     babelrc: false,
     configFile: false,
     plugins: [
@@ -151,8 +151,8 @@ function installBabel(): void {
   });
 }
 
-function installTypeScript(): void {
-  const ts = require('typescript');
+async function installTypeScript(): Promise<void> {
+  const ts = await import('typescript');
 
   const json = require.extensions['.json'];
   delete require.extensions['.json'];

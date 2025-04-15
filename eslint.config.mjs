@@ -38,7 +38,7 @@ export default tseslint.config(
       "prefer-rest-params": "warn",
       "prefer-spread": "warn",
       "@typescript-eslint/no-explicit-any": "warn",
-      "@typescript-eslint/no-require-imports": "off"
+      "@typescript-eslint/no-require-imports": "warn"
     }
   }
 );

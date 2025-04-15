@@ -155,9 +155,9 @@ async function tryFindMetadata(project: Project, description: DependencyDescript
   } catch { /* empty */ }
 }
 
-function getPackageFolder(project: Project, description: DependencyDescription) {
+async function getPackageFolder(project: Project, description: DependencyDescription) {
   if (!description.loaderConfig || !description.loaderConfig.path) {
-    return Utils.resolvePackagePath(description.name)
+    return await Utils.resolvePackagePath(description.name)
   }
 
   return lookupPackageFolderRelativeStrategy(project.paths.root, description.loaderConfig.path);

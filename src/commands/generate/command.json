@@ -1,0 +1,10 @@
+{
+  "name": "generate",
+  "description": "Generates code for common use cases in Aurelia applications.",
+  "parameters": [
+    {
+      "name": "generator-name",
+      "description": "The name of the generator you want to run."
+    }
+  ]
+}

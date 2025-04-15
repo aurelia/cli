@@ -8,8 +8,14 @@ import { prettyChoices } from './pretty-choices';
 import { Writable } from 'stream';
 import * as _ from 'lodash';
 
-// type definitions are very bad for `enquirer`, `require` does not pick them up.
-const { Input, Select } = require('enquirer');
+// type definitions for `enquirer` are very bad, we need to mock them.
+declare module 'enquirer' {
+  /** [class Input extends StringPrompt] */
+  export const Input: any;
+  /** [class SelectPrompt extends ArrayPrompt] */
+  export const Select: any;
+}
+import { Input, Select } from 'enquirer';
 
 /** Base class, used for DI registration of `ConsoleUI` */
 export abstract class UI {

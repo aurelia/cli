@@ -82,7 +82,7 @@ describe('The cli', () => {
   });
 
   describe('The createHelpCommand() function', () => {
-    it('gets the help command', () => {
+    it('gets the help command', async () => {
       mockfs({
         'lib/commands/help/command.js': 'module.exports = {}',
         'lib/string.js': 'module.exports = {}'
@@ -90,7 +90,7 @@ describe('The cli', () => {
 
       spyOn(cli.container, 'get');
 
-      cli.createHelpCommand();
+      await cli.createHelpCommand();
       expect(cli.container.get)
         .toHaveBeenCalledWith(require('../../lib/commands/help/command').default);
     });

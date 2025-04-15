@@ -1,0 +1,28 @@
+{
+  "name": "new",
+  "description": "Creates a new Aurelia application project. Wraps \"npx makes aurelia/v1\". https://github.com/aurelia/v1",
+  "parameters": [
+    {
+      "name": "project-name",
+      "optional": true,
+      "description": "The name to create the project with. If one isn't provided, the wizard will ask for one."
+    }
+  ],
+  "flags": [
+    {
+      "name": "here",
+      "description": "Creates a new project with the current working directory as the root of the project instead of creating a new project folder.",
+      "type": "boolean"
+    },
+    {
+      "name": "plugin",
+      "description": "Creates a new Aurelia plugin project.",
+      "type": "boolean"
+    },
+    {
+      "name": "select",
+      "description": "Preselect features (e.g. --select cli-bundler,alameda,karma). This option also turns on unattended mode.",
+      "type": "string"
+    }
+  ]
+}

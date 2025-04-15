@@ -27,7 +27,7 @@ export class CLI {
   // this.logger.error prints nothing in run(),
   // directly use this.ui.log.
   async run(cmd: string, args: string[]): Promise<void> {
-    const version = `${this.options.runningGlobally ? 'Global' : 'Local'} aurelia-cli v${(require('../package.json')).version}`;
+    const version = `${this.options.runningGlobally ? 'Global' : 'Local'} aurelia-cli v${((await import('../package.json')).default).version}`;
 
     if (cmd === '--version' || cmd === '-v') {
       return this.ui.log(version);
@@ -71,8 +71,8 @@ export class CLI {
     const commandModule = parts[0];
     const commandName = parts[1] || 'default';
     try {
-      const alias = require('./commands/alias.json')[commandModule];
-      const found = this.container.get(require(`./commands/${alias || commandModule}/command`).default);
+      const alias = (await import('./commands/alias.json'))[commandModule];
+      const found = this.container.get((await import(`./commands/${alias || commandModule}/command`)).default);
       Object.assign(this.options, { args: commandArgs });
       // need to configure logger after getting args
       this.configureLogger();
@@ -89,7 +89,7 @@ export class CLI {
           // need to configure logger after getting args
           this.configureLogger();
 
-          return this.container.get(require('./commands/gulp').default);
+          return this.container.get((await import('./commands/gulp')).default);
         } else {
           this.ui.log(`Invalid Command: ${commandText}`);
           return this.createHelpCommand();
@@ -102,7 +102,7 @@ export class CLI {
   }
 
   async createHelpCommand() {
-    return this.container.get(require('./commands/help/command').default);
+    return this.container.get((await import('./commands/help/command')).default);
   }
 
   async _establishProject(): Promise<Project | void> {

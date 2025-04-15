@@ -30,33 +30,33 @@ const UNAVAIABLE_CORE_MODULES = [
 
 const EMPTY_MODULE = 'define(function(){return {};});';
 
-function resolvePath(packageName: string, root: string) {
-  const rel = Utils.resolvePackagePath(packageName);
+async function resolvePath(packageName: string, root: string) {
+  const rel = await Utils.resolvePackagePath(packageName);
   return path.relative(root, rel).replace(/\\/g, '/');
 }
 
 // note all paths here assumes local node_modules folder
-export function stubModule(moduleId: string, root: string) {
+export async function stubModule(moduleId: string, root: string) {
   // with subfix -browserify
   if (['crypto', 'https', 'os', 'path', 'stream', 'timers', 'tty', 'vm'].indexOf(moduleId) !== -1) {
-    return {name: moduleId, path: resolvePath(`${moduleId}-browserify`, root)};
+    return {name: moduleId, path: await resolvePath(`${moduleId}-browserify`, root)};
   }
 
   if (moduleId === 'domain') {
     logger.warn('core Node.js module "domain" is deprecated');
-    return {name: 'domain', path: resolvePath('domain-browser', root)};
+    return {name: 'domain', path: await resolvePath('domain-browser', root)};
   }
 
   if (moduleId === 'http') {
-    return {name: 'http', path: resolvePath('stream-http', root)};
+    return {name: 'http', path: await resolvePath('stream-http', root)};
   }
 
   if (moduleId === 'querystring') {
-    return {name: 'querystring', path: resolvePath('querystring-browser-stub', root)};
+    return {name: 'querystring', path: await resolvePath('querystring-browser-stub', root)};
   }
 
   if (moduleId === 'fs') {
-    return {name: 'fs', path: resolvePath('fs-browser-stub', root)};
+    return {name: 'fs', path: await resolvePath('fs-browser-stub', root)};
   }
 
   if (moduleId === 'sys') {
@@ -64,7 +64,7 @@ export function stubModule(moduleId: string, root: string) {
   }
 
   if (moduleId === 'zlib') {
-    return {name: 'zlib', path: resolvePath('browserify-zlib', root)};
+    return {name: 'zlib', path: await resolvePath('browserify-zlib', root)};
   }
 
   if (UNAVAIABLE_CORE_MODULES.indexOf(moduleId) !== -1) {
@@ -82,7 +82,7 @@ export function stubModule(moduleId: string, root: string) {
   if (moduleId === '__inject_css__') {
     return {
       name: '__inject_css__',
-      path: resolvePath('aurelia-cli', root),
+      path: await resolvePath('aurelia-cli', root),
       main: 'lib/build/inject-css'
     };
   }

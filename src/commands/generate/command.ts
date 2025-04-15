@@ -26,7 +26,7 @@ export default class {
       return this.displayGeneratorInfo('No Generator Specified. Available Generators:');
     }
 
-    this.project.installTranspiler();
+    await this.project.installTranspiler();
 
     const generatorPath = await this.project.resolveGenerator(args[0]);
     Object.assign(this.options, {

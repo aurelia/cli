@@ -21,7 +21,7 @@ export default class {
 
     let text: string;
     if (this.options.runningGlobally) {
-      text = this.getGlobalCommandText();
+      text = await this.getGlobalCommandText();
     }
     else {
       text = await this.getLocalCommandText();
@@ -30,22 +30,25 @@ export default class {
     this.ui.log(text);
   }
 
-  private getGlobalCommandText() {
-    return string.buildFromMetadata([
-      require('../new/command.json'),
-      require('./command.json')
-    ], this.ui.getWidth());
+  private async getGlobalCommandText() {
+    const commands = await Promise.all([
+      import('../new/command.json'),
+      import('./command.json')
+    ]);
+    return string.buildFromMetadata(
+      commands.map(c => c.default),
+      this.ui.getWidth());
   }
 
-  async getLocalCommandText() {
-    const commands = [
-      require('../generate/command.json'),
-      require('../config/command.json'),
-      require('./command.json')
-    ];
+  private async getLocalCommandText() {
+    const commands = await Promise.all([
+      import('../generate/command.json'),
+      import('../config/command.json'),
+      import('./command.json')
+    ]);
 
     const metadata = await this.project.getTaskMetadata();
     
-    return string.buildFromMetadata(metadata.concat(commands), this.ui.getWidth());
+    return string.buildFromMetadata(metadata.concat(commands.map(c => c.default)), this.ui.getWidth());
   }
 };
