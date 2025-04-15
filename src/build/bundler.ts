@@ -184,16 +184,18 @@ export class Bundler{
     }
   }
 
-  build(opts?: BuildOptions) {
-    let onRequiringModule: onRequiringModuleCallback | undefined, onNotBundled: onNotBundledCallback | undefined;
-    if (opts && typeof opts.onRequiringModule === 'function') {
+  async build(opts?: BuildOptions) {
+    let onRequiringModule: onRequiringModuleCallback | undefined, 
+        onNotBundled: onNotBundledCallback | undefined;
+        
+    if (opts?.onRequiringModule && typeof opts.onRequiringModule === 'function') {
       onRequiringModule = opts.onRequiringModule;
     }
-    if (opts && typeof opts.onNotBundled === 'function') {
+    if (opts?.onNotBundled && typeof opts.onNotBundled === 'function') {
       onNotBundled = opts.onNotBundled;
     }
 
-    const doTranform = (initSet?: Iterable<string>) => {
+    const doTransform = async (initSet?: Iterable<string>): Promise<void> => {
       const deps = new Set<string>(initSet);
 
       this.items.forEach(item => {
@@ -226,69 +228,64 @@ export class Bundler{
       if (deps.size) {
         const _leftOver = new Set<string>();
 
-        return Utils.runSequentially(
+        await Utils.runSequentially(
           Array.from(deps).sort(),
-          d => {
-            return new Promise<undefined | onRequiringModuleResult>(resolve => {
-              resolve(onRequiringModule && onRequiringModule(d));
-            }).then<void, void>(
-              result => {
-                // ignore this module id
-                if (result === false) return;
+          async (d) => {
+            try {
+              const result = await (onRequiringModule?.(d) ?? undefined);
 
-                // require other module ids instead
-                if (Array.isArray(result) && result.length) {
-                  result.forEach(dd => _leftOver.add(dd));
-                  return;
-                }
+              // ignore this module id
+              if (result === false) return;
 
-                // got full content of this module
-                if (typeof result === 'string') {
-                  let fakeFilePath = path.resolve(this.project.paths.root, d);
-
-                  const ext = path.extname(d).toLowerCase();
-                  if (!ext || Utils.knownExtensions.indexOf(ext) === -1) {
-                    fakeFilePath += '.js';
-                  }
-                  // we use '/' as separator even on Windows
-                  // because module id is using '/' as separator
-                  this.addFile({
-                    path: fakeFilePath,
-                    contents: result
-                  });
-                  return;
-                }
-
-                // process normally if result is not recognizable
-                return this.addMissingDep(d);
-              },
-              // proceed normally after error
-              err => {
-                logger.error(err);
-                return this.addMissingDep(d);
+              // require other module ids instead
+              if (Array.isArray(result) && result.length) {
+                result.forEach(dd => _leftOver.add(dd));
+                return;
               }
-            );
-          }
-        ).then(() => doTranform(_leftOver));
-      }
 
-      return Promise.resolve();
+              // got full content of this module
+              if (typeof result === 'string') {
+                let fakeFilePath = path.resolve(this.project.paths.root, d);
+                const ext = path.extname(d).toLowerCase();
+                if (!ext || Utils.knownExtensions.indexOf(ext) === -1) {
+                  fakeFilePath += '.js';
+                }
+                // we use '/' as separator even on Windows
+                // because module id is using '/' as separator
+                this.addFile({
+                  path: fakeFilePath,
+                  contents: result
+                });
+                return;
+              }
+
+              // process normally if result is not recognizable
+              await this.addMissingDep(d);
+            } catch (err) {
+              logger.error(err);
+              await this.addMissingDep(d);
+            }
+          }
+        );
+
+        await doTransform(_leftOver);
+      }
     };
 
     logger.info('Tracing files ...');
 
-    return Promise.resolve()
-      .then(() => doTranform())
-      .then(() => {
-        if (!onNotBundled) return;
+    try {
+      await doTransform();
+      
+      if (onNotBundled) {
         const notBundled = this.items.filter(t => !t.includedIn);
         if (notBundled.length) onNotBundled(notBundled);
-      })
-      .catch(e => {
-        logger.error('Failed to do transforms');
-        logger.info(e);
-        throw e;
-      });
+      }
+    } catch (e) {
+      logger.error('Failed to do transforms');
+      logger.info(e);
+      throw e;
+    }
   }
 
   async write() {
@@ -302,7 +299,7 @@ export class Bundler{
     return this.bundles.reduce<DependencyInclusion[]>((a, b) => a.concat(b.getDependencyInclusions()), []);
   }
 
-  addMissingDep(id: string) {
+  async addMissingDep(id: string) {
     const localFilePath = path.resolve(this.project.paths.root, id);
 
     // load additional local file missed by gulp tasks,
@@ -313,10 +310,10 @@ export class Bundler{
         path: localFilePath,
         contents: fs.readFileSync(localFilePath)
       });
-      return Promise.resolve();
+      return;
     }
 
-    return this.addNpmResource(id);
+    await this.addNpmResource(id);
   }
 
   async addNpmResource(id: string) {
@@ -350,32 +347,31 @@ export class Bundler{
       return Promise.resolve();
     }
 
-    return this.configureDependency(stub || nodeId)
-      .then(description => {
-        if (resourceId) {
-          description.loaderConfig.lazyMain = true;
-        }
-
-        if (stub) {
-          logger.info(`Auto stubbing module: ${nodeId}`);
-        } else {
-          logger.info(`Auto tracing ${description.banner}`);
-        }
-
-        return this.configTargetBundle.addDependency(description);
-      })
-      .then(inclusion => {
-        // now dependencyInclusion is created
-        // try again to use magical traceResource
-        if (resourceId) {
-          return inclusion.traceResource(resourceId);
-        }
-      })
-      .catch(e => {
-        logger.error('Failed to add Nodejs module ' + id);
-        logger.info(e);
-        // don't stop
-      });
+    try {
+      const description = await this.configureDependency(stub || nodeId);
+      
+      if (resourceId) {
+        description.loaderConfig.lazyMain = true;
+      }
+    
+      if (stub) {
+        logger.info(`Auto stubbing module: ${nodeId}`);
+      } else {
+        logger.info(`Auto tracing ${description.banner}`);
+      }
+    
+      const inclusion = await this.configTargetBundle.addDependency(description);
+      
+      // Now dependencyInclusion is created
+      // Try again to use magical traceResource
+      if (resourceId) {
+        return await inclusion.traceResource(resourceId);
+      }
+    } catch (e) {
+      logger.error('Failed to add Nodejs module ' + id);
+      logger.info(e);
+      // don't stop
+    }
   }
 };
 
