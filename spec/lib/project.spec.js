@@ -1,19 +1,23 @@
+/**
+ * @import {Project} from "../../src/project"
+ */
 const mockfs = require('../mocks/mock-fs');
 
 describe('The project module', () => {
   let path;
 
   let fs;
-
+  /** @type {Project} */
   let Project;
+  /** @type {Project} */
   let project;
 
   beforeEach(() => {
     path = require('path');
 
-    fs = require('../../lib/file-system');
+    fs = require('../../dist/file-system');
 
-    Project = require('../../lib/project').Project;
+    Project = require('../../dist/project').Project;
 
     mockfs();
 

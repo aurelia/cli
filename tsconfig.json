@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "rootDir": "./src",
+    "target": "ES2023",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "typeRoots": [ "node_modules/@types"],
+    "types": ["node"],
+    "sourceMap": true,
+    "outDir": "./dist",
+    "declaration": true,
+    "strict": false
+  },
+  "include": [
+    "src"
+  ]
+}

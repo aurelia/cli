@@ -4,9 +4,9 @@ const resolve = require('resolve');
 
 const semver = require('semver');
 const nodeVersion = process.versions.node;
-if (semver.lt(nodeVersion, '10.12.0')) {
+if (semver.lt(nodeVersion, '14.14.0')) {
   console.error(`You are running Node.js v${nodeVersion}.
-aurelia-cli requires Node.js v10.12.0 or above.
+aurelia-cli requires Node.js v14.14.0 or above.
 Please upgrade to latest Node.js https://nodejs.org`);
   process.exit(1);
 }
@@ -25,7 +25,7 @@ resolve('aurelia-cli', {
   let cli;
 
   if (commandName === 'new' || error) {
-    cli = new (require('../lib/index').CLI);
+    cli = new (require('../dist/index').CLI);
     cli.options.runningGlobally = true;
   } else {
     cli = new (require(projectLocalCli).CLI);

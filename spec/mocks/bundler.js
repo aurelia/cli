@@ -1,7 +1,7 @@
-const Configuration = require('../../lib/configuration').Configuration;
-const CLIOptions = require('../../lib/cli-options').CLIOptions;
+const Configuration = require('../../dist/configuration').Configuration;
+const CLIOptions = require('../../dist/cli-options').CLIOptions;
 const ProjectMock = require('./project-mock');
-const LoaderPlugin = require('../../lib/build/loader-plugin').LoaderPlugin;
+const LoaderPlugin = require('../../dist/build/loader-plugin').LoaderPlugin;
 
 module.exports = class Bundler {
   constructor() {

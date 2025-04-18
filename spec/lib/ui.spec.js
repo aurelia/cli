@@ -1,4 +1,4 @@
-const {ConsoleUI} = require('../../lib/ui');
+const {ConsoleUI} = require('../../dist/ui');
 
 describe('The UI module', () => {
   let flags = [];

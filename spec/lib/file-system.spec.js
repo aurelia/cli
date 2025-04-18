@@ -16,7 +16,7 @@ describe('The file-system module', () => {
 
   beforeEach(() => {
     path = require('path');
-    fs = require('../../lib/file-system');
+    fs = require('../../dist/file-system');
 
     readDir = 'read';
     readFile = {

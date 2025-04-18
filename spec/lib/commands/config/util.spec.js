@@ -1,8 +1,8 @@
 const mockfs = require('../../../mocks/mock-fs');
 
 describe('The config command - util', () => {
-  const CLIOptions = require('../../../../lib/cli-options').CLIOptions;
-  const ConfigurationUtilities = require('../../../../lib/commands/config/util');
+  const CLIOptions = require('../../../../dist/cli-options').CLIOptions;
+  const ConfigurationUtilities = require('../../../../dist/commands/config/util').ConfigurationUtilities;
 
   beforeEach(() => {
     mockfs({

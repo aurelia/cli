@@ -1,6 +1,6 @@
 const path = require('path');
 const mockfs = require('../../mocks/mock-fs');
-const PackageAnalyzer = require('../../../lib/build/package-analyzer').PackageAnalyzer;
+const PackageAnalyzer = require('../../../dist/build/package-analyzer').PackageAnalyzer;
 
 describe('The PackageAnalyzer', () => {
   let project;
@@ -424,15 +424,15 @@ describe('The PackageAnalyzer', () => {
   it('analyze() reads package.json as package metadata with implicit /index.js in main path', done => {
     // setup mock package.json
     const fsConfig = {};
-    fsConfig[path.join('node_modules/my-package', 'package.json')] = '{ "name": "my-package", "main": "./lib" }';
-    fsConfig[path.join('node_modules/my-package/lib', 'index.js')] = 'some-content';
+    fsConfig[path.join('node_modules/my-package', 'package.json')] = '{ "name": "my-package", "main": "./dist" }';
+    fsConfig[path.join('node_modules/my-package/dist', 'index.js')] = 'some-content';
     fsConfig[project.paths.root] = {};
     mockfs(fsConfig);
 
     sut.analyze('my-package')
       .then(description => {
         expect(description.metadata.name).toBe('my-package');
-        expect(description.loaderConfig.main).toBe('lib/index');
+        expect(description.loaderConfig.main).toBe('dist/index');
         done();
       })
       .catch(e => done.fail(e));
@@ -441,15 +441,15 @@ describe('The PackageAnalyzer', () => {
   it('analyze() reads package.json as package metadata with explicit /index.js in main path', done => {
     // setup mock package.json
     const fsConfig = {};
-    fsConfig[path.join('node_modules/my-package', 'package.json')] = '{ "name": "my-package", "main": "lib/index.js" }';
-    fsConfig[path.join('node_modules/my-package/lib', 'index.js')] = 'some-content';
+    fsConfig[path.join('node_modules/my-package', 'package.json')] = '{ "name": "my-package", "main": "dist/index.js" }';
+    fsConfig[path.join('node_modules/my-package/dist', 'index.js')] = 'some-content';
     fsConfig[project.paths.root] = {};
     mockfs(fsConfig);
 
     sut.analyze('my-package')
       .then(description => {
         expect(description.metadata.name).toBe('my-package');
-        expect(description.loaderConfig.main).toBe('lib/index');
+        expect(description.loaderConfig.main).toBe('dist/index');
         done();
       })
       .catch(e => done.fail(e));

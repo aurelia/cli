@@ -11,7 +11,7 @@ describe('The cli-options', () => {
     };
     mockfs(fsConfig);
 
-    cliOptions = new(require('../../lib/cli-options').CLIOptions)();
+    cliOptions = new(require('../../dist/cli-options').CLIOptions)();
   });
 
   afterEach(() => {

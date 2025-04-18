@@ -1,0 +1,13 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": null,
+    "rootDirs": ["../src", "./"],
+    "allowJs": true,
+    "module": "CommonJS",
+    "moduleResolution": "node"
+  },
+  "include": [
+    "./**/*.js"
+  ]
+}
