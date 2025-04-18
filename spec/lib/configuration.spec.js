@@ -1,4 +1,4 @@
-const Configuration = require('../../lib/configuration').Configuration;
+const Configuration = require('../../dist/configuration').Configuration;
 const CLIOptionsMock = require('../mocks/cli-options');
 
 describe('the Configuration module', () => {

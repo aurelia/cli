@@ -1,9 +1,9 @@
 const BundlerMock = require('../../mocks/bundler');
-const Bundle = require('../../../lib/build/bundle').Bundle;
+const Bundle = require('../../../dist/build/bundle').Bundle;
 const CLIOptionsMock = require('../../mocks/cli-options');
-const DependencyDescription = require('../../../lib/build/dependency-description').DependencyDescription;
-const SourceInclusion = require('../../../lib/build/source-inclusion').SourceInclusion;
-const DependencyInclusion = require('../../../lib/build/dependency-inclusion').DependencyInclusion;
+const DependencyDescription = require('../../../dist/build/dependency-description').DependencyDescription;
+const SourceInclusion = require('../../../dist/build/source-inclusion').SourceInclusion;
+const DependencyInclusion = require('../../../dist/build/dependency-inclusion').DependencyInclusion;
 const path = require('path');
 const minimatch = require('minimatch');
 

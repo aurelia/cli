@@ -1,5 +1,5 @@
 const BundlerMock = require('../../mocks/bundler');
-const SourceInclusion = require('../../../lib/build/source-inclusion').SourceInclusion;
+const SourceInclusion = require('../../../dist/build/source-inclusion').SourceInclusion;
 const mockfs = require('../../mocks/mock-fs');
 const Minimatch = require('minimatch').Minimatch;
 const path = require('path');

@@ -1,4 +1,4 @@
-const fd = require('../../../lib/build/find-deps');
+const fd = require('../../../dist/build/find-deps');
 const mockfs = require('../../mocks/mock-fs');
 const findJsDeps = fd.findJsDeps;
 const findHtmlDeps = fd.findHtmlDeps;

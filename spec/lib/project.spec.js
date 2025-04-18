@@ -11,9 +11,9 @@ describe('The project module', () => {
   beforeEach(() => {
     path = require('path');
 
-    fs = require('../../lib/file-system');
+    fs = require('../../dist/file-system');
 
-    Project = require('../../lib/project').Project;
+    Project = require('../../dist/project').Project;
 
     mockfs();
 

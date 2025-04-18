@@ -1,4 +1,4 @@
-const stubModule = require('../../../lib/build/stub-module').stubModule;
+const stubModule = require('../../../dist/build/stub-module').stubModule;
 
 describe('StubCoreNodejsModule', () => {
   it('stubs some core module with subfix -browserify', async () => {

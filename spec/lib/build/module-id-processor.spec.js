@@ -1,4 +1,4 @@
-const { toDotDot, fromDotDot, getAliases } = require('../../../lib/build/module-id-processor');
+const { toDotDot, fromDotDot, getAliases } = require('../../../dist/build/module-id-processor');
 
 describe('module-id-processor', () => {
   const moduleId = '../src/elements/hello-world.ts';
