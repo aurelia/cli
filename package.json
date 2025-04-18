@@ -20,7 +20,7 @@
   "scripts": {
     "prebuild": "node build/clean-dir.mjs && npm run lint",
     "build": "node build/esbuild.mjs",
-    "build:dts": "npx run tsc --emitDeclarationOnly",
+    "build:dts": "npx tsc --emitDeclarationOnly",
     "postbuild": "npm run build:dts",
     "lint": "eslint src",
     "pretest": "npm run lint && npm run build",
