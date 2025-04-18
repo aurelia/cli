@@ -1,7 +1,7 @@
 // The order of these transforms is informed by how they were done in the
 // requirejs optimizer.
 import { stubs } from './stubs';
-import defines = require('./defines');
+import { defines} from './defines';
 import { replace } from './replace';
 
 var transforms = [ stubs, defines, replace ];
