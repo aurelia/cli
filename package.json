@@ -38,6 +38,7 @@
   "typings": "dist/index.d.ts",
   "files": [
     "bin",
+    "build",
     "dist",
     "lib"
   ],
