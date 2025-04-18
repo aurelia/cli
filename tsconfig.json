@@ -9,14 +9,11 @@
     "typeRoots": [ "node_modules/@types"],
     "types": ["node"],
     "sourceMap": true,
-    "outDir": "./lib",
-    
+    "outDir": "./dist",
+    "declaration": true,
     "strict": false
   },
   "include": [
     "src"
-  ],
-  "exclude": [
-    "package.json"
   ]
 }

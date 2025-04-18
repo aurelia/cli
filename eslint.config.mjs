@@ -6,7 +6,7 @@ import globals from "globals";
 
 export default tseslint.config(
   {
-    ignores: ["src/build/amodro-trace", "**/dist", "**/lib", "./spec"]
+    ignores: ['src/build/amodro-trace', '**/dist', '**/lib', './spec', './build']
   },
   eslint.configs.recommended,
   tseslint.configs.recommended,
