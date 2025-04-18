@@ -1,4 +1,4 @@
-import { CLIOptions } from "../../cli-options";
+import { CLIOptions } from '../../cli-options';
 
 export class ConfigurationUtilities {
   private options: CLIOptions;

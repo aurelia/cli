@@ -1,5 +1,5 @@
-import { Configuration } from "../configuration";
-import { Bundler } from "./bundler";
+import { Configuration } from '../configuration';
+import { Bundler } from './bundler';
 
 import * as path from 'node:path';
 import * as os from 'node:os';
@@ -10,9 +10,9 @@ import * as fs from '../file-system';
 import { SourceInclusion } from './source-inclusion';
 import { DependencyInclusion } from './dependency-inclusion';
 import * as Utils from './utils';
-import { DependencyDescription } from "./dependency-description";
+import { DependencyDescription } from './dependency-description';
 import { getLogger } from 'aurelia-logging';
-import { BundledSource } from "./bundled-source";
+import { BundledSource } from './bundled-source';
 const logger = getLogger('Bundle');
 
 
@@ -445,9 +445,9 @@ export class Bundle {
 
         contents = minificationResult.code;
         if (needsSourceMap){
-          if (typeof minificationResult.map !== "string"){
-            console.error("`minificationResult.map` should be string!", minificationOptions);
-            throw new Error("`minificationResult.map` should be string!");
+          if (typeof minificationResult.map !== 'string'){
+            console.error('`minificationResult.map` should be string!', minificationOptions);
+            throw new Error('`minificationResult.map` should be string!');
           }
           bundleMap = Convert.fromJSON(minificationResult.map).toObject();
         }
@@ -456,7 +456,7 @@ export class Bundle {
           .setProperty('sourceRoot', mapSourceRoot)
           .toObject();
 
-        if (typeof contents !== "string") {
+        if (typeof contents !== 'string') {
           contents = contents.toString();
         }
         contents += os.EOL + '//# sourceMappingURL=' +  path.basename(mapFileName);

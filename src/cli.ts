@@ -3,7 +3,7 @@ import { Container } from 'aurelia-dependency-injection';
 import * as fs from './file-system';
 import * as ui from './ui';
 import { Project } from './project';
-import { CLIOptions } from "./cli-options";
+import { CLIOptions } from './cli-options';
 import * as LogManager from 'aurelia-logging';
 import { Logger } from './logger';
 

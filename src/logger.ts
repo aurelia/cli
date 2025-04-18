@@ -1,4 +1,4 @@
-import { UI } from "./ui";
+import { UI } from './ui';
 import * as c from 'ansi-colors';
 
 interface ILogger {

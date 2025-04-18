@@ -1,4 +1,4 @@
-import { CLIOptions } from "./cli-options";
+import { CLIOptions } from './cli-options';
 
 import * as os from 'os';
 import { readFile } from './file-system';

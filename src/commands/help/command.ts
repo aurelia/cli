@@ -1,5 +1,5 @@
-import { CLIOptions } from "../../cli-options";
-import * as ui from "../../ui";
+import { CLIOptions } from '../../cli-options';
+import * as ui from '../../ui';
 import { Optional } from 'aurelia-dependency-injection';
 import { Project } from '../../project';
 import * as string from '../../string';

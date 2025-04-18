@@ -206,7 +206,7 @@ export function compilePattern(pattern: string | meriyah.ESTree.Node) {
 
 function ensureParsed(codeOrNode: string | meriyah.ESTree.Node) {
   // bypass parsed node
-  if (typeof codeOrNode !== 'string' && "type" in codeOrNode) {
+  if (typeof codeOrNode !== 'string' && 'type' in codeOrNode) {
     return codeOrNode;
   }
   if (typeof codeOrNode === 'string') {

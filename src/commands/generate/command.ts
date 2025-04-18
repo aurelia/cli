@@ -1,7 +1,7 @@
-import { Container } from "aurelia-dependency-injection";
-import { UI } from "../../ui";
-import { CLIOptions } from "../../cli-options";
-import { Project } from "../../project";
+import { Container } from 'aurelia-dependency-injection';
+import { UI } from '../../ui';
+import { CLIOptions } from '../../cli-options';
+import { Project } from '../../project';
 
 import * as string from '../../string';
 import * as os from 'node:os';

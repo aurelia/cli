@@ -1,8 +1,8 @@
-import { Container } from "aurelia-dependency-injection";
-import { UI } from "../ui";
-import { CLIOptions } from "../cli-options";
-import { Project } from "../project";
-import { type Gulp } from "gulp";
+import { Container } from 'aurelia-dependency-injection';
+import { UI } from '../ui';
+import { CLIOptions } from '../cli-options';
+import { Project } from '../project';
+import { type Gulp } from 'gulp';
 
 export default class {
   static inject() { return [Container, UI, CLIOptions, Project]; }

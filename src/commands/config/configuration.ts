@@ -125,7 +125,7 @@ export class Configuration {
       } else if (!entry) {
         console.log('No property', this.normalizeKey(originalKey), 'to remove from!');
       } else {
-        console.log("Can't remove value from", entry[parsedKey.value], '!');
+        console.log('Can\'t remove value from', entry[parsedKey.value], '!');
       }
     }
     key = this.normalizeKey(originalKey);

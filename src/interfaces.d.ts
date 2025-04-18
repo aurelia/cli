@@ -100,7 +100,7 @@ declare namespace AureliaJson {
   }
 }
 
-type LoaderType = "require" | "system";
+type LoaderType = 'require' | 'system';
 
 interface ILoaderConfig {
   name: string;

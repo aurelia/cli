@@ -1,6 +1,6 @@
 import { Bundle } from './bundle';
 import { BundledSource } from './bundled-source';
-import { CLIOptions } from "../cli-options";
+import { CLIOptions } from '../cli-options';
 import { LoaderPlugin } from './loader-plugin';
 import { Configuration } from '../configuration';
 import * as path from 'node:path';

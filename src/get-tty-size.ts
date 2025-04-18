@@ -12,7 +12,7 @@ export function getTtySize() {
   if (tty.isatty(1) && tty.isatty(2)) {
     if (process.stdout.getWindowSize) {
       [width, height] = process.stdout.getWindowSize();
-    } else if ("getWindowSize" in tty && typeof tty.getWindowSize === "function") {
+    } else if ('getWindowSize' in tty && typeof tty.getWindowSize === 'function') {
       [height, width] = tty.getWindowSize();
     } else if (process.stdout.columns && process.stdout.rows) {
       height = process.stdout.rows;

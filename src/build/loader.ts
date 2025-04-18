@@ -4,8 +4,8 @@ import { type Bundler } from './bundler';
 import { type Bundle } from './bundle';
 import { type LoaderPlugin } from './loader-plugin';
 
-export type LoaderOptions = Omit<AureliaJson.ILoader, "plugins"> & { plugins: LoaderPlugin[] };
-type LoaderBundlesConfig = { bundles?: Record<string, string[]>; map: Omit<Record<string, string>, "bundles">};
+export type LoaderOptions = Omit<AureliaJson.ILoader, 'plugins'> & { plugins: LoaderPlugin[] };
+type LoaderBundlesConfig = { bundles?: Record<string, string[]>; map: Omit<Record<string, string>, 'bundles'>};
 type LoaderConfig = AureliaJson.ILoaderConfig & Partial<LoaderBundlesConfig>;
 
 export function createLoaderCode(platform: AureliaJson.ITarget, bundler: Bundler) {

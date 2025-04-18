@@ -143,5 +143,3 @@ function toTransport(context: IBundleSourceContext, moduleName: string,
   return transform.toTransport('', moduleName, filePath,
                                contents, onFound, options);
 };
-
-module.exports = defines;

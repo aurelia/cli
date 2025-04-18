@@ -1,6 +1,6 @@
 import { spawn, type ChildProcess } from 'node:child_process';
 import npmWhich from 'npm-which';
-const isWindows = process.platform === "win32";
+const isWindows = process.platform === 'win32';
 
 export abstract class BasePackageManager {
   private executableName: string;
@@ -24,7 +24,7 @@ export abstract class BasePackageManager {
       this.proc = spawn(
         executable,
         [command, ...args],
-        { stdio: "inherit", cwd: workingDirectory, shell: isWindows }
+        { stdio: 'inherit', cwd: workingDirectory, shell: isWindows }
       )
         .on('close', resolve)
         .on('error', reject);
