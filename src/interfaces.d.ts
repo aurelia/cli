@@ -12,7 +12,8 @@ declare namespace AureliaJson {
     jsonProcessor: {
       source: string[];
     }
-    build: IBuild
+    build: IBuild,
+    packageManager?: 'npm' | 'yarn';
   }
 
   interface IBuild {

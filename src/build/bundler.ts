@@ -9,7 +9,6 @@ import * as Utils from './utils';
 import { getLogger } from 'aurelia-logging';
 import { stubModule } from './stub-module';
 
-import { type Project } from '../project';
 import { type PackageAnalyzer } from './package-analyzer';
 import { type PackageInstaller } from './package-installer';
 import { type SourceInclusion } from './source-inclusion';
@@ -47,7 +46,7 @@ type onNotBundledCallback = (items: BundledSource[]) => void;
 const logger = getLogger('Bundler');
 
 export class Bundler{
-  public project: Project;
+  public project: AureliaJson.IProject;
   private packageAnalyzer: PackageAnalyzer;
   private packageInstaller: PackageInstaller;
   public readonly bundles: Bundle[];
@@ -61,7 +60,7 @@ export class Bundler{
   public loaderConfig: AureliaJson.ILoaderConfig;
   public configTargetBundle: Bundle;
 
-  constructor(project: Project, packageAnalyzer: PackageAnalyzer, packageInstaller: PackageInstaller) {
+  constructor(project: AureliaJson.IProject, packageAnalyzer: PackageAnalyzer, packageInstaller: PackageInstaller) {
     this.project = project;
     this.packageAnalyzer = packageAnalyzer;
     this.packageInstaller = packageInstaller;
@@ -104,7 +103,7 @@ export class Bundler{
     this.loaderOptions = {...project.build.loader, plugins};
   }
 
-  static async create(project: Project, packageAnalyzer: PackageAnalyzer, packageInstaller: PackageInstaller) {
+  static async create(project: AureliaJson.IProject, packageAnalyzer: PackageAnalyzer, packageInstaller: PackageInstaller) {
     const bundler = new Bundler(project, packageAnalyzer, packageInstaller);
 
     await Promise.all(

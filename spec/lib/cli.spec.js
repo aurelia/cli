@@ -1,10 +1,17 @@
+/**
+ * @import {Project} from "../../src/project"
+ * @import { CLI } from "../../src/cli"
+ */
 const mockfs = require('../mocks/mock-fs');
 
 describe('The cli', () => {
   let fs;
   let path;
+  /** @type {CLI} */
   let cli;
+  /** @type {Project} */
   let Project;
+  /** @type {Project} */
   let project;
 
   let dir;

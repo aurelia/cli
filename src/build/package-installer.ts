@@ -1,16 +1,15 @@
 import * as path from 'node:path';
 import * as fs from '../file-system';
-import { Project } from '../project';
 import { BasePackageManager } from '../package-managers/base-package-manager';
 import { getLogger } from 'aurelia-logging';
 const logger = getLogger('Package-installer');
 
 
 export class PackageInstaller {
-  private project: Project;
+  private project: AureliaJson.IProject;
   private _packageManager: string | undefined;
 
-  constructor(project: Project) {
+  constructor(project: AureliaJson.IProject) {
     this.project = project;
   }
 

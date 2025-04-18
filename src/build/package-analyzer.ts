@@ -2,14 +2,13 @@ import * as fs from '../file-system';
 import * as path from 'node:path';
 import { DependencyDescription } from './dependency-description';
 import * as Utils from './utils';
-import { Project } from '../project';
 import { getLogger } from 'aurelia-logging';
 const logger = getLogger('PackageAnalyzer');
 
 export class PackageAnalyzer {
-  private project: Project;
+  private project: AureliaJson.IProject;
 
-  constructor(project: Project) {
+  constructor(project: AureliaJson.IProject) {
     this.project = project;
   }
 
@@ -80,7 +79,7 @@ export class PackageAnalyzer {
   }
 };
 
-function fillUpPackageRoot(project: Project, description: DependencyDescription) {
+function fillUpPackageRoot(project: AureliaJson.IProject, description: DependencyDescription) {
   let _path = description.loaderConfig.path;
 
   const ext = path.extname(_path).toLowerCase();
@@ -98,7 +97,7 @@ function fillUpPackageRoot(project: Project, description: DependencyDescription)
   }
 }
 
-async function loadPackageMetadata(project: Project, description: DependencyDescription): Promise<void> {
+async function loadPackageMetadata(project: AureliaJson.IProject, description: DependencyDescription): Promise<void> {
   await setLocation(project, description);
   try {
     if (description.metadataLocation) {
@@ -115,7 +114,7 @@ async function loadPackageMetadata(project: Project, description: DependencyDesc
 // In auto traced nodejs package, loaderConfig.path always matches description.location.
 // We then use auto-generated moduleId aliases in dependency-inclusion to make AMD
 // module system happy.
-function determineLoaderConfig(project: Project, description: DependencyDescription) {
+function determineLoaderConfig(project: AureliaJson.IProject, description: DependencyDescription) {
   const location = path.resolve(description.location);
   const mainPath = Utils.nodejsLoad(location);
 
@@ -133,7 +132,7 @@ function determineLoaderConfig(project: Project, description: DependencyDescript
   }
 }
 
-async function setLocation(project: Project, description: DependencyDescription) {
+async function setLocation(project: AureliaJson.IProject, description: DependencyDescription) {
   switch (description.source) {
   case 'npm':
     { const packageFolder = await getPackageFolder(project, description);
@@ -148,14 +147,14 @@ async function setLocation(project: Project, description: DependencyDescription)
   }
 }
 
-async function tryFindMetadata(project: Project, description: DependencyDescription) {
+async function tryFindMetadata(project: AureliaJson.IProject, description: DependencyDescription) {
   try {
     await fs.stat(path.join(description.location, 'package.json'));
     return description.metadataLocation = path.join(description.location, 'package.json');
   } catch { /* empty */ }
 }
 
-async function getPackageFolder(project: Project, description: DependencyDescription) {
+async function getPackageFolder(project: AureliaJson.IProject, description: DependencyDescription) {
   if (!description.loaderConfig || !description.loaderConfig.path) {
     return await Utils.resolvePackagePath(description.name)
   }

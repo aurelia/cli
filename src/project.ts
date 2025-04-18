@@ -14,10 +14,6 @@ export class Project implements Record<keyof AureliaJson.IPaths, ProjectItem> {
   private locations: ProjectItem[];
   private generators: ProjectItem;
   private tasks: ProjectItem;
-  public packageManager: string | undefined;
-
-  public paths: AureliaJson.IPaths;
-  public build: AureliaJson.IBuild;
 
   // From AureliaJson.IPaths
   public root: ProjectItem | undefined;

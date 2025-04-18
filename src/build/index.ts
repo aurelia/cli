@@ -4,13 +4,12 @@ import { PackageAnalyzer } from './package-analyzer';
 import { PackageInstaller } from './package-installer';
 import { cacheDir } from './utils';
 import * as fs from 'node:fs';
-import { type Project } from '../project';
 
 let bundler: Bundler | undefined;
-let project: Project | undefined;
+let project: AureliaJson.IProject | undefined;
 let isUpdating = false;
 
-export async function src(p: Project) {
+export async function src(p: AureliaJson.IProject) {
   if (bundler) {
     isUpdating = true;
     return Promise.resolve(bundler);
@@ -25,7 +24,7 @@ export async function src(p: Project) {
   return bundler = b;
 };
 
-export async function createLoaderCode(p?: Project) {
+export async function createLoaderCode(p?: AureliaJson.IProject) {
   const createLoaderCode = (await import('./loader')).createLoaderCode;
   project = p || project;
   await buildLoaderConfig(project);
@@ -33,7 +32,7 @@ export async function createLoaderCode(p?: Project) {
   return createLoaderCode(platform, bundler);
 };
 
-export async function createLoaderConfig(p?: Project) {
+export async function createLoaderConfig(p?: AureliaJson.IProject) {
   const createLoaderConfig = (await import('./loader')).createLoaderConfig;
   project = p || project;
 
@@ -61,7 +60,7 @@ export function clearCache() {
   return fs.promises.rm(cacheDir, { recursive: true, force: true });
 };
 
-async function buildLoaderConfig(p: Project) {
+async function buildLoaderConfig(p: AureliaJson.IProject) {
   project = p || project;
   let configPromise = Promise.resolve();
 
