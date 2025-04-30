@@ -1,5 +1,5 @@
 /* global document */
-let cssUrlMatcher = /url\s*\(\s*(?!['"]data)([^) ]+)\s*\)/gi;
+const cssUrlMatcher = /url\s*\(\s*(?!['"]data)([^) ]+)\s*\)/gi;
 
 // copied from aurelia-templating-resources css-resource
 // This behaves differently from webpack's style-loader.
@@ -9,12 +9,12 @@ let cssUrlMatcher = /url\s*\(\s*(?!['"]data)([^) ]+)\s*\)/gi;
 // We inject css into a style tag on html head, it means the 'foo/hello.png'
 // is related to current url (not css url on link tag), or <base> tag in html
 // head (which is recommended setup of router if not using hash).
-function fixupCSSUrls(address, css) {
+export function fixupCSSUrls(address: string, css: string) {
   if (typeof css !== 'string') {
     throw new Error(`Failed loading required CSS file: ${address}`);
   }
   return css.replace(cssUrlMatcher, (match, p1) => {
-    let quote = p1.charAt(0);
+    const quote = p1.charAt(0);
     if (quote === '\'' || quote === '"') {
       p1 = p1.substr(1, p1.length - 2);
     }
@@ -26,10 +26,10 @@ function fixupCSSUrls(address, css) {
   });
 }
 
-function absoluteModuleId(baseId, moduleId) {
+function absoluteModuleId(baseId: string, moduleId: string) {
   if (moduleId[0] !== '.') return moduleId;
 
-  let parts = baseId.split('/');
+  const parts = baseId.split('/');
   parts.pop();
 
   moduleId.split('/').forEach(p => {
@@ -45,14 +45,14 @@ function absoluteModuleId(baseId, moduleId) {
 }
 
 // copied from aurelia-pal-browser DOM.injectStyles
-function injectCSS(css, id) {
+export function injectCSS(css: string, id: string) {
   if (typeof document === 'undefined' || !css) return;
   css = fixupCSSUrls(id, css);
 
   if (id) {
-    let oldStyle = document.getElementById(id);
+    const oldStyle = document.getElementById(id);
     if (oldStyle) {
-      let isStyleTag = oldStyle.tagName.toLowerCase() === 'style';
+      const isStyleTag = oldStyle.tagName.toLowerCase() === 'style';
 
       if (isStyleTag) {
         oldStyle.innerHTML = css;
@@ -63,7 +63,7 @@ function injectCSS(css, id) {
     }
   }
 
-  let node = document.createElement('style');
+  const node = document.createElement('style');
   node.innerHTML = css;
   node.type = 'text/css';
 
@@ -73,7 +73,3 @@ function injectCSS(css, id) {
 
   document.head.appendChild(node);
 }
-
-injectCSS.fixupCSSUrls = fixupCSSUrls;
-
-module.exports = injectCSS;

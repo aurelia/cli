@@ -1,10 +1,18 @@
-const path = require('path');
-const fs = require('./file-system');
-const Utils = require('./build/utils');
+import * as path from 'node:path';
+import * as fs from './file-system';
+import * as Utils from './build/utils';
 
 // Legacy code, kept only for supporting `au generate`
-exports.ProjectItem = class {
-  constructor(name, isDirectory) {
+export class ProjectItem {
+  public parent: ProjectItem | undefined;
+  public text: string | undefined;
+
+  /** Accessed from `aurelia_project/components.ts` */
+  public readonly name: string;
+  private readonly isDirectory: boolean;
+  private _children: ProjectItem[] | undefined;
+
+  constructor(name: string, isDirectory: boolean) {
     this.name = name;
     this.isDirectory = !!isDirectory;
   }
@@ -17,13 +25,13 @@ exports.ProjectItem = class {
     return this._children;
   }
 
-  add() {
+  add(...children: ProjectItem[]) {
     if (!this.isDirectory) {
       throw new Error('You cannot add items to a non-directory.');
     }
 
-    for (let i = 0; i < arguments.length; ++i) {
-      let child = arguments[i];
+    for (let i = 0; i < children.length; ++i) {
+      const child = children[i];
 
       if (this.children.indexOf(child) !== -1) {
         continue;
@@ -36,38 +44,39 @@ exports.ProjectItem = class {
     return this;
   }
 
-  calculateRelativePath(fromLocation) {
+  calculateRelativePath(fromLocation: string | ProjectItem): string {
     if (this === fromLocation) {
       return '';
     }
 
-    let parentRelativePath = (this.parent && this.parent !== fromLocation)
+    const parentRelativePath = (this.parent && this.parent !== fromLocation)
       ? this.parent.calculateRelativePath(fromLocation)
       : '';
 
     return path.posix.join(parentRelativePath, this.name);
   }
 
-  create(relativeTo) {
-    let fullPath = relativeTo ? this.calculateRelativePath(relativeTo) : this.name;
+  async create(relativeTo: string): Promise<void> {
+    const fullPath = relativeTo ? this.calculateRelativePath(relativeTo) : this.name;
 
     // Skip empty folder
     if (this.isDirectory && this.children.length) {
-      return fs.stat(fullPath)
-        .then(result => result)
-        .catch(() => fs.mkdir(fullPath))
-        .then(() => Utils.runSequentially(this.children, child => child.create(fullPath)));
+        try {
+            await fs.stat(fullPath);
+        } catch {
+            await fs.mkdir(fullPath);
+        }
+        await Utils.runSequentially(this.children, child => child.create(fullPath));
+        return;
     }
 
     if (this.text) {
-      return fs.writeFile(fullPath, this.text);
+        await fs.writeFile(fullPath, this.text);
     }
-
-    return Promise.resolve();
-  }
+}
 
 
-  setText(text) {
+  setText(text: string) {
     this.text = text;
     return this;
   }
@@ -76,11 +85,11 @@ exports.ProjectItem = class {
     return this.text;
   }
 
-  static text(name, text) {
-    return new exports.ProjectItem(name, false).setText(text);
+  static text(name: string, text: string) {
+    return new ProjectItem(name, false).setText(text);
   }
 
-  static directory(p) {
-    return new exports.ProjectItem(p, true);
+  static directory(p: string) {
+    return new ProjectItem(p, true);
   }
 };

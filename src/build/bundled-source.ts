@@ -1,14 +1,26 @@
-const path = require('path');
-const findDeps = require('./find-deps').findDeps;
-const cjsTransform = require('./amodro-trace/read/cjs');
-const esTransform = require('./amodro-trace/read/es');
-const allWriteTransforms = require('./amodro-trace/write/all');
-const Utils = require('./utils');
-const logger = require('aurelia-logging').getLogger('BundledSource');
-const { getAliases, toDotDot } = require('./module-id-processor');
+import * as path from 'node:path';
+import { findDeps } from './find-deps';
+import { cjs as cjsTransform } from './amodro-trace/read/cjs';
+import { es as esTransform } from './amodro-trace/read/es';
+import { all as allWriteTransforms } from './amodro-trace/write/all';
+import * as Utils from './utils';
+import { getAliases, toDotDot } from './module-id-processor';
+import { getLogger } from 'aurelia-logging';
+import { type Bundler } from './bundler';
+import { type Bundle } from './bundle';
+import { type SourceInclusion } from './source-inclusion';
+const logger = getLogger('BundledSource');
 
-exports.BundledSource = class {
-  constructor(bundler, file) {
+export class BundledSource {
+  private readonly bundler: Bundler;
+  private file: IFile;
+  public includedIn: Bundle | null;
+  public includedBy: SourceInclusion | null;
+  private _contents: string | null;
+  private requiresTransform: boolean;
+  private _moduleId: string | undefined;
+
+  constructor(bundler: Bundler, file: IFile) {
     this.bundler = bundler;
     this.file = file;
     this.includedIn = null;
@@ -25,7 +37,7 @@ exports.BundledSource = class {
     return this.file.path;
   }
 
-  set contents(value) {
+  set contents(value: string) {
     this._contents = value;
   }
 
@@ -42,39 +54,39 @@ exports.BundledSource = class {
     }
   }
 
-  _getProjectRoot() {
+  private _getProjectRoot() {
     return this.bundler.project.paths.root;
   }
 
-  _getLoaderPlugins() {
+  private _getLoaderPlugins() {
     return this.bundler.loaderOptions.plugins;
   }
 
-  _getLoaderType() {
+  private _getLoaderType() {
     return this.bundler.loaderOptions.type;
   }
 
-  _getLoaderConfig() {
+  private _getLoaderConfig() {
     return this.bundler.loaderConfig;
   }
 
-  _getUseCache() {
+  private _getUseCache() {
     return this.bundler.buildOptions.isApplicable('cache');
   }
 
   get moduleId() {
     if (this._moduleId) return this._moduleId;
 
-    let dependencyInclusion = this.dependencyInclusion;
-    let projectRoot = this._getProjectRoot();
-    let moduleId;
+    const dependencyInclusion = this.dependencyInclusion;
+    const projectRoot = this._getProjectRoot();
+    let moduleId: string;
 
     if (dependencyInclusion) {
-      let loaderConfig = dependencyInclusion.description.loaderConfig;
-      let root = path.resolve(projectRoot, loaderConfig.path);
+      const loaderConfig = dependencyInclusion.description.loaderConfig;
+      const root = path.resolve(projectRoot, loaderConfig.path);
       moduleId = path.join(loaderConfig.name, this.path.replace(root, ''));
     } else {
-      let modulePath = path.relative(projectRoot, this.path);
+      const modulePath = path.relative(projectRoot, this.path);
       moduleId = path.normalize(modulePath);
     }
 
@@ -87,7 +99,7 @@ exports.BundledSource = class {
     return this._moduleId;
   }
 
-  update(file) {
+  update(file: IFile) {
     this.file = file;
     this._contents = null;
     this.requiresTransform = true;
@@ -103,15 +115,15 @@ exports.BundledSource = class {
       return;
     }
 
-    let dependencyInclusion = this.dependencyInclusion;
-    let browserReplacement = dependencyInclusion &&
+    const dependencyInclusion = this.dependencyInclusion;
+    const browserReplacement = dependencyInclusion &&
       dependencyInclusion.description.browserReplacement();
 
-    let loaderPlugins = this._getLoaderPlugins();
-    let loaderType = this._getLoaderType();
-    let loaderConfig = this._getLoaderConfig();
-    let moduleId = this.moduleId;
-    let modulePath = this.path;
+    const loaderPlugins = this._getLoaderPlugins();
+    const loaderType = this._getLoaderType();
+    const loaderConfig = this._getLoaderConfig();
+    const moduleId = this.moduleId;
+    const modulePath = this.path;
 
     getAliases(moduleId, loaderConfig.paths).forEach(alias => {
       this.bundler.configTargetBundle.addAlias(alias.fromId, alias.toId);
@@ -119,9 +131,9 @@ exports.BundledSource = class {
 
     logger.debug(`Tracing ${moduleId}`);
 
-    let deps;
+    let deps: string[];
 
-    let matchingPlugin = loaderPlugins.find(p => p.matches(modulePath));
+    const matchingPlugin = loaderPlugins.find(p => p.matches(modulePath));
 
     if (path.extname(modulePath).toLowerCase() === '.json') {
       // support text! prefix
@@ -137,17 +149,17 @@ exports.BundledSource = class {
     } else {
       deps = [];
 
-      let context = {pkgsMainMap: {}, config: {shim: {}}};
-      let desc = dependencyInclusion && dependencyInclusion.description;
+      const context: IBundleSourceContext = {pkgsMainMap: {}, config: {shim: {}}};
+      const desc = dependencyInclusion && dependencyInclusion.description;
       if (desc && desc.mainId === moduleId) {
         // main file of node package
         context.pkgsMainMap[moduleId] = desc.name;
       }
 
       let wrapShim = false;
-      let replacement = {};
+      const replacement = {};
       if (dependencyInclusion) {
-        let description = dependencyInclusion.description;
+        const description = dependencyInclusion.description;
 
         if (description.loaderConfig.deps || description.loaderConfig.exports) {
           context.config.shim[description.name] = {
@@ -158,7 +170,7 @@ exports.BundledSource = class {
 
         if (description.loaderConfig.deps) {
           // force deps for shimed package
-          deps.push.apply(deps, description.loaderConfig.deps);
+          deps.push(...description.loaderConfig.deps);
         }
 
         if (description.loaderConfig.wrapShim) {
@@ -167,8 +179,8 @@ exports.BundledSource = class {
 
         if (browserReplacement) {
           for (let i = 0, keys = Object.keys(browserReplacement); i < keys.length; i++) {
-            let key = keys[i];
-            let target = browserReplacement[key];
+            const key = keys[i];
+            const target = browserReplacement[key];
 
             const baseId = description.name + '/index';
             const sourceModule = key.startsWith('.') ?
@@ -220,7 +232,7 @@ exports.BundledSource = class {
         let contents;
         // forceCjsWrap bypasses a r.js parse bug.
         // See lib/amodro-trace/read/cjs.js for more info.
-        let forceCjsWrap = !!modulePath.match(/(\/|\\)(cjs|commonjs)(\/|\\)/i) ||
+        const forceCjsWrap = !!modulePath.match(/(\/|\\)(cjs|commonjs)(\/|\\)/i) ||
           // core-js uses "var define = ..." everywhere, we need to force cjs
           // before we can switch to dumberjs bundler
           (desc && desc.name === 'core-js');
@@ -243,7 +255,7 @@ exports.BundledSource = class {
 
         const tracedDeps = findDeps(modulePath, contents, loaderType);
         if (tracedDeps && tracedDeps.length) {
-          deps.push.apply(deps, tracedDeps);
+          deps.push(...tracedDeps);
         }
         if (deps) {
           let needsCssInjection = false;
@@ -278,7 +290,7 @@ exports.BundledSource = class {
     this.requiresTransform = false;
     if (!deps || deps.length === 0) return;
 
-    let needed = new Set();
+    const needed = new Set<string>();
 
     Array.from(new Set(deps)) // unique
       .map(d => {
@@ -320,10 +332,10 @@ exports.BundledSource = class {
   }
 };
 
-function absoluteModuleId(baseId, moduleId) {
+function absoluteModuleId(baseId: string, moduleId: string) {
   if (moduleId[0] !== '.') return moduleId;
 
-  let parts = baseId.split('/');
+  const parts = baseId.split('/');
   parts.pop();
 
   moduleId.split('/').forEach(p => {
@@ -338,20 +350,20 @@ function absoluteModuleId(baseId, moduleId) {
   return parts.join('/');
 }
 
-function relativeModuleId(baseId, moduleId) {
+function relativeModuleId(baseId: string, moduleId: string) {
   if (moduleId[0] === '.') return moduleId;
 
-  let baseParts = baseId.split('/');
+  const baseParts = baseId.split('/');
   baseParts.pop();
 
-  let parts = moduleId.split('/');
+  const parts = moduleId.split('/');
 
   while (parts.length && baseParts.length && baseParts[0] === parts[0]) {
     baseParts.shift();
     parts.shift();
   }
 
-  let left = baseParts.length;
+  const left = baseParts.length;
   if (left === 0) {
     parts.unshift('.');
   } else {

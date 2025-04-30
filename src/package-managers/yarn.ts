@@ -1,13 +1,11 @@
-const BasePackageManager = require('./base-package-manager').default;
+import { BasePackageManager } from './base-package-manager';
 
-exports.Yarn = class extends BasePackageManager {
+export class Yarn extends BasePackageManager {
   constructor() {
     super('yarn');
   }
 
-  install(packages = [], workingDirectory = process.cwd()) {
+  install(packages: string[] = [], workingDirectory: string = process.cwd()) {
     return super.install(packages, workingDirectory, !packages.length ? 'install' : 'add');
   }
 };
-
-exports.default = exports.Yarn;

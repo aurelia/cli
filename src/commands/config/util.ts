@@ -1,11 +1,16 @@
-class ConfigurationUtilities {
-  constructor(options, args) {
+import { CLIOptions } from '../../cli-options';
+
+export class ConfigurationUtilities {
+  private options: CLIOptions;
+  private args: string[];
+
+  constructor(options: CLIOptions, args: string[]) {
     this.options = options;
     this.args = args;
   }
 
-  getArg(arg) {
-    let args = this.args;
+  getArg(arg: number) {
+    const args = this.args;
     if (args) {
       for (let i = 0; i < args.length; i++) {
         if (args[i].startsWith('--')) {
@@ -18,7 +23,7 @@ class ConfigurationUtilities {
     }
   }
 
-  getValue(value) {
+  getValue(value: string) {
     if (value) {
       if (!value.startsWith('"') &&
           !value.startsWith('[') &&
@@ -30,9 +35,9 @@ class ConfigurationUtilities {
     return value;
   }
 
-  getAction(value) {
-    let actions = ['add', 'remove', 'set', 'clear', 'get'];
-    for (let action of actions) {
+  getAction(value: unknown) {
+    const actions = ['add', 'remove', 'set', 'clear', 'get'];
+    for (const action of actions) {
       if (this.options.hasFlag(action)) {
         return action;
       }
@@ -46,5 +51,3 @@ class ConfigurationUtilities {
     return 'set';
   }
 }
-
-module.exports = ConfigurationUtilities;

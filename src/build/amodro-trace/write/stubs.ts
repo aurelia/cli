@@ -5,7 +5,7 @@
  * @return {Function} A function that can be used for multiple content transform
  * calls.
  */
-module.exports = function stubs(options) {
+export function stubs(options) {
   options = options || {};
 
   return function(context, moduleName, filePath, contents) {

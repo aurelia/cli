@@ -1,53 +1,57 @@
-const UI = require('../../ui').UI;
-const CLIOptions = require('../../cli-options').CLIOptions;
-const Container = require('aurelia-dependency-injection').Container;
-const Project = require('../../project').Project;
-const string = require('../../string');
-const os = require('os');
+import { Container } from 'aurelia-dependency-injection';
+import { UI } from '../../ui';
+import { CLIOptions } from '../../cli-options';
+import { Project } from '../../project';
 
-module.exports = class {
+import * as string from '../../string';
+import * as os from 'node:os';
+
+export default class {
   static inject() { return [Container, UI, CLIOptions, Project]; }
 
-  constructor(container, ui, options, project) {
+  private container: Container;
+  private ui: UI;
+  private options: CLIOptions;
+  private project: Project;
+
+  constructor(container: Container, ui: UI, options: CLIOptions, project: Project) {
     this.container = container;
     this.ui = ui;
     this.options = options;
     this.project = project;
   }
 
-  execute(args) {
+  async execute(args: string[]) {
     if (args.length < 1) {
       return this.displayGeneratorInfo('No Generator Specified. Available Generators:');
     }
 
-    this.project.installTranspiler();
+    await this.project.installTranspiler();
 
-    return this.project.resolveGenerator(args[0]).then(generatorPath => {
-      Object.assign(this.options, {
-        generatorPath: generatorPath,
-        args: args.slice(1)
-      });
+    const generatorPath = await this.project.resolveGenerator(args[0]);
+    Object.assign(this.options, {
+      generatorPath: generatorPath,
+      args: args.slice(1)
+    });
+    if (generatorPath) {
+      const module = await import(generatorPath);
+      let generator = this.project.getExport(module);
 
-      if (generatorPath) {
-        let generator = this.project.getExport(require(generatorPath));
-
-        if (generator.inject) {
-          generator = this.container.get(generator);
-          generator = generator.execute.bind(generator);
-        }
-
-        return generator();
+      if (generator.inject) {
+        generator = this.container.get(generator);
+        generator = generator.execute.bind(generator);
       }
 
-      return this.displayGeneratorInfo(`Invalid Generator: ${args[0]}. Available Generators:`);
-    });
+      return generator();
+    }
+    return this.displayGeneratorInfo(`Invalid Generator: ${args[0]}. Available Generators:`);
   }
 
-  displayGeneratorInfo(message) {
-    return this.ui.displayLogo()
-      .then(() => this.ui.log(message + os.EOL))
-      .then(() => this.project.getGeneratorMetadata())
-      .then(metadata => string.buildFromMetadata(metadata, this.ui.getWidth()))
-      .then(str => this.ui.log(str));
+  async displayGeneratorInfo(message: string) {
+    await this.ui.displayLogo();
+    await this.ui.log(message + os.EOL);
+    const metadata = await this.project.getGeneratorMetadata();
+    const str = string.buildFromMetadata(metadata, this.ui.getWidth());
+    return await this.ui.log(str);
   }
 };

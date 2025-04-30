@@ -1,9 +1,17 @@
-const path = require('path');
-const fs = require('../file-system');
-const Utils = require('./utils');
+import * as path from 'node:path';
+import * as fs from '../file-system';
+import * as Utils from './utils';
 
-exports.DependencyDescription = class {
-  constructor(name, source) {
+export class DependencyDescription {
+  public name: string;
+  public source: string | undefined;
+
+  public location: string | undefined;
+  public loaderConfig: ILoaderConfig | undefined;
+  public metadata: { version: string, browser: string } | undefined;
+  public metadataLocation: string | undefined;
+
+  constructor(name: string, source?: string) {
     this.name = name;
     this.source = source;
   }
@@ -18,11 +26,11 @@ exports.DependencyDescription = class {
     return `package: ${version}${' '.repeat(version.length < 10 ? (10 - version.length) : 0)} ${name}`;
   }
 
-  calculateMainPath(root) {
-    let config = this.loaderConfig;
+  calculateMainPath(root: string) {
+    const config = this.loaderConfig;
     let part = path.join(config.path, config.main);
 
-    let ext = path.extname(part).toLowerCase();
+    const ext = path.extname(part).toLowerCase();
     if (!ext || Utils.knownExtensions.indexOf(ext) === -1) {
       part = part + '.js';
     }
@@ -30,8 +38,8 @@ exports.DependencyDescription = class {
     return path.join(process.cwd(), root, part);
   }
 
-  readMainFileSync(root) {
-    let p = this.calculateMainPath(root);
+  readMainFileSync(root: string) {
+    const p = this.calculateMainPath(root);
 
     try {
       return fs.readFileSync(p).toString();
@@ -47,13 +55,13 @@ exports.DependencyDescription = class {
     // string browser field is handled in package-analyzer
     if (!browser || typeof browser === 'string') return;
 
-    let replacement = {};
+    const replacement = {};
 
     for (let i = 0, keys = Object.keys(browser); i < keys.length; i++) {
-      let key = keys[i];
+      const key = keys[i];
       // leave {".": "dist/index.js"} for main replacement
       if (key === '.') continue;
-      let target = browser[key];
+      const target = browser[key];
 
       let sourceModule = filePathToModuleId(key);
 
@@ -76,7 +84,7 @@ exports.DependencyDescription = class {
   }
 };
 
-function filePathToModuleId(filePath) {
+function filePathToModuleId(filePath: string) {
   let moduleId = path.normalize(filePath).replace(/\\/g, '/');
 
   if (moduleId.toLowerCase().endsWith('.js')) {

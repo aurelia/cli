@@ -1,133 +1,50 @@
-const fs = require('fs');
-const nodePath = require('path');
+import { stat, mkdir, readdir, readFile as _readFile, writeFile as _writeFile  } from 'node:fs/promises'
+import { existsSync, readdirSync, readFileSync as _readFileSync, writeFileSync as _writeFileSync, statSync, mkdirSync as _mkdirSync } from 'node:fs';
+import { dirname as _dirname } from 'node:path';
 
-exports.fs = fs;
+export { stat, mkdir, existsSync, readdir, readdirSync, statSync };
 
-/**
- * @deprecated
- *  fs.exists() is deprecated.
- *  See https://nodejs.org/api/fs.html#fs_fs_exists_path_callback.
- *  Functions using it can also not be properly tested.
- */
-exports.exists = function(path) {
-  return new Promise(resolve => fs.exists(path, resolve));
+/** Accessed by unit-tests */
+export function mkdirp(path: string) {
+  return mkdir(path, {recursive: true});
 };
 
-exports.stat = function(path) {
-  return new Promise((resolve, reject) => {
-    fs.stat(path, (error, stats) => {
-      if (error) reject(error);
-      else resolve(stats);
-    });
-  });
+export function readFile(path: string, encoding: BufferEncoding = 'utf8') {
+  return _readFile(path, encoding);
+}
+
+export function readFileSync(path: string, encoding: BufferEncoding = 'utf8') {
+  return _readFileSync(path, encoding);
 };
 
-exports.existsSync = function(path) {
-  return fs.existsSync(path);
+export function copySync(sourceFile: string, targetFile: string) {
+  _writeFileSync(targetFile, _readFileSync(sourceFile));
 };
 
-exports.mkdir = function(path) {
-  return new Promise((resolve, reject) => {
-    fs.mkdir(path, error => {
-      if (error) reject(error);
-      else resolve();
-    });
-  });
-};
-
-exports.mkdirp = function(path) {
-  return new Promise((resolve, reject) => {
-    fs.mkdir(path, {recursive: true}, error => {
-      if (error) reject(error);
-      else resolve();
-    });
-  });
-};
-
-exports.readdir = function(path) {
-  return new Promise((resolve, reject) => {
-    fs.readdir(path, (error, files) => {
-      if (error) reject(error);
-      else resolve(files);
-    });
-  });
-};
-
-exports.appendFile = function(path, text, cb) {
-  fs.appendFile(path, text, cb);
-};
-
-exports.readdirSync = function(path) {
-  return fs.readdirSync(path);
-};
-
-exports.readFile = function(path, encoding) {
-  if (encoding !== null) {
-    encoding = encoding || 'utf8';
-  }
-
-  return new Promise((resolve, reject) => {
-    fs.readFile(path, encoding, (error, data) => {
-      if (error) reject(error);
-      else resolve(data);
-    });
-  });
-};
-
-exports.readFileSync = fs.readFileSync;
-
-exports.readFileSync = function(path, encoding) {
-  if (encoding !== null) {
-    encoding = encoding || 'utf8';
-  }
-
-  return fs.readFileSync(path, encoding);
-};
-
-exports.copySync = function(sourceFile, targetFile) {
-  fs.writeFileSync(targetFile, fs.readFileSync(sourceFile));
-};
-
-exports.resolve = function(path) {
-  return nodePath.resolve(path);
-};
-
-exports.join = function() {
-  return nodePath.join.apply(this, Array.prototype.slice.call(arguments));
-};
-
-exports.statSync = function(path) {
-  return fs.statSync(path);
-};
-
-exports.isFile = function(path) {
+export function isFile(path: string) {
   try {
-    return fs.statSync(path).isFile();
+    return statSync(path).isFile();
   } catch {
     // ignore
     return false;
   }
 };
 
-exports.isDirectory = function(path) {
+export function isDirectory(path: string) {
   try {
-    return fs.statSync(path).isDirectory();
+    return statSync(path).isDirectory();
   } catch {
     // ignore
     return false;
   }
 };
 
-exports.writeFile = function(path, content, encoding) {
-  return new Promise((resolve, reject) => {
-    fs.mkdir(nodePath.dirname(path), {recursive: true}, err => {
-      if (err) reject(err);
-      else {
-        fs.writeFile(path, content, encoding || 'utf8', error => {
-          if (error) reject(error);
-          else resolve();
-        });
-      }
-    });
-  });
+export async function writeFile(path: string, content: string | Buffer, encoding: BufferEncoding = 'utf8') {
+  await mkdir(_dirname(path), { recursive: true });
+  await _writeFile(path, content, encoding);
+};
+
+export function writeFileSync(path: string, content: string | Buffer, encoding: BufferEncoding = 'utf8') {
+  _mkdirSync(_dirname(path), { recursive: true });
+  _writeFileSync(path, content, encoding);
 };

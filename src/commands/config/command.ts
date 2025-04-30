@@ -1,44 +1,49 @@
-const UI = require('../../ui').UI;
-const CLIOptions = require('../../cli-options').CLIOptions;
-const Container = require('aurelia-dependency-injection').Container;
-const os = require('os');
+import * as os from 'node:os';
 
-const Configuration = require('./configuration');
-const ConfigurationUtilities = require('./util');
+import { Configuration } from './configuration';
+import { ConfigurationUtilities } from './util';
+import { Container } from 'aurelia-dependency-injection';
+import { UI } from '../../ui';
+import { CLIOptions } from '../../cli-options';
 
-module.exports = class {
+export default class {
   static inject() { return [Container, UI, CLIOptions]; }
 
-  constructor(container, ui, options) {
+  private container: Container;
+  private ui: UI;
+  private options: CLIOptions;
+  private config: Configuration;
+  private util: ConfigurationUtilities;
+
+  constructor(container: Container, ui: UI, options: CLIOptions) {
     this.container = container;
     this.ui = ui;
     this.options = options;
   }
 
-  execute(args) {
+  async execute(args: string[]) {
     this.config = new Configuration(this.options);
     this.util = new ConfigurationUtilities(this.options, args);
-    let key = this.util.getArg(0) || '';
-    let value = this.util.getValue(this.util.getArg(1));
-    let save = !CLIOptions.hasFlag('no-save');
-    let backup = !CLIOptions.hasFlag('no-backup');
-    let action = this.util.getAction(value);
+    const key = this.util.getArg(0) || '';
+    const value = this.util.getValue(this.util.getArg(1));
+    const save = !CLIOptions.hasFlag('no-save');
+    const backup = !CLIOptions.hasFlag('no-backup');
+    const action = this.util.getAction(value);
 
-    this.displayInfo(`Performing configuration action '${action}' on '${key}'`, (value ? `with '${value}'` : ''));
-    this.displayInfo(this.config.execute(action, key, value));
+    await this.displayInfo(`Performing configuration action '${action}' on '${key}'${value ? ` with '${value}'` : ''}`);
+    await this.displayInfo(this.config.execute(action, key, value));
 
     if (action !== 'get') {
       if (save) {
-        this.config.save(backup).then((name) => {
-          this.displayInfo('Configuration saved. ' + (backup ? `Backup file '${name}' created.` : 'No backup file was created.'));
-        });
+        const name = await this.config.save(backup);
+        await this.displayInfo('Configuration saved. ' + (backup ? `Backup file '${name}' created.` : 'No backup file was created.'));
       } else {
-        this.displayInfo(`Action was '${action}', but no save was performed!`);
+        await this.displayInfo(`Action was '${action}', but no save was performed!`);
       }
     }
   }
 
-  displayInfo(message) {
+  displayInfo(message: string) {
     return this.ui.log(message + os.EOL);
   }
 };

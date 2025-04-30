@@ -1,9 +1,7 @@
-const BasePackageManager = require('./base-package-manager').default;
+import { BasePackageManager } from './base-package-manager';
 
-exports.NPM = class extends BasePackageManager {
+export class NPM extends BasePackageManager {
   constructor() {
     super('npm');
   }
 };
-
-exports.default = exports.NPM;

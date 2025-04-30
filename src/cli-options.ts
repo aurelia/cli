@@ -1,35 +1,50 @@
-const fs = require('./file-system');
+import * as fs from './file-system';
 
 function definedEnvironments() {
-  let envs = [];
+  const envs: string[] = [];
   // read user defined environment files
-  let files;
+  let files: string[];
   try {
     files = fs.readdirSync('aurelia_project/environments');
   } catch {
     // ignore
   }
-  files && files.forEach(file => {
-    const m = file.match(/^(.+)\.(t|j)s$/);
-    if (m) envs.push(m[1]);
-  });
+  if (Array.isArray(files)) {
+    files.forEach(file => {
+      const m = file.match(/^(.+)\.(t|j)s$/);
+      if (m) envs.push(m[1]);
+    });
+  }
   return envs;
 }
 
-exports.CLIOptions = class {
+export class CLIOptions {
+  public taskPath: string | undefined;
+  public args: string[] | undefined;
+  public commandName: string | undefined;
+  /** accessed from `/bin/aurelia-cli.js` */
+  public runningGlobally: boolean | undefined;
+  /** accessed from `/bin/aurelia-cli.js` */
+  public runningLocally: boolean | undefined;
+  public originalBaseDir: string | undefined;
+  /** accessed from unit tests */
+  public static instance: CLIOptions;
+  /** accessed from unit tests */
+  public env: string | undefined;
+
   constructor() {
-    exports.CLIOptions.instance = this;
+    CLIOptions.instance = this;
   }
 
   taskName() {
-    let name = this.taskPath.split(/[/\\]/).pop();
-    let parts = name.split('.');
+    const name = this.taskPath.split(/[/\\]/).pop();
+    const parts = name.split('.');
     parts.pop();
     return parts.join('.');
   }
 
   getEnvironment() {
-    if (this._env) return this._env;
+    if (this.env) return this.env;
 
     let env = this.getFlagValue('env') || process.env.NODE_ENV || 'dev';
     const envs = definedEnvironments();
@@ -49,11 +64,11 @@ exports.CLIOptions = class {
       }
     }
 
-    this._env = env;
+    this.env = env;
     return env;
   }
 
-  hasFlag(name, shortcut) {
+  hasFlag(name: string, shortcut?:string) {
     if (this.args) {
       let lookup = '--' + name;
       let found = this.args.indexOf(lookup) !== -1;
@@ -76,7 +91,7 @@ exports.CLIOptions = class {
     return false;
   }
 
-  getFlagValue(name, shortcut) {
+  getFlagValue(name:string, shortcut?:string) {
     if (this.args) {
       let lookup = '--' + name;
       let index = this.args.indexOf(lookup);
@@ -106,18 +121,18 @@ exports.CLIOptions = class {
   }
 
   static taskName() {
-    return exports.CLIOptions.instance.taskName();
+    return CLIOptions.instance.taskName();
   }
 
-  static hasFlag(name, shortcut) {
-    return exports.CLIOptions.instance.hasFlag(name, shortcut);
+  static hasFlag(name: string, shortcut?: string) {
+    return CLIOptions.instance.hasFlag(name, shortcut);
   }
 
-  static getFlagValue(name, shortcut) {
-    return exports.CLIOptions.instance.getFlagValue(name, shortcut);
+  static getFlagValue(name: string, shortcut?: string) {
+    return CLIOptions.instance.getFlagValue(name, shortcut);
   }
 
   static getEnvironment() {
-    return exports.CLIOptions.instance.getEnvironment();
+    return CLIOptions.instance.getEnvironment();
   }
 };

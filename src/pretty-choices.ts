@@ -1,8 +1,31 @@
-const {wordWrap} = require('enquirer/lib/utils');
-const getTtySize = require('./get-tty-size');
+import { wordWrap } from 'enquirer/lib/utils.js';
+import { getTtySize } from './get-tty-size';
+
+interface Choice {
+  name: string
+  message?: string
+  value?: unknown
+  hint?: string
+  role?: string
+  enabled?: boolean
+  disabled?: boolean | string
+}
+
+/**
+ * displayName and description are for compatibility in lib/ui.js
+ */
+interface ChoiceEx extends Choice {
+  title?: string;
+  displayName?: string;
+  description?: string;
+  /** used by lib/workflow/run-questionnaire */
+  if?: boolean;
+  initial?: string;
+  type?: string;
+}
 
 // Check all values, indent hint line.
-module.exports = function(...choices) {
+export function prettyChoices(...choices: ChoiceEx[]) {
   if (choices.length && Array.isArray(choices[0])) {
     choices = choices[0];
   }
@@ -19,7 +42,7 @@ module.exports = function(...choices) {
       throw new Error(`Value type ${typeof value} is not supported. Only support string value.`);
     }
 
-    const choice = {
+    const choice: ChoiceEx = {
       value: value,
       // TODO after https://github.com/enquirer/enquirer/issues/115
       // add ${idx + 1}. in front of message

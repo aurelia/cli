@@ -1,21 +1,19 @@
-const tty = require('tty');
+import * as tty from 'node:tty';
 
-let size;
+let size: { height: number; width: number };
 
-module.exports = function() {
+export function getTtySize() {
   // Only run it once.
   if (size) return size;
 
-  let width;
-  let height;
+  let width: number;
+  let height: number;
 
   if (tty.isatty(1) && tty.isatty(2)) {
     if (process.stdout.getWindowSize) {
-      width = process.stdout.getWindowSize(1)[0];
-      height = process.stdout.getWindowSize(1)[1];
-    } else if (tty.getWindowSize) {
-      width = tty.getWindowSize()[1];
-      height = tty.getWindowSize()[0];
+      [width, height] = process.stdout.getWindowSize();
+    } else if ('getWindowSize' in tty && typeof tty.getWindowSize === 'function') {
+      [height, width] = tty.getWindowSize();
     } else if (process.stdout.columns && process.stdout.rows) {
       height = process.stdout.rows;
       width = process.stdout.columns;

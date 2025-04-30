@@ -1,7 +1,7 @@
 const path = require('path');
 const BundlerMock = require('../../mocks/bundler');
-const BundledSource = require('../../../lib/build/bundled-source').BundledSource;
-const Utils = require('../../../lib/build/utils');
+const BundledSource = require('../../../dist/build/bundled-source').BundledSource;
+const Utils = require('../../../dist/build/utils');
 
 const cwd = process.cwd();
 

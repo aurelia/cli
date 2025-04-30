@@ -1,6 +1,7 @@
-const path = require('path');
-const Utils = require('./utils');
-const logger = require('aurelia-logging').getLogger('StubNodejs');
+import * as path from 'node:path';
+import * as Utils from './utils';
+import { getLogger } from 'aurelia-logging';
+const logger = getLogger('StubNodejs');
 
 // stub core Node.js modules based on https://github.com/webpack/node-libs-browser/blob/master/index.js
 // no need stub for following modules, they got same name on npm package
@@ -29,32 +30,33 @@ const UNAVAIABLE_CORE_MODULES = [
 
 const EMPTY_MODULE = 'define(function(){return {};});';
 
-function resolvePath(packageName, root) {
-  return path.relative(root, Utils.resolvePackagePath(packageName)).replace(/\\/g, '/');
+async function resolvePath(packageName: string, root: string) {
+  const rel = await Utils.resolvePackagePath(packageName);
+  return path.relative(root, rel).replace(/\\/g, '/');
 }
 
 // note all paths here assumes local node_modules folder
-module.exports = function(moduleId, root) {
+export async function stubModule(moduleId: string, root: string) {
   // with subfix -browserify
   if (['crypto', 'https', 'os', 'path', 'stream', 'timers', 'tty', 'vm'].indexOf(moduleId) !== -1) {
-    return {name: moduleId, path: resolvePath(`${moduleId}-browserify`, root)};
+    return {name: moduleId, path: await resolvePath(`${moduleId}-browserify`, root)};
   }
 
   if (moduleId === 'domain') {
     logger.warn('core Node.js module "domain" is deprecated');
-    return {name: 'domain', path: resolvePath('domain-browser', root)};
+    return {name: 'domain', path: await resolvePath('domain-browser', root)};
   }
 
   if (moduleId === 'http') {
-    return {name: 'http', path: resolvePath('stream-http', root)};
+    return {name: 'http', path: await resolvePath('stream-http', root)};
   }
 
   if (moduleId === 'querystring') {
-    return {name: 'querystring', path: resolvePath('querystring-browser-stub', root)};
+    return {name: 'querystring', path: await resolvePath('querystring-browser-stub', root)};
   }
 
   if (moduleId === 'fs') {
-    return {name: 'fs', path: resolvePath('fs-browser-stub', root)};
+    return {name: 'fs', path: await resolvePath('fs-browser-stub', root)};
   }
 
   if (moduleId === 'sys') {
@@ -62,7 +64,7 @@ module.exports = function(moduleId, root) {
   }
 
   if (moduleId === 'zlib') {
-    return {name: 'zlib', path: resolvePath('browserify-zlib', root)};
+    return {name: 'zlib', path: await resolvePath('browserify-zlib', root)};
   }
 
   if (UNAVAIABLE_CORE_MODULES.indexOf(moduleId) !== -1) {
@@ -80,7 +82,7 @@ module.exports = function(moduleId, root) {
   if (moduleId === '__inject_css__') {
     return {
       name: '__inject_css__',
-      path: resolvePath('aurelia-cli', root),
+      path: await resolvePath('aurelia-cli', root),
       main: 'lib/build/inject-css'
     };
   }

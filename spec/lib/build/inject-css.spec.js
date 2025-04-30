@@ -1,4 +1,4 @@
-const fixupCSSUrls = require('../../../lib/build/inject-css').fixupCSSUrls;
+const fixupCSSUrls = require('../../../dist/build/inject-css').fixupCSSUrls;
 
 // tests partly copied from
 // https://github.com/webpack-contrib/style-loader/blob/master/test/fixUrls.test.js

@@ -1,8 +1,8 @@
-module.exports = function reportReadiness(options) {
-  const uri = createDomain(options);
-  const yargs = require('yargs');
+export async function reportReadiness(options) {
+  const uri = await createDomain(options);
+  const yargs = (await import('yargs')).default;
   const argv = yargs.argv;
-  argv.color = require('supports-color');
+  argv.color = (await import('supports-color')).default;
   const useColor = argv.color;
 
   let startSentence = `Project is running at ${colorInfo(useColor, uri)}`;
@@ -24,9 +24,9 @@ module.exports = function reportReadiness(options) {
   }
 };
 
-function createDomain(opts) {
+async function createDomain(opts) {
   const protocol = opts.https ? 'https' : 'http';
-  const url = require('url');
+  const url = await import('node:url');
 
   // the formatted domain (url without path) of the webpack server
   return opts.public ? `${protocol}://${opts.public}` : url.format({

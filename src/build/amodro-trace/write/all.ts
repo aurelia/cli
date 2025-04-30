@@ -1,10 +1,10 @@
 // The order of these transforms is informed by how they were done in the
 // requirejs optimizer.
-var transforms = [
-  require('./stubs'),
-  require('./defines'),
-  require('./replace')
-];
+import { stubs } from './stubs';
+import { defines} from './defines';
+import { replace } from './replace';
+
+var transforms = [ stubs, defines, replace ];
 
 /**
  * Chains all the default set of transforms to return one function to be used
@@ -15,11 +15,11 @@ var transforms = [
  * @return {Function} A function that can be used for multiple content transform
  * calls.
  */
-module.exports = function all(options) {
+export function all(options) {
   options = options || {};
 
   var transformFns = transforms.map(function(transform) {
-    return transform(options);
+    return (transform as any)(options);
   });
 
   return function(context, moduleName, filePath, contents) {

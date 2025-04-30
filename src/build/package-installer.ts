@@ -1,9 +1,15 @@
-const path = require('path');
-const fs = require('../file-system');
-const logger = require('aurelia-logging').getLogger('Package-installer');
+import * as path from 'node:path';
+import * as fs from '../file-system';
+import { BasePackageManager } from '../package-managers/base-package-manager';
+import { getLogger } from 'aurelia-logging';
+const logger = getLogger('Package-installer');
 
-exports.PackageInstaller = class {
-  constructor(project) {
+
+export class PackageInstaller {
+  private project: AureliaJson.IProject;
+  private _packageManager: string | undefined;
+
+  constructor(project: AureliaJson.IProject) {
     this.project = project;
   }
 
@@ -27,22 +33,22 @@ exports.PackageInstaller = class {
     return packageManager;
   }
 
-  install(packages) {
+  async install(packages: string[]) {
     let packageManager = this.determinePackageManager();
-    let Ctor;
+    let Ctor: new () => BasePackageManager;
 
     logger.info(`Using '${packageManager}' to install the package(s). You can change this by setting the 'packageManager' property in the aurelia.json file to 'npm' or 'yarn'.`);
 
     try {
-      Ctor = require(`../package-managers/${packageManager}`).default;
+      Ctor = (await import(`../package-managers/${packageManager}`)).default;
     } catch (e) {
       logger.error(`Could not load the ${packageManager} package installer. Falling back to NPM`, e);
 
       packageManager = 'npm';
-      Ctor = require(`../package-managers/${packageManager}`).default;
+      Ctor = (await import(`../package-managers/${packageManager}`)).default;
     }
 
-    let installer = new Ctor();
+    const installer = new Ctor();
 
     logger.info(`[${packageManager}] installing ${packages}. It would take a while.`);
 

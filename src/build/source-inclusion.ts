@@ -1,8 +1,22 @@
-const path = require('path');
-const mapStream = require('map-stream');
+import * as path from 'node:path';
+import mapStream from 'map-stream';
+import { type Bundle } from './bundle';
+import { type Minimatch } from 'minimatch';
+import { BundledSource } from './bundled-source';
+import { DependencyInclusion } from './dependency-inclusion';
+import * as vfs from 'vinyl-fs';
 
-exports.SourceInclusion = class {
-  constructor(bundle, pattern, includedBy) {
+export class SourceInclusion {
+  public bundle: Bundle;
+  private orignalPattern: string;
+  public includedBy: DependencyInclusion;
+  public readonly pattern: string;
+  private matcher: Minimatch;
+  private excludes: Minimatch[];
+  private items: BundledSource[];
+  private vfs: typeof vfs;
+
+  constructor(bundle: Bundle, pattern: string, includedBy?: DependencyInclusion) {
     this.bundle = bundle;
     this.orignalPattern = pattern;
     // source-inclusion could be included by a dependency-inclusion
@@ -19,23 +33,23 @@ exports.SourceInclusion = class {
     this.excludes = this.bundle.excludes;
     this.items = [];
 
-    this.vfs = require('vinyl-fs');
+    this.vfs = vfs;
   }
 
-  addItem(item) {
+  addItem(item: BundledSource) {
     item.includedBy = this;
     item.includedIn = this.bundle;
     this.items.push(item);
   }
 
-  _isExcluded(item) {
-    let found = this.excludes.findIndex(exclusion => {
+  _isExcluded(item: BundledSource) {
+    const found = this.excludes.findIndex(exclusion => {
       return exclusion.match(item.path);
     });
     return found > -1;
   }
 
-  trySubsume(item) {
+  trySubsume(item: BundledSource) {
     if (this.matcher.match(item.path) && !this._isExcluded(item)) {
       this.addItem(item);
       return true;
@@ -45,16 +59,16 @@ exports.SourceInclusion = class {
   }
 
   addAllMatchingResources() {
-    return new Promise((resolve, reject) => {
-      let bundler = this.bundle.bundler;
-      let pattern = path.resolve(this._getProjectRoot(), this.pattern);
+    return new Promise<void>((resolve, reject) => {
+      const bundler = this.bundle.bundler;
+      const pattern = path.resolve(this._getProjectRoot(), this.pattern);
 
-      let subsume = (file, cb) => {
+      const subsume = (file: IFile, cb: mapStream.Callback) => {
         bundler.addFile(file, this);
         cb(null, file);
       };
 
-      this.vfs.src(pattern).pipe(mapStream(subsume))
+      this.vfs.src(pattern).pipe(mapStream(subsume) as unknown as NodeJS.WritableStream)
         .on('error', e => {
           console.log(`Error while adding all matching resources of pattern "${this.pattern}": ${e.message}`);
           reject(e);
@@ -63,7 +77,7 @@ exports.SourceInclusion = class {
     });
   }
 
-  _getProjectRoot() {
+  private _getProjectRoot() {
     return this.bundle.bundler.project.paths.root;
   }
 

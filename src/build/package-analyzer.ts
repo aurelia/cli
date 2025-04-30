@@ -1,30 +1,31 @@
-const fs = require('../file-system');
-const path = require('path');
-const DependencyDescription = require('./dependency-description').DependencyDescription;
-const logger = require('aurelia-logging').getLogger('PackageAnalyzer');
-const Utils = require('./utils');
+import * as fs from '../file-system';
+import * as path from 'node:path';
+import { DependencyDescription } from './dependency-description';
+import * as Utils from './utils';
+import { getLogger } from 'aurelia-logging';
+const logger = getLogger('PackageAnalyzer');
 
-exports.PackageAnalyzer = class {
-  constructor(project) {
+export class PackageAnalyzer {
+  private project: AureliaJson.IProject;
+
+  constructor(project: AureliaJson.IProject) {
     this.project = project;
   }
 
-  analyze(packageName) {
-    let description = new DependencyDescription(packageName, 'npm');
+  async analyze(packageName: string): Promise<DependencyDescription> {
+    const description = new DependencyDescription(packageName, 'npm');
 
-    return loadPackageMetadata(this.project, description)
-      .then(() => {
-        if (!description.metadataLocation) {
-          throw new Error(`Unable to find package metadata (package.json) of ${description.name}`);
-        }
-      })
-      .then(() => determineLoaderConfig(this.project, description))
-      .then(() => description);
+    await loadPackageMetadata(this.project, description);
+    if (!description.metadataLocation) {
+      throw new Error(`Unable to find package metadata (package.json) of ${description.name}`);
+    }
+    determineLoaderConfig(this.project, description);
+    return description;
   }
 
-  reverseEngineer(loaderConfig) {
+  async reverseEngineer(loaderConfig: ILoaderConfig): Promise<DependencyDescription> {
     loaderConfig = JSON.parse(JSON.stringify(loaderConfig));
-    let description = new DependencyDescription(loaderConfig.name);
+    const description = new DependencyDescription(loaderConfig.name);
     description.loaderConfig = loaderConfig;
 
     if (!loaderConfig.packageRoot && (!loaderConfig.path || loaderConfig.path.indexOf('node_modules') !== -1)) {
@@ -36,54 +37,52 @@ exports.PackageAnalyzer = class {
       }
     }
 
-    return loadPackageMetadata(this.project, description)
-      .then(() => {
-        if (!loaderConfig.path) {
+    await loadPackageMetadata(this.project, description);
+    if (!loaderConfig.path) {
+      // fillup main and path
+      determineLoaderConfig(this.project, description);
+    } else {
+      if (!loaderConfig.main) {
+        if (description.source === 'custom' && loaderConfig.path === loaderConfig.packageRoot) {
           // fillup main and path
           determineLoaderConfig(this.project, description);
         } else {
-          if (!loaderConfig.main) {
-            if (description.source === 'custom' && loaderConfig.path === loaderConfig.packageRoot) {
-              // fillup main and path
-              determineLoaderConfig(this.project, description);
-            } else {
-              const fullPath = path.resolve(this.project.paths.root, loaderConfig.path);
-              if (fullPath === description.location) {
-                // fillup main and path
-                determineLoaderConfig(this.project, description);
-                return;
-              }
+          const fullPath = path.resolve(this.project.paths.root, loaderConfig.path);
+          if (fullPath === description.location) {
+            // fillup main and path
+            determineLoaderConfig(this.project, description);
+            return description;
+          }
 
-              // break single path into main and dir
-              let pathParts = path.parse(fullPath);
+          // break single path into main and dir
+          const pathParts = path.parse(fullPath);
 
-              // when path is node_modules/package/foo/bar
-              // set path to node_modules/package
-              // set main to foo/bar
-              loaderConfig.path = path.relative(this.project.paths.root, description.location).replace(/\\/g, '/');
+          // when path is node_modules/package/foo/bar
+          // set path to node_modules/package
+          // set main to foo/bar
+          loaderConfig.path = path.relative(this.project.paths.root, description.location).replace(/\\/g, '/');
 
-              if (pathParts.dir.length > description.location.length + 1) {
-                const main = path.join(pathParts.dir.slice(description.location.length + 1), Utils.removeJsExtension(pathParts.base));
-                loaderConfig.main = main.replace(/\\/g, '/');
-              } else if (pathParts.dir.length === description.location.length) {
-                loaderConfig.main = Utils.removeJsExtension(pathParts.base).replace(/\\/g, '/');
-              } else {
-                throw new Error(`Path: "${loaderConfig.path}" is not in: ${description.location}`);
-              }
-            }
+          if (pathParts.dir.length > description.location.length + 1) {
+            const main = path.join(pathParts.dir.slice(description.location.length + 1), Utils.removeJsExtension(pathParts.base));
+            loaderConfig.main = main.replace(/\\/g, '/');
+          } else if (pathParts.dir.length === description.location.length) {
+            loaderConfig.main = Utils.removeJsExtension(pathParts.base).replace(/\\/g, '/');
           } else {
-            loaderConfig.main = Utils.removeJsExtension(loaderConfig.main).replace(/\\/g, '/');
+            throw new Error(`Path: "${loaderConfig.path}" is not in: ${description.location}`);
           }
         }
-      })
-      .then(() => description);
+      } else {
+        loaderConfig.main = Utils.removeJsExtension(loaderConfig.main).replace(/\\/g, '/');
+      }
+    }
+    return description;
   }
 };
 
-function fillUpPackageRoot(project, description) {
+function fillUpPackageRoot(project: AureliaJson.IProject, description: DependencyDescription) {
   let _path = description.loaderConfig.path;
 
-  let ext = path.extname(_path).toLowerCase();
+  const ext = path.extname(_path).toLowerCase();
   if (!ext || Utils.knownExtensions.indexOf(ext) === -1) {
     // main file could be non-js file like css/font-awesome.css
     _path += '.js';
@@ -98,28 +97,26 @@ function fillUpPackageRoot(project, description) {
   }
 }
 
-function loadPackageMetadata(project, description) {
-  return setLocation(project, description)
-    .then(() => {
-      if (description.metadataLocation) {
-        return fs.readFile(description.metadataLocation).then(data => {
-          description.metadata = JSON.parse(data.toString());
-        });
-      }
-    })
-    .catch(e => {
-      logger.error(`Unable to load package metadata (package.json) of ${description.name}:`);
-      logger.info(e);
-    });
+async function loadPackageMetadata(project: AureliaJson.IProject, description: DependencyDescription): Promise<void> {
+  await setLocation(project, description);
+  try {
+    if (description.metadataLocation) {
+      const data = await fs.readFile(description.metadataLocation);
+      description.metadata = JSON.parse(data.toString());
+    }
+  } catch (e) {
+    logger.error(`Unable to load package metadata (package.json) of ${description.name}:`);
+    logger.info(e);
+  }
 }
 
 // loaderConfig.path is simplified when use didn't provide explicit config.
 // In auto traced nodejs package, loaderConfig.path always matches description.location.
 // We then use auto-generated moduleId aliases in dependency-inclusion to make AMD
 // module system happy.
-function determineLoaderConfig(project, description) {
-  let location = path.resolve(description.location);
-  let mainPath = Utils.nodejsLoad(location);
+function determineLoaderConfig(project: AureliaJson.IProject, description: DependencyDescription) {
+  const location = path.resolve(description.location);
+  const mainPath = Utils.nodejsLoad(location);
 
   if (!description.loaderConfig) {
     description.loaderConfig = {name: description.name};
@@ -135,15 +132,12 @@ function determineLoaderConfig(project, description) {
   }
 }
 
-function setLocation(project, description) {
+async function setLocation(project: AureliaJson.IProject, description: DependencyDescription) {
   switch (description.source) {
   case 'npm':
-    return getPackageFolder(project, description)
-      .then(packageFolder => {
-        description.location = packageFolder;
-
-        return tryFindMetadata(project, description);
-      });
+    { const packageFolder = await getPackageFolder(project, description);
+      description.location = packageFolder;
+      return await tryFindMetadata(project, description); }
   case 'custom':
     description.location = path.resolve(project.paths.root, description.loaderConfig.packageRoot);
 
@@ -153,17 +147,16 @@ function setLocation(project, description) {
   }
 }
 
-function tryFindMetadata(project, description) {
-  return fs.stat(path.join(description.location, 'package.json'))
-    .then(() => description.metadataLocation = path.join(description.location, 'package.json'))
-    .catch(() => {});
+async function tryFindMetadata(project: AureliaJson.IProject, description: DependencyDescription) {
+  try {
+    await fs.stat(path.join(description.location, 'package.json'));
+    return description.metadataLocation = path.join(description.location, 'package.json');
+  } catch { /* empty */ }
 }
 
-function getPackageFolder(project, description) {
+async function getPackageFolder(project: AureliaJson.IProject, description: DependencyDescription) {
   if (!description.loaderConfig || !description.loaderConfig.path) {
-    return new Promise(resolve => {
-      resolve(Utils.resolvePackagePath(description.name));
-    });
+    return await Utils.resolvePackagePath(description.name)
   }
 
   return lookupPackageFolderRelativeStrategy(project.paths.root, description.loaderConfig.path);
@@ -171,13 +164,13 @@ function getPackageFolder(project, description) {
 
 // Looks for the node_modules folder from the root path of aurelia
 // with the defined loaderConfig.
-function lookupPackageFolderRelativeStrategy(root, relativePath) {
-  let pathParts = relativePath.replace(/\\/g, '/').split('/');
+function lookupPackageFolderRelativeStrategy(root: string, relativePath: string) {
+  const pathParts = relativePath.replace(/\\/g, '/').split('/');
   let packageFolder = '';
   let stopOnNext = false;
 
   for (let i = 0; i < pathParts.length; ++i) {
-    let part = pathParts[i];
+    const part = pathParts[i];
 
     packageFolder = path.join(packageFolder, part);
 

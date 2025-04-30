@@ -1,6 +1,6 @@
 const path = require('path');
 const mockfs = require('../../mocks/mock-fs');
-const Utils = require('../../../lib/build/utils');
+const Utils = require('../../../dist/build/utils');
 
 describe('the Utils.runSequentially function', () => {
   it('calls the callback function for all items', (d) => {

@@ -1,16 +1,17 @@
-const path = require('path');
-const crypto = require('crypto');
-const fs = require('../file-system');
-const tmpDir = require('os').tmpdir();
+import * as path from 'node:path';
+import * as os from 'node:os';
+import * as crypto from 'crypto';
+import * as fs from '../file-system';
 
-exports.knownExtensions = ['.js', '.cjs', '.mjs', '.json', '.css', '.svg', '.html'];
+const tmpDir = os.tmpdir();
+export const knownExtensions = ['.js', '.cjs', '.mjs', '.json', '.css', '.svg', '.html'];
 
-exports.couldMissGulpPreprocess = function(id) {
+export function couldMissGulpPreprocess(id: string) {
   const ext = path.extname(id).toLowerCase();
   return ext && ext !== '.js' && ext !== '.html' && ext !== '.css';
 };
 
-function getPackagePaths() {
+async function getPackagePaths() {
   // require.resolve(packageName) cannot resolve package has no main.
   // for instance: font-awesome v4.7.0
   // manually try resolve paths
@@ -19,13 +20,13 @@ function getPackagePaths() {
     ...require.resolve.paths('not-core/'),
     // additional search from app's folder, this is necessary to support
     // lerna hoisting where cli is out of app's local node_modules folder.
-    ...require('resolve/lib/node-modules-paths')(process.cwd(), {})
+    ...(await import('resolve/lib/node-modules-paths')).default(process.cwd(), {})
   ];
 }
 
 // resolve npm package path
-exports.resolvePackagePath = function(packageName) {
-  const packagePaths = getPackagePaths();
+export async function resolvePackagePath(packageName: string) {
+  const packagePaths = await getPackagePaths();
   for (let i = 0, len = packagePaths.length; i < len; i++) {
     const dirname = path.join(packagePaths[i], packageName);
     if (fs.isDirectory(dirname)) return dirname;
@@ -34,7 +35,7 @@ exports.resolvePackagePath = function(packageName) {
   throw new Error(`cannot resolve npm package folder for "${packageName}"`);
 };
 
-exports.moduleIdWithPlugin = function(moduleId, pluginName, type) {
+export function moduleIdWithPlugin(moduleId: string, pluginName: string, type: 'require' | 'system') {
   switch (type) {
   case 'require':
     return pluginName + '!' + moduleId;
@@ -46,15 +47,15 @@ exports.moduleIdWithPlugin = function(moduleId, pluginName, type) {
 };
 
 const CACHE_DIR = path.resolve(tmpDir, 'aurelia-cli-cache');
-exports.cacheDir = CACHE_DIR;
+export const cacheDir = CACHE_DIR;
 
-function cachedFilePath(hash) {
+function cachedFilePath(hash: string) {
   const folder = hash.slice(0, 2);
   const fileName = hash.slice(2);
   return path.resolve(CACHE_DIR, folder, fileName);
 }
 
-exports.getCache = function(hash) {
+export function getCache(hash: string) {
   const filePath = cachedFilePath(hash);
   try {
     return JSON.parse(fs.readFileSync(filePath));
@@ -63,80 +64,83 @@ exports.getCache = function(hash) {
   }
 };
 
-exports.setCache = function(hash, object) {
+export function setCache(hash: string, object: unknown) {
   const filePath = cachedFilePath(hash);
   // async write
-  fs.writeFile(filePath, JSON.stringify(object));
+  fs.writeFileSync(filePath, JSON.stringify(object));
 };
 
-exports.runSequentially = function(tasks, cb) {
+export async function runSequentially<T, U>(tasks: T[], cb: (task: T, index: number) => Promise<U>): Promise<U[]> {
   let index = -1;
-  let result = [];
+  const result: U[] = [];
 
-  function exec() {
-    index ++;
+  async function exec() {
+    index++;
 
     if (index < tasks.length) {
-      return cb(tasks[index], index).then(r => result.push(r)).then(exec);
+      const r = await cb(tasks[index], index);
+      result.push(r);
+      await exec();
     }
-
-    return Promise.resolve();
   }
 
-  return exec().then(() => result);
+  await exec();
+  return result;
 };
 
-exports.generateHashedPath = function(pth, hash) {
+export function generateHashedPath(pth: string, hash: string) {
   if (arguments.length !== 2) {
     throw new Error('`path` and `hash` required');
   }
 
-  return modifyFilename(pth, function(filename, ext) {
+  return modifyFilename(pth, function(filename: string, ext: string) {
     return filename + '-' + hash + ext;
   });
 };
 
-exports.revertHashedPath = function(pth, hash) {
+export function revertHashedPath(pth: string, hash: string) {
   if (arguments.length !== 2) {
     throw new Error('`path` and `hash` required');
   }
 
-  return modifyFilename(pth, function(filename, ext) {
+  return modifyFilename(pth, function(filename: string, ext: string) {
     return filename.replace(new RegExp('-' + hash + '$'), '') + ext;
   });
 };
 
-exports.generateHash = function(bufOrStr) {
+export function generateHash(bufOrStr: crypto.BinaryLike) {
   return crypto.createHash('md5').update(bufOrStr).digest('hex');
 };
 
-exports.escapeForRegex = function(str) {
-  let matchers = /[|\\{}()[\]^$+*?.]/g;
+export function escapeForRegex(str: string) {
+  const matchers = /[|\\{}()[\]^$+*?.]/g;
   return str.replace(matchers, '\\$&');
 };
 
-exports.createBundleFileRegex = function(bundleName) {
-  return new RegExp(exports.escapeForRegex(bundleName) + '[^"\']*?\\.js', 'g');
+export function createBundleFileRegex(bundleName: string) {
+  return new RegExp(escapeForRegex(bundleName) + '[^"\']*?\\.js', 'g');
 };
 
-function modifyFilename(pth, modifier) {
+function modifyFilename(path: string, modifier: (filename: string, ext: string) => string): string;
+function modifyFilename(path: string[], modifier: (filename: string, ext: string) => string): string[];
+function modifyFilename(pth: string | string[], modifier: (filename: string, ext: string) => string): string | string[] {
   if (arguments.length !== 2) {
     throw new Error('`path` and `modifier` required');
   }
 
   if (Array.isArray(pth)) {
-    return pth.map(function(el) {
+    return pth.map(function(el: string) {
       return modifyFilename(el, modifier);
     });
   }
 
-  let ext = path.extname(pth);
+  const ext = path.extname(pth);
   return path.posix.join(path.dirname(pth), modifier(path.basename(pth, ext), ext));
 }
 
 // https://nodejs.org/dist/latest-v10.x/docs/api/modules.html
 // after "high-level algorithm in pseudocode of what require.resolve() does"
-function nodejsLoadAsFile(resourcePath) {
+function nodejsLoadAsFile(resourcePath: string) {
   if (fs.isFile(resourcePath)) {
     return resourcePath;
   }
@@ -151,7 +155,7 @@ function nodejsLoadAsFile(resourcePath) {
   // skip .node file that nobody uses
 }
 
-function nodejsLoadIndex(resourcePath) {
+function nodejsLoadIndex(resourcePath: string) {
   if (!fs.isDirectory(resourcePath)) return;
 
   const indexJs = path.join(resourcePath, 'index.js');
@@ -166,7 +170,7 @@ function nodejsLoadIndex(resourcePath) {
   // skip index.node file that nobody uses
 }
 
-function nodejsLoadAsDirectory(resourcePath) {
+function nodejsLoadAsDirectory(resourcePath: string) {
   if (!fs.isDirectory(resourcePath)) return;
 
   const packageJson = path.join(resourcePath, 'package.json');
@@ -202,7 +206,7 @@ function nodejsLoadAsDirectory(resourcePath) {
       metaMain = metadata.main;
     }
 
-    let mainFile = metaMain || 'index';
+    const mainFile = metaMain || 'index';
     const mainResourcePath = path.resolve(resourcePath, mainFile);
     return nodejsLoadAsFile(mainResourcePath) || nodejsLoadIndex(mainResourcePath);
   }
@@ -210,11 +214,11 @@ function nodejsLoadAsDirectory(resourcePath) {
   return nodejsLoadIndex(resourcePath);
 }
 
-exports.nodejsLoad = function(resourcePath) {
+export function nodejsLoad(resourcePath: string) {
   return nodejsLoadAsFile(resourcePath) || nodejsLoadAsDirectory(resourcePath);
 };
 
-exports.removeJsExtension = function(filePath) {
+export function removeJsExtension(filePath: string) {
   if (path.extname(filePath).toLowerCase() === '.js') {
     return filePath.slice(0, -3);
   }

@@ -1,4 +1,4 @@
-const meriyah = require('meriyah');
+import * as meriyah from 'meriyah';
 
 const STOP = false;
 const SKIP_BRANCH = 1;
@@ -8,16 +8,16 @@ const IGNORED_KEYS = ['start', 'end', 'loc', 'location', 'locations', 'line', 'c
 
 // From an meriyah example for traversing its ast.
 // modified to support branch skip.
-function traverse(object, visitor) {
-  let child;
+function traverse(object: meriyah.ESTree.Node, visitor: (node: meriyah.ESTree.CallExpression) => void) {
+  let child: meriyah.ESTree.Node;
   if (!object) return;
 
-  let r = visitor.call(null, object);
+  const r = visitor.call(null, object);
   if (r === STOP) return STOP; // stop whole traverse immediately
   if (r === SKIP_BRANCH) return; // skip going into AST branch
 
   for (let i = 0, keys = Object.keys(object); i < keys.length; i++) {
-    let key = keys[i];
+    const key = keys[i];
     if (IGNORED_KEYS.indexOf(key) !== -1) continue;
 
     child = object[key];
@@ -34,8 +34,8 @@ const ANL = 2;
 const STR = 3;
 const ARR = 4;
 
-function matchTerm(pattern) {
-  let possible;
+function matchTerm(pattern: meriyah.ESTree.Node) {
+  let possible: string;
   if (pattern.type === 'Identifier') {
     possible = pattern.name.toString();
   } else if (pattern.type === 'ExpressionStatement' &&
@@ -45,7 +45,7 @@ function matchTerm(pattern) {
 
   if (!possible || !possible.startsWith('__')) return;
 
-  let type;
+  let type: number | undefined;
   if (possible === '__any' || possible.startsWith('__any_')) {
     type = ANY;
   } else if (possible === '__anl' || possible.startsWith('__anl_')) {
@@ -65,19 +65,19 @@ function matchTerm(pattern) {
  * @param part The target partial syntax tree
  * @return Returns named matches, or false.
  */
-exports.extract = function(pattern, part) {
+export function extract(pattern: meriyah.ESTree.Node, part: meriyah.ESTree.Node): unknown | false {
   if (!pattern) throw new Error('missing pattern');
   // no match
   if (!part) return STOP;
 
-  let term = matchTerm(pattern);
+  const term = matchTerm(pattern);
   if (term) {
     // if single __any
     if (term.type === ANY) {
       if (term.name) {
         // if __any_foo
         // get result {foo: astNode}
-        let r = {};
+        const r = {};
         r[term.name] = part;
         return r;
       }
@@ -89,7 +89,7 @@ exports.extract = function(pattern, part) {
       if (part.type === 'Literal') {
         if (term.name) {
           // get result {foo: value}
-          let r = {};
+          const r = {};
           r[term.name] = part.value;
           return r;
         }
@@ -107,16 +107,16 @@ exports.extract = function(pattern, part) {
     if (!Array.isArray(part)) return STOP;
 
     if (pattern.length === 1) {
-      let arrTerm = matchTerm(pattern[0]);
+      const arrTerm = matchTerm(pattern[0]);
       if (arrTerm) {
         // if single __arr_foo
         if (arrTerm.type === ARR) {
           // find all or partial Literals in an array
-          let arr = part.filter(it => it.type === 'Literal').map(it => it.value);
+          const arr = part.filter(it => it.type === 'Literal').map(it => it.value);
           if (arr.length) {
             if (arrTerm.name) {
               // get result {foo: array}
-              let r = {};
+              const r = {};
               r[arrTerm.name] = arr;
               return r;
             }
@@ -128,7 +128,7 @@ exports.extract = function(pattern, part) {
         } else if (arrTerm.type === ANL) {
           if (arrTerm.name) {
             // get result {foo: nodes array}
-            let r = {};
+            const r = {};
             r[arrTerm.name] = part;
             return r;
           }
@@ -145,14 +145,14 @@ exports.extract = function(pattern, part) {
     }
   }
 
-  let allResult = {};
+  const allResult = {};
 
   for (let i = 0, keys = Object.keys(pattern); i < keys.length; i++) {
-    let key = keys[i];
+    const key = keys[i];
     if (IGNORED_KEYS.indexOf(key) !== -1) continue;
 
-    let nextPattern = pattern[key];
-    let nextPart = part[key];
+    const nextPattern = pattern[key];
+    const nextPart = part[key];
 
     if (!nextPattern || typeof nextPattern !== 'object') {
       // primitive value. string or null
@@ -162,7 +162,7 @@ exports.extract = function(pattern, part) {
       return STOP;
     }
 
-    const result = exports.extract(nextPattern, nextPart);
+    const result = extract(nextPattern, nextPart);
     // no match
     if (result === STOP) return STOP;
     if (result) Object.assign(allResult, result);
@@ -176,15 +176,15 @@ exports.extract = function(pattern, part) {
  * @param pattern The pattern used on matching, can be a string or meriyah node
  * @return Returns an meriyah node to be used as pattern in extract(pattern, part)
  */
-exports.compilePattern = function(pattern) {
+export function compilePattern(pattern: string | meriyah.ESTree.Node) {
   // pass meriyah syntax tree obj
-  if (pattern && pattern.type) return pattern;
+  if (typeof pattern !== 'string' && pattern.type) return pattern;
 
   if (typeof pattern !== 'string') {
     throw new Error('input pattern is neither a string nor an meriyah node.');
   }
 
-  let exp = meriyah.parseScript(pattern, {next: true, webcompat: true});
+  let exp: meriyah.ESTree.Program | meriyah.ESTree.Statement | meriyah.ESTree.Expression = meriyah.parseScript(pattern, {next: true, webcompat: true});
 
   if (exp.type !== 'Program' || !exp.body) {
     throw new Error(`Not a valid expression:  "${pattern}".`);
@@ -204,10 +204,15 @@ exports.compilePattern = function(pattern) {
   return exp;
 };
 
-function ensureParsed(codeOrNode) {
+function ensureParsed(codeOrNode: string | meriyah.ESTree.Node) {
   // bypass parsed node
-  if (codeOrNode && codeOrNode.type) return codeOrNode;
-  return meriyah.parseScript(codeOrNode, {next: true, webcompat: true});
+  if (typeof codeOrNode !== 'string' && 'type' in codeOrNode) {
+    return codeOrNode;
+  }
+  if (typeof codeOrNode === 'string') {
+    return meriyah.parseScript(codeOrNode, {next: true, webcompat: true});
+  }
+  throw new Error('unknown `codeOrNode` type.')
 }
 
 /**
@@ -240,15 +245,16 @@ function ensureParsed(codeOrNode) {
  *         {match: {foo: "d", opts: ["e"]}, node: <CallExpression node> }
  *      ]
  */
-exports.astMatcher = function(pattern) {
-  let pat = exports.compilePattern(pattern);
+export function astMatcher(pattern: string | meriyah.ESTree.Node) {
+  const pat = compilePattern(pattern);
 
-  return function(jsStr) {
-    let node = ensureParsed(jsStr);
-    let matches = [];
+  return function(jsStr: string | meriyah.ESTree.Node) {
+    const node = ensureParsed(jsStr);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const matches: { match: any, node: meriyah.ESTree.CallExpression}[] = [];
 
     traverse(node, n => {
-      let m = exports.extract(pat, n);
+      const m = extract(pat, n);
       if (m) {
         matches.push({
           match: m,
@@ -276,41 +282,41 @@ exports.astMatcher = function(pattern) {
  *
  *   => ['a', 'b', './c', './d']
  */
-exports.jsDepFinder = function() {
-  if (arguments.length === 0) {
+export function jsDepFinder(...args: string[]) {
+  if (args.length === 0) {
     throw new Error('No patterns provided.');
   }
 
   let seed = 0;
 
-  let patterns = Array.prototype.map.call(arguments, p =>
+  const patterns = Array.prototype.map.call(args, p =>
     // replace __dep and __deps into
     // __str_1, __str_2, __arr_3
     // wantArr is the result of (s?)
-    exports.compilePattern(p.replace(/__dep(s?)/g, (m, wantArr) =>
+    compilePattern(p.replace(/__dep(s?)/g, (m, wantArr) =>
       (wantArr ? '__arr_' : '__str_') + (++seed)
     ))
   );
 
-  let len = patterns.length;
+  const len = patterns.length;
 
-  return function(jsStr) {
-    let node = ensureParsed(jsStr);
+  return function(jsStr: string | meriyah.ESTree.Node) {
+    const node = ensureParsed(jsStr);
 
-    let deps = [];
+    const deps = [];
 
     // directly use extract() instead of astMatcher()
     // for efficiency
     traverse(node, n => {
       for (let i = 0; i < len; i += 1) {
-        let result = exports.extract(patterns[i], n);
+        const result = extract(patterns[i], n);
         if (result) {
           // result is like {"1": "dep1", "2": ["dep2", "dep3"]}
           // we only want values
           Object.keys(result).forEach(k => {
-            let d = result[k];
+            const d = result[k];
             if (typeof d === 'string') deps.push(d);
-            else deps.push.apply(deps, d);
+            else deps.push(...d);
           });
 
           // found a match, don't try other pattern

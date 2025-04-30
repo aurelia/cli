@@ -1,30 +1,54 @@
-const os = require('os');
-const fs = require('./file-system');
-const {wordWrap} = require('enquirer/lib/utils');
-const getTtySize = require('./get-tty-size');
-const {Input, Select} = require('enquirer');
-const prettyChoices = require('./pretty-choices');
-const {Writable} = require('stream');
-const _ = require('lodash');
+import { CLIOptions } from './cli-options';
 
-exports.UI = class { };
+import * as os from 'node:os';
+import { readFile } from './file-system';
+import { wordWrap } from 'enquirer/lib/utils.js';
+import { getTtySize } from './get-tty-size';
+import { prettyChoices } from './pretty-choices';
+import { Writable } from 'node:stream';
+import * as _ from 'lodash';
 
-exports.ConsoleUI = class {
-  constructor(cliOptions) {
+// type definitions for `enquirer` are very bad, we need to mock them.
+declare module 'enquirer' {
+  /** [class Input extends StringPrompt] */
+  export const Input;
+  /** [class SelectPrompt extends ArrayPrompt] */
+  export const Select;
+}
+import { Input, Select } from 'enquirer';
+
+/** Base class, used for DI registration of `ConsoleUI` */
+export abstract class UI {
+  public abstract displayLogo(): Promise<void>;
+  public abstract log(text: string, indent?: number): Promise<void>;
+  public abstract getWidth(): number;
+  public abstract getHeight(): number;
+  public abstract ensureAnswer(answer: string, question: string, suggestion?: string)
+}
+
+export class ConsoleUI implements UI {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  static UI(UI: unknown, ui: unknown) {
+    throw new Error('Method not implemented.');
+  }
+  private readonly cliOptions: CLIOptions;
+  static ConsoleUI: ConsoleUI;
+
+  constructor(cliOptions: CLIOptions) {
     this.cliOptions = cliOptions;
   }
 
-  log(text, indent) {
+  public log(text: string, indent?: number) {
     if (indent !== undefined) {
       text = wordWrap(text, {indent, width: this.getWidth()});
     }
-    return new Promise(resolve  => {
+    return new Promise<void>(resolve  => {
       console.log(text);
       resolve();
     });
   }
 
-  ensureAnswer(answer, question, suggestion) {
+  ensureAnswer(answer: string, question: string, suggestion?: string) {
     return this._ensureAnswer(answer, question, suggestion);
   }
 
@@ -39,7 +63,7 @@ exports.ConsoleUI = class {
   }
 
   // _debug is used to pass in answers for prompts.
-  async _question(question, options, defaultValue, _debug = []) {
+  private async _question(question, options, defaultValue, _debug = []) {
     let opts;
     let PromptType;
     if (!options || typeof options === 'string') {
@@ -84,7 +108,7 @@ exports.ConsoleUI = class {
   }
 
   // _debug is used to pass in answers for prompts.
-  async _multiselect(question, options, _debug = []) {
+  private async _multiselect(question, options, _debug = []) {
     options = options.filter(x => includeOption(this.cliOptions, x));
 
     const opts = {
@@ -95,7 +119,8 @@ exports.ConsoleUI = class {
       // https://github.com/enquirer/enquirer/issues/121#issuecomment-468413408
       result(names) {
         return Object.values(this.map(names));
-      }
+      },
+      stdout: undefined
     };
 
     if (_debug && _debug.length) {
@@ -106,28 +131,27 @@ exports.ConsoleUI = class {
     return await _run(new Select(opts), _debug);
   }
 
-  getWidth() {
+  public getWidth() {
     return getTtySize().width;
   }
 
-  getHeight() {
+  public getHeight() {
     return getTtySize().height;
   }
 
-  displayLogo() {
+  async displayLogo() {
     if (this.getWidth() < 50) {
       return this.log('Aurelia CLI' + os.EOL);
     }
 
-    let logoLocation = require.resolve('./resources/logo.txt');
+    const logoLocation = require.resolve('./resources/logo.txt');
 
-    return fs.readFile(logoLocation).then(logo => {
-      this.log(logo.toString());
-    });
+    const logo = await readFile(logoLocation);
+    void this.log(logo.toString());
   }
 };
 
-function includeOption(cliOptions, option) {
+function includeOption(cliOptions: CLIOptions, option: { disabled?: boolean; flag?: string }) {
   if (option.disabled) {
     return false;
   }

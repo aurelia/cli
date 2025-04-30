@@ -1,37 +1,41 @@
-const UI = require('./ui').UI;
-const c = require('ansi-colors');
+import { UI } from './ui';
+import * as c from 'ansi-colors';
 
-exports.Logger = class {
+interface ILogger {
+  id: string;
+}
+
+export class Logger {
   static inject() { return [UI]; }
+  private ui: UI;
 
-  constructor(ui) {
+  constructor(ui: UI) {
     this.ui = ui;
   }
 
-  debug(logger, message) {
-    this.log(logger, c.bold('DEBUG'), message, arguments);
+  debug(logger: ILogger, message: string, ...rest: unknown[]) {
+    this.log(logger, c.bold('DEBUG'), message, rest);
   }
 
-  info(logger, message) {
-    this.log(logger, c.bold('INFO'), message, arguments);
+  info(logger: ILogger, message: string, ...rest: unknown[]) {
+    this.log(logger, c.bold('INFO'), message, rest);
   }
 
-  warn(logger, message) {
-    this.log(logger, c.bgYellow('WARN'), message, arguments);
+  warn(logger: ILogger, message: string, ...rest: unknown[]) {
+    this.log(logger, c.bgYellow('WARN'), message, rest);
   }
 
-  error(logger, message) {
-    this.log(logger, c.bgRed('ERROR'), message, arguments);
+  error(logger: ILogger, message: string, ...rest: unknown[]) {
+    this.log(logger, c.bgRed('ERROR'), message, rest);
   }
 
-  log(logger, level, message, rest) {
+  log(logger: ILogger, level: string, message: string, rest: unknown[]) {
     let msg = `${level} [${logger.id}] ${message}`;
-    let args = Array.prototype.slice.call(rest, 2);
 
-    if (args.length > 0) {
-      msg += ` ${args.map(x => JSON.stringify(x)).join(' ')}`;
+    if (rest.length > 0) {
+      msg += ` ${rest.map(x => JSON.stringify(x)).join(' ')}`;
     }
 
-    this.ui.log(msg);
+    void this.ui.log(msg);
   }
 };

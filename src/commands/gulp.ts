@@ -1,30 +1,37 @@
-const UI = require('../ui').UI;
-const CLIOptions = require('../cli-options').CLIOptions;
-const Container = require('aurelia-dependency-injection').Container;
-const Project = require('../project').Project;
+import { Container } from 'aurelia-dependency-injection';
+import { UI } from '../ui';
+import { CLIOptions } from '../cli-options';
+import { Project } from '../project';
+import { type Gulp } from 'gulp';
+import type * as Undertaker from 'undertaker';
 
-module.exports = class {
+export default class {
   static inject() { return [Container, UI, CLIOptions, Project]; }
 
-  constructor(container, ui, options, project) {
+  private container: Container;
+  private ui: UI;
+  private options: CLIOptions;
+  private project: Project;
+
+  constructor(container: Container, ui: UI, options: CLIOptions, project: Project) {
     this.container = container;
     this.ui = ui;
     this.options = options;
     this.project = project;
   }
 
-  execute() {
-    return new Promise((resolve, reject) => {
-      const gulp = require('gulp');
-      this.connectLogging(gulp);
+  async execute(): Promise<void> {
+    const { default: gulp } = await import('gulp');
+    this.connectLogging(gulp);
 
-      this.project.installTranspiler();
+    await this.project.installTranspiler();
 
-      makeInjectable(gulp, 'series', this.container);
-      makeInjectable(gulp, 'parallel', this.container);
+    makeInjectable(gulp, 'series', this.container);
+    makeInjectable(gulp, 'parallel', this.container);
 
-      process.nextTick(() => {
-        let task = this.project.getExport(require(this.options.taskPath), this.options.commandName);
+    return new Promise<void>((resolve, reject) => {
+      process.nextTick(async () => {
+        const task = this.project.getExport(await import(this.options.taskPath), this.options.commandName);
 
         gulp.series(task)(error => {
           if (error) reject(error);
@@ -34,32 +41,38 @@ module.exports = class {
     });
   }
 
-  connectLogging(gulp) {
+  connectLogging(gulp: Gulp) {
     gulp.on('start', e => {
       if (e.name[0] === '<') return;
-      this.ui.log(`Starting '${e.name}'...`);
+      void this.ui.log(`Starting '${e.name}'...`);
     });
 
     gulp.on('stop', e => {
       if (e.name[0] === '<') return;
-      this.ui.log(`Finished '${e.name}'`);
+      void this.ui.log(`Finished '${e.name}'`);
     });
 
-    gulp.on('error', e => this.ui.log(e));
+    gulp.on('error', e => void this.ui.log(e));
   }
 };
 
-function makeInjectable(gulp, name, container) {
-  let original = gulp[name];
+function makeInjectable(gulp: Gulp, name: 'series' | 'parallel', container: Container) {
+  const original = gulp[name];
 
   gulp[name] = function() {
-    let args = new Array(arguments.length);
+    const args = Array.from({ length: arguments.length});
 
-    for (let i = 0, ii = arguments.length; i < ii; ++i) {
-      let task = arguments[i];
+    // `arguments` can be both spread tasks `(...tasks: Undertaker.Task[])` and an array `(tasks: Undertaker.Task[])`
+    // eslint-disable-next-line prefer-rest-params
+    const inputParams = arguments as unknown as Undertaker.Task[] | [Undertaker.Task[]];
+    const tasks: Undertaker.Task[] = (inputParams.length === 1 && Array.isArray(inputParams[0]) ? inputParams[0] : inputParams) as  Undertaker.Task[];
+
+    for (let i = 0, ii = tasks.length; i < ii; ++i) {
+      let task;
+      task = tasks[i];
 
       if (task.inject) {
-        let taskName = task.name;
+        const taskName = task.name;
         task = container.get(task);
         task = task.execute.bind(task);
         task.displayName = taskName;

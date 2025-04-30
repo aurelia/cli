@@ -1,12 +1,10 @@
-const meriyah = require('meriyah');
-const parse = require('./amodro-trace/lib/parse');
-const am = require('./ast-matcher');
-const jsDepFinder = am.jsDepFinder;
-const astMatcher = am.astMatcher;
-const htmlparser = require('htmlparser2');
-const path = require('path');
-const fs = require('../file-system');
-const Utils = require('./utils');
+import * as meriyah from 'meriyah';
+import { parse } from './amodro-trace/lib/parse';
+import { jsDepFinder, astMatcher} from './ast-matcher';
+import * as htmlparser from 'htmlparser2';
+import * as path from 'node:path';
+import * as fs from '../file-system';
+import * as Utils from './utils';
 
 const amdNamedDefine = jsDepFinder(
   'define(__dep, __any)',
@@ -86,12 +84,12 @@ const auConfigModuleNames = {
 // https://github.com/aurelia/framework/pull/851
 const auDevLogWithOptionalLevel = astMatcher('__any.developmentLogging(__any)');
 
-const auConfigureDepFinder = function(contents) {
+const auConfigureDepFinder = function(contents: meriyah.ESTree.Program) {
   // the way to find configure function is not waterproof
   let configFunc;
 
   _checkConfigureFunc.find(check => {
-    let m = check(contents);
+    const m = check(contents);
     // only want single configure func
     if (m && m.length === 1) {
       configFunc = m[0];
@@ -101,17 +99,17 @@ const auConfigureDepFinder = function(contents) {
 
   if (!configFunc) return [];
 
-  let auVar = configFunc.match.auVar.name;
+  const auVar = configFunc.match.auVar.name;
 
-  let configureFuncBody = {
+  const configureFuncBody: meriyah.ESTree.BlockStatement = {
     type: 'BlockStatement',
     // The matched body is an array, wrap them under single node,
     // so that I don't need to call forEach to deal with them.
-    body: configFunc.match.body
+    body: configFunc.match.body as meriyah.ESTree.Statement[]
   };
 
   let isLikelyAureliaConfigFile;
-  let isAureliaMainFile = !!(astMatcher(`${auVar}.start()`)(contents));
+  const isAureliaMainFile = !!(astMatcher(`${auVar}.start()`)(contents));
 
   if (!isAureliaMainFile) {
     // an aurelia plugin entry file is likely to call one of
@@ -121,15 +119,15 @@ const auConfigureDepFinder = function(contents) {
                                    astMatcher(`${auVar}.plugin(__anl)`)(contents));
   }
 
-  let deps = new Set();
-  let add = _add.bind(deps);
+  const deps = new Set<string>();
+  const add = _add.bind(deps);
 
   if (isAureliaMainFile) {
-    let match = _methodCall(configureFuncBody);
+    const match = _methodCall(configureFuncBody);
     if (match) {
       // track aurelia dependency based on user configuration.
       match.forEach(m => {
-        let methodName = m.match.method.name;
+        const methodName = m.match.method.name;
         if (auConfigModuleNames.hasOwnProperty(methodName)) {
           auConfigModuleNames[methodName].forEach(add);
         }
@@ -151,10 +149,10 @@ const auConfigureDepFinder = function(contents) {
   //   if (environment.testing) {
   //      aurelia.use.plugin('aurelia-testing');
   //   }
-  let allIfs = _findIf(configureFuncBody);
+  const allIfs = _findIf(configureFuncBody);
   if (allIfs) {
     allIfs.forEach(m => {
-      let volatileDeps = _auConfigureDeps(m.node);
+      const volatileDeps = _auConfigureDeps(m.node);
       volatileDeps.forEach(d => deps.delete(d));
     });
   }
@@ -171,20 +169,20 @@ const inlineViewExtract = jsDepFinder(
   '__any.inlineView(__dep, __any)'
 );
 
-const auInlineViewDepsFinder = function(contents, loaderType) {
-  let match = inlineViewExtract(contents);
+const auInlineViewDepsFinder = function(contents: meriyah.ESTree.Program, loaderType: LoaderType) {
+  const match = inlineViewExtract(contents);
   if (match.length === 0) return [];
 
   // If user accidentally calls inlineView more than once,
   // aurelia renders first inlineView without any complain.
   // But this assumes there is only one custom element
   // class implementation in current js file.
-  return exports.findHtmlDeps('', match[0], loaderType);
+  return findHtmlDeps('', match[0], loaderType);
 };
 
 // helper to add deps to a set
 // accepts string, or array, or set.
-function _add(deps) {
+function _add(deps: string | string[]) {
   if (!deps) return;
   if (typeof deps === 'string') deps = [deps];
 
@@ -209,29 +207,29 @@ function _add(deps) {
   });
 }
 
-function isPackageName(id) {
+function isPackageName(id: string) {
   if (id.startsWith('.')) return false;
   const parts = id.split('/');
   // package name, or scope package name
   return parts.length === 1 || (parts.length === 2 && parts[0].startsWith('@'));
 }
 
-function auDep(dep, loaderType) {
+function auDep(dep: string, loaderType: LoaderType) {
   if (!dep) return dep;
-  let ext = path.extname(dep).toLowerCase();
+  const ext = path.extname(dep).toLowerCase();
   if (ext === '.html' || ext === '.css') {
     return Utils.moduleIdWithPlugin(dep, 'text', loaderType);
   }
   return dep;
 }
 
-exports.findJsDeps = function(filename, contents, loaderType = 'require') {
-  let deps = new Set();
-  let add = _add.bind(deps);
+export function findJsDeps(filename: string, contents: string, loaderType: LoaderType = 'require') {
+  const deps = new Set<string>();
+  const add = _add.bind(deps);
 
   // for all following static analysis,
   // only parse once for efficiency
-  let parsed = meriyah.parseScript(contents, {next: true, webcompat: true});
+  const parsed = meriyah.parseScript(contents, {next: true, webcompat: true});
 
   add(parse.findDependencies(filename, parsed));
   // clear commonjs wrapper deps
@@ -250,8 +248,8 @@ exports.findJsDeps = function(filename, contents, loaderType = 'require') {
   add(auInlineViewDepsFinder(parsed, loaderType));
 
   // aurelia view convention, try foo.html for every foo.js
-  let fileParts = path.parse(filename);
-  let htmlPair = fileParts.name + '.html';
+  const fileParts = path.parse(filename);
+  const htmlPair = fileParts.name + '.html';
   if (fs.existsSync(fileParts.dir + path.sep + htmlPair)) {
     add(auDep('./' + htmlPair, loaderType));
   }
@@ -259,12 +257,12 @@ exports.findJsDeps = function(filename, contents, loaderType = 'require') {
   return Array.from(deps);
 };
 
-exports.findHtmlDeps = function(filename, contents, loaderType = 'require') {
-  let deps = new Set();
-  let add = _add.bind(deps);
+export function findHtmlDeps(filename: string, contents: string, loaderType: LoaderType = 'require') {
+  const deps = new Set<string>();
+  const add = _add.bind(deps);
 
-  let parser = new htmlparser.Parser({
-    onopentag: function(name, attrs) {
+  const parser = new htmlparser.Parser({
+    onopentag: function(name: string, attrs: Record<string, string>) {
       // <require from="dep"></require>
       if ((name === 'require' || name === 'import') && attrs.from) {
         add(auDep(attrs.from, loaderType));
@@ -285,13 +283,13 @@ exports.findHtmlDeps = function(filename, contents, loaderType = 'require') {
   return Array.from(deps);
 };
 
-exports.findDeps = function(filename, contents, loaderType = 'require') {
-  let ext = path.extname(filename).toLowerCase();
+export function findDeps(filename: string, contents: string, loaderType: LoaderType = 'require') {
+  const ext = path.extname(filename).toLowerCase();
 
   if (ext === '.js' || ext === '.mjs' || ext === '.cjs') {
-    return exports.findJsDeps(filename, contents, loaderType);
+    return findJsDeps(filename, contents, loaderType);
   } else if (ext === '.html' || ext === '.htm') {
-    return exports.findHtmlDeps(filename, contents, loaderType);
+    return findHtmlDeps(filename, contents, loaderType);
   }
 
   return [];

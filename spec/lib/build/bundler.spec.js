@@ -1,5 +1,5 @@
 const path = require('path');
-const Bundler = require('../../../lib/build/bundler').Bundler;
+const Bundler = require('../../../dist/build/bundler').Bundler;
 const PackageAnalyzer = require('../../mocks/package-analyzer');
 const CLIOptionsMock = require('../../mocks/cli-options');
 const mockfs = require('../../mocks/mock-fs');

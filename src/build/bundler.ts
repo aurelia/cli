@@ -1,16 +1,66 @@
-const Bundle = require('./bundle').Bundle;
-const BundledSource = require('./bundled-source').BundledSource;
-const CLIOptions = require('../cli-options').CLIOptions;
-const LoaderPlugin = require('./loader-plugin').LoaderPlugin;
-const Configuration = require('../configuration').Configuration;
-const path = require('path');
-const fs = require('../file-system');
-const Utils = require('./utils');
-const logger = require('aurelia-logging').getLogger('Bundler');
-const stubModule = require('./stub-module');
+import { Bundle } from './bundle';
+import { BundledSource } from './bundled-source';
+import { CLIOptions } from '../cli-options';
+import { LoaderPlugin } from './loader-plugin';
+import { Configuration } from '../configuration';
+import * as path from 'node:path';
+import * as fs from '../file-system';
+import * as Utils from './utils';
+import { getLogger } from 'aurelia-logging';
+import { stubModule } from './stub-module';
 
-exports.Bundler = class {
-  constructor(project, packageAnalyzer, packageInstaller) {
+import { type PackageAnalyzer } from './package-analyzer';
+import { type PackageInstaller } from './package-installer';
+import { type SourceInclusion } from './source-inclusion';
+import { type DependencyDescription } from './dependency-description';
+import { type DependencyInclusion } from './dependency-inclusion';
+import { type LoaderOptions } from './loader';
+
+/**
+ * onRequiringModule callback is called before auto-tracing on a moduleId. It would not be called for any modules provided by app's src files or explicit dependencies config in aurelia.json.
+
+ * Three types possible result (all can be returned in promise):
+ * 1. Boolean false: ignore this moduleId;
+ * 2. Array of strings like ['a', 'b']: require module id "a" and "b" instead;
+ * 3. A string: the full JavaScript content of this module
+ * 4. All other returns are ignored and go onto performing auto-tracing.
+ * 
+ * Usage example in applications `build.ts` file:
+ * 
+ * function writeBundles() {
+ *    return buildCLI.dest({
+ *        // use onRequiringModule to ignore tracing "template/**\/*"
+ *        onRequiringModule: moduleId => {
+ *          if (moduleId.startsWith("template/")) {
+ *              return false;
+ *          }
+ *      }
+ *  });
+ * 
+ */
+export type BuildOptions =  { onRequiringModule?: onRequiringModuleCallback; onNotBundled?: onNotBundledCallback };
+type onRequiringModuleResult = boolean | string | string[] | Promise<boolean | string | string[]>
+type onRequiringModuleCallback = (moduleId: string) => onRequiringModuleResult;
+type onNotBundledCallback = (items: BundledSource[]) => void;
+
+const logger = getLogger('Bundler');
+
+export class Bundler{
+  public project: AureliaJson.IProject;
+  private packageAnalyzer: PackageAnalyzer;
+  private packageInstaller: PackageInstaller;
+  public readonly bundles: Bundle[];
+  private readonly itemLookup: {[key: string]: BundledSource};
+  private readonly items: BundledSource[];
+  private readonly environment: string;
+  private readonly autoInstall: boolean;
+  private triedAutoInstalls: Set<string>;
+  public buildOptions: Configuration;
+  public loaderOptions: LoaderOptions;
+  public loaderConfig: AureliaJson.ILoaderConfig;
+  public configTargetBundle: Bundle;
+
+  constructor(project: AureliaJson.IProject, packageAnalyzer: PackageAnalyzer, packageInstaller: PackageInstaller) {
     this.project = project;
     this.packageAnalyzer = packageAnalyzer;
     this.packageInstaller = packageInstaller;
@@ -21,20 +71,19 @@ exports.Bundler = class {
     // --auto-install is checked here instead of in app's tasks/run.js
     // this enables all existing apps to use this feature.
     this.autoInstall = CLIOptions.hasFlag('auto-install');
-    this.triedAutoInstalls = new Set();
+    this.triedAutoInstalls = new Set<string>();
 
-    let defaultBuildOptions = {
+    const defaultBuildOptions = {
       minify: 'stage & prod',
       sourcemaps: 'dev & stage',
       rev: false
     };
 
     this.buildOptions = new Configuration(project.build.options, defaultBuildOptions);
-    this.loaderOptions = project.build.loader;
-
+    
     this.loaderConfig = {
       baseUrl: project.paths.root,
-      paths: ensurePathsRelativelyFromRoot(project.paths || {}),
+      paths: ensurePathsRelativelyFromRoot(project.paths),
       packages: [],
       stubModules: [],
       shim: {}
@@ -42,8 +91,8 @@ exports.Bundler = class {
 
     Object.assign(this.loaderConfig, this.project.build.loader.config);
 
-    this.loaderOptions.plugins = (this.loaderOptions.plugins || []).map(x => {
-      let plugin = new LoaderPlugin(this.loaderOptions.type, x);
+    const plugins = (project.build.loader.plugins || []).map(x => {
+      const plugin = new LoaderPlugin(project.build.loader.type, x);
 
       if (plugin.stub && this.loaderConfig.stubModules.indexOf(plugin.name) === -1) {
         this.loaderConfig.stubModules.push(plugin.name);
@@ -51,38 +100,39 @@ exports.Bundler = class {
 
       return plugin;
     });
+    this.loaderOptions = {...project.build.loader, plugins};
   }
 
-  static create(project, packageAnalyzer, packageInstaller) {
-    let bundler = new exports.Bundler(project, packageAnalyzer, packageInstaller);
+  static async create(project: AureliaJson.IProject, packageAnalyzer: PackageAnalyzer, packageInstaller: PackageInstaller) {
+    const bundler = new Bundler(project, packageAnalyzer, packageInstaller);
 
-    return Promise.all(
+    await Promise.all(
       project.build.bundles.map(x => Bundle.create(bundler, x).then(bundle => {
         bundler.addBundle(bundle);
       }))
-    ).then(() => {
-      //Order the bundles so that the bundle containing the config is processed last.
-      if (bundler.bundles.length) {
-        let configTargetBundleIndex = bundler.bundles.findIndex(x => x.config.name === bundler.loaderOptions.configTarget);
-        bundler.bundles.splice(bundler.bundles.length, 0, bundler.bundles.splice(configTargetBundleIndex, 1)[0]);
-        bundler.configTargetBundle = bundler.bundles[bundler.bundles.length - 1];
-      }
-    }).then(() => bundler);
+    );
+    //Order the bundles so that the bundle containing the config is processed last.
+    if (bundler.bundles.length) {
+      const configTargetBundleIndex = bundler.bundles.findIndex(x_1 => x_1.config.name === bundler.loaderOptions.configTarget);
+      bundler.bundles.splice(bundler.bundles.length, 0, bundler.bundles.splice(configTargetBundleIndex, 1)[0]);
+      bundler.configTargetBundle = bundler.bundles[bundler.bundles.length - 1];
+    }
+    return bundler;
   }
 
-  itemIncludedInBuild(item) {
+  itemIncludedInBuild(item: string | { env?: string}) {
     if (typeof item === 'string' || !item.env) {
       return true;
     }
 
-    let value = item.env;
-    let parts = value.split('&').map(x => x.trim().toLowerCase());
+    const value = item.env;
+    const parts = value.split('&').map(x => x.trim().toLowerCase());
 
     return parts.indexOf(this.environment) !== -1;
   }
 
-  addFile(file, inclusion) {
-    let key =  normalizeKey(file.path);
+  addFile(file: IFile, inclusion?: SourceInclusion) {
+    const key =  normalizeKey(file.path);
     let found = this.itemLookup[key];
 
     if (!found) {
@@ -100,8 +150,8 @@ exports.Bundler = class {
     return found;
   }
 
-  updateFile(file, inclusion) {
-    let found = this.itemLookup[normalizeKey(file.path)];
+  updateFile(file: IFile, inclusion?: SourceInclusion) {
+    const found = this.itemLookup[normalizeKey(file.path)];
 
     if (found) {
       found.update(file);
@@ -110,44 +160,47 @@ exports.Bundler = class {
     }
   }
 
-  addBundle(bundle) {
+  addBundle(bundle: Bundle) {
     this.bundles.push(bundle);
   }
 
-  configureDependency(dependency) {
-    return analyzeDependency(this.packageAnalyzer, dependency)
-      .catch(e => {
-        let nodeId = dependency.name || dependency;
+  async configureDependency(dependency: ILoaderConfig | string): Promise<DependencyDescription> {
+    try {
+      return await analyzeDependency(this.packageAnalyzer, dependency);
+    } catch (e) {
+      const nodeId = typeof dependency === 'string' ? dependency : dependency.name;
 
-        if (this.autoInstall && !this.triedAutoInstalls.has(nodeId)) {
-          this.triedAutoInstalls.add(nodeId);
-          return this.packageInstaller.install([nodeId])
-            // try again after install
-            .then(() => this.configureDependency(nodeId));
-        }
+      if (this.autoInstall && !this.triedAutoInstalls.has(nodeId)) {
+        this.triedAutoInstalls.add(nodeId);
+        await this.packageInstaller.install([nodeId])
+          // try again after install
+        return await this.configureDependency(nodeId);
+      }
 
-        logger.error(`Unable to analyze ${nodeId}`);
-        logger.info(e);
-        throw e;
-      });
+      logger.error(`Unable to analyze ${nodeId}`);
+      logger.info(e);
+      throw e;
+    }
   }
 
-  build(opts) {
-    let onRequiringModule, onNotBundled;
-    if (opts && typeof opts.onRequiringModule === 'function') {
+  async build(opts?: BuildOptions) {
+    let onRequiringModule: onRequiringModuleCallback | undefined, 
+        onNotBundled: onNotBundledCallback | undefined;
+        
+    if (opts?.onRequiringModule && typeof opts.onRequiringModule === 'function') {
       onRequiringModule = opts.onRequiringModule;
     }
-    if (opts && typeof opts.onNotBundled === 'function') {
+    if (opts?.onNotBundled && typeof opts.onNotBundled === 'function') {
       onNotBundled = opts.onNotBundled;
     }
 
-    const doTranform = (initSet) => {
-      let deps = new Set(initSet);
+    const doTransform = async (initSet?: Iterable<string>): Promise<void> => {
+      const deps = new Set<string>(initSet);
 
       this.items.forEach(item => {
         // Transformed items will be ignored
         // by flag item.requiresTransform.
-        let _deps = item.transform();
+        const _deps = item.transform();
         if (_deps) _deps.forEach(d => deps.add(d));
       });
 
@@ -161,7 +214,7 @@ exports.Bundler = class {
 
             if (id.endsWith('/index')) {
               // if id is 'resources/index', shortId is 'resources'.
-              let shortId = id.slice(0, -6);
+              const shortId = id.slice(0, -6);
               if (deps.delete(shortId)) {
                 // ok, someone try to use short name
                 bundle.addAlias(shortId, id);
@@ -172,87 +225,80 @@ exports.Bundler = class {
       }
 
       if (deps.size) {
-        let _leftOver = new Set();
+        const _leftOver = new Set<string>();
 
-        return Utils.runSequentially(
+        await Utils.runSequentially(
           Array.from(deps).sort(),
-          d => {
-            return new Promise(resolve => {
-              resolve(onRequiringModule && onRequiringModule(d));
-            }).then(
-              result => {
-                // ignore this module id
-                if (result === false) return;
+          async (d) => {
+            try {
+              const result = await (onRequiringModule?.(d) ?? undefined);
 
-                // require other module ids instead
-                if (Array.isArray(result) && result.length) {
-                  result.forEach(dd => _leftOver.add(dd));
-                  return;
-                }
+              // ignore this module id
+              if (result === false) return;
 
-                // got full content of this module
-                if (typeof result === 'string') {
-                  let fakeFilePath = path.resolve(this.project.paths.root, d);
-
-                  let ext = path.extname(d).toLowerCase();
-                  if (!ext || Utils.knownExtensions.indexOf(ext) === -1) {
-                    fakeFilePath += '.js';
-                  }
-                  // we use '/' as separator even on Windows
-                  // because module id is using '/' as separator
-                  this.addFile({
-                    path: fakeFilePath,
-                    contents: result
-                  });
-                  return;
-                }
-
-                // process normally if result is not recognizable
-                return this.addMissingDep(d);
-              },
-              // proceed normally after error
-              err => {
-                logger.error(err);
-                return this.addMissingDep(d);
+              // require other module ids instead
+              if (Array.isArray(result) && result.length) {
+                result.forEach(dd => _leftOver.add(dd));
+                return;
               }
-            );
-          }
-        ).then(() => doTranform(_leftOver));
-      }
 
-      return Promise.resolve();
+              // got full content of this module
+              if (typeof result === 'string') {
+                let fakeFilePath = path.resolve(this.project.paths.root, d);
+                const ext = path.extname(d).toLowerCase();
+                if (!ext || Utils.knownExtensions.indexOf(ext) === -1) {
+                  fakeFilePath += '.js';
+                }
+                // we use '/' as separator even on Windows
+                // because module id is using '/' as separator
+                this.addFile({
+                  path: fakeFilePath,
+                  contents: result
+                });
+                return;
+              }
+
+              // process normally if result is not recognizable
+              await this.addMissingDep(d);
+            } catch (err) {
+              logger.error(err);
+              await this.addMissingDep(d);
+            }
+          }
+        );
+
+        await doTransform(_leftOver);
+      }
     };
 
     logger.info('Tracing files ...');
 
-    return Promise.resolve()
-      .then(() => doTranform())
-      .then(() => {
-        if (!onNotBundled) return;
+    try {
+      await doTransform();
+      
+      if (onNotBundled) {
         const notBundled = this.items.filter(t => !t.includedIn);
         if (notBundled.length) onNotBundled(notBundled);
-      })
-      .catch(e => {
-        logger.error('Failed to do transforms');
-        logger.info(e);
-        throw e;
-      });
+      }
+    } catch (e) {
+      logger.error('Failed to do transforms');
+      logger.info(e);
+      throw e;
+    }
   }
 
-  write() {
-    return Promise.all(this.bundles.map(bundle => bundle.write(this.project.build.targets[0])))
-      .then(async() => {
-        for (let i = this.bundles.length; i--; ) {
-          await this.bundles[i].writeBundlePathsToIndex(this.project.build.targets[0]);
-        }
-      });
+  async write() {
+    await Promise.all(this.bundles.map(bundle => bundle.write(this.project.build.targets[0])));
+    for (let i = this.bundles.length; i--;) {
+      await this.bundles[i].writeBundlePathsToIndex(this.project.build.targets[0]);
+    }
   }
 
   getDependencyInclusions() {
-    return this.bundles.reduce((a, b) => a.concat(b.getDependencyInclusions()), []);
+    return this.bundles.reduce<DependencyInclusion[]>((a, b) => a.concat(b.getDependencyInclusions()), []);
   }
 
-  addMissingDep(id) {
+  async addMissingDep(id: string) {
     const localFilePath = path.resolve(this.project.paths.root, id);
 
     // load additional local file missed by gulp tasks,
@@ -263,19 +309,19 @@ exports.Bundler = class {
         path: localFilePath,
         contents: fs.readFileSync(localFilePath)
       });
-      return Promise.resolve();
+      return;
     }
 
-    return this.addNpmResource(id);
+    await this.addNpmResource(id);
   }
 
-  addNpmResource(id) {
+  async addNpmResource(id: string) {
     // match scoped npm module and normal npm module
     const match = id.match(/^((?:@[^/]+\/[^/]+)|(?:[^@][^/]*))(\/.+)?$/);
 
     if (!match) {
       logger.error(`Not valid npm module Id: ${id}`);
-      return Promise.resolve();
+      return;
     }
 
     const nodeId = match[1];
@@ -291,45 +337,44 @@ exports.Bundler = class {
       return depInclusion.traceMain();
     }
 
-    let stub = stubModule(nodeId, this.project.paths.root);
+    const stub = await stubModule(nodeId, this.project.paths.root);
     if (typeof stub === 'string') {
       this.addFile({
         path: path.resolve(this.project.paths.root, nodeId + '.js'),
         contents: stub
       });
-      return Promise.resolve();
+      return;
     }
 
-    return this.configureDependency(stub || nodeId)
-      .then(description => {
-        if (resourceId) {
-          description.loaderConfig.lazyMain = true;
-        }
-
-        if (stub) {
-          logger.info(`Auto stubbing module: ${nodeId}`);
-        } else {
-          logger.info(`Auto tracing ${description.banner}`);
-        }
-
-        return this.configTargetBundle.addDependency(description);
-      })
-      .then(inclusion => {
-        // now dependencyInclusion is created
-        // try again to use magical traceResource
-        if (resourceId) {
-          return inclusion.traceResource(resourceId);
-        }
-      })
-      .catch(e => {
-        logger.error('Failed to add Nodejs module ' + id);
-        logger.info(e);
-        // don't stop
-      });
+    try {
+      const description = await this.configureDependency(stub || nodeId);
+      
+      if (resourceId) {
+        description.loaderConfig.lazyMain = true;
+      }
+    
+      if (stub) {
+        logger.info(`Auto stubbing module: ${nodeId}`);
+      } else {
+        logger.info(`Auto tracing ${description.banner}`);
+      }
+    
+      const inclusion = await this.configTargetBundle.addDependency(description);
+      
+      // Now dependencyInclusion is created
+      // Try again to use magical traceResource
+      if (resourceId) {
+        return await inclusion.traceResource(resourceId);
+      }
+    } catch (e) {
+      logger.error('Failed to add Nodejs module ' + id);
+      logger.info(e);
+      // don't stop
+    }
   }
 };
 
-function analyzeDependency(packageAnalyzer, dependency) {
+function analyzeDependency(packageAnalyzer: PackageAnalyzer, dependency: ILoaderConfig | string) {
   if (typeof dependency === 'string') {
     return packageAnalyzer.analyze(dependency);
   }
@@ -337,7 +382,7 @@ function analyzeDependency(packageAnalyzer, dependency) {
   return packageAnalyzer.reverseEngineer(dependency);
 }
 
-function subsume(bundles, item) {
+function subsume(bundles: Bundle[], item: BundledSource) {
   for (let i = 0, ii = bundles.length; i < ii; ++i) {
     if (bundles[i].trySubsume(item)) {
       return;
@@ -346,17 +391,17 @@ function subsume(bundles, item) {
   logger.warn(item.path + ' is not captured by any bundle file. You might need to adjust the bundles source matcher in aurelia.json.');
 }
 
-function normalizeKey(p) {
+function normalizeKey(p: string) {
   return path.normalize(p);
 }
 
-function ensurePathsRelativelyFromRoot(p) {
-  let keys = Object.keys(p);
-  let original = JSON.stringify(p, null, 2);
+function ensurePathsRelativelyFromRoot(p: AureliaJson.IPaths) {
+  const keys = Object.keys(p);
+  const original = JSON.stringify(p, null, 2);
   let warn = false;
 
   for (let i = 0; i < keys.length; i++) {
-    let key = keys[i];
+    const key = keys[i];
     if (key !== 'root' && p[key].indexOf(p.root + '/') === 0) {
       warn = true;
       p[key] = p[key].slice(p.root.length + 1);

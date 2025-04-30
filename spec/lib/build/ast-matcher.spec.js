@@ -1,6 +1,6 @@
 const meriyah = require('meriyah');
 
-const astm = require('../../../lib/build/ast-matcher');
+const astm = require('../../../dist/build/ast-matcher');
 const extract = astm.extract;
 const compilePattern = astm.compilePattern;
 const astMatcher = astm.astMatcher;

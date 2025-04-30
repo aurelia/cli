@@ -4,15 +4,15 @@
 
 // and also dep string cleanup
 // remove tailing '/', '.js'
-const meriyah = require('meriyah');
-const astMatcher = require('../../ast-matcher').astMatcher;
+import * as meriyah from 'meriyah';
+import { astMatcher } from '../../ast-matcher';
 // it is definitely a named AMD module at this stage
 var amdDep = astMatcher('define(__str, [__anl_deps], __any)');
 var cjsDep = astMatcher('require(__any_dep)');
 var isUMD = astMatcher('typeof define === "function" && define.amd');
 var isUMD2 = astMatcher('typeof define == "function" && define.amd');
 
-module.exports = function stubs(options) {
+export function replace(options) {
   options = options || {};
 
   return function(context, moduleName, filePath, contents) {
