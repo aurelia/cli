@@ -1,5 +1,5 @@
 const mockfs = require('../../mocks/mock-fs');
-const PackageInstaller = require('../../../lib/build/package-installer').PackageInstaller;
+const PackageInstaller = require('../../../dist/build/package-installer').PackageInstaller;
 
 describe('The PackageInstaller', () => {
   let project;

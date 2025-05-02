@@ -35,6 +35,12 @@ The `au new` command now simplify wraps `npx makes aurelia/v1`. Users can direct
 
 Run `npm test` to run the unit tests.
 
+To run and individual test, you can use command with filters. For example:
+
+```powershell
+npx jasmine spec/lib/build/bundled-source.spec.js --filter="transform saves cache"
+```
+
 ## Release new aurelia-cli version
 
 Just run `npm version patch` (or minor or major)

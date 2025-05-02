@@ -1,5 +1,5 @@
 const path = require('path');
-const DependencyDescription = require('../../../lib/build/dependency-description').DependencyDescription;
+const DependencyDescription = require('../../../dist/build/dependency-description').DependencyDescription;
 
 describe('The DependencyDescription', () => {
   let sut;
@@ -42,12 +42,12 @@ describe('The DependencyDescription', () => {
   it('gets browser replacement but leave . for main replacement', () => {
     sut.metadata = {
       browser: {
-        "readable-stream": "./lib/readable-stream-browser.js",
+        "readable-stream": "./dist/readable-stream-browser.js",
         ".": "dist/jszip.min.js"
       }
     };
     expect(sut.browserReplacement()).toEqual({
-      "readable-stream": "./lib/readable-stream-browser"
+      "readable-stream": "./dist/readable-stream-browser"
     });
   });
 });

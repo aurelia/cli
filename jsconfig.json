@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "./",
+    "allowJs": true,
+    "types": ["node"]
+  },
+  "include": ["bin", "build", "eslint.config.mjs"]
+}

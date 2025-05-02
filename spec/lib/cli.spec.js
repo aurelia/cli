@@ -1,20 +1,27 @@
+/**
+ * @import {Project} from "../../src/project"
+ * @import { CLI } from "../../src/cli"
+ */
 const mockfs = require('../mocks/mock-fs');
 
 describe('The cli', () => {
   let fs;
   let path;
+  /** @type {CLI} */
   let cli;
+  /** @type {Project} */
   let Project;
+  /** @type {Project} */
   let project;
 
   let dir;
   let aureliaProject;
 
   beforeEach(() => {
-    fs = require('../../lib/file-system');
+    fs = require('../../dist/file-system');
     path = require('path');
-    cli = new (require('../../lib/cli').CLI)();
-    Project = require('../../lib/project').Project;
+    cli = new (require('../../dist/cli').CLI)();
+    Project = require('../../dist/project').Project;
     project = {};
 
     dir = 'workspaces';
@@ -82,17 +89,17 @@ describe('The cli', () => {
   });
 
   describe('The createHelpCommand() function', () => {
-    it('gets the help command', () => {
+    it('gets the help command', async () => {
       mockfs({
-        'lib/commands/help/command.js': 'module.exports = {}',
-        'lib/string.js': 'module.exports = {}'
+        'dist/commands/help/command.js': 'module.exports = {}',
+        'dist/string.js': 'module.exports = {}'
       });
 
       spyOn(cli.container, 'get');
 
-      cli.createHelpCommand();
+      await cli.createHelpCommand();
       expect(cli.container.get)
-        .toHaveBeenCalledWith(require('../../lib/commands/help/command'));
+        .toHaveBeenCalledWith(require('../../dist/commands/help/command').default);
     });
   });
 

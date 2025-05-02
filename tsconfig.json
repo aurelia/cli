@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "rootDir": "./src",
+    "target": "ES2020", // for Node 14.x or higher on client machine
+    "module": "CommonJS", // for backward compatibility of output JavaScript with Aurelia CLI 3.0.x
+    "moduleResolution": "node10", // max version for CommonJS output
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "typeRoots": [ "node_modules/@types"],
+    "types": ["node"],
+    "sourceMap": true,
+    "outDir": "./dist",
+    "declaration": true,
+    "strict": false
+  },
+  "include": [
+    "src"
+  ]
+}

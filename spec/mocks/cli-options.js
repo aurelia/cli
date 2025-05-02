@@ -1,4 +1,4 @@
-let OriginalCLIOptions = require('../../lib/cli-options').CLIOptions;
+let OriginalCLIOptions = require('../../dist/cli-options').CLIOptions;
 
 module.exports = class CLIOptionsMock {
   constructor() {
