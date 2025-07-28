@@ -384,10 +384,7 @@ export class Bundle {
       }
 
       const mapFileName = bundleFileName + '.map';
-      const mapSourceRoot = path.posix.relative(
-        path.posix.join(process.cwd(), platform.output),
-        process.cwd()
-      );
+      const mapSourceRoot = calculateRelativeSourceMapsRoot(process.cwd(), platform.output);
 
       logger.info(`Writing ${bundleFileName}...`);
 
@@ -562,3 +559,20 @@ function uniqueBy<T>(collection: T[], key: (item: T) => PropertyKey) {
     return seen.hasOwnProperty(k) ? false : (seen[k] = true);
   });
 }
+
+/**
+ * Returns a POSIX-style relative path from `outputDir` back to `projectRoot`.
+ * Works on Windows, macOS and Linux.
+ *
+ * @param {string} projectRootDir - The root directory of the project.
+ * @param {string} outputDir - The output directory where the files are generated.
+ * @returns {string} A POSIX-style relative path from `outputDir` to `projectRoot`.
+ */
+function calculateRelativeSourceMapsRoot(projectRootDir: string, outputDir: string): string {
+  const absoluteProjectRootDir = path.resolve(projectRootDir.split('\\').join('/'));
+  const absoluteOutputDir = path.resolve(absoluteProjectRootDir, outputDir.split('\\').join('/'));
+
+  return path.relative(absoluteOutputDir, absoluteProjectRootDir).split('\\').join('/');
+}
+
+export const _calculateRelativeSourceMapsRoot = calculateRelativeSourceMapsRoot;

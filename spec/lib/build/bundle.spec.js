@@ -1,5 +1,6 @@
 const BundlerMock = require('../../mocks/bundler');
 const Bundle = require('../../../dist/build/bundle').Bundle;
+const _calculateRelativeSourceMapsRoot = require('../../../dist/build/bundle')._calculateRelativeSourceMapsRoot;
 const CLIOptionsMock = require('../../mocks/cli-options');
 const DependencyDescription = require('../../../dist/build/dependency-description').DependencyDescription;
 const SourceInclusion = require('../../../dist/build/source-inclusion').SourceInclusion;
@@ -456,6 +457,48 @@ describe('the Bundle module', () => {
     }).catch(e => {
       Bundle.prototype.addDependency = previousAddDependency;
       done.fail(e);
+    });
+  });
+});
+
+describe('function _calculateRelativeSourceMapsRoot', () => {
+  const testCases = [
+    // Basic UNIX cases
+    { projectDir: '/usr/home/my-app', outputDir: './dist', expected: '..' },
+    { projectDir: '/usr/home/my-app/', outputDir: './dist/', expected: '..' },
+    { projectDir: '/usr/home/my-app', outputDir: 'dist', expected: '..' },
+    { projectDir: '/usr/home/my-app/', outputDir: 'dist/', expected: '..' },
+    // Basic Windows cases
+    { projectDir: 'C:/My Documents/MyApp', outputDir: './dist', expected: '..' },
+    { projectDir: 'C:/My Documents/MyApp/', outputDir: './dist/', expected: '..' },
+    { projectDir: 'C:/My Documents/MyApp', outputDir: 'dist', expected: '..' },
+    { projectDir: 'C:/My Documents/MyApp/', outputDir: 'dist/', expected: '..' },
+    // Basic Windows cases with backslashes
+    { projectDir: 'C:\\My Documents\\MyApp', outputDir: '.\\dist', expected: '..' },
+    { projectDir: 'C:\\My Documents\\MyApp\\', outputDir: '.\\dist\\', expected: '..' },
+    { projectDir: 'C:\\My Documents\\MyApp', outputDir: 'dist', expected: '..' },
+    { projectDir: 'C:\\My Documents\\MyApp\\', outputDir: 'dist\\', expected: '..' },
+    // Windows mixed slashes
+    { projectDir: 'C:\\My Documents\\MyApp', outputDir: './dist', expected: '..' },
+    { projectDir: 'C:\\My Documents\\MyApp\\', outputDir: './dist/', expected: '..' },
+    { projectDir: 'C:/My Documents/MyApp/', outputDir: 'dist\\', expected: '..' },
+    // Output directory outside of project root
+    { projectDir: '/usr/home/my-app', outputDir: '../wwwroot/scripts', expected: '../../my-app' },
+    { projectDir: 'C:\\My Documents\\MyApp', outputDir: '../wwwroot/scripts', expected: '../../MyApp' },
+    // Relative project root paths, basic cases
+    { projectDir: './my-app', outputDir: './dist', expected: '..' },
+    { projectDir: 'my-app', outputDir: 'dist', expected: '..' },
+    { projectDir: '.\\MyApp', outputDir: '.\\dist', expected: '..' },
+    { projectDir: 'MyApp\\', outputDir: 'dist\\', expected: '..' },
+    // Relative project root paths, output directory outside of project root
+    { projectDir: './my-app', outputDir: '../wwwroot/scripts', expected: '../../my-app' },
+    { projectDir: '.\\MyApp\\', outputDir: '..\\wwwroot\\scripts\\', expected: '../../MyApp' }
+  ];
+
+  testCases.forEach(({ projectDir, outputDir, expected }) => {
+    it(`returns "${expected}" for projectDir "${projectDir}" and outputDir "${outputDir}"`, () => {
+      const result = _calculateRelativeSourceMapsRoot(projectDir, outputDir);
+      expect(result).toBe(expected);
     });
   });
 });
