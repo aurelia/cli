@@ -3,7 +3,9 @@
   "compilerOptions": {
     "rootDir": "./",
     "allowJs": true,
-    "types": ["node"]
+    "types": ["node"],
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
   },
   "include": ["bin", "build", "eslint.config.mjs"]
 }
