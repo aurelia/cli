@@ -882,4 +882,99 @@ module.exports = require('./bar.js');
       expect(Utils.setCache).not.toHaveBeenCalled();
     });
   });
+
+    it('transform saves transformed source map to cache', () => {
+      let file = {
+        path: path.resolve(cwd, 'node_modules/foo/bar/lo.js'),
+        contents: "export {default as t} from './t.js';",
+        sourceMap: {"version":3,"file":"lo.js","sourceRoot":"","sources":["lo.ts"],"names":[],"mappings":"AAAA,OAAO,EAAC,OAAO,IAAI,CAAC,EAAC,MAAM,QAAQ,CAAA"}
+      };
+
+      Utils.getCache = jasmine.createSpy('getCache').and.returnValue(undefined);
+      Utils.setCache = jasmine.createSpy('setCache');
+
+      let bs = new BundledSource(bundler, file);
+      bs._getProjectRoot = () => 'src';
+      bs.includedBy = {
+        includedBy: {
+          description: {
+            name: 'foo',
+            mainId: 'foo/index',
+            loaderConfig: {
+              name: 'foo',
+              path: '../node_modules/foo',
+              main: 'index'
+            },
+            browserReplacement: () => undefined
+          }
+        }
+      };
+      bs._getLoaderPlugins = () => [];
+      bs._getLoaderConfig = () => ({paths: {}});
+      bs._getUseCache = () => true;
+
+      let deps = bs.transform();
+      let contents = "define('foo/bar/lo',[\"exports\", './t'], function (_exports, _t) {  \"use strict\";  _exports.__esModule = true;  _exports.t = void 0;  _t = _interopRequireDefault(_t);  _exports.t = _t.default;  function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }});";
+      let transformedSourceMap = {version:3,file:undefined,names:['_t', '_interopRequireDefault', '_exports', 't', 'default', 'e', '__esModule'],sourceRoot:undefined,sources:['lo.ts'],sourcesContent:[undefined],mappings:";;;;;EAAAA,EAAA,GAAAC,sBAAA,CAAAD,EAAA;EAA2BE,QAAA,CAAAC,CAAA,GAAAH,EAAA,CAAAI,OAAA;EAAA,SAAAH,uBAAAI,CAAA,WAAAA,CAAA,IAAAA,CAAA,CAAAC,UAAA,GAAAD,CAAA,KAAAD,OAAA,EAAAC,CAAA;AAAA",ignoreList:[]};
+
+      expect(deps).toEqual(['foo/bar/t']);
+      expect(bs.requiresTransform).toBe(false);
+      expect(bs.contents.replace(/\r|\n/g, ''))
+        .toBe(contents);
+      expect(bs.sourceMap).toEqual(transformedSourceMap)
+
+      expect(Utils.getCache).toHaveBeenCalled();
+      expect(Utils.setCache).toHaveBeenCalled();
+      expect(Utils.setCache.calls.argsFor(0)[1].deps).toEqual(['./t']);
+      expect(Utils.setCache.calls.argsFor(0)[1].contents.replace(/\r|\n/g, '')).toBe(contents);
+      expect(Utils.setCache.calls.argsFor(0)[1].transformedSourceMap).toEqual(transformedSourceMap);
+    });
+
+    it('transform uses cache for transformed source map', () => {
+      let file = {
+        path: path.resolve(cwd, 'node_modules/foo/bar/lo.js'),
+        contents: "export {default as t} from './t.js';",
+        sourceMap: {"version":3,"file":"lo.js","sourceRoot":"","sources":["lo.ts"],"names":[],"mappings":"AAAA,OAAO,EAAC,OAAO,IAAI,CAAC,EAAC,MAAM,QAAQ,CAAA"}
+      };
+
+      let contents = "define('foo/bar/lo',[\"exports\", './t'], function (_exports, _t) {  \"use strict\";  _exports.__esModule = true;  _exports.t = void 0;  _t = _interopRequireDefault(_t);  _exports.t = _t.default;  function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }});";
+      let transformedSourceMap = {version:3,file:undefined,names:['_t', '_interopRequireDefault', '_exports', 't', 'default', 'e', '__esModule'],sourceRoot:undefined,sources:['lo.ts'],sourcesContent:[undefined],mappings:";;;;;EAAAA,EAAA,GAAAC,sBAAA,CAAAD,EAAA;EAA2BE,QAAA,CAAAC,CAAA,GAAAH,EAAA,CAAAI,OAAA;EAAA,SAAAH,uBAAAI,CAAA,WAAAA,CAAA,IAAAA,CAAA,CAAAC,UAAA,GAAAD,CAAA,KAAAD,OAAA,EAAAC,CAAA;AAAA",ignoreList:[]};
+
+      Utils.getCache = jasmine.createSpy('getCache').and.returnValue({
+        deps: ['./t'],
+        contents,
+        transformedSourceMap
+      });
+      Utils.setCache = jasmine.createSpy('setCache');
+
+      let bs = new BundledSource(bundler, file);
+      bs._getProjectRoot = () => 'src';
+      bs.includedBy = {
+        includedBy: {
+          description: {
+            name: 'foo',
+            mainId: 'foo/index',
+            loaderConfig: {
+              name: 'foo',
+              path: '../node_modules/foo',
+              main: 'index'
+            },
+            browserReplacement: () => undefined
+          }
+        }
+      };
+      bs._getLoaderPlugins = () => [];
+      bs._getLoaderConfig = () => ({paths: {}});
+      bs._getUseCache = () => true;
+
+      let deps = bs.transform();
+      expect(deps).toEqual(['foo/bar/t']);
+      expect(bs.requiresTransform).toBe(false);
+      expect(bs.contents.replace(/\r|\n/g, ''))
+        .toBe(contents);
+      expect(bs.sourceMap).toEqual(transformedSourceMap);
+
+      expect(Utils.getCache).toHaveBeenCalled();
+      expect(Utils.setCache).not.toHaveBeenCalled();
+    });
 });

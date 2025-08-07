@@ -17,6 +17,7 @@ export class BundledSource {
   public includedIn: Bundle | null;
   public includedBy: SourceInclusion | null;
   private _contents: string | null;
+  private _transformedSourceMap = undefined;
   private requiresTransform: boolean;
   private _moduleId: string | undefined;
 
@@ -30,7 +31,7 @@ export class BundledSource {
   }
 
   get sourceMap() {
-    return this.file.sourceMap;
+    return this._transformedSourceMap || this.file.sourceMap;
   }
 
   get path() {
@@ -227,6 +228,7 @@ export class BundledSource {
 
       if (cache) {
         this.contents = cache.contents;
+        this._transformedSourceMap = cache.transformedSourceMap;
         deps = cache.deps;
       } else {
         let contents;
@@ -242,7 +244,16 @@ export class BundledSource {
         } catch {
           // file is not in amd/cjs format, try native es module
           try {
-            contents = esTransform(modulePath, this.contents);
+            let inputSourceMap: boolean | object = false;
+            if (this.file.sourceMap) {
+              inputSourceMap = typeof this.file.sourceMap === 'string' ? JSON.parse(this.file.sourceMap) : this.file.sourceMap;
+            }
+            const result = esTransform(modulePath, this.contents, inputSourceMap);
+
+            contents = result.code;
+            if (result.map) {
+              this._transformedSourceMap = result.map;
+            }
           } catch (e) {
             logger.error('Could not convert to AMD module, skipping ' + modulePath);
             logger.error('Error was: ' + e);
@@ -281,7 +292,8 @@ export class BundledSource {
         if (useCache && hash) {
           Utils.setCache(hash, {
             deps: deps,
-            contents: this.contents
+            contents: this.contents,
+            transformedSourceMap: !this._transformedSourceMap ? undefined : this._transformedSourceMap // avoid serializing `null`
           });
         }
       }
