@@ -85,7 +85,8 @@
     "typescript": "^5.6.3",
     "url": "^0.11.4",
     "util": "^0.12.5",
-    "vm-browserify": "^1.1.2"
+    "vm-browserify": "^1.1.2",
+    "yargs": "^17.7.2"
   },
   "devDependencies": {
     "@types/node": "^22.8.1",
@@ -95,7 +96,6 @@
     "jasmine": "^5.4.0",
     "jasmine-spec-reporter": "^7.0.0",
     "nodemon": "^3.1.7",
-    "standard-changelog": "^6.0.0",
-    "yargs": "^17.7.2"
+    "standard-changelog": "^6.0.0"
   }
 }
